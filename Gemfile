@@ -2,10 +2,8 @@ source 'https://rubygems.org'
 
 gem 'rails',     github: 'rails/rails'
 gem 'arel',      github: 'rails/arel'
-gem 'activerecord-deprecated_finders', github: 'rails/activerecord-deprecated_finders'
 
 gem 'activerecord-jdbcpostgresql-adapter'
-gem 'jruby-openssl', require: false
 
 gem 'haml-rails'
 gem 'nokogiri'
@@ -60,4 +58,3 @@ end
 
 # Deploy with Capistrano
 # gem 'capistrano', group: :development
-

@@ -1,10 +1,4 @@
 GIT
-  remote: git://github.com/rails/activerecord-deprecated_finders.git
-  revision: 95718889f630bbc97b3e0b0ce67b0c8ed16107c0
-  specs:
-    activerecord-deprecated_finders (0.0.3)
-
-GIT
   remote: git://github.com/rails/arel.git
   revision: 933ea218116645eafaf3b7ea5695520db0f9d9ba
   specs:
@@ -54,6 +48,7 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
+    activerecord-deprecated_finders (0.0.3)
     activerecord-jdbc-adapter (1.2.9)
     activerecord-jdbcpostgresql-adapter (1.2.9)
       activerecord-jdbc-adapter (~> 1.2.9)
@@ -67,6 +62,7 @@ GEM
     database_cleaner (0.9.1)
     erubis (2.7.0)
     facon (0.5.0)
+    ffi (1.6.0)
     ffi (1.6.0-java)
     haml (4.0.1)
       tilt
@@ -132,7 +128,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activerecord-deprecated_finders!
   activerecord-jdbcpostgresql-adapter
   arel!
   bacon
