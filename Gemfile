@@ -5,7 +5,7 @@ gem 'arel',      github: 'rails/arel'
 gem 'activerecord-deprecated_finders', github: 'rails/activerecord-deprecated_finders'
 
 gem 'activerecord-jdbcpostgresql-adapter'
-gem 'jruby-openssl'
+gem 'jruby-openssl', require: false
 
 gem 'haml-rails'
 gem 'nokogiri'

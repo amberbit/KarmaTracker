@@ -88,10 +88,15 @@ GEM
     mime-types (1.22)
     minitest (4.7.0)
     multi_json (1.7.2)
+    nokogiri (1.5.9)
     nokogiri (1.5.9-java)
     nori (2.0.4)
     nullobject (0.0.5)
     polyglot (0.3.3)
+    pry (0.9.12)
+      coderay (~> 1.0.5)
+      method_source (~> 0.8)
+      slop (~> 3.4)
     pry (0.9.12-java)
       coderay (~> 1.0.5)
       method_source (~> 0.8)
@@ -124,6 +129,7 @@ GEM
 
 PLATFORMS
   java
+  ruby
 
 DEPENDENCIES
   activerecord-deprecated_finders!
