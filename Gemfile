@@ -8,6 +8,7 @@ gem 'activerecord-jdbcpostgresql-adapter'
 gem 'haml-rails'
 gem 'nokogiri'
 gem 'nori'
+gem 'torquebox-server'
 
 group :test do
   gem 'bacon', require: false
