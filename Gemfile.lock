@@ -102,6 +102,10 @@ GEM
     rack (1.5.2)
     rack-test (0.6.2)
       rack (>= 1.0)
+    rails-api (0.1.0)
+      actionpack (>= 3.2.11)
+      railties (>= 3.2.11)
+      tzinfo (~> 0.3.31)
     rake (10.0.4)
     slop (3.4.4)
     spoon (0.0.3)
@@ -175,4 +179,8 @@ DEPENDENCIES
   nullobject
   pry
   rails!
+  rails-api
+  torquebox
+  torquebox-messaging
   torquebox-server
+  torquebox-stomp

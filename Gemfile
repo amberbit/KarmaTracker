@@ -3,12 +3,19 @@ source 'https://rubygems.org'
 gem 'rails',     github: 'rails/rails'
 gem 'arel',      github: 'rails/arel'
 
+gem 'rails-api'
+
 gem 'activerecord-jdbcpostgresql-adapter'
 
 gem 'haml-rails'
 gem 'nokogiri'
 gem 'nori'
 gem 'torquebox-server'
+
+gem 'torquebox'
+gem 'torquebox-server', require: false
+gem 'torquebox-stomp', require: false
+gem 'torquebox-messaging'
 
 group :test do
   gem 'bacon', require: false
