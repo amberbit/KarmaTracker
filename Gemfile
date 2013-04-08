@@ -22,10 +22,13 @@ gem 'torquebox-server', require: false
 gem 'torquebox-stomp', require: false
 gem 'torquebox-messaging'
 
+gem 'nokogiri'
+gem 'nori'
+
 group :test do
   gem 'bacon', require: false
-  #gem 'capybara', '2.0.2', require: false
-  #gem 'poltergeist', git: "https://github.com/jonleighton/poltergeist.git", require: false
+  gem 'factory_girl_rails', require: false
+  gem 'fakeweb', require: false
   gem 'database_cleaner', require: false
   gem 'facon', require: false
   gem 'nullobject', require: false
