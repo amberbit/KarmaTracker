@@ -71,7 +71,6 @@ GEM
       rack
     rack-test (0.6.2)
       rack (>= 1.0)
-<<<<<<< HEAD
     rails (3.2.13)
       actionmailer (= 3.2.13)
       actionpack (= 3.2.13)
@@ -80,13 +79,10 @@ GEM
       activesupport (= 3.2.13)
       bundler (~> 1.0)
       railties (= 3.2.13)
-=======
->>>>>>> 19282583eff835bc45979eeeebd78dac9689d8f9
     rails-api (0.1.0)
       actionpack (>= 3.2.11)
       railties (>= 3.2.11)
       tzinfo (~> 0.3.31)
-<<<<<<< HEAD
     railties (3.2.13)
       actionpack (= 3.2.13)
       activesupport (= 3.2.13)
@@ -94,8 +90,6 @@ GEM
       rake (>= 0.8.7)
       rdoc (~> 3.4)
       thor (>= 0.14.6, < 2.0)
-=======
->>>>>>> 19282583eff835bc45979eeeebd78dac9689d8f9
     rake (10.0.4)
     rdoc (3.12.2)
       json (~> 1.4)
@@ -160,15 +154,9 @@ DEPENDENCIES
   facon
   nullobject
   pry
-<<<<<<< HEAD
   rails (= 3.2.13)
   rails-api
   torquebox
-=======
-  rails!
-  rails-api
-  torquebox
   torquebox-messaging
->>>>>>> 19282583eff835bc45979eeeebd78dac9689d8f9
   torquebox-server
   torquebox-stomp
