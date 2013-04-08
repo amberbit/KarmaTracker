@@ -17,6 +17,11 @@ end
 
 #gem 'jquery-rails'
 
+gem 'torquebox'
+gem 'torquebox-server', require: false
+gem 'torquebox-stomp', require: false
+gem 'torquebox-messaging'
+
 group :test do
   gem 'bacon', require: false
   #gem 'capybara', '2.0.2', require: false
