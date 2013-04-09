@@ -8,27 +8,17 @@ gem 'activerecord-jdbcpostgresql-adapter'
 
 gem 'torquebox'
 gem 'torquebox-server', require: false
-
-group :assets do
-  #gem 'sass-rails',   '~> 3.2.3'
-  #gem 'coffee-rails', '~> 3.2.1'
-  #gem 'uglifier', '>= 1.0.3'
-end
-
-#gem 'jquery-rails'
-
-gem 'torquebox'
-gem 'torquebox-server', require: false
 gem 'torquebox-stomp', require: false
 gem 'torquebox-messaging'
 
+gem 'bcrypt-ruby', '~> 3.0.0', require: 'bcrypt'
+
 group :test do
-  gem 'bacon', require: false
-  #gem 'capybara', '2.0.2', require: false
-  #gem 'poltergeist', git: "https://github.com/jonleighton/poltergeist.git", require: false
+  gem 'rspec-rails', git: 'https://github.com/rspec/rspec-rails.git', ref: 'ee3f224c61cac7d4de919a23945418fd07ada7c6'
   gem 'database_cleaner', require: false
   gem 'facon', require: false
   gem 'nullobject', require: false
+  gem 'factory_girl_rails'
 end
 
 group :development, :test do
