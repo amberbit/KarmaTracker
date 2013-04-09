@@ -1,6 +1,22 @@
 class User < ActiveRecord::Base
-  attr_accessible :api_key_id, :email, :password_digest
+  has_secure_password
 
-  has_many :api_keys, dependent: :destroy
+  attr_accessible :email, :password
+
+  has_one :api_key, dependent: :destroy
+
+  validates :email, presence: true, uniqueness: true
+
+  after_create :create_api_key
+
+  def self.authenticate email, password
+    User.find_by_email(email).try(:authenticate, password)
+  end
+
+  private
+
+  def create_api_key
+    ApiKey.create user: self
+  end
 
 end

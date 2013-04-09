@@ -1,11 +1,15 @@
 module Api
   module V1
     class UsersController < ApplicationController
-      before_filter :restrict_access
       respond_to :json
+      before_filter :restrict_access, except: [:authenticate]
 
-      def index
-        respond_with User.all
+      def authenticate
+        respond_with (user = User.authenticate(params[:email], params[:password])) ? user.api_key : {}
+      end
+
+      def me
+        respond_with @api_key.user
       end
 
     end
