@@ -13,10 +13,6 @@ describe PivotalTrackerIdentity do
       :status => ['200', 'OK'])
   end
 
-  after do
-    DatabaseCleaner.clean
-  end
-
   it 'should not save identity when no credentials were provided' do
     PivotalTrackerIdentity.count.should == 0
     pi = PivotalTrackerIdentity.new

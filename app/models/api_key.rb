@@ -2,7 +2,7 @@ class ApiKey < ActiveRecord::Base
 
   attr_accessible :access_token
 
-  belongs_to :user
+  has_one :user
 
   before_create :generate_access_token
 
