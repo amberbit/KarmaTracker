@@ -86,6 +86,8 @@ GEM
       method_source (~> 0.8)
       slop (~> 3.4)
       spoon (~> 0.0)
+    rabl (0.8.3)
+      activesupport (>= 2.3.14)
     rack (1.4.5)
     rack-cache (1.2)
       rack (>= 0.4)
@@ -184,6 +186,7 @@ DEPENDENCIES
   nori
   nullobject
   pry
+  rabl
   rails (= 3.2.13)
   rails-api
   rspec-rails!

@@ -10,13 +10,16 @@ class ApplicationController < ActionController::API
   end
 
   def restrict_access_by_header
-    authenticate_or_request_with_http_token do |token, options|
-      @api_key = ApiKey.find_by_access_token(access_token: token)
-      @api_key.present?
+    return true if @api_key
+
+    authenticate_with_http_token do |token|
+      @api_key = ApiKey.find_by_access_token(token)
     end
   end
 
   def restrict_access_by_params
+    return true if @api_key
+
     @api_key = ApiKey.find_by_access_token(params[:token])
   end
 
