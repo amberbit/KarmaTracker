@@ -5,6 +5,8 @@ class User < ActiveRecord::Base
 
   has_one :api_key, dependent: :destroy
   has_many :identities
+  has_many :participations
+  has_many :projects, :through => :participations, uniq: true
 
   validates :email, presence: true, uniqueness: true
 
