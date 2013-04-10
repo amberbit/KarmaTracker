@@ -12,6 +12,9 @@ gem 'torquebox-server', require: false
 gem 'torquebox-stomp', require: false
 gem 'torquebox-messaging'
 
+gem 'nokogiri'
+gem 'nori'
+
 gem 'bcrypt-ruby', '~> 3.0.0', require: 'bcrypt'
 
 group :test do
@@ -20,6 +23,7 @@ group :test do
   gem 'facon', require: false
   gem 'nullobject', require: false
   gem 'factory_girl_rails'
+  gem 'fakeweb', require: false
 end
 
 group :development, :test do

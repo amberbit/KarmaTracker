@@ -20,6 +20,15 @@ ActiveRecord::Schema.define(:version => 20130410084528) do
     t.integer  "user_id"
   end
 
+  create_table "identities", :force => true do |t|
+    t.string   "type"
+    t.string   "name"
+    t.string   "api_key"
+    t.integer  "user_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "tasks", :force => true do |t|
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false

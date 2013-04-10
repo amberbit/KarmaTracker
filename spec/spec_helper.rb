@@ -1,4 +1,5 @@
 ENV["RAILS_ENV"] ||= 'test'
+ENV["LANG"] = "en-US"
 
 require File.expand_path("../../config/environment", __FILE__)
 
@@ -6,7 +7,8 @@ require 'database_cleaner'
 require 'factory_girl_rails'
 require 'pry'
 require 'rspec/rails'
-require 'support/database_cleaner'
+
+Dir[File.join(File.dirname(__FILE__), 'support', '**', '*.rb')].each {|f| require f}
 
 RSpec.configure do |config|
   config.mock_with :rspec

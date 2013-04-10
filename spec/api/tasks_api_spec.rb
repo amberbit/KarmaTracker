@@ -12,6 +12,7 @@ describe 'Task API' do
     api_get "tasks/#{@task.id}/start", {token: @user.api_key.access_token}
 
     @response['message'].should == 'Task started'
+    @response['status'].should == 200
     @user.running_task.should == @task
   end
 
@@ -38,6 +39,7 @@ describe 'Task API' do
 
     api_get "tasks/#{@task.id}/stop", {token: @user.api_key.access_token}
     @response['message'].should == 'Task stopped'
+    @response['status'].should == 200
     @user.running_task.should be_nil
   end
 

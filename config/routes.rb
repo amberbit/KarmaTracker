@@ -17,6 +17,7 @@ KarmaTracker::Application.routes.draw do
         end
       end
 
+      resources :identities, only: [:index, :show, :create, :destroy]
     end
   end
 
