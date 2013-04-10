@@ -11,13 +11,29 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130409075333) do
+ActiveRecord::Schema.define(:version => 20130410084528) do
 
   create_table "api_keys", :force => true do |t|
     t.string   "access_token", :null => false
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
     t.integer  "user_id"
+  end
+
+  create_table "tasks", :force => true do |t|
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "time_log_entries", :force => true do |t|
+    t.integer  "task_id"
+    t.integer  "user_id",                       :null => false
+    t.boolean  "running",    :default => false
+    t.datetime "started_at",                    :null => false
+    t.datetime "stopped_at"
+    t.integer  "seconds",    :default => 0,     :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
   end
 
   create_table "users", :force => true do |t|
