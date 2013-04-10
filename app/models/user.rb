@@ -14,6 +14,10 @@ class User < ActiveRecord::Base
     User.find_by_email(email).try(:authenticate, password)
   end
 
+  def running_task
+    time_log_entries.where(running: true).first.try(:task)
+  end
+
   private
 
   def create_api_key

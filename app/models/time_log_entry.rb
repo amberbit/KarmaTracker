@@ -21,21 +21,12 @@ class TimeLogEntry < ActiveRecord::Base
     where("(?::timestamp with time zone, ?::timestamp with time zone) OVERLAPS (started_at, stopped_at)", start, stop)
   }
 
-  def start
-    TimeLogEntry.stop_all user_id
-    self.started_at = Time.zone.now
-    self.running = true
-    self.save!
-  end
-
-  def stop
-    self.stopped_at = Time.zone.now
-    self.running = false
-    self.save!
-  end
-
   def self.stop_all user_id
-    TimeLogEntry.where({user_id: user_id, running: true}).each do |tl| tl.stop; end
+    TimeLogEntry.where({user_id: user_id, running: true}).each do |tl|
+      tl.stopped_at = Time.zone.now
+      tl.running = false
+      tl.save!
+    end
   end
 
   private

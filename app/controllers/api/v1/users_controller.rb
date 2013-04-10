@@ -10,7 +10,7 @@ module Api
           @api_key = user.api_key
           render 'authenticate'
         else
-          head :unauthorized
+          render json: {status: 401, message: 'Authentication failed'}
         end
       end
 

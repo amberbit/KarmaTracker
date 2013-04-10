@@ -6,7 +6,8 @@ class ApplicationController < ActionController::API
   private
 
   def restrict_access
-    head :unauthorized unless restrict_access_by_params || restrict_access_by_header
+    render json: {status: 401, message: 'Invalid token'} and return unless restrict_access_by_params || restrict_access_by_header
+    @current_user = @api_key.user if @api_key
   end
 
   def restrict_access_by_header
