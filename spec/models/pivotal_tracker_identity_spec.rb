@@ -2,7 +2,7 @@ require_relative '../spec_helper'
 require 'fakeweb'
 
 describe PivotalTrackerIdentity do
-  before do
+  before :all do
     FakeWeb.allow_net_connect = false
 
     FakeWeb.register_uri(:get, 'https://wrong_email:wrong_password@www.pivotaltracker.com/services/v4/me',

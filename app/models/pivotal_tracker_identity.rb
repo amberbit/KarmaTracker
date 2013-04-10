@@ -3,9 +3,14 @@ require 'net/https'
 require 'open-uri'
 
 class PivotalTrackerIdentity < Identity
+  attr_accessible :email, :password
   attr_accessor :email, :password
 
   validate :credentials_correctness
+
+  def service_name
+    "Pivotal Tracker"
+  end
 
   private
 
@@ -22,7 +27,7 @@ class PivotalTrackerIdentity < Identity
   end
 
   def validate_credentials_with_token
-    doc = Nokogiri::XML(open(authentication_uri, 'X-TrackerToken' => token))
+    doc = Nokogiri::XML(open(authentication_uri, 'X-TrackerToken' => api_key))
     key = doc.xpath('//token/guid').first
     if key.present?
       self.api_key = key.content

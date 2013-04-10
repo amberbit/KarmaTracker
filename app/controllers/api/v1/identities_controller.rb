@@ -5,24 +5,39 @@ module Api
       respond_to :json
 
       def index
-        respond_with @api_key.user.identities
+        @identities = if params[:service]
+          @api_key.user.identities.by_service(params[:service])
+        else
+          @api_key.user.identities
+        end
+        render 'index'
       end
 
       def show
-
+        @identity = Identity.find(params[:id])
+        if @identity.user.api_key == @api_key
+          render 'show'
+        else
+          head :forbidden
+        end
       end
 
       def create
-
+        identity = IdentitiesFactory.new(params).create_identity
+        if identity && identity.save
+          head :ok
+        else
+          head :internal_server_error
+        end
       end
 
       def destroy
         identity = Identity.find(params[:id])
         if identity.user.api_key == @api_key
           identity.delete
-          respond_with 'Identity destroyed', status: 200
+          head :ok
         else
-          respond_with 'Access denied', status: 403
+          head :forbidden
         end
       end
     end
