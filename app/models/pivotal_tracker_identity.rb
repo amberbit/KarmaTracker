@@ -31,6 +31,7 @@ class PivotalTrackerIdentity < Identity
     key = doc.xpath('//token/guid').first
     if key.present?
       self.api_key = key.content
+      self.source_id = doc.xpath('//id')
     else
       errors.add(:api_key, 'could not be retrieved; provided API token is invalid')
     end
@@ -41,6 +42,7 @@ class PivotalTrackerIdentity < Identity
     key = doc.xpath('//token/guid').first
     if key.present?
       self.api_key = key.content
+      self.source_id = doc.xpath('//id')
     else
       errors.add(:api_key, 'could not be retrieved; provided email/password combination is invalid')
     end

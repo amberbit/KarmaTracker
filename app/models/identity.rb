@@ -1,7 +1,8 @@
 class Identity < ActiveRecord::Base
-  attr_accessible :name, :api_key
+  attr_accessible :name, :api_key, :source_id
 
-  validates_uniqueness_of :api_key, :scope => :type
+  validates_uniqueness_of :source_id, :scope => :type
+  validates_uniqueness_of :api_key,   :scope => :type
 
   belongs_to :user
 
