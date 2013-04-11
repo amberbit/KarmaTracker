@@ -8,29 +8,17 @@ describe 'IdentitiesFactory' do
       :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'authorization_success.xml')),
       :status => ['200', 'OK'])
 
-    @attrs = {service: 'PivotalTracker', name: 'Test', email: 'correct_email', password: 'correct_password'}
+    @attrs = {name: 'Test', email: 'correct_email', password: 'correct_password'}
   end
 
   it 'should return an identity when correct params were provided' do
-    factory = IdentitiesFactory.new(@attrs)
+    factory = IdentitiesFactory.new(PivotalTrackerIdentity, @attrs)
     identity = factory.create_identity
     identity.name.should == @attrs[:name]
   end
 
-  it 'should accept service name in CamelCase' do
-    factory = IdentitiesFactory.new(@attrs)
-    identity = factory.create_identity
-    identity.is_a?(PivotalTrackerIdentity).should be_true
-  end
-
-  it 'should accept service name in snake_case' do
-    factory = IdentitiesFactory.new(@attrs.merge(service: 'pivotal_tracker'))
-    identity = factory.create_identity
-    identity.is_a?(PivotalTrackerIdentity).should be_true
-  end
-
   it 'should return nil when wrong service was provided' do
-    factory = IdentitiesFactory.new(@attrs.merge(service: 'Abc'))
-    factory.create_identity.should be_nil
+    factory = IdentitiesFactory.new(Identity, @attrs)
+    factory.create_identity.valid?.should be_false
   end
 end

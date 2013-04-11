@@ -14,7 +14,11 @@ KarmaTracker::Application.routes.draw do
         end
       end
 
-      resources :identities, only: [:index, :show, :create, :destroy]
+      resources :identities, only: [:index, :show, :destroy] do
+        collection do
+          post :pivotal_tracker
+        end
+      end
     end
   end
 

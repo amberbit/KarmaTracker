@@ -22,9 +22,9 @@ module Api
         end
       end
 
-      def create
-        @identity = IdentitiesFactory.new(params[:identity]).create_identity
-        if @identity && @identity.save
+      def pivotal_tracker
+        @identity = IdentitiesFactory.new(PivotalTrackerIdentity, params[:identity]).create_identity
+        if @identity.save
           render 'show'
         else
           render 'show', status: 422

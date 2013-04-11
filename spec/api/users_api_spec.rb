@@ -7,7 +7,7 @@ require 'api/api_helper'
 # GET /user params: token or pass api key via header
 #   - if api key valid
 #     200 OK
-#     { id: 1, email: 'a@b.com', name: 'Hubert Lepicki', token: 'asdf2344' }
+#     { user: { id: 1, email: 'a@b.com', name: 'Hubert Lepicki', token: 'asdf2344' } }
 #   - if invalid
 #     401 Unauthorized
 #     { message: 'Invalid API Token' }

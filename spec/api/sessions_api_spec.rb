@@ -8,7 +8,7 @@ require 'api/api_helper'
 # params: session[email]: a@b.com, session[password]: somepass}
 #  - if logged in:
 #    200 OK
-#    { id: 1, email: 'a@b.com', name: 'Hubert Lepicki', token: 'asdf2344' }
+#    { user: { id: 1, email: 'a@b.com', name: 'Hubert Lepicki', token: 'asdf2344' } }
 #  - if credentials invalid
 #    401 Unauthorized
 #    { message: 'Invalid email or password' }

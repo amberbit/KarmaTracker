@@ -23,12 +23,12 @@ require 'fakeweb'
 # params: identity[email] = 'a@b.com', identity[password] = 'asdfasdf'
 # - if identity was created:
 #   200 OK
-#   { id: 4, api_key: 'asdfasdfasdf4444' }
+#   { identity: { id: 4, api_key: 'asdfasdfasdf4444' } }
 # - if identity was not created:
 #   422 Unprocessable entity
-#   { api_key: 'asdfasdfasdf32323', errors: { api_key: ['Is invalid'] } }
+#   { identity: { api_key: 'asdfasdfasdf32323', errors: { api_key: ['Is invalid'] } } }
 #   or
-#   { email: 'a@b.com', password: "asdf', errors: { password: ['does not match email'] } }
+#   { identity: { email: 'a@b.com', password: "asdf', errors: { password: ['does not match email'] } } }
 # - if unauthorized
 #   401 Unauthorized
 #   { message: "Invalid API Key' }
@@ -37,7 +37,7 @@ require 'fakeweb'
 # DELETE /identities/:id
 # - if deletion completed (my identity)
 #   200 OK
-#   { id: 4, api_key: 'asdfasdfasdf4444' }
+#   { identity: { id: 4, api_key: 'asdfasdfasdf4444' } }
 # - if deletion failed (not my identity or identity does not exist)
 #   404 Not Found
 #   { message: 'Resource not found' }
@@ -84,8 +84,8 @@ describe 'Identities API' do
 
   it "should be able to add identity" do
     FactoryGirl.create :user
-    json = api_post "identities", {token: ApiKey.last.token, identity: {service: 'PivotalTracker',
-                            name: 'Just an identity', email: 'correct_email', password: 'correct_password'}}
+    json = api_post "identities/pivotal_tracker", {token: ApiKey.last.token, identity: {service: 'PivotalTracker',
+           name: 'Just an identity', email: 'correct_email', password: 'correct_password'}}
 
     response.status.should == 200
     json.has_key?('identity').should be_true
@@ -97,25 +97,14 @@ describe 'Identities API' do
 
   it 'should add error messages to response when adding identity fails' do
     FactoryGirl.create :user
-    json = api_post "identities", {token: ApiKey.last.token, identity: {service: 'PivotalTracker',
-                            name: 'Just an identity', email: 'wrong_email', password: 'wrong_password'}}
-
+    json = api_post "identities/pivotal_tracker", {token: ApiKey.last.token, identity: {name: 'Just an identity',
+           email: 'wrong_email', password: 'wrong_password'}}
 
     Identity.count.should == 0
     json['identity'].has_key?('errors').should be_true
     response.status.should == 422
-    response.body.should =~ /could not be retrieved; provided email\/password combination is invalid/
+    response.body.should =~ /provided email\/password combination is invalid/
   end
-
-  it 'should not allow adding identity for unknown service' do
-    FactoryGirl.create :user
-    json = api_post "identities", {token: ApiKey.last.token, identity: {service: 'WrongService',
-                            name: 'Just an identity', email: 'correct_email', password: 'correct_password'}}
-
-    binding.pry
-
-  end
-
 
   it "should be able to remove the identity and return it" do
     FactoryGirl.create :identity
