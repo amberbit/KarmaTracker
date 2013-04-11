@@ -4,6 +4,6 @@ FactoryGirl.define do
     source_name 'PT'
     sequence(:source_identifier) {|i| i}
 
-    users { [ User.last || create(:user) ] }
+    identities { [ Identity.last || create(:identity) ] }
   end
 end

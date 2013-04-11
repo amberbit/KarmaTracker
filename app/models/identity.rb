@@ -5,6 +5,8 @@ class Identity < ActiveRecord::Base
   validates_uniqueness_of :api_key,   :scope => :type
 
   belongs_to :user
+  has_many :participations
+  has_many :projects, :through => :participations
 
   def service_name
     # overwrite in subclass
@@ -13,6 +15,6 @@ class Identity < ActiveRecord::Base
   def self.by_service(service)
     service = service.camelize
     sevice = service.concat('Identity') unless service =~ /Identity\z/
-    where(type: service)
+    where(:type => service)
   end
 end

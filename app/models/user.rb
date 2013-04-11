@@ -3,12 +3,10 @@ class User < ActiveRecord::Base
 
   attr_accessible :email, :password
 
-  has_one :api_key, dependent: :destroy
+  has_one :api_key, :dependent => :destroy
   has_many :identities
-  has_many :participations
-  has_many :projects, :through => :participations, uniq: true
 
-  validates :email, presence: true, uniqueness: true
+  validates :email, :presence  => true
 
   after_create :create_api_key
 
@@ -16,10 +14,15 @@ class User < ActiveRecord::Base
     User.find_by_email(email).try(:authenticate, password)
   end
 
+  def projects
+    Project.joins('INNER JOIN participations p ON projects.id = p.project_id').
+      where('p.identity_id IN(?)', identities.map(&:id)).uniq
+  end
+
   private
 
   def create_api_key
-    ApiKey.create user: self
+    ApiKey.create :user => self
   end
 
 end
