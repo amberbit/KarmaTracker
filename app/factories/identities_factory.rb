@@ -1,6 +1,6 @@
 class IdentitiesFactory
 
-  VALID_CLASSES = %w[PivotalTracker]
+  VALID_CLASSES = %w[PivotalTracker GitHub]
   VALID_ATTRIBUTES = %w[name api_key email password]
 
   def initialize(options)

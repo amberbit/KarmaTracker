@@ -56,76 +56,101 @@ describe 'Identities API' do
     FactoryGirl.create :identity
     Identity.count.should == 1
 
-    api_get "identities/#{Identity.last.id}", {token: Identity.last.user.api_key.access_token}
+    json = api_get "identities/#{Identity.last.id}", {token: Identity.last.user.api_key.token}
 
-    @response['identity']['id'].should == Identity.last.id
-    @response['identity']['service'].should == "Pivotal Tracker"
-    @response['identity']['name'].should == Identity.last.name
-    @response['identity']['api_key'].should == Identity.last.api_key
+    response.status.should == 200
+    json['identity']['id'].should == Identity.last.id
+    json['identity']['service'].should == "Pivotal Tracker"
+    json['identity']['name'].should == Identity.last.name
+    json['identity']['api_key'].should == Identity.last.api_key
   end
 
   it 'should return array of identities' do
     3.times { FactoryGirl.create(:identity) }
+    json = api_get 'identities', {token: Identity.last.user.api_key.token}
 
-    api_get "identities", {token: Identity.last.user.api_key.access_token}
-
-    @response.count.should == 3
+    response.status.should == 200
+    json['pivotal_tracker'].count.should == 3
   end
 
   it 'should filter identities by service' do
     2.times { FactoryGirl.create(:identity) }
-    3.times { FactoryGirl.create(:identity, type: nil) }
+    3.times { FactoryGirl.create(:identity, type: "GitHubIdentity") }
 
-    api_get "identities", {token: Identity.last.user.api_key.access_token, service: 'PivotalTracker'}
-
-    @response.count.should == 2
+    json = api_get "identities", {token: Identity.last.user.api_key.token, service: 'PivotalTracker'}
+    json['pivotal_tracker'].count.should == 2
+    json['github'].count.should == 0
   end
 
   it "should be able to add identity" do
     FactoryGirl.create :user
-    api_post "identities", {token: ApiKey.last.access_token, service: 'PivotalTracker',
-                            name: 'Just an identity', email: 'correct_email', password: 'correct_password'}
+    json = api_post "identities", {token: ApiKey.last.token, identity: {service: 'PivotalTracker',
+                            name: 'Just an identity', email: 'correct_email', password: 'correct_password'}}
 
-    @response['status'].should == 200
+    response.status.should == 200
+    json.has_key?('identity').should be_true
 
     Identity.count.should == 1
     identity = Identity.last
     identity.name.should == 'Just an identity'
   end
 
-  it 'should not allow adding incorrect identity' do
+  it 'should add error messages to response when adding identity fails' do
     FactoryGirl.create :user
-    api_post "identities", {token: ApiKey.last.access_token, service: 'WrongService',
-                            name: 'Just an identity', email: 'correct_email', password: 'correct_password'}
+    json = api_post "identities", {token: ApiKey.last.token, identity: {service: 'PivotalTracker',
+                            name: 'Just an identity', email: 'wrong_email', password: 'wrong_password'}}
 
-    @response['status'].should == 500
 
     Identity.count.should == 0
+    json['identity'].has_key?('errors').should be_true
+    response.status.should == 422
+    response.body.should =~ /could not be retrieved; provided email\/password combination is invalid/
   end
 
-  it "should be able to remove the identity" do
+  it 'should not allow adding identity for unknown service' do
+    FactoryGirl.create :user
+    json = api_post "identities", {token: ApiKey.last.token, identity: {service: 'WrongService',
+                            name: 'Just an identity', email: 'correct_email', password: 'correct_password'}}
+
+    binding.pry
+
+  end
+
+
+  it "should be able to remove the identity and return it" do
     FactoryGirl.create :identity
     Identity.count.should == 1
 
     -> {
-      api_delete "identities/#{Identity.last.id}", {token: Identity.last.user.api_key.access_token}
+      @json = api_delete "identities/#{Identity.last.id}", {token: Identity.last.user.api_key.token}
     }.should change(Identity, :count).by(-1)
 
-    @response['status'].should == 200
-
+    response.status.should == 200
+    @json.has_key?('identity').should be_true
     Identity.count.should == 0
   end
 
   it 'should return an error when trying to remove other usere\'s identity' do
-    FactoryGirl.create :identity
-    Identity.count.should == 1
+    my_identity = FactoryGirl.create :identity, user: FactoryGirl.create(:user)
+    other_identity = FactoryGirl.create :identity, user: FactoryGirl.create(:user)
+
+    Identity.count.should == 2
 
     -> {
-      api_delete "identities/#{Identity.last.id}", {token: 'wrong_token'}
+      @json = api_delete "identities/#{other_identity.id}", {token: my_identity.user.api_key.token}
     }.should change(Identity, :count).by(0)
 
-    @response['status'].should == 401
-
-    Identity.count.should == 1
+    response.status.should == 404
+    @json['message'].should == 'Resource not found'
+    Identity.count.should == 2
   end
+
+  it 'should return an error when trying to remove not existing identity', rescue_errors: true do
+    user = FactoryGirl.create :user
+
+    expect {
+      @json = api_delete "identities/1", {token: user.api_key.token}
+    }.to raise_error
+  end
+
 end

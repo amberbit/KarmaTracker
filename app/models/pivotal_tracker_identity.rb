@@ -32,8 +32,10 @@ class PivotalTrackerIdentity < Identity
     if key.present?
       self.api_key = key.content
     else
-      errors.add(:api_key, 'could not be retrieved; provided API token is invalid')
+      raise Exception
     end
+  rescue
+    errors.add(:api_key, 'could not be retrieved; provided API token is invalid')
   end
 
   def validate_credentials_with_email_and_password
@@ -42,8 +44,10 @@ class PivotalTrackerIdentity < Identity
     if key.present?
       self.api_key = key.content
     else
-      errors.add(:api_key, 'could not be retrieved; provided email/password combination is invalid')
+      raise Exception
     end
+  rescue Exception
+    errors.add(:password, 'could not be retrieved; provided email/password combination is invalid')
   end
 
   def authentication_uri

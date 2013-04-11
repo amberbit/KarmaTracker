@@ -14,4 +14,5 @@ class Identity < ActiveRecord::Base
     sevice = service.concat('Identity') unless service =~ /Identity\z/
     where(type: service)
   end
+
 end

@@ -18,28 +18,29 @@ module Api
         if @identity.user.api_key == @api_key
           render 'show'
         else
-          render json: {status: 401, message: 'Forbidden'}
+          render json: {message: 'Resource not found'}, status: 404
         end
       end
 
       def create
-        identity = IdentitiesFactory.new(params).create_identity
-        if identity && identity.save
-          render json: {status: 200, message: 'Identity created'}
+        @identity = IdentitiesFactory.new(params[:identity]).create_identity
+        if @identity && @identity.save
+          render 'show'
         else
-          render json: {status: 500, message: 'Internal server error'}
+          render 'show', status: 422
         end
       end
 
       def destroy
-        identity = Identity.find(params[:id])
-        if identity.user.api_key == @api_key
-          identity.delete
-          render json: {status: 200, message: 'Identity destroyed'}
+        @identity = Identity.find(params[:id])
+        if @identity.user.api_key == @api_key
+          @identity.delete
+          render 'api/v1/identities/show'
         else
-          render json: {status: 401, message: 'Forbidden'}
+          render json: {message: 'Resource not found'}, status: 404
         end
       end
+
     end
   end
 end
