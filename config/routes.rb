@@ -3,12 +3,9 @@ KarmaTracker::Application.routes.draw do
   namespace :api, defaults: {format: 'json'} do
     namespace :v1 do
 
-      resources :users, only: [] do
-        collection do
-          get :me
-          get :authenticate
-        end
-      end
+      match '/user' => 'users#user'
+
+      resources :sessions, only: [:create]
 
       resources :tasks, only: [] do
         member do
@@ -20,5 +17,8 @@ KarmaTracker::Application.routes.draw do
       resources :identities, only: [:index, :show, :create, :destroy]
     end
   end
+
+  match '/404' => 'errors#not_found'
+  match '/500' => 'errors#exception'
 
 end

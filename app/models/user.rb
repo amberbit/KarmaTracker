@@ -11,8 +11,8 @@ class User < ActiveRecord::Base
 
   after_create :create_api_key
 
-  def self.authenticate email, password
-    User.find_by_email(email).try(:authenticate, password)
+  def self.authenticate session={}
+    User.find_by_email(session['email']).try(:authenticate, session['password'])
   end
 
   def running_task

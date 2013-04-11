@@ -9,7 +9,7 @@ describe 'Task API' do
   end
 
   it 'should start new task' do
-    api_get "tasks/#{@task.id}/start", {token: @user.api_key.access_token}
+    api_get "tasks/#{@task.id}/start", {token: @user.api_key.token}
 
     @response['message'].should == 'Task started'
     @response['status'].should == 200
@@ -20,7 +20,7 @@ describe 'Task API' do
     @task.start @user.id
 
     new_task = FactoryGirl.create :task
-    api_get "tasks/#{new_task.id}/start", {token: @user.api_key.access_token}
+    api_get "tasks/#{new_task.id}/start", {token: @user.api_key.token}
     @response['message'].should == 'Another task running'
     @user.running_task.should_not == new_task
   end
@@ -29,7 +29,7 @@ describe 'Task API' do
     @task.start @user.id
     started_at = TimeLogEntry.first.started_at
 
-    api_get "tasks/#{@task.id}/start", {token: @user.api_key.access_token}
+    api_get "tasks/#{@task.id}/start", {token: @user.api_key.token}
     @response['message'].should == 'Task already running'
     TimeLogEntry.first.started_at.should == started_at
   end
@@ -37,14 +37,14 @@ describe 'Task API' do
   it 'should stop running task' do
     @task.start @user.id
 
-    api_get "tasks/#{@task.id}/stop", {token: @user.api_key.access_token}
+    api_get "tasks/#{@task.id}/stop", {token: @user.api_key.token}
     @response['message'].should == 'Task stopped'
     @response['status'].should == 200
     @user.running_task.should be_nil
   end
 
   it 'should deny stopping not running task' do
-    api_get "tasks/#{@task.id}/stop", {token: @user.api_key.access_token}
+    api_get "tasks/#{@task.id}/stop", {token: @user.api_key.token}
     @response['message'].should == 'Task not running'
   end
 

@@ -3,18 +3,9 @@ module Api
 
     class UsersController < ApplicationController
       respond_to :json
-      before_filter :restrict_access, except: [:authenticate]
+      before_filter :restrict_access
 
-      def authenticate
-        if user = User.authenticate(params[:email], params[:password])
-          @api_key = user.api_key
-          render 'authenticate'
-        else
-          render json: {status: 401, message: 'Authentication failed'}
-        end
-      end
-
-      def me
+      def user
         @user = @api_key.user
         render 'show'
       end
