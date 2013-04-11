@@ -2,6 +2,49 @@ require 'spec_helper'
 require 'api/api_helper'
 require 'fakeweb'
 
+# GET /identities
+# 200 OK
+# { pivotal_tracker: [
+#   { id: 1, api_key: 'asdf1234' }
+#   { id: 3, api_key: 'asdf123a' }
+# ],
+#   github: [
+#   { id: 2, api_key: 'asdf323423' }
+# ]}
+#
+# or
+# 401 Unauthorized
+# { message: "Invalid API Key' }
+
+# Adding identities
+# POST /identities/pivotal_tracker
+# params: identity[api_key] = 'asdfasdf343434'
+# OR:
+# params: identity[email] = 'a@b.com', identity[password] = 'asdfasdf'
+# - if identity was created:
+#   200 OK
+#   { id: 4, api_key: 'asdfasdfasdf4444' }
+# - if identity was not created:
+#   422 Unprocessable entity
+#   { api_key: 'asdfasdfasdf32323', errors: { api_key: ['Is invalid'] } }
+#   or
+#   { email: 'a@b.com', password: "asdf', errors: { password: ['does not match email'] } }
+# - if unauthorized
+#   401 Unauthorized
+#   { message: "Invalid API Key' }
+
+# Deleting identities
+# DELETE /identities/:id
+# - if deletion completed (my identity)
+#   200 OK
+#   { id: 4, api_key: 'asdfasdfasdf4444' }
+# - if deletion failed (not my identity or identity does not exist)
+#   404 Not Found
+#   { message: 'Resource not found' }
+# - if unauthorized
+#   401 Unauthorized
+#   { message: "Invalid API Key' }
+
 describe 'Identities API' do
   before :all do
     FakeWeb.register_uri(:get, 'https://correct_email:correct_password@www.pivotaltracker.com/services/v4/me',
