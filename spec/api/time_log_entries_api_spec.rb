@@ -4,10 +4,14 @@ require 'api/api_helper'
 describe 'TimeLogEntry API' do
 
   before :each do
-    @user = FactoryGirl.create :user
-    @task = FactoryGirl.create :task
+    project = FactoryGirl.create :project
+    identity = FactoryGirl.create :identity
+    project.identities << identity
+    @user = identity.user
+    @task = FactoryGirl.create :task, project: project
   end
 
+  # POST /time_log_entries
   it 'should create new time log entry and start when no extra (time) params were provided' do
     json = api_post "time_log_entries/", {token: @user.api_key.token, time_log_entry: {task_id: @task.id} }
 
@@ -18,6 +22,7 @@ describe 'TimeLogEntry API' do
     TimeLogEntry.last.started_at.should <= Time.zone.now
   end
 
+  # POST /time_log_entries
   it 'should allow logging past time' do
     json = api_post "time_log_entries/", {token: @user.api_key.token,
            time_log_entry: {task_id: @task.id, started_at: '2000-01-01 01:00:00', stopped_at: '2000-01-01 02:00:00'} }
@@ -27,6 +32,17 @@ describe 'TimeLogEntry API' do
     TimeLogEntry.count.should == 1
   end
 
+  # POST /time_log_entries
+  it 'should deny logging time in task for project not belonging/added to user' do
+    new_user = FactoryGirl.create :user
+    json = api_post "time_log_entries/", {token: new_user.api_key.token, time_log_entry: {task_id: @task.id} }
+
+    response.status.should == 404
+    json.has_key?('time_log_entry').should == false
+    TimeLogEntry.count.should == 0
+  end
+
+  # PUT /time_log_entries/:id
   it 'should allow ammending existing entries' do
     entry = FactoryGirl.create :time_log_entry
     old_stopped_at = entry.stopped_at
@@ -40,6 +56,7 @@ describe 'TimeLogEntry API' do
     entry.stopped_at.to_s.should == new_stopped_at.to_s
   end
 
+  # DELETE /time_log_entries/:id
   it 'should allow removing log entry and return it' do
     entry = FactoryGirl.create :time_log_entry
     -> {
@@ -51,6 +68,7 @@ describe 'TimeLogEntry API' do
     TimeLogEntry.count.should == 0
   end
 
+  # DELETE /time_log_entries/:id
   it 'should deny removing other user\'s log entry' do
     other_user = FactoryGirl.create :user
     other_entry = FactoryGirl.create :time_log_entry, user: other_user
@@ -65,6 +83,7 @@ describe 'TimeLogEntry API' do
     TimeLogEntry.count.should == 1
   end
 
+  # GET /time_log_entries/stop
   it 'should stop any time log entry and return stopped one' do
     entry = TimeLogEntry.new user: @user, task: @task
     entry.start

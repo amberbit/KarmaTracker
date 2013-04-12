@@ -19,6 +19,7 @@ describe 'User API' do
     @user = FactoryGirl.create :user
   end
 
+  # GET /api/v1/user
   it 'should allow API access when providing valid token' do
     json = api_get 'user', {token: @user.api_key.token}
 
@@ -27,6 +28,7 @@ describe 'User API' do
     json['user']['email'].should == @user.email
   end
 
+  # GET /api/v1/user
   it 'should deny API access when providing invalid token' do
     json = api_get 'user/', {token: 'invalid token'}
 
@@ -34,6 +36,7 @@ describe 'User API' do
     json['message'].should == 'Invalid API Token'
   end
 
+  # GET /api/v1/user
   it 'should allow sending API token in HTTP header' do
     get '/api/v1/user/', nil, {"HTTP_AUTHORIZATION" => "Token token=\"#{@user.api_key.token}\""}
     json = JSON.parse(response.body)

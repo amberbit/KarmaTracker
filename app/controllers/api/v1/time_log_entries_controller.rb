@@ -55,7 +55,9 @@ module Api
         new_entry = @current_user.time_log_entries.build
         @time_log_entry = TimeLogEntriesFactory.new(new_entry, params[:time_log_entry]).create_entry
 
-        if @time_log_entry.save
+        if !@time_log_entry.task || !@time_log_entry.task.project.in?(@current_user.projects)
+          render json: {message: 'Resource not found'}, status: 404
+        elsif @time_log_entry.save
           render 'show'
         else
           @errors = @time_log_entry.errors.messages
