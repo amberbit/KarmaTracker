@@ -34,13 +34,11 @@ describe 'TimeLogEntry' do
     tl.errors.full_messages.should include("Stopped at should not be in the future")
   end
 
-  it 'should calculate seconds/stopped_at if valid param is provided' do
-    tl1 = TimeLogEntry.create user: @user, task: @task, started_at: 1.hours.ago, stopped_at: 1.hour.from_now
-    tl1.seconds.should_not be_nil
+  it 'should calculate seconds if stopped_at provided' do
+    tl = TimeLogEntry.create user: @user, task: @task, started_at: 2.hours.ago, stopped_at: 1.hour.ago
 
-    tl2 = TimeLogEntry.create user: @user, task: @task, started_at: 1.hours.ago, seconds: 1
-    tl2.stopped_at.should_not be_nil
-    tl2.stopped_at.should == tl2.started_at + 1.seconds
+    tl.seconds.should_not be_nil
+    tl.seconds.should == 3600
   end
 
 end
