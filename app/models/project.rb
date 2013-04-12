@@ -3,6 +3,7 @@ class Project < ActiveRecord::Base
 
   has_many :participations
   has_many :identities, :through => :participations, :uniq  => true
+  has_many :tasks, dependent: :destroy
 
   validates_uniqueness_of :source_identifier, :scope => :source_name
 

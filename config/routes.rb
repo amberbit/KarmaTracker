@@ -7,14 +7,13 @@ KarmaTracker::Application.routes.draw do
 
       resources :session, only: [:create]
 
-      resources :tasks, only: [] do
-        member do
-          get :start
+      resources :tasks, only: []
+
+      resources :time_log_entries, only: [:create, :update, :destroy] do
+        collection do
           get :stop
         end
       end
-
-      resources :time_log_entries, only: [:create, :update, :destroy]
 
       resources :identities, only: [:index, :show, :destroy] do
         collection do

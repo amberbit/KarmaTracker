@@ -3,11 +3,11 @@ class User < ActiveRecord::Base
 
   attr_accessible :email, :password
 
-  has_one :api_key, :dependent => :destroy
+  has_one :api_key, dependent: :destroy
   has_many :time_log_entries, dependent: :destroy
   has_many :identities
 
-  validates :email, :presence  => true
+  validates :email, presence: true, uniqueness: true
 
   after_create :create_api_key
 

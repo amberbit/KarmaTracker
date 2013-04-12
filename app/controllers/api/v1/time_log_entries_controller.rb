@@ -6,15 +6,15 @@ module Api
       before_filter :restrict_access
 
       ##
-      # Create new time log entry for given task.
+      # Create new time log entry for given task. If no timerange is provided, it will create & start new time log entry.
       #
       # POST /api/v1/time_log_entries
       #
       # params:
       #   token - KarmaTracker API token
       #   time_log_entry[task_id] - ID of the task to which time should be added to
-      #   time_log_entry[started_at] - start datetime of time period
-      #   time_log_entry[stopped_at] - end datetime of time period
+      #   time_log_entry[started_at] - start datetime of time period (optional)
+      #   time_log_entry[stopped_at] - end datetime of time period (optional)
       #
       # = Examples
       #
@@ -28,6 +28,16 @@ module Api
       #   resp.body
       #   =>{"time_log_entry": {"id":1,"task_id":1,"user_id":1,"running":false,"started_at":"2000-01-01T01:00:00Z",
       #                        "stopped_at":"2000-01-01T02:00:00Z","seconds":3600}}"
+      #
+      #   resp = conn.post("/api/v1/time_log_entries",
+      #                   "token" => "dcbb7b36acd4438d07abafb8e28605a4",
+      #                   "time_log_entry" => {"task_id" => 1})
+      #   resp.status
+      #   => 200
+      #
+      #   resp.body
+      #   => "{"time_log_entry": {"id":11,"task_id":1,"user_id":1,"running":true,
+      #                           "started_at":"2013-04-12T13:09:05Z","stopped_at":null,"seconds":0}}"
       #
       #   resp = conn.post("/api/v1/time_log_entries",
       #                   "token" => "dcbb7b36acd4438d07abafb8e28605a4",
@@ -45,7 +55,9 @@ module Api
         new_entry = @current_user.time_log_entries.build
         @time_log_entry = TimeLogEntriesFactory.new(new_entry, params[:time_log_entry]).create_entry
 
-        if @time_log_entry.save
+        if !@time_log_entry.task || !@time_log_entry.task.project.in?(@current_user.projects)
+          render json: {message: 'Resource not found'}, status: 404
+        elsif @time_log_entry.save
           render 'show'
         else
           @errors = @time_log_entry.errors.messages
@@ -86,6 +98,30 @@ module Api
           @errors = @time_log_entry.errors.messages
           render 'show', status: 422
         end
+      end
+
+      ##
+      # Stops any running time log entry.
+      #
+      # GET /api/v1/time_log_entries/stop
+      #
+      # params:
+      #   token - KarmaTracker API token
+      #
+      # = Examples
+      #
+      #   resp = conn.get("/api/v1/time_log_entries",
+      #                   "token" => "dcbb7b36acd4438d07abafb8e28605a4")
+      #   resp.status
+      #   => 200
+      #
+      #   resp.body
+      #   => "{"time_log_entry":{"id":1,"task_id":1,"user_id":1,"running":false,"started_at":"2000-01-02T01:00:00Z",
+      #                          "stopped_at":"2000-01-02T02:00:00Z","seconds":3600}}"
+      #
+      def stop
+        @time_log_entry = TimeLogEntry.stop_all(@current_user.id).first
+        render 'show'
       end
 
       ##
