@@ -1,0 +1,11 @@
+---
+default:
+  projects_refresh_period: 12
+
+development:
+
+test:
+
+staging:
+
+production:
