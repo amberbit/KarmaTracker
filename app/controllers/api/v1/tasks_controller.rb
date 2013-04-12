@@ -7,25 +7,13 @@ module Api
       before_filter :set_task
 
       def start
-        if @current_user.running_task.present?
-          if @current_user.running_task == @task
-            render json: {status: 200, message: 'Task already running'}
-          else
-            render json: {status: 200, message: 'Another task running'}
-          end
-        else
-          @task.start @current_user.id
-          render json: {status: 200, message: 'Task started'}
-        end
+        @task.start(@current_user.id) unless @current_user.running_task.present?
+        render 'show'
       end
 
       def stop
-        if @task.running? @current_user.id
-          @task.stop @current_user
-          render json: {status: 200, message: 'Task stopped'}
-        else
-          render json: {status: 200, message: 'Task not running'}
-        end
+        @task.stop(@current_user)
+        render 'show'
       end
 
       private
