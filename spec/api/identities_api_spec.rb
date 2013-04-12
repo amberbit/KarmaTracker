@@ -1,5 +1,7 @@
 require 'spec_helper'
 require 'api/api_helper'
+require 'torquebox'
+require 'torquebox-no-op'
 require 'fakeweb'
 
 describe 'Identities API' do
@@ -11,6 +13,7 @@ describe 'Identities API' do
 
   # GET /api/v1/identities/:id
   it 'should return identity details' do
+    ProjectsFetcher.any_instance.should_receive(:fetch_for_identity).and_return(nil)
     FactoryGirl.create :identity
     Identity.count.should == 1
 

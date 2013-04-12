@@ -21,7 +21,12 @@ KarmaTracker::Application.routes.draw do
           post :pivotal_tracker
         end
       end
-      resources :projects,   only: [:index, :show]
+      resources :projects, only: [:index, :show] do
+        collection do
+          get :refresh
+          get '/refresh_for_identity/:id' => 'projects#refresh_for_identity'
+        end
+      end
     end
   end
 

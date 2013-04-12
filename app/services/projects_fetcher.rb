@@ -3,6 +3,7 @@ require 'net/https'
 require 'open-uri'
 
 class ProjectsFetcher
+  include TorqueBox::Messaging::Backgroundable
 
   def fetch_all
     User.all.each do |user|
@@ -21,6 +22,7 @@ class ProjectsFetcher
       when 'PivotalTrackerIdentity'
         fetch_from_pivotal_tracker(identity)
     end
+    identity.update_attribute('last_projects_refresh_at', DateTime.now)
   end
 
   private
