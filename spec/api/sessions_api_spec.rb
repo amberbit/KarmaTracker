@@ -1,3 +1,6 @@
+# TODO: change the tests and app code to use /session and not /sessions
+# TODO: remove this comment when done ;)
+
 require 'spec_helper'
 require 'api/api_helper'
 
@@ -24,6 +27,15 @@ describe 'Session API (signing into the system)' do
   it 'should show error message when provided credentaials are invalid' do
     json = api_post 'sessions/', 
                     session: {email: @user.email, password: 'wrong password'}
+
+    response.status.should == 401
+    json.has_key?('user').should be_false
+    json['message'].should == 'Invalid email or password'
+  end
+
+  # POST /api/v1/sessions
+  it 'should not raise application error when no credentials were provided' do
+    json = api_post 'sessions/'
 
     response.status.should == 401
     json.has_key?('user').should be_false
