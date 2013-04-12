@@ -4,6 +4,6 @@ child(@identities.select{|i| i.type == "PivotalTrackerIdentity"} => 'pivotal_tra
   extends 'api/v1/identities/show', locals: {header: false}
 end
 
-child(@identities.select{|i| i.type == "GitHubIdentity"} => 'github') do
+child(@identities.select{|i| i.type == "GitHubIdentity"} => 'git_hub') do
   extends 'api/v1/identities/show', locals: {header: false}
 end
