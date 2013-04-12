@@ -1,0 +1,16 @@
+development:
+  adapter: jdbcpostgresql
+  encoding: unicode
+  database: karmatracker_development
+  pool: 5
+  username:
+  password:
+
+test:
+  adapter: jdbcpostgresql
+  encoding: unicode
+  database: karmatracker_test
+  pool: 5
+  username:
+  password:
+
