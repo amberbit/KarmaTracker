@@ -1,9 +1,7 @@
 FactoryGirl.define do
   factory :project do
     sequence(:name) {|i| "Sample project nr #{i}"}
-    source_name 'PT'
+    source_name 'Pivotal Tracker'
     sequence(:source_identifier) {|i| i}
-
-    identities { [ Identity.last || create(:identity) ] }
   end
 end

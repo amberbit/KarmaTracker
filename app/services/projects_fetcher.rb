@@ -29,19 +29,23 @@ class ProjectsFetcher
     uri = "https://www.pivotaltracker.com/services/v4/projects"
     doc = Nokogiri::XML(open(uri, 'X-TrackerToken' => identity.api_key))
 
-    projects = doc.xpath('//project').each do |project|
-      details = {
-        name: project.xpath('./name').first.content,
-        source_identifier: project.xpath('./id').first.content
-      }
+    projects = doc.xpath('//project').each do |data|
+      name = data.xpath('./name').first.content
+      source_identifier = data.xpath('./id').first.content
 
-      unless project_already_exists?('PT', details[:source_identifier])
-        Project.create(details.merge({source_name: 'PT'}))
-      end
+      project = Project.where("source_name = 'Pivotal Tracker' AND source_identifier = ?", source_identifier).
+        first_or_initialize(source_name: 'Pivotal Tracker', source_identifier: source_identifier)
+      project.name = name
+      project.save
+
+      fetch_identities_for_project project, data
     end
   end
 
-  def project_already_exists?(source_id, source_name)
-    Project.where('source_name = ? AND source_identifier = ?', source_name, source_id).count > 0
+  def fetch_identities_for_project(project, data)
+    data.xpath('./memberships/membership/id').each do |pt_id|
+      identity = PivotalTrackerIdentity.find_by_source_id(pt_id.content)
+      project.identities << identity if identity.present?
+    end
   end
 end

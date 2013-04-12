@@ -24,4 +24,12 @@ describe 'ProjectsFetcher' do
     @fetcher.fetch_for_identity(identity2)
     Project.count.should == 2
   end
+
+  it 'should create associations between project and its members\' identities' do
+    identity = FactoryGirl.create :identity, source_id: 1006
+
+    @fetcher.fetch_for_identity(identity)
+    identity.projects.count.should == 1
+    Project.first.identities.count.should == 1
+  end
 end
