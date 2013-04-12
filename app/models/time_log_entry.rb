@@ -8,8 +8,10 @@ class TimeLogEntry < ActiveRecord::Base
   validates :seconds, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validates :started_at, presence: true
   validates :user, presence: true
+  validates :task, presence: true, on: :create
   validate :time_order, if: "stopped_at.present?"
   validate :time_overlapping
+  validate :time_in_future
 
   before_save :calculate_logged_seconds, if: "stopped_at.present?"
 
@@ -53,6 +55,16 @@ class TimeLogEntry < ActiveRecord::Base
 
     if started_at.present? && stopped_at.present? && scope.within_timerange(started_at, stopped_at).present?
       errors.add :stopped_at, 'should not overlap other time log entries'
+    end
+  end
+
+  def time_in_future
+    if started_at.present? && started_at > Time.zone.now
+      errors.add :started_at, 'should not be in the future'
+    end
+
+    if stopped_at.present? && stopped_at > Time.zone.now
+      errors.add :stopped_at, 'should not be in the future'
     end
   end
 

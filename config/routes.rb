@@ -3,7 +3,7 @@ KarmaTracker::Application.routes.draw do
   namespace :api, defaults: {format: 'json'} do
     namespace :v1 do
 
-      match '/user' => 'users#user'
+      get '/user' => 'users#user'
 
       resources :sessions, only: [:create]
 
@@ -13,6 +13,8 @@ KarmaTracker::Application.routes.draw do
           get :stop
         end
       end
+
+      resources :time_log_entries, only: [:create, :update]
 
       resources :identities, only: [:index, :show, :destroy] do
         collection do
