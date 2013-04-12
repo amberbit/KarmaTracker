@@ -14,7 +14,7 @@ KarmaTracker::Application.routes.draw do
         end
       end
 
-      resources :time_log_entries, only: [:create, :update]
+      resources :time_log_entries, only: [:create, :update, :destroy]
 
       resources :identities, only: [:index, :show, :destroy] do
         collection do

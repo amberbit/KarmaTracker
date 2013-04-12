@@ -10,11 +10,48 @@ describe 'TimeLogEntry API' do
 
   it 'should allow logging past time' do
     json = api_post "time_log_entries/", {token: @user.api_key.token,
-           time_log_entry: {task_id: @task.id, started_at: 2.hours.ago, stopped_at: 1.hours.ago} }
+           time_log_entry: {task_id: @task.id, started_at: '2000-01-01 01:00:00', stopped_at: '2000-01-01 02:00:00'} }
 
     response.status.should == 200
     json.has_key?('time_log_entry').should be_true
+    json['time_log_entry']['seconds'].should == 3600
 
+    TimeLogEntry.count.should == 1
+  end
+
+  it 'should allow ammending existing entries' do
+    entry = FactoryGirl.create :time_log_entry
+    json = api_put "time_log_entries/#{entry.id}", {token: @user.api_key.token,
+           time_log_entry: {seconds: 60} }
+
+    json.has_key?('time_log_entry').should be_true
+    json['time_log_entry']['seconds'].should == 60
+    entry.reload
+    entry.stopped_at.should == entry.started_at + 60
+  end
+
+  it 'should allow removing log entry and return it' do
+    entry = FactoryGirl.create :time_log_entry
+    -> {
+      @json = api_delete "time_log_entries/#{entry.id}", {token: @user.api_key.token}
+    }.should change(TimeLogEntry, :count).by(-1)
+
+    response.status.should == 200
+    @json.has_key?('time_log_entry').should be_true
+    TimeLogEntry.count.should == 0
+  end
+
+  it 'should deny removing other user\'s log entry' do
+    other_user = FactoryGirl.create :user
+    other_entry = FactoryGirl.create :time_log_entry, user: other_user
+
+    -> {
+      @json = api_delete "time_log_entries/#{other_entry.id}", {token: @user.api_key.token}
+    }.should change(TimeLogEntry, :count).by(0)
+
+    response.status.should == 404
+    @json.has_key?('time_log_entry').should be_false
+    @json['message'].should == 'Resource not found'
     TimeLogEntry.count.should == 1
   end
 

@@ -13,7 +13,7 @@ class TimeLogEntry < ActiveRecord::Base
   validate :time_overlapping
   validate :time_in_future
 
-  before_save :calculate_logged_seconds, if: "stopped_at.present?"
+  before_save :calculate_logged_time
 
   scope :from_timestamp, lambda { |timestamp|
     where("(?::timestamp with time zone) BETWEEN started_at AND stopped_at", timestamp)
@@ -33,8 +33,10 @@ class TimeLogEntry < ActiveRecord::Base
 
   private
 
-  def calculate_logged_seconds
-    if started_at_changed? || stopped_at_changed?
+  def calculate_logged_time
+    if seconds.present? && seconds_changed?
+      self.stopped_at = started_at + seconds
+    elsif stopped_at.present? && stopped_at_changed?
       self.seconds = (stopped_at - started_at).to_i
     end
   end

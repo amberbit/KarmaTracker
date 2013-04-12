@@ -1,6 +1,7 @@
 FactoryGirl.define do
   factory :time_log_entry do
     user { User.last || FactoryGirl.create(:user) }
+    task { Task.last || FactoryGirl.create(:task) }
     started_at { 2.hours.ago }
     stopped_at { 1.hours.ago }
     seconds 3600

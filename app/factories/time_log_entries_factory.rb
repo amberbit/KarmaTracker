@@ -2,8 +2,8 @@ class TimeLogEntriesFactory
 
   VALID_ATTRIBUTES = %w[task_id started_at stopped_at seconds]
 
-  def initialize(user, options)
-    @user = user
+  def initialize(entry, options)
+    @entry = entry
     @options = options
   end
 
@@ -12,7 +12,8 @@ class TimeLogEntriesFactory
       key.to_s.in?(VALID_ATTRIBUTES)
     end
 
-    @user.time_log_entries.build(attrs)
+    @entry.assign_attributes(attrs)
+    @entry
   end
 
 end
