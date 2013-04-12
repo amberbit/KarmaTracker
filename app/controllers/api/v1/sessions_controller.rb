@@ -3,6 +3,35 @@ module Api
     class SessionsController < ApplicationController
       respond_to :json
 
+      ##
+      # Authenticates user and returns user object with API Token.
+      #
+      # POST /api/v1/sessions
+      #
+      # params:
+      #   session[email] - user email
+      #   session[password] - user password
+      #
+      # = Examples
+      #
+      #   resp = conn.post("/api/v1/sessions",
+      #                    "session[email]" => 'a@b.com',
+      #                    "session[password]" => "asdf1234")
+      #   resp.status
+      #   => 200
+      #
+      #   resp.body
+      #   => {"user":{"id":1,"email":"a@b.com","token":"644cef349e7b80d3e7151c980dccf2ec"}}
+      #
+      #   resp = conn.post("/api/v1/sessions",
+      #                    "session[email]" => 'a@b.com',
+      #                    "session[password]" => "invalid")
+      #   resp.status
+      #   => 401
+      #
+      #   resp.body
+      #   => {"message": "Invalid email or password"}
+      #
       def create
         if @user = User.authenticate(params[:session])
           @api_key = @user.api_key
