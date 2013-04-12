@@ -9,7 +9,7 @@ KarmaTracker::Application.routes.draw do
 
       resources :tasks, only: []
 
-      resources :time_log_entries, only: [:create, :update, :destroy] do
+      resources :time_log_entries, only: [:index, :create, :update, :destroy] do
         collection do
           get :stop
         end

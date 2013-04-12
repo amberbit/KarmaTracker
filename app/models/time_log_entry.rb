@@ -23,9 +23,22 @@ class TimeLogEntry < ActiveRecord::Base
     where("(?::timestamp with time zone, ?::timestamp with time zone) OVERLAPS (started_at, stopped_at)", start, stop)
   }
 
+  scope :after_timestamp, lambda { |timestamp|
+    where("started_at >= (?::timestamp with time zone)", timestamp)
+  }
+
+  scope :before_timestamp, lambda { |timestamp|
+    where("stopped_at <= (?::timestamp with time zone)", timestamp)
+  }
+
+  scope :from_project, lambda { |project_id|
+    joins(:task).where('tasks.project_id = ?', project_id)
+  }
+
   def start
     self.running = true
     self.started_at = Time.zone.now
+    self
   end
 
   def self.stop_all user_id

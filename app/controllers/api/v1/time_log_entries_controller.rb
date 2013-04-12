@@ -1,9 +1,60 @@
 module Api
   module V1
-
     class TimeLogEntriesController < ApplicationController
       respond_to :json
       before_filter :restrict_access
+
+      ##
+      # Get list of time log entries for particular user
+      #
+      # GET /api/v1/time_log_entries
+      #
+      # params:
+      #   token - KarmaTracker API token
+      #   project_id - ID of the project to filter results (optional)
+      #   started_at - start datetime of timerange to filter time_log_entry period (optional)
+      #   stopped_at - end datetime of timerange to filter time_log_entry period (optional)
+      #
+      # = Examples
+      #
+      #   resp = conn.get("/api/v1/time_log_entries",
+      #                   "token" => "dcbb7b36acd4438d07abafb8e28605a4")
+      #
+      #   resp.status
+      #   => 200
+      #   resp.body
+      #
+      #    => {"time_log_entries"=>
+      #         [{"time_log_entry"=>
+      #             {"id"=>274, "task_id"=>231, "user_id"=>410, "running"=>false, "started_at"=>"2012-01-12T14:49:15Z",
+      #             "stopped_at"=>"2013-04-12T14:50:15Z", "seconds"=>60}},
+      #           {"time_log_entry"=>
+      #             {"id"=>277, "task_id"=>231, "user_id"=>410, "running"=>true, "started_at"=>"2013-04-12T15:49:15Z",
+      #             "stopped_at"=>nil, "seconds"=>0}}]}
+      #
+      #   resp = conn.get("/api/v1/time_log_entries",
+      #                   "token" => "dcbb7b36acd4438d07abafb8e28605a4",
+      #                   "started_at" => "2013-01-01 00:00:00")
+      #
+      #   resp.status
+      #   => 200
+      #
+      #   resp.body
+      #
+      #    => {"time_log_entries"=>
+      #         [{"time_log_entry"=>
+      #             {"id"=>277, "task_id"=>231, "user_id"=>410, "running"=>true, "started_at"=>"2013-04-12T15:49:15Z",
+      #             "stopped_at"=>nil, "seconds"=>0}}]}
+      #
+      def index
+        scope = @current_user.time_log_entries
+        scope = scope.from_project(params[:project_id]) if params[:project_id].present?
+        scope = scope.after_timestamp(params[:started_at]) if params[:started_at].present?
+        scope = scope.before_timestamp(params[:stopped_at]) if params[:stopped_at].present?
+
+        @time_log_entries = scope
+        render 'index'
+      end
 
       ##
       # Create new time log entry for given task. If no timerange is provided, it will create & start new time log entry.

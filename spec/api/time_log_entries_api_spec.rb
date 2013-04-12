@@ -97,4 +97,45 @@ describe 'TimeLogEntry API' do
     json['time_log_entry']['running'].should == false
   end
 
+  # GET /time_log_entries
+  it 'should return list of all time log entries for current user' do
+    (1..3).each do |i|
+      FactoryGirl.create :time_log_entry, user: @user, started_at: i.hours.ago, stopped_at: (i.hours.ago + 1.minute)
+    end
+    TimeLogEntry.new(user: @user, task: @task).start.save!
+
+    json = api_get "time_log_entries/", {token: @user.api_key.token }
+    response.status.should == 200
+    json['time_log_entries'].count.should == 4
+    json['time_log_entries'].select{|tl| tl['time_log_entry']['running'] == true}.count.should == 1
+  end
+
+  # GET /time_log_entries
+  it 'should filter list of time log entries by project_id' do
+    FactoryGirl.create :time_log_entry, user: @user, started_at: 10.hours.ago, stopped_at: 9.hours.ago
+    other_project = FactoryGirl.create :project
+    other_project.identities << @user.identities.first
+    other_task = FactoryGirl.create :task, project: other_project
+    FactoryGirl.create :time_log_entry, user: @user, task: other_task
+
+    @user.projects.count.should == 2
+    @user.time_log_entries.count.should == 2
+
+    json = api_get "time_log_entries/", { token: @user.api_key.token, project_id: other_project.id }
+    response.status.should == 200
+    json['time_log_entries'].count.should == 1
+    json['time_log_entries'].first['time_log_entry']['task_id'].should == other_task.id
+  end
+
+  # GET /time_log_entries
+  it 'should filter list of time log entries by start and stop time' do
+    (1..5).each do |i|
+      FactoryGirl.create :time_log_entry, user: @user, started_at: i.days.ago, stopped_at: (i.days.ago + 1.hour)
+    end
+    @user.time_log_entries.count.should == 5
+
+    json = api_get "time_log_entries/", { token: @user.api_key.token, started_at: 10.days.ago, stopped_at: 3.days.ago }
+    json['time_log_entries'].count.should == 3
+  end
+
 end
