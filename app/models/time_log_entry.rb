@@ -34,10 +34,8 @@ class TimeLogEntry < ActiveRecord::Base
   private
 
   def calculate_logged_time
-    if seconds.present? && seconds_changed?
-      self.stopped_at = started_at + seconds
-    elsif stopped_at.present? && stopped_at_changed?
-      self.seconds = (stopped_at - started_at).to_i
+    if stopped_at.present?
+       self.seconds = (stopped_at - started_at).to_i
     end
   end
 

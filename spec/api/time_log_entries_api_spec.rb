@@ -21,13 +21,15 @@ describe 'TimeLogEntry API' do
 
   it 'should allow ammending existing entries' do
     entry = FactoryGirl.create :time_log_entry
+    old_stopped_at = entry.stopped_at
+    new_stopped_at = Time.zone.now
     json = api_put "time_log_entries/#{entry.id}", {token: @user.api_key.token,
-           time_log_entry: {seconds: 60} }
+           time_log_entry: {stopped_at: new_stopped_at} }
 
     json.has_key?('time_log_entry').should be_true
-    json['time_log_entry']['seconds'].should == 60
     entry.reload
-    entry.stopped_at.should == entry.started_at + 60
+    entry.stopped_at.to_s.should_not == old_stopped_at.to_s
+    entry.stopped_at.to_s.should == new_stopped_at.to_s
   end
 
   it 'should allow removing log entry and return it' do
