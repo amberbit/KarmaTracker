@@ -29,7 +29,7 @@ describe PivotalTrackerIdentity do
     PivotalTrackerIdentity.count.should == 0
   end
 
-  it 'should save identity if correct credentials  were provided' do
+  it 'should save identity if correct credentials were provided' do
     PivotalTrackerIdentity.count.should == 0
     pi = PivotalTrackerIdentity.new
     pi.email = 'correct_email'

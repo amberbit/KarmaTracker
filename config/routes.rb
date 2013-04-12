@@ -21,6 +21,7 @@ KarmaTracker::Application.routes.draw do
           post :pivotal_tracker
         end
       end
+      resources :projects,   only: [:index, :show]
     end
   end
 

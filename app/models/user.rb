@@ -3,11 +3,11 @@ class User < ActiveRecord::Base
 
   attr_accessible :email, :password
 
-  has_one :api_key, dependent: :destroy
+  has_one :api_key, :dependent => :destroy
   has_many :time_log_entries, dependent: :destroy
   has_many :identities
 
-  validates :email, presence: true, uniqueness: true
+  validates :email, :presence  => true
 
   after_create :create_api_key
 
@@ -20,10 +20,15 @@ class User < ActiveRecord::Base
     time_log_entries.where(running: true).first.try(:task)
   end
 
+  def projects
+    Project.joins('INNER JOIN participations p ON projects.id = p.project_id').
+      where('p.identity_id IN(?)', identities.map(&:id)).uniq
+  end
+
   private
 
   def create_api_key
-    ApiKey.create user: self
+    ApiKey.create :user => self
   end
 
 end
