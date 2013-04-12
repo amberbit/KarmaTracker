@@ -5,7 +5,7 @@ KarmaTracker::Application.routes.draw do
 
       get '/user' => 'users#user'
 
-      resources :sessions, only: [:create]
+      resources :session, only: [:create]
 
       resources :tasks, only: [] do
         member do

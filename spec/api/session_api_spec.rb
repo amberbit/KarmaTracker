@@ -1,6 +1,3 @@
-# TODO: change the tests and app code to use /session and not /sessions
-# TODO: remove this comment when done ;)
-
 require 'spec_helper'
 require 'api/api_helper'
 
@@ -13,9 +10,9 @@ describe 'Session API (signing into the system)' do
     @user = FactoryGirl.create :user
   end
 
-  # POST /api/v1/sessions
+  # POST /api/v1/session
   it 'should return user with API Token when providing correct credentials' do
-    json = api_post "sessions/",
+    json = api_post "session/",
                     session: {email: @user.email, password: 'secret'}
 
     response.status.should == 200
@@ -23,9 +20,9 @@ describe 'Session API (signing into the system)' do
     json['user']['token'].should == @user.api_key.token
   end
 
-  # POST /api/v1/sessions
+  # POST /api/v1/session
   it 'should show error message when provided credentaials are invalid' do
-    json = api_post 'sessions/', 
+    json = api_post 'session/',
                     session: {email: @user.email, password: 'wrong password'}
 
     response.status.should == 401
@@ -33,13 +30,12 @@ describe 'Session API (signing into the system)' do
     json['message'].should == 'Invalid email or password'
   end
 
-  # POST /api/v1/sessions
+  # POST /api/v1/session
   it 'should not raise application error when no credentials were provided' do
-    json = api_post 'sessions/'
+    json = api_post 'session/'
 
     response.status.should == 401
     json.has_key?('user').should be_false
     json['message'].should == 'Invalid email or password'
   end
 end
-
