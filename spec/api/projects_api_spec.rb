@@ -13,14 +13,14 @@ describe 'Projects API' do
 
   # GET /projects
   it 'should return an array of user projects' do
-    api_get 'projects', {token: Identity.last.user.api_key.access_token}
+    api_get 'projects', {token: Identity.last.user.api_key.token}
     response.code.should == '200'
     JSON.parse(response.body).count.should == 3
   end
 
   # GET /project/:id
   it 'should return a single project' do
-    api_get "projects/#{Project.last.id}", {token: Identity.last.user.api_key.access_token}
+    api_get "projects/#{Project.last.id}", {token: Identity.last.user.api_key.token}
     response.code.should == '200'
 
     project = JSON.parse(response.body)['project']
@@ -32,7 +32,7 @@ describe 'Projects API' do
 
   it 'should return an error when truing to fetch other user\'s project' do
     user = FactoryGirl.create :user
-    api_get "projects/#{Project.last.id}", {token: user.api_key.access_token}
+    api_get "projects/#{Project.last.id}", {token: user.api_key.token}
     response.code.should == '404'
     response.body.should =~ /Resource not found/
   end

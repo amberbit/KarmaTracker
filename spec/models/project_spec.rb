@@ -4,6 +4,7 @@ describe 'Project' do
 
   before :each do
     @project = FactoryGirl.create :project
+    @project.identities << FactoryGirl.create(:identity)
   end
 
   it 'should not allow one identity to be added to a project twice' do
