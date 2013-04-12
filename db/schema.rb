@@ -27,6 +27,22 @@ ActiveRecord::Schema.define(:version => 20130411091647) do
     t.integer  "user_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.string   "source_id",  :null => false
+  end
+
+  create_table "participations", :force => true do |t|
+    t.integer  "identity_id", :null => false
+    t.integer  "project_id",  :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  create_table "projects", :force => true do |t|
+    t.string   "name",              :null => false
+    t.string   "source_name",       :null => false
+    t.string   "source_identifier", :null => false
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
   end
 
   create_table "tasks", :force => true do |t|

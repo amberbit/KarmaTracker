@@ -31,6 +31,7 @@ class PivotalTrackerIdentity < Identity
     key = doc.xpath('//token/guid').first
     if key.present?
       self.api_key = key.content
+      self.source_id = doc.xpath('//id')
     else
       raise Exception
     end
@@ -43,6 +44,7 @@ class PivotalTrackerIdentity < Identity
     key = doc.xpath('//token/guid').first
     if key.present?
       self.api_key = key.content
+      self.source_id = doc.xpath('//id')
     else
       raise Exception
     end
