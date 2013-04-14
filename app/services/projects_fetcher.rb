@@ -1,5 +1,5 @@
-require 'net/http'
 require 'net/https'
+require 'net/http'
 require 'open-uri'
 
 class ProjectsFetcher
@@ -31,7 +31,7 @@ class ProjectsFetcher
     uri = "https://www.pivotaltracker.com/services/v4/projects"
     doc = Nokogiri::XML(open(uri, 'X-TrackerToken' => identity.api_key))
 
-    projects = doc.xpath('//project').each do |data|
+    doc.xpath('//project').each do |data|
       name = data.xpath('./name').first.content
       source_identifier = data.xpath('./id').first.content
 
@@ -47,7 +47,7 @@ class ProjectsFetcher
   def fetch_identities_for_project(project, data)
     data.xpath('./memberships/membership/id').each do |pt_id|
       identity = PivotalTrackerIdentity.find_by_source_id(pt_id.content)
-      project.identities << identity if identity.present?
+      project.identities << identity if identity.present? && !project.identities.include?(identity)
     end
   end
 end

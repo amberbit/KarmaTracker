@@ -5,7 +5,7 @@ TorqueBox.configure do
 
   job ProjectsRefresher do
     description "Periodically refreshes projects list for each user identity"
-    cron "*/5 * * * * ?"
+    cron "0 0 * * * ?"
   end
 
 end

@@ -44,7 +44,6 @@ describe 'Projects API' do
   # GET /projects/:id
   it 'should return an error when trying to fetch other user\'s project' do
     user = FactoryGirl.create :user
-  #ProjectsFetcher.any_instance.should_receive(:fetch_for_identity).and_return(nil)
     api_get "projects/#{Project.last.id}", {token: user.api_key.token}
     response.status.should == 404
     response.body.should =~ /Resource not found/
@@ -52,9 +51,14 @@ describe 'Projects API' do
 
   # GET /Projects/refresh
   it 'should begin refreshing user\'s projects list' do
-    user = FactoryGirl.create :user
-  #ProjectsFetcher.any_instance.should_receive(:fetch_for_identity).and_return(nil)
-    api_get "projects/refresh", {token: user.api_key.token}
+    Project.count.should == 5
+
+    FakeWeb.register_uri(:get, 'https://www.pivotaltracker.com/services/v4/projects',
+      :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'projects2.xml')),
+      :status => ['200', 'OK'])
+    api_get "projects/refresh", {token: ApiKey.last.token}
     response.status.should == 200
+
+    Project.count.should == 6
   end
 end
