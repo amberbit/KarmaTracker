@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130412142331) do
+ActiveRecord::Schema.define(:version => 20130414195224) do
 
   create_table "api_keys", :force => true do |t|
     t.string   "token",      :null => false
@@ -45,6 +45,8 @@ ActiveRecord::Schema.define(:version => 20130412142331) do
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
   end
+
+  add_index "projects", ["source_name", "source_identifier"], :name => "index_projects_on_source_name_and_source_identifier", :unique => true
 
   create_table "tasks", :force => true do |t|
     t.datetime "created_at", :null => false

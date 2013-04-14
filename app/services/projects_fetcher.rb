@@ -47,7 +47,7 @@ class ProjectsFetcher
   def fetch_identities_for_project(project, data)
     data.xpath('./memberships/membership/id').each do |pt_id|
       identity = PivotalTrackerIdentity.find_by_source_id(pt_id.content)
-      project.identities << identity if identity.present?
+      project.identities << identity if identity.present? && !project.identities.include?(identity)
     end
   end
 end
