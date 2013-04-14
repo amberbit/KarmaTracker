@@ -6,14 +6,6 @@ require 'fakeweb'
 
 describe 'Projects API' do
 
-  before :all do
-    FakeWeb.allow_net_connect = false
-
-    FakeWeb.register_uri(:get, 'https://www.pivotaltracker.com/services/v4/projects',
-      :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'projects.xml')),
-      :status => ['200', 'OK'])
-  end
-
   before :each do
     FactoryGirl.create :identity
     3.times do

@@ -1,13 +1,10 @@
 require 'spec_helper'
-require 'fakeweb'
+require "torquebox"
+require "torquebox-no-op"
 
 describe 'ProjectsFetcher' do
 
   before :all do
-    FakeWeb.register_uri(:get, 'https://www.pivotaltracker.com/services/v4/projects',
-      :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'projects.xml')),
-      :status => ['200', 'OK'])
-
     @fetcher = ProjectsFetcher.new
   end
 
@@ -31,5 +28,13 @@ describe 'ProjectsFetcher' do
     @fetcher.fetch_for_identity(identity)
     identity.projects.count.should == 1
     Project.first.identities.count.should == 1
+  end
+
+  it 'should fetch tasks when fetching projects' do
+    identity = FactoryGirl.create :identity
+    @fetcher.fetch_for_identity(identity)
+
+    Task.count.should == 2
+    Project.last.tasks.count.should == 2
   end
 end
