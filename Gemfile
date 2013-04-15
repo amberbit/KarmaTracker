@@ -18,6 +18,7 @@ gem 'nori'
 gem 'bcrypt-ruby', '~> 3.0.0', require: 'bcrypt'
 
 gem 'amberbit-config'
+gem 'coffee-rails'
 
 group :test do
   gem 'rspec-rails', git: 'https://github.com/rspec/rspec-rails.git', ref: 'ee3f224c61cac7d4de919a23945418fd07ada7c6'
@@ -32,3 +33,10 @@ end
 group :development, :test do
   gem 'pry'
 end
+
+group :assets do
+  gem 'sass-rails',   '~> 3.2.3'
+  gem 'uglifier', '>= 1.0.3'
+  gem 'zurb-foundation', '~> 4.0.0'
+end
+

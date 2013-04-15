@@ -10,4 +10,22 @@
  *
  *= require_self
  *= require_tree .
+ *= require foundation_and_overrides
  */
+
+@import "foundation/foundation-global", "foundation/components/global", "foundation/components/buttons";
+
+.page-header {
+  h1 {
+    margin-bottom: 0;
+  }
+
+}
+
+.top-btn {
+  float: right;
+  margin-top: 0.5em;
+  @extend .button;
+  @extend .small;
+}
+
