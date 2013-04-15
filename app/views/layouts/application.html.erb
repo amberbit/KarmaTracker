@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="KarmaTracker">
 <head>
   <title>KarmaTracker</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
 </head>
-<body>
+<body ng-controller="RootController">
+
+<a ng-show="signed_in" ng-href="#/logout">Log out</a>
 
 <%= yield %>
 

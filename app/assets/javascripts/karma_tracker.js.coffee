@@ -1,11 +1,18 @@
-window.KarmaTracker = angular.module('KarmaTracker', [])
+window.KarmaTracker = angular.module('KarmaTracker', ['ngCookies'])
 
-KarmaTracker.factory('SessionService', ->
-  { token: null }
-)
+KarmaTracker.controller "SessionController", ($scope, $http, $cookies, $location) ->
+  $scope.session = { email: null, password: null }
+  $scope.message = ''
 
-window.SessionController = ($scope, $http, SessionService) ->
-  $scope.session = { email: 'a@b.com', password: 'asdf1234' }
+  $scope.signInSuccess = (token) ->
+    $cookies.token = token
+    $scope.message = 'Logged in, redirecting...'
+    $scope.session.email = $scope.session.password = null
+    window.location = '/'
+
+  $scope.signInFailure = (message) ->
+    $scope.message = message
+    $scope.session.email = $scope.session.password = null
 
   $scope.signIn = ->
     $http.post(
@@ -15,8 +22,34 @@ window.SessionController = ($scope, $http, SessionService) ->
         password: $scope.session.password
       }
     ).success((data, status, headers, config) ->
-      SessionService.token = data.user.token
-      console.debug SessionService.token
+      $scope.signInSuccess(data.user.token)
     ).error((data, status, headers, config) ->
-      alert data.message
+      $scope.signInFailure(data.message)
     )
+
+KarmaTracker.controller "RootController", ($scope, $location, $cookies) ->
+  if typeof($cookies.token) == 'undefined'
+    return if $location.path() == '/login'
+    $location.path '/login'
+  else
+    return if $location.path() == '/logout'
+    $scope.signed_in = true
+    if $location.path() == '/' || $location.path() == ''
+      $location.path '/projects'
+
+KarmaTracker.controller "LogoutController", ($scope, $location, $cookies) ->
+  delete $cookies['token']
+  window.location = '/'
+
+KarmaTracker.config ($routeProvider) ->
+  $routeProvider.when('/',
+    template: 'Loading...'
+  ).when("/login",
+    controller: 'SessionController',
+    templateUrl: '/session.html'
+  ).when('/logout',
+    controller: 'LogoutController',
+    template: 'Logging out...'
+  )
+
+
