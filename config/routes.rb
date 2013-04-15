@@ -2,6 +2,9 @@ KarmaTracker::Application.routes.draw do
 
   namespace :api, defaults: {format: 'json'} do
     namespace :v1 do
+      namespace :admin do
+        resources :users, only: [:index, :show, :create, :update, :destroy]
+      end
 
       get '/user' => 'users#user'
 

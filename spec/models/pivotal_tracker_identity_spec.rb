@@ -1,6 +1,4 @@
 require 'spec_helper'
-require 'torquebox'
-require 'torquebox-no-op'
 
 describe PivotalTrackerIdentity do
 

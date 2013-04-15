@@ -1,7 +1,5 @@
 require 'spec_helper'
 require 'api/api_helper'
-require 'torquebox'
-require 'torquebox-no-op'
 require 'fakeweb'
 
 describe 'Identities API' do

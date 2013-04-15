@@ -13,7 +13,7 @@ describe 'Session API (signing into the system)' do
   # POST /api/v1/session
   it 'should return user with API Token when providing correct credentials' do
     json = api_post "session/",
-                    session: {email: @user.email, password: 'secret'}
+                    session: {email: @user.email, password: 'secret123'}
 
     response.status.should == 200
     json.has_key?('user').should be_true
