@@ -86,10 +86,10 @@ describe 'Identities API' do
     json = api_post "identities/pivotal_tracker", {token: ApiKey.last.token, identity: {name: 'Just an identity',
            email: 'wrong_email', password: 'wrong_password'}}
 
+    response.status.should == 422
     Identity.count.should == 0
     json['identity'].has_key?('errors').should be_true
-    response.status.should == 422
-    response.body.should =~ /provided email\/password combination is invalid/
+    json['identity']['errors']['password'].should == ['provided email/password combination is invalid']
   end
 
   # DELETE /api/v1/identities/:id
@@ -118,18 +118,18 @@ describe 'Identities API' do
     }.should change(Identity, :count).by(0)
 
     response.status.should == 404
-    response.body.should =~ /Resource not found/
     Identity.count.should == 2
+    @json['message'].should == "Resource not found"
   end
 
   # DELETE /api/v1/identities/:id
   it 'should return an error when trying to remove not existing identity', rescue_errors: true do
     user = FactoryGirl.create :user
 
-    api_delete "identities/1", {token: user.api_key.token}
+    json = api_delete "identities/1", {token: user.api_key.token}
 
     response.status.should == 404
-    response.body.should =~ /Resource not found/
+    json['message'].should == "Resource not found"
   end
 
 end

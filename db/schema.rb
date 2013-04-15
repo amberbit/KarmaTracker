@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130414210008) do
+ActiveRecord::Schema.define(:version => 20130415103722) do
 
   create_table "api_keys", :force => true do |t|
     t.string   "token",      :null => false
@@ -30,6 +30,8 @@ ActiveRecord::Schema.define(:version => 20130414210008) do
     t.string   "source_id",                :null => false
     t.datetime "last_projects_refresh_at"
   end
+
+  add_index "identities", ["api_key", "type"], :name => "index_identities_on_api_key_and_type", :unique => true
 
   create_table "participations", :force => true do |t|
     t.integer  "identity_id", :null => false

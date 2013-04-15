@@ -6,15 +6,19 @@ class ProjectsFetcher
   include TorqueBox::Messaging::Backgroundable
 
   def fetch_all
+    Rails.logger.info "Fetching projects for all users"
     User.all.each do |user|
       fetch_for_user(user)
     end
+    Rails.logger.info "Successfully updated list of projects for all users"
   end
 
   def fetch_for_user(user)
+    Rails.logger.info "Fetching projects for PT user #{user.id}"
     user.identities.each do |identity|
       fetch_for_identity(identity)
     end
+    Rails.logger.info "Successfully updated list of projects for user #{user.id}"
   end
 
   def fetch_for_identity(identity)
@@ -28,6 +32,7 @@ class ProjectsFetcher
   private
 
   def fetch_from_pivotal_tracker(identity)
+    Rails.logger.info "Fetching projects for PT identity #{identity.api_key}"
     uri = "https://www.pivotaltracker.com/services/v4/projects"
     doc = Nokogiri::XML(open(uri, 'X-TrackerToken' => identity.api_key))
 
@@ -43,16 +48,29 @@ class ProjectsFetcher
       fetch_identities_for_pt_project project, data
       fetch_tasks_for_pt_project project, identity
     end
+    Rails.logger.info "Successfully updated list of projects for PT identity #{identity.api_key}"
   end
 
   def fetch_identities_for_pt_project(project, data)
+    Rails.logger.info "Fetching identities for PT project #{project.source_identifier}"
+    identities = []
     data.xpath('./memberships/membership/id').each do |pt_id|
       identity = PivotalTrackerIdentity.find_by_source_id(pt_id.content)
-      project.identities << identity if identity.present? && !project.identities.include?(identity)
+      identities << identity if identity.present?
     end
+
+    identities.each do |identity|
+      project.identities << identity unless project.identities.include?(identity)
+    end
+
+    project.identities.each do |identity|
+      project.identities.delete(identity) unless identities.include?(identity)
+    end
+    Rails.logger.info "Successfully updated list of identities for PT project #{project.source_identifier}"
   end
 
   def fetch_tasks_for_pt_project(project, identity)
+    Rails.logger.info "Fetching tasks for PT project #{project.source_identifier}"
     uri = "https://www.pivotaltracker.com/services/v4/projects/#{project.source_identifier}/stories"
     doc = Nokogiri::XML(open(uri, 'X-TrackerToken' => identity.api_key))
 
@@ -70,5 +88,6 @@ class ProjectsFetcher
       task.project = project
       task.save
     end
+    Rails.logger.info "Successfully updated list of tasks for PT project #{project.source_identifier}"
   end
 end
