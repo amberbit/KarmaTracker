@@ -48,18 +48,19 @@ describe 'Identities API' do
 
     json = api_get 'identities', {token: user1.api_key.token}
     response.status.should == 200
+
     json['pivotal_tracker'].count.should == 2
     json['pivotal_tracker'].each do |identity|
-      user1.identities.map(&:id).should include(identity['pivotal_tracker']['id'].to_i)
-      user2.identities.map(&:id).should_not include(identity['pivotal_tracker']['id'].to_i)
+      user1.identities.map(&:id).should include(identity['id'].to_i)
+      user2.identities.map(&:id).should_not include(identity['id'].to_i)
     end
 
     json = api_get 'identities', {token: user2.api_key.token}
     response.status.should == 200
     json['pivotal_tracker'].count.should == 3
     json['pivotal_tracker'].each do |identity|
-      user1.identities.map(&:id).should_not include(identity['pivotal_tracker']['id'].to_i)
-      user2.identities.map(&:id).should include(identity['pivotal_tracker']['id'].to_i)
+      user1.identities.map(&:id).should_not include(identity['id'].to_i)
+      user2.identities.map(&:id).should include(identity['id'].to_i)
     end
   end
 
