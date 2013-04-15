@@ -54,8 +54,9 @@ class ProjectsFetcher
   def fetch_identities_for_pt_project(project, data)
     Rails.logger.info "Fetching identities for PT project #{project.source_identifier}"
     identities = []
-    data.xpath('./memberships/membership/id').each do |pt_id|
-      identity = PivotalTrackerIdentity.find_by_source_id(pt_id.content)
+    data.xpath('./memberships/membership').each do |membership|
+      pt_id = membership.xpath('./member/person/id').first.content
+      identity = PivotalTrackerIdentity.find_by_source_id(pt_id)
       identities << identity if identity.present?
     end
 
