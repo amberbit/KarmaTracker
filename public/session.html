@@ -1,10 +1,14 @@
-<div ng-controller="SessionController">
-  <form ng-submit="signIn()">
-    <div>{{message}}</div>
-    <input type="text" ng-model="session.email" />
-    <br/>
-    <input type="password" ng-model="session.password" />
-    <button>Sign in!</button>
-  </form>
+<div ng-controller="SessionController" class="row">
+  <div class="small-4 columns"></div>
+  <div class="small-4 columns">
+    <form ng-submit="signIn()">
+      <div ng-show="message" data-alert class='alert-box alert'>{{message}}</div>
+      <input type="text" ng-model="session.email" />
+      <br/>
+      <input type="password" ng-model="session.password" />
+      <button>Sign in!</button>
+    </form>
+  </div>
+  <div class="small-4 columns"></div>
 </div>
 
