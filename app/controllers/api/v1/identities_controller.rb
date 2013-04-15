@@ -128,7 +128,8 @@ module Api
       #   => {"identity": {"name": "New identity 3", "email": "mail@example.com", "password": "wrong_password",  "errors": { "password": ["does not match email"] }}}
       #
       def pivotal_tracker
-        @identity = IdentitiesFactory.new(PivotalTrackerIdentity, params[:identity]).create_identity
+        options = (params[:identity] || {}).merge({user_id: @current_user.id})
+        @identity = IdentitiesFactory.new(PivotalTrackerIdentity, options).create_identity
         if @identity.save
           render 'show'
         else
