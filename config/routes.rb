@@ -28,4 +28,5 @@ KarmaTracker::Application.routes.draw do
   match '/404' => 'errors#not_found'
   match '/500' => 'errors#exception'
 
+  root to: 'home#index'
 end
