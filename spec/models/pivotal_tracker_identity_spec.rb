@@ -1,17 +1,8 @@
-require_relative '../spec_helper'
-require 'fakeweb'
+require 'spec_helper'
+require 'torquebox'
+require 'torquebox-no-op'
 
 describe PivotalTrackerIdentity do
-  before :all do
-    FakeWeb.allow_net_connect = false
-
-    FakeWeb.register_uri(:get, 'https://wrong_email:wrong_password@www.pivotaltracker.com/services/v4/me',
-      :body => 'Access Denied', :status => ['401', 'Unauthorized'])
-
-    FakeWeb.register_uri(:get, 'https://correct_email:correct_password@www.pivotaltracker.com/services/v4/me',
-      :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'authorization_success.xml')),
-      :status => ['200', 'OK'])
-  end
 
   it 'should not save identity when no credentials were provided' do
     PivotalTrackerIdentity.count.should == 0

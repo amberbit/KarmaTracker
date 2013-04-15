@@ -4,10 +4,6 @@ require 'fakeweb'
 describe 'IdentitiesFactory' do
 
   before :all do
-    FakeWeb.register_uri(:get, 'https://correct_email:correct_password@www.pivotaltracker.com/services/v4/me',
-      :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'authorization_success.xml')),
-      :status => ['200', 'OK'])
-
     @attrs = {name: 'Test', email: 'correct_email', password: 'correct_password'}
   end
 

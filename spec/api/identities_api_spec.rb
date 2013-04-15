@@ -5,16 +5,6 @@ require 'torquebox-no-op'
 require 'fakeweb'
 
 describe 'Identities API' do
-  before :all do
-    FakeWeb.register_uri(:get, 'https://correct_email:correct_password@www.pivotaltracker.com/services/v4/me',
-      :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'authorization_success.xml')),
-      :status => ['200', 'OK'])
-
-    FakeWeb.register_uri(:get, 'https://www.pivotaltracker.com/services/v4/projects',
-      :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'projects.xml')),
-      :status => ['200', 'OK'])
-  end
-
   # GET /api/v1/identities/:id
   it 'should return identity details' do
     ProjectsFetcher.any_instance.should_receive(:fetch_for_identity).and_return(nil)
