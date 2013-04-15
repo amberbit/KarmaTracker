@@ -52,5 +52,7 @@ describe 'Projects API' do
     response.status.should == 200
 
     Project.count.should == 6
+
+    reset_fakeweb_urls
   end
 end

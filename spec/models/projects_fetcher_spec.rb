@@ -52,9 +52,7 @@ describe 'ProjectsFetcher' do
     identity2.projects.count.should == 1
     Project.first.identities.count.should == 2
 
-    FakeWeb.register_uri(:get, 'https://www.pivotaltracker.com/services/v4/projects',
-      :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'projects.xml')),
-      :status => ['200', 'OK'])
+    reset_fakeweb_urls
 
     @fetcher.fetch_for_identity(identity)
     Identity.count.should == 2
