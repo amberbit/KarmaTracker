@@ -19,13 +19,16 @@
     <last_activity_at type="datetime">2010/01/16 17:39:10 CST</last_activity_at>
     <memberships type="array">
       <membership>
-        <id>1006</id>
-        <person>
-          <email>kirkybaby@earth.ufp</email>
-          <name>James T. Kirk</name>
-          <initials>JTK</initials>
-        </person>
-        <role>Owner</role>
+        <member>
+          <id>1006</id>
+          <person>
+            <id>1006</id>
+            <email>kirkybaby@earth.ufp</email>
+            <name>James T. Kirk</name>
+            <initials>JTK</initials>
+          </person>
+          <role>Owner</role>
+        </member>
       </membership>
     </memberships>
     <integrations type="array">
