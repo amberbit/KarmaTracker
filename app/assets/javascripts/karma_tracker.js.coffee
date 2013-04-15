@@ -1,6 +1,7 @@
 #= require_self
 #= require routes
 #= require sessions
+#= require projects
 
 window.KarmaTracker = angular.module('KarmaTracker', ['ngCookies'])
 

@@ -7,5 +7,8 @@ KarmaTracker.config ($routeProvider) ->
   ).when('/logout',
     controller: 'LogoutController',
     template: 'Logging out...'
+  ).when("/projects",
+    controller: 'ProjectsController',
+    templateUrl: '/projects.html'
   )
 
