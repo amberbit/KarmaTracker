@@ -74,8 +74,8 @@ describe 'Identities API' do
   end
 
   # POST /api/v1/identities/pivotal_tracker
-  it "should be able to add identity" do
-    FactoryGirl.create :user
+  it "should be able to add identity for given user" do
+    user = FactoryGirl.create :user
     json = api_post "identities/pivotal_tracker", {token: ApiKey.last.token, identity:
           { name: 'Just an identity', email: 'correct_email', password: 'correct_password'}}
 
@@ -85,6 +85,8 @@ describe 'Identities API' do
     Identity.count.should == 1
     identity = Identity.last
     identity.name.should == 'Just an identity'
+    identity.user.should == user
+    user.identities.should include(identity)
   end
 
   # POST /api/v1/identities/pivotal_tracker
