@@ -1,6 +1,4 @@
 require 'spec_helper'
-require 'torquebox'
-require 'torquebox-no-op'
 
 describe PivotalTrackerIdentity do
 
@@ -23,6 +21,7 @@ describe PivotalTrackerIdentity do
   it 'should save identity if correct credentials were provided' do
     PivotalTrackerIdentity.count.should == 0
     pi = PivotalTrackerIdentity.new
+    pi.user = FactoryGirl.create :user
     pi.email = 'correct_email'
     pi.password = 'correct_password'
     pi.save

@@ -6,7 +6,7 @@ class PivotalTrackerIdentity < Identity
   attr_accessible :email, :password
   attr_accessor :email, :password
 
-  validate :credentials_correctness
+  validate :credentials_correctness, on: :create
 
   def service_name
     "Pivotal Tracker"
