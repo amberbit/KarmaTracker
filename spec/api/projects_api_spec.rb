@@ -67,7 +67,7 @@ describe 'Projects API' do
     project.tasks << t
     api_get "projects/#{project.id}/tasks", {token: Identity.last.user.api_key.token}
     resp = JSON.parse(response.body)
-    task = resp["tasks"].last
+    task = resp.last["task"]
     task["id"] = t.id
     task["project_id"] = t.project_id
     task["source_name"] = t.source_name
@@ -98,7 +98,7 @@ describe 'Projects API' do
     api_get "projects/#{Project.last.id}/current_tasks", {token: Identity.last.user.api_key.token}
     response.status.should == 200
     resp = JSON.parse(response.body)
-    task = resp["tasks"].last
+    task = resp.last["task"]
     task["id"] = t.id
     task["project_id"] = t.project_id
     task["source_name"] = t.source_name
