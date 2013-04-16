@@ -24,11 +24,10 @@ module Api
       #   => 200
       #   resp.body
       #
-      #    => {"time_log_entries"=>
-      #         [{"id"=>274, "task_id"=>231, "user_id"=>410, "running"=>false, "started_at"=>"2012-01-12T14:49:15Z",
-      #             "stopped_at"=>"2013-04-12T14:50:15Z", "seconds"=>60},
-      #          {"id"=>277, "task_id"=>231, "user_id"=>410, "running"=>true, "started_at"=>"2013-04-12T15:49:15Z",
-      #             "stopped_at"=>nil, "seconds"=>0}]}
+      #    => {[{"time_log_entry": {"id"=>274, "task_id"=>231, "user_id"=>410, "running"=>false, "started_at"=>"2012-01-12T14:49:15Z",
+      #             "stopped_at"=>"2013-04-12T14:50:15Z", "seconds"=>60}},
+      #          {"time_log_entry": {"id"=>277, "task_id"=>231, "user_id"=>410, "running"=>true, "started_at"=>"2013-04-12T15:49:15Z",
+      #             "stopped_at"=>nil, "seconds"=>0}}]}
       #
       #   resp = conn.get("/api/v1/time_log_entries",
       #                   "token" => "dcbb7b36acd4438d07abafb8e28605a4",
@@ -39,9 +38,8 @@ module Api
       #
       #   resp.body
       #
-      #    => {"time_log_entries"=>
-      #         [{"id"=>277, "task_id"=>231, "user_id"=>410, "running"=>true, "started_at"=>"2013-04-12T15:49:15Z",
-      #             "stopped_at"=>nil, "seconds"=>0}]}
+      #    => {[{"time_log_entry": {"id"=>277, "task_id"=>231, "user_id"=>410, "running"=>true, "started_at"=>"2013-04-12T15:49:15Z",
+      #             "stopped_at"=>nil, "seconds"=>0}}]}
       #
       def index
         scope = @current_user.time_log_entries

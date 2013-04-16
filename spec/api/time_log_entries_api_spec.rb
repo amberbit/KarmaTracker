@@ -106,8 +106,8 @@ describe 'TimeLogEntry API' do
 
     json = api_get "time_log_entries/", {token: @user.api_key.token }
     response.status.should == 200
-    json['time_log_entries'].count.should == 4
-    json['time_log_entries'].select{|tl| tl['running'] == true}.count.should == 1
+    json.count.should == 4
+    json.select{|tl| tl['time_log_entry']['running'] == true}.count.should == 1
   end
 
   # GET /time_log_entries
@@ -123,8 +123,8 @@ describe 'TimeLogEntry API' do
 
     json = api_get "time_log_entries/", { token: @user.api_key.token, project_id: other_project.id }
     response.status.should == 200
-    json['time_log_entries'].count.should == 1
-    json['time_log_entries'].first['task_id'].should == other_task.id
+    json.count.should == 1
+    json.first['time_log_entry']['task_id'].should == other_task.id
   end
 
   # GET /time_log_entries
@@ -135,7 +135,7 @@ describe 'TimeLogEntry API' do
     @user.time_log_entries.count.should == 5
 
     json = api_get "time_log_entries/", { token: @user.api_key.token, started_at: 10.days.ago, stopped_at: 3.days.ago }
-    json['time_log_entries'].count.should == 3
+    json.count.should == 3
   end
 
 end
