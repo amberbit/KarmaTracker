@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<iterations type="array">
+  <iteration>
+    <id type="integer">1</id>
+    <number type="integer">1</number>
+    <start type="datetime">2009/03/16 00:00:00 UTC</start>
+    <finish type="datetime">2009/03/23 00:00:00 UTC</finish>
+    <team_strength type="float">0.75</team_strength>
+    <stories type="array">
+      <story>
+        <id type="integer">1</id>
+        <project_id type=\"integer\">1</project_id>
+        <story_type>feature</story_type>
+        <url>$STORY_URL</url>
+        <estimate type="float">2</estimate>
+        <current_state>accepted</current_state>
+        <description>Revenge is a dish best served cold.</description>
+        <name>Beware The Ides of March (and the Klingons)</name>
+        <requested_by>James Kirk</requested_by>
+        <owned_by>Montgomery Scott</owned_by>
+        <created_at type="datetime">2009/03/16 16:55:04 UTC</created_at>
+        <accepted_at type="datetime">2009/03/19 19:00:00 UTC</accepted_at>
+      </story>
+    </stories>
+  </iteration>
+</iterations>
