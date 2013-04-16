@@ -129,7 +129,7 @@ module Api
       #
       def pivotal_tracker
         options = (params[:identity] || {}).merge({user_id: @current_user.id})
-        @identity = IdentitiesFactory.new(PivotalTrackerIdentity.new, options).create_identity
+        @identity = IdentitiesFactory.new(PivotalTrackerIdentity.new, options).create
         if @identity.save
           render 'show'
         else

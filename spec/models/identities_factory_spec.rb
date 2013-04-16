@@ -9,12 +9,12 @@ describe 'IdentitiesFactory' do
 
   it 'should return an identity when correct params were provided' do
     factory = IdentitiesFactory.new(PivotalTrackerIdentity.new, @attrs)
-    identity = factory.create_identity
+    identity = factory.create
     identity.name.should == @attrs[:name]
   end
 
   it 'should return nil when wrong service was provided' do
     factory = IdentitiesFactory.new(Identity.new, @attrs)
-    factory.create_identity.valid?.should be_false
+    factory.create.valid?.should be_false
   end
 end

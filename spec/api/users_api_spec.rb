@@ -45,4 +45,49 @@ describe 'User API' do
     json.has_key?('user').should be_true
   end
 
+  # PUT /api/v1/user
+  it 'should change user\'s email and password' do
+    old_user = @user.dup
+    json = api_put 'user', {token: @user.api_key.token, user: {email: 'new@sample.com', password: 'new password'}}
+
+    response.status.should == 200
+    json.has_key?('user').should be_true
+    json['user']['email'].should == 'new@sample.com'
+
+    api_post "session/", session: {email: old_user.email, password: 'secret123'}
+    response.status.should == 401
+
+    api_post "session/", session: {email: 'new@sample.com', password: 'new password'}
+    response.status.should == 200
+  end
+
+  # DELETE /api/v1/user
+  it 'should completely remove user and all his identities/keys' do
+    FactoryGirl.create :identity
+    User.count.should == 1
+    Identity.count.should == 1
+    ApiKey.count.should == 1
+
+    json = api_delete 'user', {token: @user.api_key.token}
+
+    response.status.should == 200
+    User.count.should == 0
+    Identity.count.should == 0
+    ApiKey.count.should == 0
+  end
+
+  # DELETE /api/v1/user
+  it 'should deny removing user when allow_destroy_user is set to false' do
+    AppConfig.allow_destroy_user = false
+
+    User.count.should == 1
+    json = api_delete 'user', {token: @user.api_key.token}
+
+    response.status.should == 403
+    json['message'].should == 'Forbidden'
+    User.count.should == 1
+
+    AppConfig.allow_destroy_user = true
+  end
+
 end

@@ -69,7 +69,7 @@ describe 'Admin API #Identities' do
 
     user = FactoryGirl.create :user
     attrs = {name: 'PT', email: 'correct_email', password: 'correct_password', user_id: user.id}
-    identity = IdentitiesFactory.new(PivotalTrackerIdentity.new, attrs).create_identity
+    identity = IdentitiesFactory.new(PivotalTrackerIdentity.new, attrs).create
     identity.save
     old_identity = identity.dup
 

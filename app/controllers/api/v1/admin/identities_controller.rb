@@ -119,7 +119,7 @@ module Api
         #                    "last_projects_refresh_at":null,"service":"Pivotal Tracker","errors":{"user":["can't be blank"]}}}"
         #
         def pivotal_tracker
-          @identity = IdentitiesFactory.new(PivotalTrackerIdentity.new, params[:identity]).create_identity
+          @identity = IdentitiesFactory.new(PivotalTrackerIdentity.new, params[:identity]).create
           if @identity.save
             render 'api/v1/identities/show'
           else
@@ -162,7 +162,7 @@ module Api
         #                    "last_projects_refresh_at":null,"service":"Pivotal Tracker"}}"
         #
         def update
-          @identity = IdentitiesFactory.new(@identity, params[:identity]).update_identity
+          @identity = IdentitiesFactory.new(@identity, params[:identity]).update
 
           if @identity.save
             render 'api/v1/identities/show'

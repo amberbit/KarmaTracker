@@ -12,6 +12,7 @@ KarmaTracker::Application.routes.draw do
       end
 
       get '/user' => 'users#user'
+      resource :user, only: [:update, :destroy]
 
       resources :session, only: [:create]
 

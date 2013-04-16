@@ -88,7 +88,7 @@ module Api
         #                    "password":["is too short (minimum is 8 characters)"]}}}"
         #
         def create
-          @user = User.new params[:user]
+          @user = UsersFactory.new(User.new, params[:user]).create
 
           if @user.save
             render 'api/v1/users/show'
@@ -131,7 +131,9 @@ module Api
         #   => "{"message":"Resource not found"}"
         #
         def update
-          if @user.update_attributes params[:user]
+          @user = UsersFactory.new(@user, params[:user]).update
+
+          if @user.save
             render 'api/v1/users/show'
           else
             render 'api/v1/users/show', status: 422
