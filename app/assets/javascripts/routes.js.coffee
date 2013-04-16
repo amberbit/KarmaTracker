@@ -10,5 +10,9 @@ KarmaTracker.config ($routeProvider) ->
   ).when("/projects",
     controller: 'ProjectsController',
     templateUrl: '/projects.html'
+  ).when("/projects/:project_id/tasks",
+    controller: 'TasksController',
+    templateUrl: '/tasks.html'
   )
+
 
