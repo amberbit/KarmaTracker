@@ -1,3 +1,3 @@
-collection @tasks, :root => 'tasks', :object_root => false
+collection @tasks, :root => false
 
 extends 'api/v1/tasks/show'
