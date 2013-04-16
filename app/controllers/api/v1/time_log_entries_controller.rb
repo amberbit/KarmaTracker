@@ -149,14 +149,14 @@ module Api
       ##
       # Stops any running time log entry.
       #
-      # GET /api/v1/time_log_entries/stop
+      # POST /api/v1/time_log_entries/stop
       #
       # params:
       #   token - KarmaTracker API token
       #
       # = Examples
       #
-      #   resp = conn.get("/api/v1/time_log_entries",
+      #   resp = conn.post("/api/v1/time_log_entries",
       #                   "token" => "dcbb7b36acd4438d07abafb8e28605a4")
       #   resp.status
       #   => 200

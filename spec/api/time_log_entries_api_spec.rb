@@ -83,7 +83,7 @@ describe 'TimeLogEntry API' do
     TimeLogEntry.count.should == 1
   end
 
-  # GET /time_log_entries/stop
+  # POST /time_log_entries/stop
   it 'should stop any time log entry and return stopped one' do
     entry = TimeLogEntry.new user: @user, task: @task
     entry.start
@@ -91,7 +91,7 @@ describe 'TimeLogEntry API' do
     entry.reload
     TimeLogEntry.where(running: true).count.should == 1
 
-    json = api_get "time_log_entries/stop", {token: @user.api_key.token }
+    json = api_post "time_log_entries/stop", {token: @user.api_key.token }
     TimeLogEntry.where(running: true).count.should == 0
     json['time_log_entry']['id'].should == entry.id
     json['time_log_entry']['running'].should == false
