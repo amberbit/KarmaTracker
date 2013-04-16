@@ -138,6 +138,50 @@ module Api
       end
 
       ##
+      # creates new GitHub identity
+      #
+      # POST /api/v1/identities/git_hub
+      #
+      # params:
+      #   identity[name] - identity name
+      #   identity[username] - username assigned to GH account
+      #   identity[password] - password assigned to GH account
+      #
+      # = Examples
+      #
+      #   resp = conn.post("/api/v1/identities/git_hub"
+      #                    "identity[name]" => "New identity",
+      #                    "identity[username]" => "R2D2"
+      #                    "identity[password]" => "fdsjfsho7h23orfesk")
+      #
+      #   resp.status
+      #   => 200
+      #
+      #   resp.body
+      #   => {"identity": {"id": 9, "name": "New identity", "api_key": "sdasdf32rfefs32", "service": "GitHub"}}
+      #
+      #   resp = conn.post("/api/v1/identities/pivotal_tracker"
+      #                    "identity[name]" => "New identity 2",
+      #                    "identity[username]" => "R2D2"
+      #                    "identity[password]" => "wrond password")
+      #
+      #   resp.status
+      #   => 422
+      #
+      #   resp.body
+      #   => {"identity": {"name": "New identity 2", "api_key": "wrong token", "errors": { "api_key": ["Is invalid"] }}}
+      #
+      def git_hub
+        options = (params[:identity] || {}).merge({user_id: @current_user.id})
+        @identity = IdentitiesFactory.new(GitHubIdentity, options).create_identity
+        if @identity.save
+          render 'show'
+        else
+          render 'show', status: 422
+        end
+      end
+
+      ##
       # Deletes identity
       #
       # DELETE /api/v1/identities/:id

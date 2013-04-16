@@ -18,6 +18,7 @@ KarmaTracker::Application.routes.draw do
       resources :identities, only: [:index, :show, :destroy] do
         collection do
           post :pivotal_tracker
+          post :git_hub
         end
       end
       resources :projects, only: [:index, :show] do

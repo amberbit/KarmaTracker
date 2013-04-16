@@ -1,7 +1,7 @@
 class IdentitiesFactory
 
   VALID_CLASSES = %w[PivotalTrackerIdentity GitHubIdentity]
-  VALID_ATTRIBUTES = %w[name api_key email password user_id]
+  VALID_ATTRIBUTES = %w[name api_key username email password user_id]
 
   def initialize(klass, options)
     @klass = klass
