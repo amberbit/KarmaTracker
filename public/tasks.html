@@ -1,5 +1,8 @@
 <div ng-controller="TasksController" class="row">
   <div class="small-12 columns">
+    <p>
+      <input type="checkbox" ng-model="current" />Show only Current
+    </p>
     <div class='panel' ng-repeat="task in tasks">
       {{task.name}}
     </div>
