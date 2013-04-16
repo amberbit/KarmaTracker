@@ -27,8 +27,8 @@ module Api
       #   => 200
       #
       #   resp.body
-      #   => {"pivotal_tracker": [{"pivotal_tracker": {"id": 1, "name": "John Doe", "api_key": "123456", "service": "Pivotal Tracker"}}],
-      #       "git_hub": [{"git_hub": {"id": 3, "name": "John Doe's GH identity", "api_key": "42", "service": "GitHub"}}]}
+      #   => {"pivotal_tracker": [{"id": 1, "name": "John Doe", "api_key": "123456", "service": "Pivotal Tracker"}],
+      #       "git_hub": [{"id": 3, "name": "John Doe's GH identity", "api_key": "42", "service": "GitHub"}]}
       #
       #   resp = conn.get("/api/v1/identities",
       #                    "service" => "pivotal_tracker")
@@ -37,7 +37,7 @@ module Api
       #   => 200
       #
       #   resp.body
-      #   => {"pivotal_tracker":[{"pivotal_tracker":{"id":1,"name":"John Doe","api_key":"123456","service":"Pivotal Tracker"}}],
+      #   => {"pivotal_tracker":[{"id":1,"name":"John Doe","api_key":"123456","service":"Pivotal Tracker"}],
       #       "git_hub":[]}
       #
       def index
@@ -129,7 +129,7 @@ module Api
       #
       def pivotal_tracker
         options = (params[:identity] || {}).merge({user_id: @current_user.id})
-        @identity = IdentitiesFactory.new(PivotalTrackerIdentity, options).create_identity
+        @identity = IdentitiesFactory.new(PivotalTrackerIdentity.new, options).create_identity
         if @identity.save
           render 'show'
         else
