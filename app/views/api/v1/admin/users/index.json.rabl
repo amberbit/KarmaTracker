@@ -1,2 +1,2 @@
-collection @users, root: 'users', object_root: false
+collection @users, root: false
 extends 'api/v1/users/show'

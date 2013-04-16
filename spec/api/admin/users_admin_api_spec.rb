@@ -18,9 +18,8 @@ describe 'Admin API #Users' do
     json = api_get 'admin/users', {token: @admin.api_key.token}
 
     response.status.should == 200
-    json.has_key?('users').should be_true
-    json['users'].count.should == User.count
-    json['users'].select{ |user| user['admin']==false }.count.should == 3
+    json.count.should == User.count
+    json.select{ |user| user['user']['admin']==false }.count.should == 3
   end
 
   # GET /api/v1/admin/users
@@ -28,8 +27,8 @@ describe 'Admin API #Users' do
     invalid_token = ApiKey.where(admin: false).first.token
     json = api_get 'admin/users', {token: invalid_token}
 
-    json.has_key?('users').should be_false
     response.status.should == 401
+    json['message'].should == 'Invalid API Token'
   end
 
   # GET /api/v1/admin/users/:id

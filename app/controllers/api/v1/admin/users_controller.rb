@@ -22,9 +22,8 @@ module Api
         #   => 200
         #
         #   resp.body
-        #  => "{"users":[
-        #         {"id":1,"email":"user@example.com","token":"dcbb7b36acd4438d07abafb8e28605a4","admin":true},
-        #         {"id":113,"email":"ja@example.com","token":"75bff89de188de4cc1c13a2df1d6f160","admin":false}]}"
+        #  => "{[{"user": {"id":1,"email":"user@example.com","token":"dcbb7b36acd4438d07abafb8e28605a4","admin":true}},
+        #         {"user": {"id":113,"email":"ja@example.com","token":"75bff89de188de4cc1c13a2df1d6f160","admin":false}}]}"
         #
         def index
           @users = User.all

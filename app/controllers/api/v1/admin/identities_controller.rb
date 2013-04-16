@@ -22,7 +22,7 @@ module Api
         #   => 200
         #
         #   resp.body
-        #   => "{"pivotal_tracker":[{"id":15,"name":"PT identity","api_key":"3ea75a6c7a88edaa8d1534ec5612c87c", "user_id":1,
+        #   => "{"pivotal_tracker":[{"id":15,"name":"PT identity","api_key":"3ea75a6d6a88edaa8d1534ec5612557c", "user_id":1,
         #                "source_id":"123456","last_projects_refresh_at":"2013-04-15T10:06:08Z","service":"Pivotal Tracker"}],
         #        "git_hub":[]}"
         #
@@ -48,7 +48,7 @@ module Api
         #   => 200
         #
         #   resp.body
-        #   => "{"identity":{"id":15,"name":"PT identity","api_key":"3ea75a6c7a88edaa8d1534ec5612c87c","user_id":1,
+        #   => "{"identity":{"id":15,"name":"PT identity","api_key":"3ea75a6d6a88edaa8d1534ec5612557c","user_id":1,
         #                    "source_id":"526127","last_projects_refresh_at":"2013-04-15T10:06:08Z","service":"Pivotal Tracker"}}"
         #
         #   resp = conn.get("/api/v1/admin/identities/16", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
@@ -83,13 +83,13 @@ module Api
         #                    "token" => "dcbb7b36acd4438d07abafb8e28605a4",
         #                    "identity[user_id]" => 1,
         #                    "identity[name]" => "New identity",
-        #                    "identity[api_key]" => "3ea75a6c7a88edaa8d1534ec5612c87c")
+        #                    "identity[api_key]" => "3ea75a6d6a88edaa8d1534ec5612557c")
         #
         #   resp.status
         #   => 200
         #
         #   resp.body
-        #   => "{"identity":{"id":19,"name":"New identity","api_key":"3ea75a6c7a88edaa8d1534ec5612c87c","user_id":1,
+        #   => "{"identity":{"id":19,"name":"New identity","api_key":"3ea75a6d6a88edaa8d1534ec5612557c","user_id":1,
         #                    "source_id":"526127","last_projects_refresh_at":null,"service":"Pivotal Tracker"}}"
         #
         #   resp = conn.post("/api/v1/admin/identities/pivotal_tracker",
@@ -109,13 +109,13 @@ module Api
         #                    "token" => "dcbb7b36acd4438d07abafb8e28605a4",
         #                    "identity[user_id]" => 2,
         #                    "identity[name]" => "New identity 3",
-        #                    "identity[api_key]" => "3ea75a6c7a88edaa8d1534ec5612c87c")
+        #                    "identity[api_key]" => "3ea75a6d6a88edaa8d1534ec5612557c")
         #
         #   resp.status
         #   => 422
         #
         #   resp.body
-        #   => "{"identity":{"id":null,"name":"New identity 3","api_key":"3ea75a6c7a88edaa8d1534ec5612c87c","user_id":2,"source_id":"526127",
+        #   => "{"identity":{"id":null,"name":"New identity 3","api_key":"3ea75a6d6a88edaa8d1534ec5612557c","user_id":2,"source_id":"526127",
         #                    "last_projects_refresh_at":null,"service":"Pivotal Tracker","errors":{"user":["can't be blank"]}}}"
         #
         def pivotal_tracker
@@ -147,7 +147,7 @@ module Api
         #   => 200
         #
         #   resp.body
-        #   => "{"identity":{"id":21,"name":"New name","api_key":"3ea75a6c7a88edaa8d1534ec5612c87c","user_id":1,"source_id":"526127",
+        #   => "{"identity":{"id":21,"name":"New name","api_key":"3ea75a6d6a88edaa8d1534ec5612557c","user_id":1,"source_id":"526127",
         #                    "last_projects_refresh_at":null,"service":"Pivotal Tracker"}}"
         #
         #   resp = conn.put("/api/v1/admin/identities/21",
@@ -158,7 +158,7 @@ module Api
         #   => 200
         #
         #   resp.body
-        #   => "{"identity":{"id":21,"name":"New name","api_key":"3ea75a6c7a88edaa8d1534ec5612c87c","user_id":1,"source_id":"526127",
+        #   => "{"identity":{"id":21,"name":"New name","api_key":"3ea75a6d6a88edaa8d1534ec5612557c","user_id":1,"source_id":"526127",
         #                    "last_projects_refresh_at":null,"service":"Pivotal Tracker"}}"
         #
         def update
@@ -188,7 +188,7 @@ module Api
         #   => 200
         #
         #   resp.body
-        #   => "{"identity":{"id":20,"name":"PT identity","api_key":"3ea75a6c7a88edaa8d1534ec5612c87c","user_id":1,"source_id":"526127",
+        #   => "{"identity":{"id":20,"name":"PT identity","api_key":"3ea75a6d6a88edaa8d1534ec5612557c","user_id":1,"source_id":"526127",
         #                    "last_projects_refresh_at":null,"service":"Pivotal Tracker"}}"
         #
         #   resp = conn.delete("/api/v1/admin/identities/21", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
