@@ -36,10 +36,12 @@ describe 'Projects API' do
     user = FactoryGirl.create :user
     api_get "projects/#{Project.last.id}", {token: user.api_key.token}
     response.status.should == 404
-    response.body.should =~ /Resource not found/
+    resp = JSON.parse(response.body)
+    resp.should have_key("message")
+    resp["message"].should =~ /Resource not found/
   end
 
-  # GET /Projects/refresh
+  # GET /projects/refresh
   it 'should begin refreshing user\'s projects list' do
     Project.count.should == 5
 
@@ -50,5 +52,70 @@ describe 'Projects API' do
     response.status.should == 200
 
     Project.count.should == 6
+
+    reset_fakeweb_urls
+  end
+
+  # GET /projects/:id/tasks
+  it 'should return tasks for a given project' do
+    2.times { Project.last.tasks << FactoryGirl.create(:task)  }
+    project = FactoryGirl.create :project
+    project.identities << Identity.last
+    t = FactoryGirl.create(:task)
+    project.tasks << t
+    api_get "projects/#{project.id}/tasks", {token: Identity.last.user.api_key.token}
+    resp = JSON.parse(response.body)
+    task = resp.last["task"]
+    task["id"] = t.id
+    task["project_id"] = t.project_id
+    task["source_name"] = t.source_name
+    task["source_identifier"] = t.source_identifier
+    task["current_state"] = t.current_state
+    task["story_type"] = t.story_type
+    task["name"] = t.name
+    task["current_task"] = t.current_task
+    task["running"] = t.running?(Identity.last.user.id)
+    resp.count.should == 1
+  end
+
+  # GET /projects/:id/tasks
+  it 'should return an error when trying to fetch tasks from other user\'s proejct' do
+    user = FactoryGirl.create :user
+    api_get "projects/#{Project.last.id}/tasks", {token: user.api_key.token}
+    response.status.should == 404
+    resp = JSON.parse(response.body)
+    resp.should have_key("message")
+    resp["message"].should =~ /Resource not found/
+  end
+
+  # GET /projects/:id/current_tasks
+  it 'should return current tasks for a given project' do
+    t = FactoryGirl.create(:task, current_task: true)
+    Project.last.tasks << t
+    2.times { Project.last.tasks << FactoryGirl.create(:task, current_task: false) }
+    api_get "projects/#{Project.last.id}/current_tasks", {token: Identity.last.user.api_key.token}
+    response.status.should == 200
+    resp = JSON.parse(response.body)
+    task = resp.last["task"]
+    task["id"] = t.id
+    task["project_id"] = t.project_id
+    task["source_name"] = t.source_name
+    task["source_identifier"] = t.source_identifier
+    task["current_state"] = t.current_state
+    task["story_type"] = t.story_type
+    task["name"] = t.name
+    task["current_task"] = t.current_task
+    task["running"] = t.running?(Identity.last.user.id)
+    resp.count.should == 1
+  end
+
+  # GET /projects/:id/current_tasks
+  it 'should return an error when trying to fetch tasks from other user\'s proejct' do
+    user = FactoryGirl.create :user
+    api_get "projects/#{Project.last.id}/current_tasks", {token: user.api_key.token}
+    response.status.should == 404
+    resp = JSON.parse(response.body)
+    resp.should have_key("message")
+    resp["message"].should =~ /Resource not found/
   end
 end

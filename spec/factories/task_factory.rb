@@ -6,5 +6,6 @@ FactoryGirl.define do
     current_state "started"
     story_type "feature"
     sequence(:name) {|i| "Sample task nr #{i}"}
+    current_task false
   end
 end

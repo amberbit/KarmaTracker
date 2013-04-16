@@ -20,21 +20,27 @@
     <memberships type="array">
       <membership>
         <id>1006</id>
-        <person>
-          <email>kirkybaby@earth.ufp</email>
-          <name>James T. Kirk</name>
-          <initials>JTK</initials>
-        </person>
-        <role>Owner</role>
+        <member>
+          <person>
+            <id>1006</id>
+            <email>kirkybaby@earth.ufp</email>
+            <name>James T. Kirk</name>
+            <initials>JTK</initials>
+          </person>
+          <role>Owner</role>
+        </member>
       </membership>
       <membership>
         <id>1007</id>
-        <person>
-          <email>johndoe@earth.ufp</email>
-          <name>John Doe</name>
-          <initials>JD</initials>
-        </person>
-        <role>Owner</role>
+        <member>
+          <person>
+            <id>1007</id>
+            <email>johndoe@earth.ufp</email>
+            <name>John Doe</name>
+            <initials>JD</initials>
+          </person>
+          <role>Owner</role>
+        </member>
       </membership>
     </memberships>
     <integrations type="array">

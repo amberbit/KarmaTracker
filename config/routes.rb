@@ -33,6 +33,10 @@ KarmaTracker::Application.routes.draw do
           get :refresh
           get '/refresh_for_identity/:id' => 'projects#refresh_for_identity'
         end
+        member do
+          get :tasks
+          get :current_tasks
+        end
       end
     end
   end
@@ -40,4 +44,5 @@ KarmaTracker::Application.routes.draw do
   match '/404' => 'errors#not_found'
   match '/500' => 'errors#exception'
 
+  root to: 'home#index'
 end

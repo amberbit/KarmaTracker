@@ -54,8 +54,9 @@ class ProjectsFetcher
   def fetch_identities_for_pt_project(project, data)
     Rails.logger.info "Fetching identities for PT project #{project.source_identifier}"
     identities = []
-    data.xpath('./memberships/membership/id').each do |pt_id|
-      identity = PivotalTrackerIdentity.find_by_source_id(pt_id.content)
+    data.xpath('./memberships/membership').each do |membership|
+      pt_id = membership.xpath('./member/person/id').first.content
+      identity = PivotalTrackerIdentity.find_by_source_id(pt_id)
       identities << identity if identity.present?
     end
 
@@ -88,6 +89,22 @@ class ProjectsFetcher
       task.project = project
       task.save
     end
+    fetch_current_tasks_for_pt_project project, identity
     Rails.logger.info "Successfully updated list of tasks for PT project #{project.source_identifier}"
+  end
+
+  def fetch_current_tasks_for_pt_project(project, identity)
+    Rails.logger.info "Fetching current tasks for PT project #{project.source_identifier}"
+    uri = "https://www.pivotaltracker.com/services/v4/projects/#{project.source_identifier}/iterations/current"
+    doc = Nokogiri::XML(open(uri, 'X-TrackerToken' => identity.api_key))
+
+    current_tasks_ids = []
+    doc.xpath('/iterations/iteration').first.xpath('./stories/story').each do |story|
+      story_id = story.xpath('./id').first.content
+      current_tasks_ids << story_id
+    end
+    project.tasks.where('source_identifier NOT IN (?)', current_tasks_ids).update_all('current_task = FALSE')
+    project.tasks.where('source_identifier IN (?)', current_tasks_ids).update_all('current_task = TRUE')
+    Rails.logger.info "Successfully updated list of current tasks for PT project #{project.source_identifier}"
   end
 end
