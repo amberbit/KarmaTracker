@@ -20,3 +20,4 @@ KarmaTracker.controller "ProjectsController", ($scope, $http, $cookies, $locatio
     for project in $scope.projects
       project.visible = $scope.matchesQuery(project.name)
   )
+
