@@ -65,6 +65,14 @@ def reset_fakeweb_urls
   FakeWeb.register_uri(:post, 'https://correct_username:correct_password@api.github.com/authorizations',
     :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'git_hub', 'responses', 'authorization_success.json')),
     :status => ['201', 'OK'])
+
+  FakeWeb.register_uri(:get, 'https://api.github.com/user/repos',
+    :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'git_hub', 'responses', 'repos.json')),
+    :status => ['200', 'OK'])
+
+  FakeWeb.register_uri(:get, /https:\/\/api\.github\.com\/repos\/.*\/.*\/collaborators/,
+    :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'git_hub', 'responses', 'collaborators.json')),
+    :status => ['200', 'OK'])
 end
 
 RSpec.configure do |config|

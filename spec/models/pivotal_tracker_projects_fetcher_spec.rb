@@ -1,8 +1,9 @@
 require 'spec_helper'
 
-describe 'ProjectsFetcher' do
+describe 'PivotalTrackerProjectsFetcher' do
 
   before :all do
+    reset_fakeweb_urls
     @fetcher = ProjectsFetcher.new
   end
 
