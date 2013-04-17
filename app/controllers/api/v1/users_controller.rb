@@ -25,7 +25,7 @@ module Api
       #   => {"user":{"id":1,"email":"a@b.com","token":"dcbb7b36acd4438d07abafb8e28605a4"}}
       #
       def user
-        render 'show'
+        render '_show'
       end
 
       ##
@@ -69,9 +69,9 @@ module Api
           @user = UsersFactory.new(User.new, params[:user]).create
 
           if @user.save
-            render 'show'
+            render '_show'
           else
-            render 'show', status: 422
+            render '_show', status: 422
           end
         else
           render json: {message: 'Forbidden'}, status: 403
@@ -116,9 +116,9 @@ module Api
         @user = UsersFactory.new(@user, params[:user]).update
 
         if @user.save
-          render 'show'
+          render '_show'
         else
-          render 'show', status: 422
+          render '_show', status: 422
         end
       end
 
@@ -151,7 +151,7 @@ module Api
       def destroy
         if AppConfig.users.allow_destroy
           @user.destroy
-          render 'show'
+          render '_show'
         else
           render json: {message: 'Forbidden'}, status: 403
         end

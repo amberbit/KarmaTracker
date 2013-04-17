@@ -50,7 +50,7 @@ module Api
         #   => "{"user":{"id":1,"email":"user@example.com","token":"dcbb7b36acd4438d07abafb8e28605a4","admin":true}}"
         #
         def show
-          render 'api/v1/users/show'
+          render 'api/v1/users/_show'
         end
 
         ##
@@ -91,9 +91,9 @@ module Api
           @user = UsersFactory.new(User.new, params[:user]).create
 
           if @user.save
-            render 'api/v1/users/show'
+            render 'api/v1/users/_show'
           else
-            render 'api/v1/users/show', status: 422
+            render 'api/v1/users/_show', status: 422
           end
         end
 
@@ -134,9 +134,9 @@ module Api
           @user = UsersFactory.new(@user, params[:user]).update
 
           if @user.save
-            render 'api/v1/users/show'
+            render 'api/v1/users/_show'
           else
-            render 'api/v1/users/show', status: 422
+            render 'api/v1/users/_show', status: 422
           end
         end
 
@@ -162,7 +162,7 @@ module Api
         #
         def destroy
           @user.destroy
-          render 'api/v1/users/show'
+          render 'api/v1/users/_show'
         end
 
         private
