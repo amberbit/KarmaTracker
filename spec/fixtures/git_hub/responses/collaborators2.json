@@ -1,0 +1,9 @@
+[
+  {
+  "login": "mickey_mouse",
+  "id": 2,
+  "avatar_url": "https://github.com/images/error/mouse.gif",
+  "gravatar_id": "somehexcode",
+  "url": "https://api.github.com/users/mickey_mouse"
+}
+]

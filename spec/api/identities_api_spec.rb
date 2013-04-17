@@ -63,7 +63,7 @@ describe 'Identities API' do
   end
 
   # POST /api/v1/identities/pivotal_tracker
-  it "should be able to add identity for given user" do
+  it "should be able to add PT identity for given user" do
     user = FactoryGirl.create :user
     json = api_post "identities/pivotal_tracker", {token: ApiKey.last.token, identity:
           { name: 'Just an identity', email: 'correct_email', password: 'correct_password'}}
@@ -79,7 +79,7 @@ describe 'Identities API' do
   end
 
   # POST /api/v1/identities/pivotal_tracker
-  it 'should add error messages to response when adding identity fails' do
+  it 'should add error messages to response when adding PT identity fails' do
     FactoryGirl.create :user
     json = api_post "identities/pivotal_tracker", {token: ApiKey.last.token, identity: {name: 'Just an identity',
            email: 'wrong_email', password: 'wrong_password'}}
@@ -88,6 +88,34 @@ describe 'Identities API' do
     Identity.count.should == 0
     json['pivotal_tracker'].has_key?('errors').should be_true
     json['pivotal_tracker']['errors']['password'].should == ['provided email/password combination is invalid']
+  end
+
+  # POST /api/v1/identities/git_hub
+  it "should be able to add GH identity for given user" do
+    user = FactoryGirl.create :user
+    json = api_post "identities/git_hub", {token: ApiKey.last.token, identity:
+          { name: 'Just an identity', username: 'correct_username', password: 'correct_password'}}
+
+    response.status.should == 200
+    json.has_key?('git_hub').should be_true
+
+    Identity.count.should == 1
+    identity = Identity.last
+    identity.name.should == 'Just an identity'
+    identity.user.should == user
+    user.identities.should include(identity)
+  end
+
+  # POST /api/v1/identities/git_hub
+  it 'should add error messages to response when adding GH identity fails' do
+    FactoryGirl.create :user
+    json = api_post "identities/git_hub", {token: ApiKey.last.token, identity: {name: 'Just an identity',
+           username: 'wrong_email', password: 'wrong_password'}}
+
+    response.status.should == 422
+    Identity.count.should == 0
+    json['git_hub'].has_key?('errors').should be_true
+    json['git_hub']['errors']['password'].should == ['provided username/password combination is invalid']
   end
 
   # DELETE /api/v1/identities/:id

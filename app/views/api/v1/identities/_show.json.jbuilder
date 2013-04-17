@@ -12,8 +12,13 @@ json.set! identity.to_snake_case do
     json.last_projects_refresh_at identity.last_projects_refresh_at
   end
 
-  if !identity.persisted? && !identity.valid? && (identity.email.present? || identity.password.present?)
+  if identity.is_a?(PivotalTrackerIdentity) && !identity.persisted? && !identity.valid? && (identity.email.present? || identity.password.present?)
     json.email identity.email
+    json.password identity.password
+  end
+
+  if identity.is_a?(GitHubIdentity) && !identity.persisted? && !identity.valid? && (identity.username.present? || identity.password.present?)
+    json.username identity.username
     json.password identity.password
   end
 

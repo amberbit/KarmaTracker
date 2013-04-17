@@ -1,8 +1,9 @@
 require 'spec_helper'
 
-describe 'ProjectsFetcher' do
+describe 'PivotalTrackerProjectsFetcher' do
 
   before :all do
+    reset_fakeweb_urls
     @fetcher = ProjectsFetcher.new
   end
 
@@ -25,6 +26,26 @@ describe 'ProjectsFetcher' do
   it 'should create associations between project and its members\' identities' do
     @fetcher.fetch_for_identity(@identity)
     @identity.projects.count.should == 1
+    Project.first.identities.count.should == 1
+  end
+
+  it 'should remove identities that are no longer participants in a project' do
+    FakeWeb.register_uri(:get, 'https://www.pivotaltracker.com/services/v4/projects',
+      :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'projects2.xml')),
+      :status => ['200', 'OK'])
+
+    @fetcher.fetch_for_identity(@identity)
+    Identity.count.should == 2
+    @identity.projects.count.should == 1
+    @identity2.projects.count.should == 1
+    Project.first.identities.count.should == 2
+
+    reset_fakeweb_urls
+
+    @fetcher.fetch_for_identity(@identity)
+    Identity.count.should == 2
+    @identity.projects.count.should == 1
+    @identity2.projects.count.should == 0
     Project.first.identities.count.should == 1
   end
 
@@ -54,25 +75,5 @@ describe 'ProjectsFetcher' do
     Task.find_by_source_identifier('4').current_task.should be_true
 
     reset_fakeweb_urls
-  end
-
-  it 'should remove identities that are no longer participants in a project' do
-    FakeWeb.register_uri(:get, 'https://www.pivotaltracker.com/services/v4/projects',
-      :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'projects2.xml')),
-      :status => ['200', 'OK'])
-
-    @fetcher.fetch_for_identity(@identity)
-    Identity.count.should == 2
-    @identity.projects.count.should == 1
-    @identity2.projects.count.should == 1
-    Project.first.identities.count.should == 2
-
-    reset_fakeweb_urls
-
-    @fetcher.fetch_for_identity(@identity)
-    Identity.count.should == 2
-    @identity.projects.count.should == 1
-    @identity2.projects.count.should == 0
-    Project.first.identities.count.should == 1
   end
 end

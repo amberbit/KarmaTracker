@@ -1,7 +1,7 @@
 class IdentitiesFactory < Factory
 
   VALID_CLASSES = %w[PivotalTrackerIdentity GitHubIdentity]
-  VALID_ATTRIBUTES = %w[name api_key email password user_id]
+  VALID_ATTRIBUTES = %w[name api_key username email password user_id]
 
   def create
     return Identity.new unless VALID_CLASSES.include?(@object.class.to_s)
