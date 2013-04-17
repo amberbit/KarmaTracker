@@ -27,7 +27,7 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookies, $location, 
         console.debug('Error when starting tracking time on tasks')
       )
     else
-      $http.get(
+      $http.post(
         "/api/v1/time_log_entries/stop?token=#{$cookies.token}"
       ).success((data, status, headers, config) ->
         $scope.reloadTasks()
