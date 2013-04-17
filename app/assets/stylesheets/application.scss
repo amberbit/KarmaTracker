@@ -37,3 +37,13 @@
 .panel {
   cursor: pointer;
 }
+
+.search-box {
+  float: right;
+  margin-top: -3em;
+  text-align: right;
+  label {
+    display: inline;
+    margin-left: 20px;
+  }
+}
