@@ -12,10 +12,10 @@ describe 'Identities API' do
     json = api_get "identities/#{Identity.last.id}", {token: Identity.last.user.api_key.token}
 
     response.status.should == 200
-    json['identity']['id'].should == Identity.last.id
-    json['identity']['service'].should == "Pivotal Tracker"
-    json['identity']['name'].should == Identity.last.name
-    json['identity']['api_key'].should == Identity.last.api_key
+    json['pivotal_tracker']['id'].should == Identity.last.id
+    json['pivotal_tracker']['service'].should == "Pivotal Tracker"
+    json['pivotal_tracker']['name'].should == Identity.last.name
+    json['pivotal_tracker']['api_key'].should == Identity.last.api_key
   end
 
   # GET /api/v1/identities
@@ -24,7 +24,7 @@ describe 'Identities API' do
     json = api_get 'identities', {token: Identity.last.user.api_key.token}
 
     response.status.should == 200
-    json['pivotal_tracker'].count.should == 3
+    json.count.should == 3
   end
 
   # GET /api/v1/identities
@@ -37,18 +37,18 @@ describe 'Identities API' do
     json = api_get 'identities', {token: user1.api_key.token}
     response.status.should == 200
 
-    json['pivotal_tracker'].count.should == 2
-    json['pivotal_tracker'].each do |identity|
-      user1.identities.map(&:id).should include(identity['id'].to_i)
-      user2.identities.map(&:id).should_not include(identity['id'].to_i)
+    json.count.should == 2
+    json.each do |identity|
+      user1.identities.map(&:id).should include(identity[identity.keys.first]['id'].to_i)
+      user2.identities.map(&:id).should_not include(identity[identity.keys.first]['id'].to_i)
     end
 
     json = api_get 'identities', {token: user2.api_key.token}
     response.status.should == 200
-    json['pivotal_tracker'].count.should == 3
-    json['pivotal_tracker'].each do |identity|
-      user1.identities.map(&:id).should_not include(identity['id'].to_i)
-      user2.identities.map(&:id).should include(identity['id'].to_i)
+    json.count.should == 3
+    json.each do |identity|
+      user1.identities.map(&:id).should_not include(identity[identity.keys.first]['id'].to_i)
+      user2.identities.map(&:id).should include(identity[identity.keys.first]['id'].to_i)
     end
   end
 
@@ -58,8 +58,8 @@ describe 'Identities API' do
     3.times { FactoryGirl.create(:identity, type: "GitHubIdentity") }
 
     json = api_get "identities", {token: Identity.last.user.api_key.token, service: 'PivotalTracker'}
-    json['pivotal_tracker'].count.should == 2
-    json['git_hub'].count.should == 0
+    json.select{ |i| i.has_key?('pivotal_tracker') }.count.should == 2
+    json.select{ |i| i.has_key?('git_hub') }.count.should == 0
   end
 
   # POST /api/v1/identities/pivotal_tracker
@@ -69,7 +69,7 @@ describe 'Identities API' do
           { name: 'Just an identity', email: 'correct_email', password: 'correct_password'}}
 
     response.status.should == 200
-    json.has_key?('identity').should be_true
+    json.has_key?('pivotal_tracker').should be_true
 
     Identity.count.should == 1
     identity = Identity.last
@@ -86,8 +86,8 @@ describe 'Identities API' do
 
     response.status.should == 422
     Identity.count.should == 0
-    json['identity'].has_key?('errors').should be_true
-    json['identity']['errors']['password'].should == ['provided email/password combination is invalid']
+    json['pivotal_tracker'].has_key?('errors').should be_true
+    json['pivotal_tracker']['errors']['password'].should == ['provided email/password combination is invalid']
   end
 
   # DELETE /api/v1/identities/:id
@@ -100,7 +100,7 @@ describe 'Identities API' do
     }.should change(Identity, :count).by(-1)
 
     response.status.should == 200
-    @json.has_key?('identity').should be_true
+    @json.has_key?('pivotal_tracker').should be_true
     Identity.count.should == 0
   end
 

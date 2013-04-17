@@ -35,7 +35,7 @@ module Api
       def create
         if @user = User.authenticate(params[:session])
           @api_key = @user.api_key
-          render 'api/v1/users/show'
+          render 'api/v1/users/_show'
         else
           render json: {message: 'Invalid email or password'}, status: 401
         end

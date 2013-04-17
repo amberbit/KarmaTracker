@@ -8,7 +8,7 @@ describe 'Admin API #Identities' do
   end
 
   # GET /api/v1/admin/identities
-  it 'should return all identities if provided valid admin API token, grouped by provider PT/GH' do
+  it 'should return all identities if provided valid admin API token, labeled by provider PT/GH' do
     3.times do
       FactoryGirl.create(:identity)
     end
@@ -19,10 +19,8 @@ describe 'Admin API #Identities' do
     json = api_get 'admin/identities', {token: @admin.api_key.token}
 
     response.status.should == 200
-    json.has_key?('pivotal_tracker').should be_true
-    json.has_key?('git_hub').should be_true
-    json['pivotal_tracker'].count.should == 3
-    json['git_hub'].count.should == 2
+    json.select{ |i| i.has_key?('pivotal_tracker') }.count.should == 3
+    json.select{ |i| i.has_key?('git_hub') }.count.should == 2
   end
 
   # GET /api/v1/admin/identities/:id
@@ -30,8 +28,9 @@ describe 'Admin API #Identities' do
     identity = FactoryGirl.create(:identity)
 
     json = api_get "admin/identities/#{identity.id}", {token: @admin.api_key.token}
-    json['identity'].has_key?('user_id').should be_true
-    json['identity'].has_key?('source_id').should be_true
+
+    json['pivotal_tracker'].has_key?('user_id').should be_true
+    json['pivotal_tracker'].has_key?('source_id').should be_true
   end
 
   # POST /api/v1/admin/identities/pivotal_tracker
@@ -44,7 +43,7 @@ describe 'Admin API #Identities' do
     }.should change(Identity, :count).by(1)
 
     response.status.should == 200
-    @json.has_key?('identity').should be_true
+    @json.has_key?('pivotal_tracker').should be_true
     Identity.count.should == 1
   end
 
@@ -57,8 +56,8 @@ describe 'Admin API #Identities' do
     }.should change(Identity, :count).by(0)
 
     response.status.should == 422
-    @json['identity'].has_key?('errors').should be_true
-    @json['identity']['errors']['user'].should include('can\'t be blank')
+    @json['pivotal_tracker'].has_key?('errors').should be_true
+    @json['pivotal_tracker']['errors']['user'].should include('can\'t be blank')
   end
 
   # PUT /api/v1/admin/identities/:id
@@ -73,7 +72,7 @@ describe 'Admin API #Identities' do
     identity.save
     old_identity = identity.dup
 
-    json = api_put "admin/identities/#{identity.id}", {identity: {name: 'new name', api_key: 'new key'}, token: @admin.api_key.token}
+    api_put "admin/identities/#{identity.id}", {identity: {name: 'new name', api_key: 'new key'}, token: @admin.api_key.token}
 
     identity.reload
     identity.name.should == 'new name'

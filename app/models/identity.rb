@@ -22,6 +22,10 @@ class Identity < ActiveRecord::Base
     where(:type => service)
   end
 
+  def to_snake_case
+    service_name.gsub(' ', '').underscore
+  end
+
   private
 
   def fetch_projects

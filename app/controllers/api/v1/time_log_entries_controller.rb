@@ -104,10 +104,9 @@ module Api
         if !@time_log_entry.task || !@time_log_entry.task.project.in?(@current_user.projects)
           render json: {message: 'Resource not found'}, status: 404
         elsif @time_log_entry.save
-          render 'show'
+          render '_show'
         else
-          @errors = @time_log_entry.errors.messages
-          render 'show', status: 422
+          render '_show', status: 422
         end
       end
 
@@ -139,10 +138,10 @@ module Api
         @time_log_entry = TimeLogEntriesFactory.new(entry, params[:time_log_entry]).update
 
         if @time_log_entry.save
-          render 'show'
+          render '_show'
         else
           @errors = @time_log_entry.errors.messages
-          render 'show', status: 422
+          render '_show', status: 422
         end
       end
 
@@ -167,7 +166,7 @@ module Api
       #
       def stop
         @time_log_entry = TimeLogEntry.stop_all(@current_user.id).first
-        render 'show'
+        render '_show'
       end
 
       ##
@@ -203,7 +202,7 @@ module Api
 
         if @time_log_entry.user == @current_user
           @time_log_entry.delete
-          render 'show'
+          render '_show'
         else
           render json: {message: 'Resource not found'}, status: 404
         end
