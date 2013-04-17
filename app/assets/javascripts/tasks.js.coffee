@@ -1,6 +1,7 @@
 KarmaTracker.controller "TasksController", ($scope, $http, $cookies, $location, $routeParams) ->
   $scope.tasks = []
   $scope.current = true
+  $scope.query.string = ""
 
   $scope.reloadTasks = () ->
     $http.get(
@@ -8,13 +9,14 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookies, $location, 
     ).success((data, status, headers, config) ->
       $scope.tasks = []
       for task in data
+        task.task.visible = $scope.matchesQuery(task.task.name)
         $scope.tasks.push task.task
+
     ).error((data, status, headers, config) ->
       console.debug('Error fetching tasks')
     )
 
   $scope.reloadTasks()
-  $scope.$watch("current", $scope.reloadTasks)
 
   $scope.startTracking = (task) ->
     if !task.running
@@ -27,11 +29,27 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookies, $location, 
         console.debug('Error when starting tracking time on tasks')
       )
     else
-      $http.get(
+      $http.post(
         "/api/v1/time_log_entries/stop?token=#{$cookies.token}"
       ).success((data, status, headers, config) ->
         $scope.reloadTasks()
       ).error((data, status, headers, config) ->
         console.debug('Error when stopping time log entries')
       )
+
+  $scope.$watch("query.string", ->
+    for task in $scope.tasks
+      task.visible = $scope.matchesQuery(task.name)
+  )
+
+  $scope.$watch("current", $scope.reloadTasks)
+
+  $http.get(
+    "/api/v1/projects/#{$routeParams.project_id}/?token=#{$cookies.token}"
+  ).success((data, status, headers, config) ->
+    $scope.project = data.project
+  ).error((data, status, headers, config) ->
+    console.debug('Error fetching project')
+  )
+
 

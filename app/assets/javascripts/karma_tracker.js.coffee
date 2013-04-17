@@ -19,3 +19,8 @@ KarmaTracker.controller "RootController", ($scope, $location, $cookies) ->
     if $location.path() == '/' || $location.path() == ''
       $location.path '/projects'
 
+  $scope.matchesQuery = (string) ->
+    string.toLowerCase().indexOf($scope.query.string.toLowerCase()) != -1
+
+
+  $scope.query = {}
