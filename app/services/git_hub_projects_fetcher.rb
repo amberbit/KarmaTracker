@@ -16,7 +16,7 @@ class GitHubProjectsFetcher
       project.name = name
       project.save
       fetch_identities project, identity, repo_name, owner_name
-      #fetch_tasks project, identity
+      fetch_tasks project, identity, repo_name, owner_name
     end
     Rails.logger.info "Successfully updated list of projects for GH identity #{identity.api_key}"
   end
@@ -41,9 +41,28 @@ class GitHubProjectsFetcher
     Rails.logger.info "Successfully updated list of identities for GH project #{project.source_identifier}"
   end
 
-  def fetch_tasks(project, identity)
+  def fetch_tasks(project, identity, repo_name, repo_owner)
     Rails.logger.info "Fetching tasks for PT project #{project.source_identifier}"
+    uri = "https://api.github.com/repos/#{repo_owner}/#{repo_name}/issues"
+    issues = JSON.parse(open(uri, 'Authorization' => "token #{identity.api_key}").read)
 
+    issues.each do |issue|
+      name = issue["title"]
+      source_identifier = "#{project.source_identifier}/#{issue["number"]}"
+      story_type = "issue"
+      current_state = issue["state"]
+
+      task = Task.where("source_name = 'GitHub' AND source_identifier = ?", source_identifier).
+        first_or_initialize(source_name: 'GitHub', source_identifier: source_identifier)
+      task.name = name
+      task.story_type = story_type
+      task.current_state = current_state
+      task.current_task = (current_state == 'open' ? true : false)
+      task.project = project
+      task.save
+    end
     Rails.logger.info "Successfully updated list of tasks for PT project #{project.source_identifier}"
+  rescue
+    Rails.logger.error "Couldn't fetch issues for GitHub repositry #{repo_owner}/#{repo_name} (#{project.source_identifier})"
   end
 end
