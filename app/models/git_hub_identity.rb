@@ -6,7 +6,7 @@ class GitHubIdentity < Identity
   attr_accessible :username, :password
   attr_accessor :username, :password
 
-  validate :credentials_correctness
+  validate :credentials_correctness, on: :create
 
   def service_name
     "GitHub"
@@ -35,7 +35,7 @@ class GitHubIdentity < Identity
     token = JSON.parse(res.body)["token"]
     if token.present?
       self.api_key = token
-      self.source_identifier = username
+      self.source_id = username
     else
       raise Exception
     end

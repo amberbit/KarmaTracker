@@ -173,7 +173,7 @@ module Api
       #
       def git_hub
         options = (params[:identity] || {}).merge({user_id: @current_user.id})
-        @identity = IdentitiesFactory.new(GitHubIdentity, options).create_identity
+        @identity = IdentitiesFactory.new(GitHubIdentity.new, options).create
         if @identity.save
           render 'show'
         else

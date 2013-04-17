@@ -28,6 +28,7 @@ RSpec.configure do |config|
 end
 
 def reset_fakeweb_urls
+  # Pivotal Tracker URIs
   FakeWeb.allow_net_connect = false
 
   FakeWeb.register_uri(:get, 'https://wrong_email:wrong_password@www.pivotaltracker.com/services/v4/me',
@@ -48,6 +49,14 @@ def reset_fakeweb_urls
   FakeWeb.register_uri(:get, /https:\/\/www\.pivotaltracker\.com\/services\/v4\/projects\/[0-9]+\/iterations\/current/,
     :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'current_iteration.xml')),
     :status => ['200', 'OK'])
+
+  # GitHub URIs
+  FakeWeb.register_uri(:post, 'https://wrong_username:wrong_password@api.github.com/authorizations',
+    :body => 'Access Denied', :status => ['401', 'Unauthorized'])
+
+  FakeWeb.register_uri(:post, 'https://correct_username:correct_password@api.github.com/authorizations',
+    :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'git_hub', 'responses', 'authorization_success.json')),
+    :status => ['201', 'OK'])
 end
 
 RSpec.configure do |config|

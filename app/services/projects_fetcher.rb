@@ -18,7 +18,7 @@ class ProjectsFetcher
   end
 
   def fetch_for_user(user)
-    Rails.logger.info "Fetching projects for PT user #{user.id}"
+    Rails.logger.info "Fetching projects for user #{user.id}"
     user.identities.each do |identity|
       fetch_for_identity(identity)
     end
@@ -29,6 +29,8 @@ class ProjectsFetcher
     case identity.type
       when 'PivotalTrackerIdentity'
         fetch_from_pivotal_tracker(identity)
+      when 'GitHubIdentity'
+        #
     end
     identity.update_attribute('last_projects_refresh_at', DateTime.now)
   end
