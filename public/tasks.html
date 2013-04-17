@@ -5,6 +5,7 @@
       <label>Search: <input ng-model='query.string' autofocus='autofocus'></label>
     </div>
 
+    <p><a ng-href="/#/projects">Projects</a> &gt; {{project.name}}</p>
     <div class='panel'
       ng-repeat="task in tasks"
       ng-class="{running: task.running}"

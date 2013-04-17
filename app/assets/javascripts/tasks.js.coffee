@@ -43,3 +43,13 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookies, $location, 
   )
 
   $scope.$watch("current", $scope.reloadTasks)
+
+  $http.get(
+    "/api/v1/projects/#{$routeParams.project_id}/?token=#{$cookies.token}"
+  ).success((data, status, headers, config) ->
+    $scope.project = data.project
+  ).error((data, status, headers, config) ->
+    console.debug('Error fetching project')
+  )
+
+
