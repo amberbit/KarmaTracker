@@ -8,6 +8,7 @@ require 'factory_girl_rails'
 require 'pry'
 require 'fakeweb'
 require 'rspec/rails'
+require 'torquebox-no-op'
 
 Dir[File.join(File.dirname(__FILE__), 'support', '**', '*.rb')].each {|f| require f}
 

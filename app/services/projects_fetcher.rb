@@ -3,7 +3,11 @@ require 'net/http'
 require 'open-uri'
 
 class ProjectsFetcher
-  include TorqueBox::Messaging::Backgroundable
+  if ENV['TORQUEBOX_APP_NAME']
+    include TorqueBox::Messaging::Backgroundable 
+  else
+    def background; self; end
+  end
 
   def fetch_all
     Rails.logger.info "Fetching projects for all users"

@@ -1,6 +1,7 @@
 ---
 default:
   projects_refresh_period: 12
+  allow_destroy_user: true
 
 development:
 

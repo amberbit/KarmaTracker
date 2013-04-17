@@ -2,6 +2,7 @@
 #= require routes
 #= require sessions
 #= require projects
+#= require tasks
 
 window.KarmaTracker = angular.module('KarmaTracker', ['ngCookies'])
 

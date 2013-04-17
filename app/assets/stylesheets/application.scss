@@ -29,3 +29,11 @@
   @extend .small;
 }
 
+
+.panel.running {
+  font-weight: bold;
+}
+
+.panel {
+  cursor: pointer;
+}

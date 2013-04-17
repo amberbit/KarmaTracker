@@ -5,9 +5,10 @@ class User < ActiveRecord::Base
 
   has_one :api_key, dependent: :destroy
   has_many :time_log_entries, dependent: :destroy
-  has_many :identities
+  has_many :identities, dependent: :destroy
 
   validates :email, presence: true, uniqueness: true
+  validates :password, presence: { on: :create }, length: { minimum: 8 }, if: :password_digest_changed?
 
   after_create :create_api_key
 
@@ -28,7 +29,7 @@ class User < ActiveRecord::Base
   private
 
   def create_api_key
-    ApiKey.create :user => self
+    ApiKey.create :user => self, :admin => false
   end
 
 end

@@ -1,6 +1,6 @@
 <div ng-controller="ProjectsController" class="row">
   <div class="small-12 columns">
-    <div class='panel' ng-repeat="project in projects">
+    <div class='panel' ng-repeat="project in projects" ng-click="loadTasks(project)">
       {{project.name}}
     </div>
   </div>

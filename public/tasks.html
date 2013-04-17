@@ -1,0 +1,11 @@
+<div ng-controller="TasksController" class="row">
+  <div class="small-12 columns">
+    <p>
+      <input type="checkbox" ng-model="current" />Show only Current
+    </p>
+    <div class='panel' ng-repeat="task in tasks" ng-class="{running: task.running}" ng-click="startTracking(task)">
+      {{task.name}}
+    </div>
+  </div>
+</div>
+

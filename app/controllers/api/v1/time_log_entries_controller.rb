@@ -24,12 +24,9 @@ module Api
       #   => 200
       #   resp.body
       #
-      #    => {"time_log_entries"=>
-      #         [{"time_log_entry"=>
-      #             {"id"=>274, "task_id"=>231, "user_id"=>410, "running"=>false, "started_at"=>"2012-01-12T14:49:15Z",
+      #    => {[{"time_log_entry": {"id"=>274, "task_id"=>231, "user_id"=>410, "running"=>false, "started_at"=>"2012-01-12T14:49:15Z",
       #             "stopped_at"=>"2013-04-12T14:50:15Z", "seconds"=>60}},
-      #           {"time_log_entry"=>
-      #             {"id"=>277, "task_id"=>231, "user_id"=>410, "running"=>true, "started_at"=>"2013-04-12T15:49:15Z",
+      #          {"time_log_entry": {"id"=>277, "task_id"=>231, "user_id"=>410, "running"=>true, "started_at"=>"2013-04-12T15:49:15Z",
       #             "stopped_at"=>nil, "seconds"=>0}}]}
       #
       #   resp = conn.get("/api/v1/time_log_entries",
@@ -41,9 +38,7 @@ module Api
       #
       #   resp.body
       #
-      #    => {"time_log_entries"=>
-      #         [{"time_log_entry"=>
-      #             {"id"=>277, "task_id"=>231, "user_id"=>410, "running"=>true, "started_at"=>"2013-04-12T15:49:15Z",
+      #    => {[{"time_log_entry": {"id"=>277, "task_id"=>231, "user_id"=>410, "running"=>true, "started_at"=>"2013-04-12T15:49:15Z",
       #             "stopped_at"=>nil, "seconds"=>0}}]}
       #
       def index
@@ -104,7 +99,7 @@ module Api
       #
       def create
         new_entry = @current_user.time_log_entries.build
-        @time_log_entry = TimeLogEntriesFactory.new(new_entry, params[:time_log_entry]).create_entry
+        @time_log_entry = TimeLogEntriesFactory.new(new_entry, params[:time_log_entry]).create
 
         if !@time_log_entry.task || !@time_log_entry.task.project.in?(@current_user.projects)
           render json: {message: 'Resource not found'}, status: 404
@@ -141,7 +136,7 @@ module Api
       #
       def update
         entry = TimeLogEntry.find params[:id]
-        @time_log_entry = TimeLogEntriesFactory.new(entry, params[:time_log_entry]).update_entry
+        @time_log_entry = TimeLogEntriesFactory.new(entry, params[:time_log_entry]).update
 
         if @time_log_entry.save
           render 'show'
@@ -154,14 +149,14 @@ module Api
       ##
       # Stops any running time log entry.
       #
-      # GET /api/v1/time_log_entries/stop
+      # POST /api/v1/time_log_entries/stop
       #
       # params:
       #   token - KarmaTracker API token
       #
       # = Examples
       #
-      #   resp = conn.get("/api/v1/time_log_entries",
+      #   resp = conn.post("/api/v1/time_log_entries",
       #                   "token" => "dcbb7b36acd4438d07abafb8e28605a4")
       #   resp.status
       #   => 200

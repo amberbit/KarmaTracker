@@ -1,21 +1,20 @@
-class IdentitiesFactory
+class IdentitiesFactory < Factory
 
   VALID_CLASSES = %w[PivotalTrackerIdentity GitHubIdentity]
   VALID_ATTRIBUTES = %w[name api_key username email password user_id]
 
-  def initialize(klass, options)
-    @klass = klass
-    @options = options
+  def create
+    return Identity.new unless VALID_CLASSES.include?(@object.class.to_s)
+
+    attrs = valid_attributes(VALID_ATTRIBUTES)
+    @object.assign_attributes attrs
+
+    @object
   end
 
-  def create_identity
-    return Identity.new unless VALID_CLASSES.include?(@klass.to_s)
-
-    attrs = @options.select do |key, value|
-      key.to_s.in?(VALID_ATTRIBUTES)
-    end
-
-    @klass.new(attrs)
+  def update
+    @object.assign_attributes valid_attributes(%w[name])
+    @object
   end
 
 end
