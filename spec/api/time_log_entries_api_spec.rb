@@ -135,7 +135,7 @@ describe 'TimeLogEntry API' do
     @user.time_log_entries.count.should == 5
 
     json = api_get "time_log_entries/", { token: @user.api_key.token, started_at: 10.days.ago, stopped_at: 3.days.ago }
-    json.count.should == 3
+    json.count.should == 2
   end
 
 end
