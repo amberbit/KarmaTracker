@@ -2,7 +2,7 @@ class GitHubProjectsFetcher
 
   def fetch_projects(identity)
     Rails.logger.info "Fetching projects for GH identity #{identity.api_key}"
-    uri = "https://api.github.com/user/repos"
+    uri = "https://api.github.com/user/subscriptions"
     repos = JSON.parse(open(uri, 'Authorization' => "token #{identity.api_key}").read)
 
     repos.each do |repo|
