@@ -2,3 +2,11 @@ KarmaTracker
 ============
 
 KarmaTracker is a time tracking and reporting tool for teams and individuals who use Pivotal Tracker
+
+License
+=======
+
+Copyright (2013) AmberBit sp. z o. o.
+
+KarmaTracker is licensed under the {MIT License}[http://www.opensource.org/licenses/MIT].
+
