@@ -8,7 +8,9 @@ class User < ActiveRecord::Base
   has_many :identities, dependent: :destroy
 
   validates :email, presence: true, uniqueness: true
-  validates :password, presence: { on: :create }, length: { minimum: 8 }, if: :password_digest_changed?
+  validates :password, presence: { on: :create },
+                       length: { minimum: (AppConfig.users.password_min_chars || 6) },
+                       if: :password_digest_changed?
 
   after_create :create_api_key
 

@@ -25,6 +25,14 @@ RSpec.configure do |config|
   # rspec-rails.
   config.infer_base_class_for_anonymous_controllers = false
 
+  config.before(:each, register: true) do
+    AppConfig.users.allow_register = true
+  end
+
+  config.after(:each, register: true) do
+    AppConfig.users.allow_register = false
+  end
+
 end
 
 def reset_fakeweb_urls

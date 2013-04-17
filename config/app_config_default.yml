@@ -1,7 +1,10 @@
 ---
 default:
   projects_refresh_period: 12
-  allow_destroy_user: true
+  users:
+    allow_register: false
+    allow_destroy: true
+    password_min_chars: 6
 
 development:
 

@@ -45,6 +45,41 @@ describe 'User API' do
     json.has_key?('user').should be_true
   end
 
+  # POST /api/v1/user
+  it 'should turn off/on registering based on AppConfig users.allow_register option' do
+    json = api_post 'user', {user: {email: 'user@example.com', password: 'secret123'}}
+    response.status.should == 403
+    json['message'].should == 'Forbidden'
+
+    AppConfig.users.allow_register = true
+    json = api_post 'user', {user: {email: 'user@example.com', password: 'secret123'}}
+    response.status.should_not == 403
+    AppConfig.users.allow_register = false
+  end
+
+  # POST /api/v1/user
+  it 'should allow registering new user and not require API token', register: true do
+    -> {
+      @json = api_post 'user', {user: {email: 'user@example.com', password: 'secret123'}}
+    }.should change(User, :count).by(1)
+
+    response.status.should == 200
+    @json.has_key?('user').should be_true
+    @json['user']['token'].should == ApiKey.last.token
+  end
+
+  # POST /api/v1/user
+  it 'should validate user creation and return user with validation errors', register: true do
+    json = api_post 'user', {user: {email: 'user@example.com', password: 'secret'}}
+    response.status.should == 200
+    json['user'].has_key?('errors').should be_false
+
+    json = api_post 'user', {user: {email: 'user2@example.com', password: '123'}}
+    response.status.should == 422
+    json['user'].has_key?('errors').should be_true
+    json['user']['errors']['password'].should include('is too short (minimum is 6 characters)')
+  end
+
   # PUT /api/v1/user
   it 'should change user\'s email and password' do
     old_user = @user.dup
@@ -77,8 +112,8 @@ describe 'User API' do
   end
 
   # DELETE /api/v1/user
-  it 'should deny removing user when allow_destroy_user is set to false' do
-    AppConfig.allow_destroy_user = false
+  it 'should deny removing user when users.allow_destroy is set to false' do
+    AppConfig.users.allow_destroy = false
 
     User.count.should == 1
     json = api_delete 'user', {token: @user.api_key.token}
@@ -87,7 +122,7 @@ describe 'User API' do
     json['message'].should == 'Forbidden'
     User.count.should == 1
 
-    AppConfig.allow_destroy_user = true
+    AppConfig.users.allow_destroy = true
   end
 
 end
