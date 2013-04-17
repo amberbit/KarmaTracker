@@ -22,9 +22,8 @@ module Api
         #   => 200
         #
         #   resp.body
-        #   => "{"pivotal_tracker":[{"id":15,"name":"PT identity","api_key":"3ea75a6d6a88edaa8d1534ec5612557c", "user_id":1,
-        #                "source_id":"123456","last_projects_refresh_at":"2013-04-15T10:06:08Z","service":"Pivotal Tracker"}],
-        #        "git_hub":[]}"
+        #   => "{[{"pivotal_tracker":{"id":15,"name":"PT identity","api_key":"3ea75a6d6a88edaa8d1534ec5612557c", "user_id":1,
+        #                "source_id":"123456","last_projects_refresh_at":"2013-04-15T10:06:08Z","service":"Pivotal Tracker"}}]}
         #
         def index
           @identities = Identity.all
@@ -48,7 +47,7 @@ module Api
         #   => 200
         #
         #   resp.body
-        #   => "{"identity":{"id":15,"name":"PT identity","api_key":"3ea75a6d6a88edaa8d1534ec5612557c","user_id":1,
+        #   => "{"pivotal_tracker":{"id":15,"name":"PT identity","api_key":"3ea75a6d6a88edaa8d1534ec5612557c","user_id":1,
         #                    "source_id":"526127","last_projects_refresh_at":"2013-04-15T10:06:08Z","service":"Pivotal Tracker"}}"
         #
         #   resp = conn.get("/api/v1/admin/identities/16", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
@@ -60,7 +59,7 @@ module Api
         #   => {"message": "Resource not found"}
         #
         def show
-          render 'api/v1/identities/show'
+          render 'api/v1/identities/_show'
         end
 
         ##
@@ -89,7 +88,7 @@ module Api
         #   => 200
         #
         #   resp.body
-        #   => "{"identity":{"id":19,"name":"New identity","api_key":"3ea75a6d6a88edaa8d1534ec5612557c","user_id":1,
+        #   => "{"pivotal_tracker":{"id":19,"name":"New identity","api_key":"3ea75a6d6a88edaa8d1534ec5612557c","user_id":1,
         #                    "source_id":"526127","last_projects_refresh_at":null,"service":"Pivotal Tracker"}}"
         #
         #   resp = conn.post("/api/v1/admin/identities/pivotal_tracker",
@@ -102,7 +101,7 @@ module Api
         #   => 422
         #
         #   resp.body
-        #   => "{"identity":{"id":null,"name":"New identity 2","api_key":"wrong token","user_id":1,"source_id":null,
+        #   => "{"pivotal_tracker":{"id":null,"name":"New identity 2","api_key":"wrong token","user_id":1,"source_id":null,
         #                    "last_projects_refresh_at":null,"service":"Pivotal Tracker","errors":{"api_key":["provided API token is invalid"]}}}"
         #
         #   resp = conn.post("/api/v1/admin/identities/pivotal_tracker",
@@ -115,15 +114,15 @@ module Api
         #   => 422
         #
         #   resp.body
-        #   => "{"identity":{"id":null,"name":"New identity 3","api_key":"3ea75a6d6a88edaa8d1534ec5612557c","user_id":2,"source_id":"526127",
+        #   => "{"pivotal_tracker":{"id":null,"name":"New identity 3","api_key":"3ea75a6d6a88edaa8d1534ec5612557c","user_id":2,"source_id":"526127",
         #                    "last_projects_refresh_at":null,"service":"Pivotal Tracker","errors":{"user":["can't be blank"]}}}"
         #
         def pivotal_tracker
           @identity = IdentitiesFactory.new(PivotalTrackerIdentity.new, params[:identity]).create
           if @identity.save
-            render 'api/v1/identities/show'
+            render 'api/v1/identities/_show'
           else
-            render 'api/v1/identities/show', status: 422
+            render 'api/v1/identities/_show', status: 422
           end
         end
 
@@ -147,7 +146,7 @@ module Api
         #   => 200
         #
         #   resp.body
-        #   => "{"identity":{"id":21,"name":"New name","api_key":"3ea75a6d6a88edaa8d1534ec5612557c","user_id":1,"source_id":"526127",
+        #   => "{"pivotal_tracker":{"id":21,"name":"New name","api_key":"3ea75a6d6a88edaa8d1534ec5612557c","user_id":1,"source_id":"526127",
         #                    "last_projects_refresh_at":null,"service":"Pivotal Tracker"}}"
         #
         #   resp = conn.put("/api/v1/admin/identities/21",
@@ -158,16 +157,16 @@ module Api
         #   => 200
         #
         #   resp.body
-        #   => "{"identity":{"id":21,"name":"New name","api_key":"3ea75a6d6a88edaa8d1534ec5612557c","user_id":1,"source_id":"526127",
+        #   => "{"pivotal_tracker":{"id":21,"name":"New name","api_key":"3ea75a6d6a88edaa8d1534ec5612557c","user_id":1,"source_id":"526127",
         #                    "last_projects_refresh_at":null,"service":"Pivotal Tracker"}}"
         #
         def update
           @identity = IdentitiesFactory.new(@identity, params[:identity]).update
 
           if @identity.save
-            render 'api/v1/identities/show'
+            render 'api/v1/identities/_show'
           else
-            render 'api/v1/identities/show', status: 422
+            render 'api/v1/identities/_show', status: 422
           end
         end
 
@@ -188,7 +187,7 @@ module Api
         #   => 200
         #
         #   resp.body
-        #   => "{"identity":{"id":20,"name":"PT identity","api_key":"3ea75a6d6a88edaa8d1534ec5612557c","user_id":1,"source_id":"526127",
+        #   => "{"pivotal_tracker":{"id":20,"name":"PT identity","api_key":"3ea75a6d6a88edaa8d1534ec5612557c","user_id":1,"source_id":"526127",
         #                    "last_projects_refresh_at":null,"service":"Pivotal Tracker"}}"
         #
         #   resp = conn.delete("/api/v1/admin/identities/21", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
@@ -201,7 +200,7 @@ module Api
         #
         def destroy
           @identity.destroy
-          render 'api/v1/identities/show'
+          render 'api/v1/identities/_show'
         end
 
         private

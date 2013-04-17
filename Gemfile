@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.13'
 gem 'rails-api'
-gem 'rabl'
+gem 'jbuilder'
 
 gem 'activerecord-jdbc-adapter'
 gem 'activerecord-jdbcpostgresql-adapter'
@@ -39,4 +39,3 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
   gem 'zurb-foundation', '~> 4.0.0'
 end
-

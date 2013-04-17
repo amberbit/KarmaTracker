@@ -27,8 +27,8 @@ module Api
       #   => 200
       #
       #   resp.body
-      #   => {"pivotal_tracker": [{"id": 1, "name": "John Doe", "api_key": "123456", "service": "Pivotal Tracker"}],
-      #       "git_hub": [{"id": 3, "name": "John Doe's GH identity", "api_key": "42", "service": "GitHub"}]}
+      #   => {[{"pivotal_tracker": {"id": 1, "name": "John Doe", "api_key": "123456", "service": "Pivotal Tracker"}},
+      #       {"git_hub": {"id": 3, "name": "John Doe's GH identity", "api_key": "42", "service": "GitHub"}}]}
       #
       #   resp = conn.get("/api/v1/identities",
       #                    "service" => "pivotal_tracker")
@@ -37,8 +37,7 @@ module Api
       #   => 200
       #
       #   resp.body
-      #   => {"pivotal_tracker":[{"id":1,"name":"John Doe","api_key":"123456","service":"Pivotal Tracker"}],
-      #       "git_hub":[]}
+      #   => {[{"pivotal_tracker":{"id":1,"name":"John Doe","api_key":"123456","service":"Pivotal Tracker"}}]}
       #
       def index
         @identities = if params[:service]
@@ -62,7 +61,7 @@ module Api
       #   => 200
       #
       #   resp.body
-      #   => {"identity": {"id": 1, "name": "John Doe", "api_key": "123456", "service": "Pivotal Tracker"}}
+      #   => {"pivotal_tracker": {"id": 1, "name": "John Doe", "api_key": "123456", "service": "Pivotal Tracker"}}
       #
       #
       #   resp = conn.get("/api/v1/projects/7")
@@ -76,7 +75,7 @@ module Api
       def show
         @identity = Identity.find_by_id(params[:id])
         if @identity && @identity.user.api_key == @api_key
-          render 'show'
+          render '_show'
         else
           render json: {message: 'Resource not found'}, status: 404
         end
@@ -104,7 +103,7 @@ module Api
       #   => 200
       #
       #   resp.body
-      #   => {"identity": {"id": 8, "name": "New identity", "api_key": "sdasdf32rfefs32", "service": "Pivotal Tracker"}}
+      #   => {"pivotal_tracker": {"id": 8, "name": "New identity", "api_key": "sdasdf32rfefs32", "service": "Pivotal Tracker"}}
       #
       #   resp = conn.post("/api/v1/identities/pivotal_tracker"
       #                    "identity[name]" => "New identity 2",
@@ -114,7 +113,7 @@ module Api
       #   => 422
       #
       #   resp.body
-      #   => {"identity": {"name": "New identity 2", "api_key": "wrong token", "errors": { "api_key": ["Is invalid"] }}}
+      #   => {"pivotal_tracker": {"name": "New identity 2", "api_key": "wrong token", "errors": { "api_key": ["Is invalid"] }}}
       #
       #   resp = conn.post("/api/v1/identities/pivotal_tracker"
       #                    "identity[name]" => "New identity 3",
@@ -125,15 +124,16 @@ module Api
       #   => 422
       #
       #   resp.body
-      #   => {"identity": {"name": "New identity 3", "email": "mail@example.com", "password": "wrong_password",  "errors": { "password": ["does not match email"] }}}
+      #   => {"pivotal_tracker": {"name": "New identity 3", "email": "mail@example.com", "password": "wrong_password",
+      #                           "errors": { "password": ["does not match email"] }}}
       #
       def pivotal_tracker
         options = (params[:identity] || {}).merge({user_id: @current_user.id})
         @identity = IdentitiesFactory.new(PivotalTrackerIdentity.new, options).create
         if @identity.save
-          render 'show'
+          render '_show'
         else
-          render 'show', status: 422
+          render '_show', status: 422
         end
       end
 
@@ -150,7 +150,7 @@ module Api
       #   => 200
       #
       #   resp.body
-      #   => {"identity": {"id": 1, "name": "John Doe", "api_key": "123456", "service": "Pivotal Tracker"}}
+      #   => {"pivotal_tracker": {"id": 1, "name": "John Doe", "api_key": "123456", "service": "Pivotal Tracker"}}
       #
       #   resp = conn.delete("/api/v1/identities/123")
       #
@@ -164,7 +164,7 @@ module Api
         @identity = Identity.find_by_id(params[:id])
         if @identity && @identity.user.api_key == @api_key
           @identity.delete
-          render 'api/v1/identities/show'
+          render '_show'
         else
           render json: {message: 'Resource not found'}, status: 404
         end
