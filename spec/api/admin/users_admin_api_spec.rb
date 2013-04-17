@@ -57,7 +57,7 @@ describe 'Admin API #Users' do
 
     json['user'].has_key?('errors').should be_true
     json['user']['errors']['email'].include?('has already been taken').should be_true
-    json['user']['errors']['password'].include?('is too short (minimum is 8 characters)').should be_true
+    json['user']['errors']['password'].include?('is too short (minimum is 6 characters)').should be_true
   end
 
   # PUT /api/v1/admin/users/:id
