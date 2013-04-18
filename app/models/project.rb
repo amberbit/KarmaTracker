@@ -1,7 +1,7 @@
 class Project < ActiveRecord::Base
   attr_accessible :name, :source_name, :source_identifier
 
-  has_many :participations
+  has_many :participations, dependent: :destroy
   has_many :identities, :through => :participations, :uniq  => true
   has_many :tasks, dependent: :destroy
 

@@ -7,7 +7,7 @@ class Identity < ActiveRecord::Base
   validates :user, presence: true
 
   belongs_to :user
-  has_many :participations
+  has_many :participations, dependent: :destroy
   has_many :projects, :through => :participations
 
   after_create :fetch_projects
