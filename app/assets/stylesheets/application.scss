@@ -47,3 +47,16 @@
     margin-left: 20px;
   }
 }
+
+#flash {
+  .alert-box {
+    position: absolute;
+    margin-left: -50% !important;
+    z-index: 2;
+    top: 1.5em;
+  }
+  position: absolute;
+  height: 0px;
+  padding-left: 50%;
+}
+
