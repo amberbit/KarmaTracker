@@ -17,7 +17,8 @@ class GitHubProjectsFetcher
         project.name = name
         project.save
         fetch_identities project, identity, repo_name, owner_name
-        fetch_tasks project, identity, repo_name, owner_name
+        fetch_tasks project, identity, repo_name, owner_name, 'open'
+        fetch_tasks project, identity, repo_name, owner_name, 'closed'
       end
     end while uri
 
@@ -47,9 +48,9 @@ class GitHubProjectsFetcher
     Rails.logger.info "Successfully updated list of identities for GH project #{project.source_identifier}"
   end
 
-  def fetch_tasks(project, identity, repo_name, repo_owner)
+  def fetch_tasks(project, identity, repo_name, repo_owner, state)
     Rails.logger.info "Fetching tasks for GH project #{project.source_identifier}"
-    uri = "https://api.github.com/repos/#{repo_owner}/#{repo_name}/issues"
+    uri = "https://api.github.com/repos/#{repo_owner}/#{repo_name}/issues?state=#{state}"
 
     begin
       response, uri = perform_get(uri, {'Authorization' => "token #{identity.api_key}"})
@@ -57,7 +58,7 @@ class GitHubProjectsFetcher
         name = issue["title"]
         source_identifier = "#{project.source_identifier}/#{issue["number"]}"
         story_type = "issue"
-        current_state = issue["state"]
+        current_state = state
 
         task = Task.where("source_name = 'GitHub' AND source_identifier = ?", source_identifier).
           first_or_initialize(source_name: 'GitHub', source_identifier: source_identifier)
