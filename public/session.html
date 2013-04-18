@@ -3,9 +3,9 @@
   <div class="small-4 columns">
     <form ng-submit="signIn()">
       <div ng-show="message" data-alert class='alert-box alert'>{{message}}</div>
-      <input type="text" ng-model="session.email" />
+      <input type="text" ng-model="$parent.session.email" autofocus='autofocus' focus="{{focus_email}}"/>
       <br/>
-      <input type="password" ng-model="session.password" />
+      <input type="password" ng-model="$parent.session.password" focus="{{focus_password}}"/>
       <button>Sign in!</button>
     </form>
   </div>

@@ -1,3 +1,10 @@
+<div id="flash" class="row" ng-controller="FlashesController">
+  <div ng-show="message.string" ng-class="{'small-12': true, 'columns': true, 'alert-box': true, 'alert': isAlert()}">
+    {{message.string}}
+  </div>
+</div>
+
+
 <div class="row page-header">
   <div class="small-12 columns">
     <a href="#/logout" ng-show="signed_in" class="top-btn">Log out</a>
