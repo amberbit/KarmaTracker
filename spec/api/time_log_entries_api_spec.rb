@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'api/api_helper'
+require 'timecop'
 
 describe 'TimeLogEntry API' do
 
@@ -134,8 +135,10 @@ describe 'TimeLogEntry API' do
     end
     @user.time_log_entries.count.should == 5
 
-    json = api_get "time_log_entries/", { token: @user.api_key.token, started_at: 10.days.ago, stopped_at: 3.days.ago }
-    json.count.should == 2
+    Timecop.travel(1.minute.from_now) do
+      json = api_get "time_log_entries/", { token: @user.api_key.token, started_at: 10.days.ago.iso8601, stopped_at: 3.days.ago.iso8601 }
+      json.count.should == 3
+    end
   end
 
 end

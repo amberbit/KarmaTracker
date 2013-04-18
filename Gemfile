@@ -28,6 +28,7 @@ group :test do
   gem 'factory_girl_rails'
   gem 'fakeweb', require: false
   gem 'torquebox-no-op', require: false
+  gem 'timecop', require: false
 end
 
 group :development, :test do

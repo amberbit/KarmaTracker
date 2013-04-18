@@ -16,19 +16,19 @@ class TimeLogEntry < ActiveRecord::Base
   before_save :calculate_logged_time
 
   scope :from_timestamp, lambda { |timestamp|
-    where("(?::timestamp with time zone) BETWEEN started_at AND stopped_at", timestamp)
+    where("timestamp :stamp BETWEEN started_at AND stopped_at", stamp: timestamp)
   }
 
   scope :within_timerange, lambda { |start,stop|
-    where("(?::timestamp with time zone, ?::timestamp with time zone) OVERLAPS (started_at, stopped_at)", start, stop)
+    where("(started_at, stopped_at) OVERLAPS (timestamp :start, timestamp :stop)", start: start, stop: stop)
   }
 
-  scope :after_timestamp, lambda { |timestamp|
-    where("started_at >= (?::timestamp with time zone)", timestamp)
+  scope :after_timestamp, lambda { |str_timestamp|
+    where("stopped_at > ?", Time.zone.parse(str_timestamp))
   }
 
-  scope :before_timestamp, lambda { |timestamp|
-    where("stopped_at <= (?::timestamp with time zone)", timestamp)
+  scope :before_timestamp, lambda { |str_timestamp|
+    where("started_at <= ?", Time.zone.parse(str_timestamp))
   }
 
   scope :from_project, lambda { |project_id|
