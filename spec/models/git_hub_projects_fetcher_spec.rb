@@ -65,7 +65,7 @@ describe 'GitHubProjectsFetcher' do
     @fetcher.fetch_for_identity(@identity)
     Task.last.current_task.should be_true
 
-    FakeWeb.register_uri(:get, /https:\/\/api\.github\.com\/repos\/.*\/.*\/issues/,
+    FakeWeb.register_uri(:get, /https:\/\/api\.github\.com\/repos\/.*\/.*\/issues\?state\=closed/,
       :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'git_hub', 'responses', 'issues2.json')),
       :status => ['200', 'OK'])
 

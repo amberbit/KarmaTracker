@@ -7,10 +7,10 @@ class GitHubProjectsFetcher
     begin
       response, uri = perform_get(uri, {'Authorization' => "token #{identity.api_key}"})
       JSON.parse(response).each do |repo|
-        repo_name = repo["name"]
-        owner_name = repo["owner"]["login"]
-        name = repo["full_name"]
-        source_identifier = repo["id"].to_s
+        repo_name = repo['name']
+        owner_name = repo['owner']['login']
+        name = repo['full_name']
+        source_identifier = repo['id'].to_s
 
         project = Project.where("source_name = 'GitHub' AND source_identifier = ?", source_identifier).
           first_or_initialize(source_name: 'GitHub', source_identifier: source_identifier)
@@ -32,8 +32,12 @@ class GitHubProjectsFetcher
 
     begin
       response, uri = perform_get(uri, {'Authorization' => "token #{identity.api_key}"})
-      JSON.parse(response).each do |collaborator|
-        gh_identity = GitHubIdentity.find_by_source_id(collaborator["login"])
+      collaborators = JSON.parse(response)
+      break unless collaborators.instance_of?(Array)
+
+      collaborators.each do |collaborator|
+        next unless collaborator['login']
+        gh_identity = GitHubIdentity.find_by_source_id(collaborator['login'])
         identities << gh_identity if gh_identity.present?
       end
     end while uri
@@ -54,10 +58,13 @@ class GitHubProjectsFetcher
 
     begin
       response, uri = perform_get(uri, {'Authorization' => "token #{identity.api_key}"})
-      JSON.parse(response).each do |issue|
-        name = issue["title"]
+      issues = JSON.parse(response)
+      break unless issues.instance_of?(Array)
+
+      issues.each do |issue|
+        name = issue['title']
         source_identifier = "#{project.source_identifier}/#{issue["number"]}"
-        story_type = "issue"
+        story_type = 'issue'
         current_state = state
 
         task = Task.where("source_name = 'GitHub' AND source_identifier = ?", source_identifier).
