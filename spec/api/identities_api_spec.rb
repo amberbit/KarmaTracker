@@ -110,7 +110,7 @@ describe 'Identities API' do
   it 'should add error messages to response when adding GH identity fails' do
     FactoryGirl.create :user
     json = api_post "identities/git_hub", {token: ApiKey.last.token, identity: {name: 'Just an identity',
-           username: 'wrong_email', password: 'wrong_password'}}
+           username: 'wrong_username', password: 'wrong_password'}}
 
     response.status.should == 422
     Identity.count.should == 0

@@ -14,7 +14,9 @@ describe GitHubIdentity do
     gi = GitHubIdentity.new
     gi.username = 'wrong_username'
     gi.password = 'wrong_password'
-    gi.save
+    gi.save.should be_false
+    gi.errors[:password].should be_present
+
     GitHubIdentity.count.should == 0
   end
 

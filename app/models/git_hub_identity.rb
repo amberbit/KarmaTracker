@@ -37,9 +37,11 @@ class GitHubIdentity < Identity
       self.api_key = token
       self.source_id = username
     else
-      raise Exception
+      errors.add(:password, 'provided username/password combination is invalid')
     end
-  rescue
+  rescue StandardError => e
+    Rails.logger.warn "Exception when validating Github identity: #{e.class}: #{e.message}"
+
     errors.add(:password, 'provided username/password combination is invalid')
   end
 
