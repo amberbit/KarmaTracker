@@ -16,8 +16,6 @@ KarmaTracker::Application.routes.draw do
 
       resources :session, only: [:create]
 
-      resources :tasks, only: []
-
       resources :time_log_entries, only: [:index, :create, :update, :destroy] do
         collection do
           post :stop
