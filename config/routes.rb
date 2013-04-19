@@ -36,6 +36,8 @@ KarmaTracker::Application.routes.draw do
         member do
           get :tasks
           get :current_tasks
+          get :pivotal_tracker_activity_web_hook_url
+          post :pivotal_tracker_activity_web_hook
         end
       end
     end

@@ -2,7 +2,7 @@ module Api
   module V1
     class ProjectsController < ApplicationController
       respond_to :json
-      before_filter :restrict_access
+      before_filter :restrict_access, except: [:pivotal_tracker_activity_web_hook]
 
       ##
       # Returns array of projects user participates in
@@ -178,6 +178,84 @@ module Api
         if @api_key.user.projects.include?(project)
           @tasks = project.tasks.current
           render 'tasks'
+        else
+          render json: {message: 'Resource not found'}, status: 404
+        end
+      end
+
+      ##
+      # Pivotal Tracker activity web hook
+      #
+      # POST /api/v1/projects/:id/pivotal_tracker_activity_web_hook
+      #
+      # params:
+      #   token - unique token web hook token assigned to a project; can be retrieved by sending get request to /api/v1/projects/:id/pivotal_tracker_activity_web_hook_url
+      #
+      # = Examples
+      #
+      #   resp = conn.post do |req|
+      #     req.url "/api/v1/projects/16/pivotal_tracker_activity_web_hook?token=correct"
+      #     req.body = '<?xml version="1.0" encoding="UTF-8"?> <activity> <id type="integer">12345</id> <version type="integer">4</version>
+      #                 <event_type>story_create</event_type> <occurred_at type="datetime">2013/04/19 08:31:27 UTC</occurred_at>
+      #                 <author>Darth Vader</author> <project_id type="integer">16</project_id> <description>Darth Vader added &quot;Building Death Star&quot;</description>
+      #                 <stories type="array"> <story> <id type="integer">1231231</id> <url>http://www.pivotaltracker.com/services/v3/projects/16/stories/1231231</url>
+      #                 <name>Build Death Star</name><story_type>feature</story_type> <current_state>unscheduled</current_state> <requested_by>Imperator Palpatine</requested_by>
+      #                 </story> </stories> </activity>'
+      #   end
+      #
+      #   resp.status
+      #   => 200
+      #
+      #   resp.body
+      #   => {"message": "Activity processed"}
+      #
+      #   resp = conn.post do |req|
+      #     req.url "/api/v1/projects/1/pivotal_tracker_activity_web_hook?token=correct"
+      #     req.body = '<?xml version="1.0" encoding="UTF-8"?> <activity> <id type="integer">12345</id> <version type="integer">4</version>
+      #                 <event_type>story_create</event_type> <occurred_at type="datetime">2013/04/19 08:31:27 UTC</occurred_at>
+      #                 <author>Darth Vader</author> <project_id type="integer">16</project_id> <description>Darth Vader added &quot;Building Death Star&quot;</description>
+      #                 <stories type="array"> <story> <id type="integer">1231231</id> <url>http://www.pivotaltracker.com/services/v3/projects/16/stories/1231231</url>
+      #                 <name>Building Death Star</name> <story_type>feature</story_type> <current_state>unscheduled</current_state> <requested_by>Imperator Palpatine</requested_by>
+      #                 </story> </stories> </activity>'
+      #   end
+      #
+      #   resp.status
+      #   => 404
+      #
+      #   resp.body
+      #   => {"message": "Resource not found"}
+      #
+      #   resp = conn.post do |req|
+      #     req.url "/api/v1/projects/1/pivotal_tracker_activity_web_hook?token=wrong"
+      #     req.body = '<?xml version="1.0" encoding="UTF-8"?> <activity> <id type="integer">12345</id> <version type="integer">4</version>
+      #                 <event_type>story_create</event_type> <occurred_at type="datetime">2013/04/19 08:31:27 UTC</occurred_at>
+      #                 <author>Darth Vader</author> <project_id type="integer">16</project_id> <description>Darth Vader added &quot;Building Death Star&quot;</description>
+      #                 <stories type="array"> <story> <id type="integer">1231231</id> <url>http://www.pivotaltracker.com/services/v3/projects/16/stories/1231231</url>
+      #                 <name>Building Death Star</name> <story_type>feature</story_type> <current_state>unscheduled</current_state> <requested_by>Imperator Palpatine</requested_by>
+      #                 </story> </stories> </activity>'
+      #   end
+      #
+      #   resp.status
+      #   => 401
+      #
+      #   resp.body
+      #   => {"message": "Invalid token"}
+      #
+      def pivotal_tracker_activity_web_hook
+        project = Project.find(params[:id])
+        if params[:token].blank? || params[:token] != project.web_hook_token
+          render json: {message: 'Invalid token'}, status: 401
+        elsif project && PivotalTrackerActivityWebHook.new(project).process_request(request.body)
+          render json: {message: 'Activity processed'}, status: 200
+        else
+          render json: {message: 'Resource not found'}, status: 404
+        end
+      end
+
+      def pivotal_tracker_activity_web_hook_url
+        project = Project.find(params[:id])
+        if project.users.include? @api_key.user
+          render json: {url: "#{pivotal_tracker_activity_web_hook_api_v1_project_url(project)}?token=#{project.web_hook_token}"}, status: 200
         else
           render json: {message: 'Resource not found'}, status: 404
         end
