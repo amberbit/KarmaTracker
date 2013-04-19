@@ -24,7 +24,7 @@ class GitHubProjectsFetcher
         fetch_identities project, identity, repo_name, owner_name
         fetch_tasks project, identity, repo_name, owner_name, 'open'
         fetch_tasks project, identity, repo_name, owner_name, 'closed'
-        GitHubWebHooksManager.new({project: project}).create_hook(identity) unless project.hook
+        GitHubWebHooksManager.new({project: project}).create_hook(identity) unless project.web_hook
       end
     end while uri
 

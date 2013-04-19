@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<activity>
+  <id type="integer">12345</id>
+  <version type="integer">4</version>
+  <event_type>story_update</event_type>
+  <occurred_at type="datetime">2013/04/19 08:31:27 UTC</occurred_at>
+  <author>Darth Vader</author>
+  <project_id type="integer">16</project_id>
+  <description>Darth Vader added &quot;Building Death Star&quot;</description>
+  <stories type="array">
+    <story>
+      <id type="integer">1231231</id>
+      <url>http://www.pivotaltracker.com/services/v3/projects/16/stories/1231231</url>
+      <current_state>started</current_state>
+    </story>
+  </stories>
+</activity>
