@@ -183,6 +183,15 @@ module Api
         end
       end
 
+      ##
+      # Process issues creation/update feed from GitHub hook.
+      #
+      # POST /api/v1/projects/git_hub_activity_web_hook
+      #
+      def git_hub_activity_web_hook
+        GitHubWebHooksManager.new({request: request}).process_feed
+      end
+
     end
   end
 end

@@ -1,12 +1,17 @@
 class GitHubProjectsFetcher
+  include ApplicationHelper
 
   def fetch_projects(identity)
     Rails.logger.info "Fetching projects for GH identity #{identity.api_key}"
     uri = "https://api.github.com/user/subscriptions"
 
     begin
-      response, uri = perform_get(uri, {'Authorization' => "token #{identity.api_key}"})
-      JSON.parse(response).each do |repo|
+      response = perform_request('get', uri, {}, {'Authorization' => "token #{identity.api_key}"})
+      uri = extract_next_link(response)
+      repos = JSON.parse(response.body)
+      break unless repos.instance_of?(Array)
+
+      repos.each do |repo|
         repo_name = repo['name']
         owner_name = repo['owner']['login']
         name = repo['full_name']
@@ -19,6 +24,7 @@ class GitHubProjectsFetcher
         fetch_identities project, identity, repo_name, owner_name
         fetch_tasks project, identity, repo_name, owner_name, 'open'
         fetch_tasks project, identity, repo_name, owner_name, 'closed'
+        GitHubWebHooksManager.new({project: project}).create_hook(identity) unless project.hook
       end
     end while uri
 
@@ -31,8 +37,9 @@ class GitHubProjectsFetcher
     uri = "https://api.github.com/repos/#{repo_owner}/#{repo_name}/collaborators"
 
     begin
-      response, uri = perform_get(uri, {'Authorization' => "token #{identity.api_key}"})
-      collaborators = JSON.parse(response)
+      response = perform_request('get', uri, {}, {'Authorization' => "token #{identity.api_key}"})
+      uri = extract_next_link(response)
+      collaborators = JSON.parse(response.body)
       break unless collaborators.instance_of?(Array)
 
       collaborators.each do |collaborator|
@@ -57,8 +64,9 @@ class GitHubProjectsFetcher
     uri = "https://api.github.com/repos/#{repo_owner}/#{repo_name}/issues?state=#{state}"
 
     begin
-      response, uri = perform_get(uri, {'Authorization' => "token #{identity.api_key}"})
-      issues = JSON.parse(response)
+      response = perform_request('get', uri, {}, {'Authorization' => "token #{identity.api_key}"})
+      uri = extract_next_link(response)
+      issues = JSON.parse(response.body)
       break unless issues.instance_of?(Array)
 
       issues.each do |issue|
@@ -85,15 +93,8 @@ class GitHubProjectsFetcher
 
   private
 
-  def perform_get url, headers={}
-    uri = URI.parse(url)
-    http = Net::HTTP.new(uri.host, uri.port)
-    http.use_ssl = true
-    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-    request = Net::HTTP::Get.new(uri.request_uri, headers)
-
-    response = http.request(request)
-    next_link = if(response.get_fields('link'))
+  def extract_next_link response
+    if(response.get_fields('link'))
       tmp = response.get_fields('link').first.split(',').select{|link|
         link.split(';').last =~ /next/i
       }.first
@@ -101,8 +102,6 @@ class GitHubProjectsFetcher
     else
       nil
     end
-
-    return response.body, next_link
   end
 
 end

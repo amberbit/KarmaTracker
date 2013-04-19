@@ -5,6 +5,8 @@ default:
     allow_register: false
     allow_destroy: true
     password_min_chars: 6
+  hooks:
+    git_hub: 'http://localhost:3000/api/v1/hooks/git_hub'
 
 development:
 

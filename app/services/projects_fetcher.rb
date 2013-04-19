@@ -4,7 +4,7 @@ require 'open-uri'
 
 class ProjectsFetcher
   if ENV['TORQUEBOX_APP_NAME']
-    include TorqueBox::Messaging::Backgroundable 
+    include TorqueBox::Messaging::Backgroundable
   else
     def background; self; end
   end
