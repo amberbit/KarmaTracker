@@ -1,9 +1,5 @@
 require 'spec_helper'
 
-class FakeRequest
-  attr_accessor :body
-end
-
 describe PivotalTrackerActivityWebHook do
 
   before :each do

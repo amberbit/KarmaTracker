@@ -110,12 +110,73 @@ describe 'Projects API' do
   end
 
   # GET /projects/:id/current_tasks
-  it 'should return an error when trying to fetch tasks from other user\'s proejct' do
+  it 'should return an error when trying to fetch tasks from other user\'s project' do
     user = FactoryGirl.create :user
     api_get "projects/#{Project.last.id}/current_tasks", {token: user.api_key.token}
     response.status.should == 404
     resp = JSON.parse(response.body)
     resp.should have_key("message")
     resp["message"].should =~ /Resource not found/
+  end
+
+  # GET /api/v1/projects/:id/pivotal_tracker_activity_web_hook_url
+  it 'should return project\'s PT web hook URL for project members' do
+    api_get "projects/#{Project.last.id}/pivotal_tracker_activity_web_hook_url", {token: Project.last.users.last.api_key.token}
+    response.status.should == 200
+    resp = JSON.parse(response.body)
+    resp.should have_key("url")
+    resp["url"].should == "#{pivotal_tracker_activity_web_hook_api_v1_project_url(Project.last)}?token=#{Project.last.web_hook_token}"
+  end
+
+  # GET /api/v1/projects/:id/pivotal_tracker_activity_web_hook_url
+  it 'should return an error when trying to get PT web hook url from other user\'s project' do
+    user = FactoryGirl.create :user
+    api_get "projects/#{Project.last.id}/pivotal_tracker_activity_web_hook_url", {token: user.api_key.token}
+    response.status.should == 404
+    resp = JSON.parse(response.body)
+    resp.should have_key("message")
+    resp["message"].should =~ /Resource not found/
+  end
+
+  # POST /api/v1/projects/:id/pivotal_tracker_activity_web_hook
+  it 'should return 401 if no token was provided' do
+    api_post "projects/#{Project.last.id}/pivotal_tracker_activity_web_hook", File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_create.xml'))
+    response.status.should == 401
+    resp = JSON.parse(response.body)
+    resp.should have_key("message")
+    resp["message"].should =~ /Invalid token/
+  end
+
+  # POST /api/v1/projects/:id/pivotal_tracker_activity_web_hook
+  it 'should return 401 if wrong token was provided' do
+    project = FactoryGirl.create :project
+    project2 = FactoryGirl.create :project
+    api_post "projects/#{project.id}/pivotal_tracker_activity_web_hook?token=#{project2.web_hook_token}", File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_create.xml'))
+    response.status.should == 401
+    resp = JSON.parse(response.body)
+    resp.should have_key("message")
+    resp["message"].should =~ /Invalid token/
+  end
+
+  # POST /api/v1/projects/:id/pivotal_tracker_activity_web_hook
+  it 'should return 404 in case of project_id and activity data mismatch' do
+    project = FactoryGirl.create :project, source_identifier: 42
+    api_post "projects/#{project.id}/pivotal_tracker_activity_web_hook?token=#{project.reload.web_hook_token}", File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_create.xml'))
+    response.status.should == 404
+    resp = JSON.parse(response.body)
+    resp.should have_key("message")
+    resp["message"].should =~ /Resource not found/
+  end
+
+  # POST /api/v1/projects/:id/pivotal_tracker_activity_web_hook
+  it 'should process correct request' do
+    project = FactoryGirl.create :project, source_identifier: 16
+    project.tasks.count.should == 0
+    api_post "projects/#{project.id}/pivotal_tracker_activity_web_hook?token=#{project.reload.web_hook_token}", File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_create.xml'))
+    response.status.should == 200
+    resp = JSON.parse(response.body)
+    resp.should have_key("message")
+    resp["message"].should =~ /Activity processed/
+    project.reload.tasks.count.should == 1
   end
 end
