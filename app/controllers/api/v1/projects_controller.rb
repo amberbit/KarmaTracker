@@ -2,7 +2,7 @@ module Api
   module V1
     class ProjectsController < ApplicationController
       respond_to :json
-      before_filter :restrict_access, except: [:pivotal_tracker_activity_web_hook]
+      before_filter :restrict_access, except: [:pivotal_tracker_activity_web_hook, :git_hub_activity_web_hook]
 
       ##
       # Returns array of projects user participates in
@@ -187,6 +187,32 @@ module Api
       # Process issues creation/update feed from GitHub hook.
       #
       # POST /api/v1/projects/git_hub_activity_web_hook
+      #
+      # params:
+      #   token - unique token web hook token assigned to a project.
+      #
+      # = Examples
+      #
+      #   resp = conn.post do |req|
+      #     req.url "/api/v1/projects/1/git_hub_activity_web_hook?token=correct"
+      #     req.body = '{
+      #                  "action":"opened",
+      #                  "issue":{"id":123,"number":1,"title":"test","state":"open",...},
+      #                  "repository":{
+      #                    "id":12345678,
+      #                    "name":"repo",
+      #                    "full_name":"owner/repo",...},
+      #                  "sender":{
+      #                    "login":"sender",
+      #                    "id":12345678,
+      #                    "type":"User",...}}'
+      #   end
+      #
+      #   resp.status
+      #   => 200
+      #
+      #   resp.body
+      #   => {"message": "Activity processed"}
       #
       def git_hub_activity_web_hook
         if project = Project.where(source_name: 'GitHub').find_by_web_hook_token(params[:token])

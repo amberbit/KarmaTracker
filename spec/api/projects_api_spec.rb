@@ -118,4 +118,20 @@ describe 'Projects API' do
     resp.should have_key("message")
     resp["message"].should =~ /Resource not found/
   end
+
+  # POST /api/v1/projects/git_hub_activity_web_hook
+  it 'should process issues feed from GH' do
+    project = FactoryGirl.create :gh_project
+    json = api_post "projects/git_hub_activity_web_hook", {token: project.web_hook_token}
+    response.status.should == 200
+    json['message'].should == 'Activity processed'
+  end
+
+  # POST /api/v1/projects/git_hub_activity_web_hook
+  it 'should not process issues feed when provided invalid token' do
+    json = api_post "projects/git_hub_activity_web_hook", {token: Project.last.web_hook_token}
+    response.status.should == 401
+    json['message'].should == 'Invalid token'
+  end
+
 end

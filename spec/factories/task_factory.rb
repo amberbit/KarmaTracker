@@ -7,5 +7,11 @@ FactoryGirl.define do
     story_type "feature"
     sequence(:name) {|i| "Sample task nr #{i}"}
     current_task false
+
+    factory :gh_task do
+      source_name "GitHub"
+      current_state "open"
+      story_type "issue"
+    end
   end
 end

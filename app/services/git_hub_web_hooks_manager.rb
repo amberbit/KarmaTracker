@@ -13,7 +13,7 @@ class GitHubWebHooksManager
     json = JSON.parse request.body
     issue = json['issue']
     repository = json['repository']
-    return nil unless @project.source_identifier == repository['id']
+    return nil unless @project.source_identifier == repository['id'].to_s
 
     source_identifier = "#{repository['id']}/#{issue['number']}"
     task = Task.where("source_name = 'GitHub' AND source_identifier = ?", source_identifier).
