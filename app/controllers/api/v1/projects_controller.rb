@@ -195,6 +195,7 @@ module Api
       #
       #   resp = conn.post do |req|
       #     req.url "/api/v1/projects/1/git_hub_activity_web_hook?token=correct"
+      #     req.headers['X-Github-Event'] = 'issues'
       #     req.body = '{
       #                  "action":"opened",
       #                  "issue":{"id":123,"number":1,"title":"test","state":"open",...},
