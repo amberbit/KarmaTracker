@@ -291,6 +291,29 @@ module Api
         end
       end
 
+      ##
+      # Returns web hook URL, containing authentication token
+      #
+      # GET /api/v1/projects/:id/pivotal_tracker_activity_web_hook_url
+      #
+      # = Examples
+      #
+      #   resp = conn.get("api/v1/projects/1/pivotal_tracker_activity_web_hook_url")
+      #
+      #   resp.status
+      #   => 200
+      #
+      #   resp.body
+      #   => {"url": "http://some-host.com/api/v1/projects/1/pivotal_tracker_activity_web_hook?token=W3bH0oKt043n
+      #
+      #   resp = conn.get("api/v1/projects/123/pivotal_tracker_activity_web_hook_url")
+      #
+      #   resp.status
+      #   => 404
+      #
+      #   resp.body
+      #   => {"message": "Resource not found"}
+      #
       def pivotal_tracker_activity_web_hook_url
         project = Project.find(params[:id])
         if project.users.include? @api_key.user
