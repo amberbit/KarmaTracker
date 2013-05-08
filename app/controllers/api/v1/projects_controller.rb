@@ -315,12 +315,9 @@ module Api
       #
       # GET /api/v1/projects/:id/pivotal_tracker_activity_web_hook_url
       #
-      # params:
-      #   token - KarmaTracker API token
-      #
       # = Examples
       #
-      #   resp = conn.get("api/v1/projects/1/pivotal_tracker_activity_web_hook_url", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
+      #   resp = conn.get("api/v1/projects/1/pivotal_tracker_activity_web_hook_url")
       #
       #   resp.status
       #   => 200
@@ -328,7 +325,7 @@ module Api
       #   resp.body
       #   => {"url": "http://some-host.com/api/v1/projects/1/pivotal_tracker_activity_web_hook?token=W3bH0oKt043n
       #
-      #   resp = conn.get("api/v1/projects/123/pivotal_tracker_activity_web_hook_url", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
+      #   resp = conn.get("api/v1/projects/123/pivotal_tracker_activity_web_hook_url")
       #
       #   resp.status
       #   => 404
