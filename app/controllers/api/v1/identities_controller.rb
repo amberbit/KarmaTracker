@@ -10,6 +10,7 @@ module Api
       # GET /api/v1/identities
       #
       # params:
+      #   token - KarmaTracker API token
       #   optional:
       #     service - name of the service for which identities should be returned;
       #               both CamelCase and snake_case notations are supported.
@@ -21,7 +22,7 @@ module Api
       #
       # = Examples
       #
-      #   resp = conn.get("/api/v1/identities")
+      #   resp = conn.get("/api/v1/identities", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
       #
       #   resp.status
       #   => 200
@@ -31,7 +32,8 @@ module Api
       #       {"git_hub": {"id": 3, "name": "John Doe's GH identity", "api_key": "42", "service": "GitHub"}}]}
       #
       #   resp = conn.get("/api/v1/identities",
-      #                    "service" => "pivotal_tracker")
+      #                   "token" => "dcbb7b36acd4438d07abafb8e28605a4",
+      #                   "service" => "pivotal_tracker")
       #
       #   resp.status
       #   => 200
@@ -53,9 +55,12 @@ module Api
       #
       # GET /api/v1/identities/:id
       #
+      # params:
+      #   token - KarmaTracker API token
+      #
       # = Examples
       #
-      #   resp = conn.get("/api/v1/identities/1")
+      #   resp = conn.get("/api/v1/identities/1", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
       #
       #   resp.status
       #   => 200
@@ -64,7 +69,7 @@ module Api
       #   => {"pivotal_tracker": {"id": 1, "name": "John Doe", "api_key": "123456", "service": "Pivotal Tracker"}}
       #
       #
-      #   resp = conn.get("/api/v1/projects/7")
+      #   resp = conn.get("/api/v1/projects/7", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
       #
       #   resp.status
       #   => 404
@@ -87,6 +92,7 @@ module Api
       # POST /api/v1/identities/pivotal_tracker
       #
       # params:
+      #   token - KarmaTracker API token
       #   identity[name] - identity name
       #   identity[api_key] - Pivotal Tracker API token
       #   identity[email] - email assigned to PT account
@@ -95,7 +101,8 @@ module Api
       #
       # = Examples
       #
-      #   resp = conn.post("/api/v1/identities/pivotal_tracker"
+      #   resp = conn.post("/api/v1/identities/pivotal_tracker",
+      #                    "token" => "dcbb7b36acd4438d07abafb8e28605a4",
       #                    "identity[name]" => "New identity",
       #                    "identity[api_key]" => "sdgs24386tr8732gfsiur32")
       #
@@ -105,7 +112,8 @@ module Api
       #   resp.body
       #   => {"pivotal_tracker": {"id": 8, "name": "New identity", "api_key": "sdasdf32rfefs32", "service": "Pivotal Tracker"}}
       #
-      #   resp = conn.post("/api/v1/identities/pivotal_tracker"
+      #   resp = conn.post("/api/v1/identities/pivotal_tracker",
+      #                    "token" => "dcbb7b36acd4438d07abafb8e28605a4",
       #                    "identity[name]" => "New identity 2",
       #                    "identity[api_key]" => "wrong token")
       #
@@ -115,7 +123,8 @@ module Api
       #   resp.body
       #   => {"pivotal_tracker": {"name": "New identity 2", "api_key": "wrong token", "errors": { "api_key": ["Is invalid"] }}}
       #
-      #   resp = conn.post("/api/v1/identities/pivotal_tracker"
+      #   resp = conn.post("/api/v1/identities/pivotal_tracker",
+      #                    "token" => "dcbb7b36acd4438d07abafb8e28605a4",
       #                    "identity[name]" => "New identity 3",
       #                    "identity[email]" => "mail@example.com"
       #                    "identity[password]" => "wrong_password")
@@ -143,13 +152,15 @@ module Api
       # POST /api/v1/identities/git_hub
       #
       # params:
+      #   token - KarmaTracker API token
       #   identity[name] - identity name
       #   identity[username] - username assigned to GH account
       #   identity[password] - password assigned to GH account
       #
       # = Examples
       #
-      #   resp = conn.post("/api/v1/identities/git_hub"
+      #   resp = conn.post("/api/v1/identities/git_hub",
+      #                    "token" => "dcbb7b36acd4438d07abafb8e28605a4",
       #                    "identity[name]" => "New identity",
       #                    "identity[username]" => "R2D2"
       #                    "identity[password]" => "fdsjfsho7h23orfesk")
@@ -160,10 +171,11 @@ module Api
       #   resp.body
       #   => {"git_hub": {"id": 9, "name": "New identity", "api_key": "sdasdf32rfefs32", "service": "GitHub"}}
       #
-      #   resp = conn.post("/api/v1/identities/pivotal_tracker"
+      #   resp = conn.post("/api/v1/identities/pivotal_tracker",
+      #                    "token" => "dcbb7b36acd4438d07abafb8e28605a4",
       #                    "identity[name]" => "New identity 2",
       #                    "identity[username]" => "R2D2"
-      #                    "identity[password]" => "wrond password")
+      #                    "identity[password]" => "wrongpassword")
       #
       #   resp.status
       #   => 422
@@ -186,9 +198,13 @@ module Api
       #
       # DELETE /api/v1/identities/:id
       #
+      # params:
+      #   token - KarmaTracker API token
+      #
+      #
       # = Examples
       #
-      #   resp = conn.delete("/api/v1/identities/1")
+      #   resp = conn.delete("/api/v1/identities/1", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
       #
       #   resp.status
       #   => 200
@@ -196,7 +212,7 @@ module Api
       #   resp.body
       #   => {"pivotal_tracker": {"id": 1, "name": "John Doe", "api_key": "123456", "service": "Pivotal Tracker"}}
       #
-      #   resp = conn.delete("/api/v1/identities/123")
+      #   resp = conn.delete("/api/v1/identities/123", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
       #
       #   resp.status
       #   => 404

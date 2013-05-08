@@ -9,9 +9,12 @@ module Api
       #
       # GET /api/v1/projects
       #
+      # params:
+      #   token - KarmaTracker API token
+      #
       # = Examples
       #
-      #   resp = conn.get("/api/v1/projects")
+      #   resp = conn.get("/api/v1/projects", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
       #
       #   resp.status
       #   => 200
@@ -30,9 +33,12 @@ module Api
       #
       # GET /api/v1/projects/:id
       #
+      # params:
+      #   token - KarmaTracker API token
+      #
       # = Examples
       #
-      #   resp = conn.get("/api/v1/projects/1")
+      #   resp = conn.get("/api/v1/projects/1", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
       #
       #   resp.status
       #   => 200
@@ -41,7 +47,7 @@ module Api
       #   => {"project": {"id":1, "name": "Sample project", "source_name": "Pivotal Tracker", "source_identifier": "123456"}}
       #
       #
-      #   resp = conn.get("/api/v1/projects/7")
+      #   resp = conn.get("/api/v1/projects/7", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
       #
       #   resp.status
       #   => 404
@@ -64,9 +70,12 @@ module Api
       #
       # GET /api/v1/projects/refresh
       #
+      # params:
+      #   token - KarmaTracker API token
+      #
       # = Examples
       #
-      #   resp = conn.get("/api/v1/projects/refresh")
+      #   resp = conn.get("/api/v1/projects/refresh", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
       #
       #   resp.status
       #   => 200
@@ -85,9 +94,12 @@ module Api
       #
       # GET /api/v1/projects/refresh_for_identity/:id
       #
+      # params:
+      #   token - KarmaTracker API token
+      #
       # = Examples
       #
-      #   resp = conn.get("/api/v1/projects/refresh_for_identity/1")
+      #   resp = conn.get("/api/v1/projects/refresh_for_identity/1", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
       #
       #   resp.status
       #   => 200
@@ -95,7 +107,7 @@ module Api
       #   resp.body
       #   => {"message": "Projects list refresh started"}
       #
-      #   resp = conn.get("/api/v1/projects/refresh_for_identity/123")
+      #   resp = conn.get("/api/v1/projects/refresh_for_identity/123", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
       #
       #   resp.status
       #   => 404
@@ -118,9 +130,12 @@ module Api
       #
       # GET /api/v1/projects/:id/tasks
       #
+      # params:
+      #   token - KarmaTracker API token
+      #
       # = Examples
       #
-      #   resp = conn.get("/api/v1/projects/16/tasks")
+      #   resp = conn.get("/api/v1/projects/16/tasks", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
       #
       #   resp.status
       #   => 200
@@ -131,7 +146,7 @@ module Api
       #        {"task":{"id":1192,"project_id":16,"source_name":"Pivotal Tracker","source_identifier":"47433253","current_state":"accepted","story_type":"chore",
       #                 "current_task":false,"name":"Research Pivotal API (v4) and Github Issues API (if there is)","running":false}}]}
       #
-      #   resp = conn.get("/api/v1/projects/123/tasks")
+      #   resp = conn.get("/api/v1/projects/123/tasks", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
       #
       #   resp.status
       #   => 404
@@ -154,9 +169,12 @@ module Api
       #
       # GET /api/v1/projects/:id/current_tasks
       #
+      # params:
+      #   token - KarmaTracker API token
+      #
       # = Examples
       #
-      #   resp = conn.get("/api/v1/projects/16/current_tasks")
+      #   resp = conn.get("/api/v1/projects/16/current_tasks", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
       #
       #   resp.status
       #   => 200
@@ -165,7 +183,7 @@ module Api
       #   => {[{"task":{"id":1191,"project_id":16,"source_name":"Pivotal Tracker","source_identifier":"47519693","current_state":"accepted","story_type":"feature",
       #                 "current_task":true,"name":"As a user, I want to get authorized with my username and password and retrieve API token for further API access.","running":false}}]}
       #
-      #   resp = conn.get("/api/v1/projects/123/current_tasks")
+      #   resp = conn.get("/api/v1/projects/123/current_tasks", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
       #
       #   resp.status
       #   => 404
@@ -297,9 +315,12 @@ module Api
       #
       # GET /api/v1/projects/:id/pivotal_tracker_activity_web_hook_url
       #
+      # params:
+      #   token - KarmaTracker API token
+      #
       # = Examples
       #
-      #   resp = conn.get("api/v1/projects/1/pivotal_tracker_activity_web_hook_url")
+      #   resp = conn.get("api/v1/projects/1/pivotal_tracker_activity_web_hook_url", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
       #
       #   resp.status
       #   => 200
@@ -307,7 +328,7 @@ module Api
       #   resp.body
       #   => {"url": "http://some-host.com/api/v1/projects/1/pivotal_tracker_activity_web_hook?token=W3bH0oKt043n
       #
-      #   resp = conn.get("api/v1/projects/123/pivotal_tracker_activity_web_hook_url")
+      #   resp = conn.get("api/v1/projects/123/pivotal_tracker_activity_web_hook_url", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
       #
       #   resp.status
       #   => 404
