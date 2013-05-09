@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+source 'http://torquebox.org/rubygems/'
 
 gem 'rails', '3.2.13'
 gem 'rails-api'
@@ -7,10 +8,12 @@ gem 'jbuilder'
 gem 'activerecord-jdbc-adapter'
 gem 'activerecord-jdbcpostgresql-adapter'
 
-gem 'torquebox'
-gem 'torquebox-server', require: false
-gem 'torquebox-stomp', require: false
-gem 'torquebox-messaging'
+
+
+gem 'torquebox', '2.3.1'
+gem 'torquebox-server', '2.3.1', require: false
+gem 'torquebox-stomp', '2.3.1', require: false
+gem 'torquebox-messaging', '2.3.1'
 
 gem 'nokogiri'
 gem 'nori'
@@ -27,7 +30,7 @@ group :test do
   gem 'nullobject', require: false
   gem 'factory_girl_rails'
   gem 'fakeweb', require: false
-  gem 'torquebox-no-op', require: false
+  gem 'torquebox-no-op', '2.3.1', require: false
   gem 'timecop', require: false
 end
 
