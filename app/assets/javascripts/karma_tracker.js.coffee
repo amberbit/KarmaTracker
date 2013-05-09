@@ -2,6 +2,7 @@
 #= require routes
 #= require sessions
 #= require projects
+#= require refresh
 #= require tasks
 #= require flashes
 

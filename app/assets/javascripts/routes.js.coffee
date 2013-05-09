@@ -13,6 +13,10 @@ KarmaTracker.config ($routeProvider) ->
   ).when("/projects/:project_id/tasks",
     controller: 'TasksController',
     templateUrl: '/tasks.html'
+  ).when('/refresh',
+    controller: 'RefreshController',
+    templateUrl: '/refresh.html'
   )
+
 
 

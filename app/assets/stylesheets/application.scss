@@ -22,9 +22,18 @@
 
 }
 
+.modal-message {
+ .confirm-button {
+   @extend .large;
+   @extend .button;
+   @extend .expand;
+ }
+}
+
 .top-btn {
   float: right;
   margin-top: 0.5em;
+  margin-left: 1em;
   @extend .button;
   @extend .small;
 }
