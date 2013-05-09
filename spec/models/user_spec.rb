@@ -20,4 +20,10 @@ describe 'User' do
     @user.api_key.should == ApiKey.first
   end
 
+  it 'should validate format of email when creating user' do
+    @user.email = 'foo'
+    @user.should_not be_valid
+    @user.errors[:email].should be_present
+  end
+
 end

@@ -3,6 +3,7 @@
 #= require sessions
 #= require projects
 #= require refresh
+#= require register
 #= require tasks
 #= require flashes
 

@@ -12,6 +12,8 @@ class User < ActiveRecord::Base
                        length: { minimum: (AppConfig.users.password_min_chars || 6) },
                        if: :password_digest_changed?
 
+  validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i
+
   after_create :create_api_key
 
   def self.authenticate session

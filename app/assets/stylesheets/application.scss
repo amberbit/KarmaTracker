@@ -22,6 +22,15 @@
 
 }
 
+.form-error{
+  @extend error;
+  font-size: 0.8em;
+}
+.secondary-btn{
+  float: right;
+  @extend .button;
+  @extend .secondary;
+}
 .modal-message {
  .confirm-button {
    @extend .large;
