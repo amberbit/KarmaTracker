@@ -7,7 +7,7 @@
       <br/>
       <input type="password" ng-model="$parent.session.password" focus="{{focus_password}}"/>
       <button>Sign in!</button>
-      <a href="#/register" class="secondary-btn">Register</a>
+      <a href="#/register" ng-show="registrationEnabled" class="secondary-btn">Register</a>
     </form>
   </div>
   <div class="small-4 columns"></div>

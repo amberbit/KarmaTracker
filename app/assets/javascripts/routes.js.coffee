@@ -16,10 +16,13 @@ KarmaTracker.config ($routeProvider) ->
   ).when('/refresh',
     controller: 'RefreshController',
     templateUrl: '/refresh.html'
-  ).when('/register',
-    controller: 'RegisterController',
-    templateUrl: '/register.html'
   )
+
+  if KarmaTrackerConfig.registration_enabled
+    $routeProvider.when('/register',
+      controller: 'RegisterController',
+      templateUrl: '/register.html'
+    )
 
 
 

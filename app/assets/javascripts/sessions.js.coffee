@@ -2,6 +2,7 @@ KarmaTracker.controller "SessionController", ($scope, $http, $cookies, $location
   $scope.session = { email: null, password: null }
   $scope.message = ''
   $scope.focusPassword = false
+  $scope.registrationEnabled = KarmaTrackerConfig.registration_enabled
 
   $scope.signInSuccess = (token) ->
     $cookies.token = token
