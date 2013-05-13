@@ -1,5 +1,5 @@
-require 'spec_helper'
 
+require 'spec_helper'
 describe PivotalTrackerIdentity do
 
   it 'should not save identity when no credentials were provided' do
@@ -27,5 +27,12 @@ describe PivotalTrackerIdentity do
     pi.save
     PivotalTrackerIdentity.count.should == 1
     PivotalTrackerIdentity.last.api_key.should == '377ec0d3698e5f80c4e108fb26d7a105'
+
+    pi = PivotalTrackerIdentity.new
+    pi.user = FactoryGirl.create :user
+    pi.email = 'correct_email'
+    pi.password = 'correct_password'
+    pi.save.should be_false
+    pi.errors[:api_key].should be_present
   end
 end

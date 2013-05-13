@@ -1,0 +1,51 @@
+<div ng-controller="IntegrationsController" class="row">
+  <div class="small-12 columns">
+    <h2>Identities</h2>
+    <h3>Pivotal Tracker</h3>
+    <div ng-model="pivotaltracker" ng-controller="PivotalTrackerIdentitiesController">
+      <div class='panel' ng-repeat="identity in identities">
+        <a href="" ng-click="remove(identity.pivotal_tracker.name, identity.pivotal_tracker.id)" class="secondary-btn small">Remove</a>
+        <h4 class="subheader">{{identity.pivotal_tracker.name}}</h4>
+        <div class="row">
+          <div class="small-2 columns"><strong>API key</strong></div>
+          <div class="small-10 columns">{{identity.pivotal_tracker.api_key}}</div>
+        </div>
+      </div>
+      <form ng-submit='add()'>
+      <div class="panel" ng-show="addFormShown">
+        <h4 class="subheader">Add a new identity</h4>
+        <label>Name:
+          <input type="text" ng-model="newIdentity.name" />
+          <small ng-show="errors.name" class="error">{{errors.name}}</small>
+        </label>
+        <div class="row">
+          <div class="small-6 columns">
+            <div class="panel secondary">
+              <label>E-mail:
+                <input type="text" id="email" name="email"ng-model="newIdentity.email" />
+                <small ng-show="errors.email" class="error">{{errors.email}}</small>
+              </label>
+              <label>Password:
+                <input type="password" ng-model="newIdentity.password" />
+                <small ng-show="errors.password" class="error">{{errors.password}}</small>
+              </label>
+            </div>
+          </div>
+        <div class="small-6 columns">
+          <div class="panel">
+            <h5 class="subheader">I already know my API key</h5>
+            <label>API key:
+              <input type="text" ng-model="newIdentity.api_key" />
+              <small ng-show="errors.api_key" class="error">{{errors.api_key}}</small>
+            </label>
+          </div>
+          <button class="button right-align small">Add new identity</button>
+        </div>
+      </div>
+    </form>
+    </div>
+    <a href="" ng-show="!addFormShown" ng-click="openAddForm()" class="secondary-btn small">Add new identity</a>
+  </div>
+</div>
+
+

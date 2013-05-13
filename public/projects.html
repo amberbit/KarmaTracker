@@ -3,7 +3,7 @@
     <div class='search-box'>
       Search: <input ng-model='query.string' autofocus='autofocus'>
     </div>
-    <div class='panel' ng-repeat="project in projects"
+    <div class='panel clickable' ng-repeat="project in projects"
       ng-click="loadTasks(project)"
       ng-show="project.visible">
       {{project.name}}

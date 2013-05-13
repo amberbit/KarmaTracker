@@ -4,6 +4,8 @@
 #= require projects
 #= require refresh
 #= require register
+#= require integrations
+#= require pivotal_tracker_identities
 #= require tasks
 #= require flashes
 

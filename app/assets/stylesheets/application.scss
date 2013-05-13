@@ -22,9 +22,9 @@
 
 }
 
-.form-error{
-  @extend error;
-  font-size: 0.8em;
+.right-align{
+  float: right;
+  margin-right: 0.125em;
 }
 .secondary-btn{
   float: right;
@@ -37,6 +37,13 @@
    @extend .button;
    @extend .expand;
  }
+}
+
+.top-btn-bar{
+  float: right;
+  margin-top: 0.5em;
+  @extend .button;
+  @extend .small;
 }
 
 .top-btn {
@@ -52,7 +59,7 @@
   font-weight: bold;
 }
 
-.panel {
+.panel.clickable {
   cursor: pointer;
 }
 

@@ -7,6 +7,7 @@ class PivotalTrackerIdentity < Identity
   attr_accessor :email, :password
 
   validate :credentials_correctness, on: :create
+  validates_uniqueness_of :api_key
 
   def service_name
     "Pivotal Tracker"
