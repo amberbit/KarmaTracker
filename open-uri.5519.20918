@@ -1,0 +1,1003 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<stories type="array">
+  <story>
+    <id type="integer">22605855</id>
+    <project_id type="integer">439559</project_id>
+    <story_type>feature</story_type>
+    <url>http://www.pivotaltracker.com/story/show/22605855</url>
+    <estimate type="float">1</estimate>
+    <current_state>accepted</current_state>
+    <description>Filmy s&#261; opisane:
+-Tytu&#322;em
+-Opisem
+-Wypisem (excerpt)
+-Kategori&#261; (lista taka sama jak w Magazynie)
+-S&#322;owami kluczowymi
+-obrazkiem_ikon&#261; (90x50px)
+-obrazkiem_poster_frame (480x270px)</description>
+    <name>U&#380;ytkownik zalogowany jako administrator mo&#380;e dodawa&#263; &#160;nowe i usuwa&#263; pozycje z listy film&#243;w.</name>
+    <requested_by>
+      <person>
+        <id type="integer">227119</id>
+        <name>&#321;ukasz Szrubkowski</name>
+        <initials>&#321;S</initials>
+      </person>
+    </requested_by>
+    <owned_by>
+      <person>
+        <id type="integer">51790</id>
+        <name>Hubert &#321;&#281;picki</name>
+        <initials>H&#321;</initials>
+      </person>
+    </owned_by>
+    <created_at type="datetime">2011/12/21 22:20:28 CET</created_at>
+    <updated_at type="datetime">2012/01/27 13:24:55 CET</updated_at>
+    <accepted_at type="datetime">2012/01/27 13:24:55 CET</accepted_at>
+  </story>
+  <story>
+    <id type="integer">23650669</id>
+    <project_id type="integer">439559</project_id>
+    <story_type>feature</story_type>
+    <url>http://www.pivotaltracker.com/story/show/23650669</url>
+    <estimate type="float">2</estimate>
+    <current_state>accepted</current_state>
+    <description>Manu jak to zielone w Galerii (tylko zmiana pliku t&#322;a dla kontenera - dostarcz&#281; - b&#281;dzie ciemnoszare jak w projekcie).</description>
+    <name>U&#380;ytkownik widzi w ka&#380;dym miejscu serwisu na g&#243;rze menu g&#322;owne (Magazyn, Galeria, Video, RacePlace, Blog, Kontakt)</name>
+    <requested_by>
+      <person>
+        <id type="integer">227119</id>
+        <name>&#321;ukasz Szrubkowski</name>
+        <initials>&#321;S</initials>
+      </person>
+    </requested_by>
+    <owned_by>
+      <person>
+        <id type="integer">51790</id>
+        <name>Hubert &#321;&#281;picki</name>
+        <initials>H&#321;</initials>
+      </person>
+    </owned_by>
+    <created_at type="datetime">2012/01/19 02:28:44 CET</created_at>
+    <updated_at type="datetime">2012/01/27 13:58:00 CET</updated_at>
+    <accepted_at type="datetime">2012/01/27 13:57:59 CET</accepted_at>
+  </story>
+  <story>
+    <id type="integer">23650805</id>
+    <project_id type="integer">439559</project_id>
+    <story_type>feature</story_type>
+    <url>http://www.pivotaltracker.com/story/show/23650805</url>
+    <estimate type="float">1</estimate>
+    <current_state>accepted</current_state>
+    <description></description>
+    <name>U&#380;ytkownik pod oknem z plikiem wideo, widzi menu pozwalaj&#261;ce za&#322;adowa&#263; w miejsce pliku 480x270px, pliki o wi&#281;kszej rodzielczo&#347;ci w celu wy&#347;wietlenia ich w trybie pe&#322;nego okna.</name>
+    <requested_by>
+      <person>
+        <id type="integer">227119</id>
+        <name>&#321;ukasz Szrubkowski</name>
+        <initials>&#321;S</initials>
+      </person>
+    </requested_by>
+    <owned_by>
+      <person>
+        <id type="integer">51790</id>
+        <name>Hubert &#321;&#281;picki</name>
+        <initials>H&#321;</initials>
+      </person>
+    </owned_by>
+    <created_at type="datetime">2012/01/19 02:34:26 CET</created_at>
+    <updated_at type="datetime">2012/01/27 13:58:09 CET</updated_at>
+    <accepted_at type="datetime">2012/01/27 13:58:09 CET</accepted_at>
+  </story>
+  <story>
+    <id type="integer">23650857</id>
+    <project_id type="integer">439559</project_id>
+    <story_type>feature</story_type>
+    <url>http://www.pivotaltracker.com/story/show/23650857</url>
+    <estimate type="float">0</estimate>
+    <current_state>accepted</current_state>
+    <description>Na element listy sk&#322;adaj&#261; si&#281; Tytu&#322;, excerpt, czas trwania filmu, ikona.</description>
+    <name>U&#380;ytkownik widzi stronicowan&#261; list&#281; dost&#281;pnych film&#243;w.</name>
+    <requested_by>
+      <person>
+        <id type="integer">227119</id>
+        <name>&#321;ukasz Szrubkowski</name>
+        <initials>&#321;S</initials>
+      </person>
+    </requested_by>
+    <owned_by>
+      <person>
+        <id type="integer">51790</id>
+        <name>Hubert &#321;&#281;picki</name>
+        <initials>H&#321;</initials>
+      </person>
+    </owned_by>
+    <created_at type="datetime">2012/01/19 02:36:51 CET</created_at>
+    <updated_at type="datetime">2012/01/27 13:58:14 CET</updated_at>
+    <accepted_at type="datetime">2012/01/27 13:58:14 CET</accepted_at>
+  </story>
+  <story>
+    <id type="integer">23650829</id>
+    <project_id type="integer">439559</project_id>
+    <story_type>feature</story_type>
+    <url>http://www.pivotaltracker.com/story/show/23650829</url>
+    <estimate type="float">1</estimate>
+    <current_state>accepted</current_state>
+    <description></description>
+    <name>U&#380;ytkownik widzi tytu&#322;, dat&#281; dodania, opis filmu, odpowiednie dla aktualnie wy&#347;wietlanego w playerze pliku.</name>
+    <requested_by>
+      <person>
+        <id type="integer">227119</id>
+        <name>&#321;ukasz Szrubkowski</name>
+        <initials>&#321;S</initials>
+      </person>
+    </requested_by>
+    <owned_by>
+      <person>
+        <id type="integer">51790</id>
+        <name>Hubert &#321;&#281;picki</name>
+        <initials>H&#321;</initials>
+      </person>
+    </owned_by>
+    <created_at type="datetime">2012/01/19 02:35:27 CET</created_at>
+    <updated_at type="datetime">2012/01/27 13:58:17 CET</updated_at>
+    <accepted_at type="datetime">2012/01/27 13:58:16 CET</accepted_at>
+  </story>
+  <story>
+    <id type="integer">22606607</id>
+    <project_id type="integer">439559</project_id>
+    <story_type>feature</story_type>
+    <url>http://www.pivotaltracker.com/story/show/22606607</url>
+    <estimate type="float">2</estimate>
+    <current_state>accepted</current_state>
+    <description>Podstawowa, wymagana rozdzielczo&#347;&#263; to 480x270 px.
+Opcjonalnie mo&#380;na dodawa&#263; wersje w wi&#281;kszych rodzielczo&#347;ciach
+- 640x360 px,
+- 720x480 px,
+- 960x540 px,
+- 1280x720 px,
+- 1920x1080 px(?)
+Zastanawiam si&#281; jeszcze nad dodaniem wersji zakodowanej w WebM. FireFox to du&#380;a grupa u&#380;ytkownik&#243;w.</description>
+    <name>U&#380;ytkownik zalogowany jako administrator mo&#380;e do pozycji na li&#347;cie film&#243;w dodawa&#263; i usuwa&#263; pliki wideo w r&#243;&#380;nych rozdzielczo&#347;ciach.</name>
+    <requested_by>
+      <person>
+        <id type="integer">227119</id>
+        <name>&#321;ukasz Szrubkowski</name>
+        <initials>&#321;S</initials>
+      </person>
+    </requested_by>
+    <owned_by>
+      <person>
+        <id type="integer">51790</id>
+        <name>Hubert &#321;&#281;picki</name>
+        <initials>H&#321;</initials>
+      </person>
+    </owned_by>
+    <created_at type="datetime">2011/12/21 22:36:50 CET</created_at>
+    <updated_at type="datetime">2012/02/03 15:12:05 CET</updated_at>
+    <accepted_at type="datetime">2012/02/03 15:12:05 CET</accepted_at>
+    <comments type="array">
+      <comment>
+        <id type="integer">14983089</id>
+        <text>Mam spore problemy ze zrobieniem tego w postaci uploadu HTML5. Problemem jest niezawodno&#347;&#263;: znalaz&#322;em kilka rozwi&#261;za&#324; kt&#243;re dzia&#322;aj&#261; do&#347;&#263; dobrze z ma&#322;ymi plikami, potrafi&#261; jednak si&#281; zawiesi&#263; przy plikach ju&#380; powy&#380;ej 30-40MB. Podejrzewam &#380;e to zdecydowanie za ma&#322;o...  Nie jestem pewien czy gra jest warta &#347;wieczki.
+
+Wydaje mi si&#281; &#380;e na razie zrobi&#281; po prostu normalne za&#322;&#261;czanie plik&#243;&#322; do formularza, jak u&#380;ywasz Chrome to i tak b&#281;dziesz widzia&#322; post&#281;p w uploadzie. </text>
+        <author>
+          <person>
+            <id type="integer">51790</id>
+            <name>Hubert &#321;&#281;picki</name>
+            <initials>H&#321;</initials>
+          </person>
+        </author>
+        <created_at type="datetime">2012/01/23 19:35:13 CET</created_at>
+      </comment>
+      <comment>
+        <id type="integer">14984273</id>
+        <text>OK. Najwa&#380;niejsze jest  p&#322;ynne dzia&#322;anie.</text>
+        <author>
+          <person>
+            <id type="integer">227119</id>
+            <name>&#321;ukasz Szrubkowski</name>
+            <initials>&#321;S</initials>
+          </person>
+        </author>
+        <created_at type="datetime">2012/01/23 19:57:45 CET</created_at>
+      </comment>
+      <comment>
+        <id type="integer">15139507</id>
+        <text>Mia&#322;em problem z dodaniem pliku 33 MB. Wyskoczy&#322;o mi, &#380;e jest za du&#380;y. Poza tym jest OK.</text>
+        <author>
+          <person>
+            <id type="integer">227119</id>
+            <name>&#321;ukasz Szrubkowski</name>
+            <initials>&#321;S</initials>
+          </person>
+        </author>
+        <created_at type="datetime">2012/01/27 13:25:48 CET</created_at>
+      </comment>
+      <comment>
+        <id type="integer">15285663</id>
+        <text>To jest konfiguracja serwera. Przy wdro&#380;eniu na serwer produkcyjny trzeba b&#281;dzie to zmieni&#263;.</text>
+        <author>
+          <person>
+            <id type="integer">51790</id>
+            <name>Hubert &#321;&#281;picki</name>
+            <initials>H&#321;</initials>
+          </person>
+        </author>
+        <created_at type="datetime">2012/02/01 15:11:59 CET</created_at>
+      </comment>
+    </comments>
+  </story>
+  <story>
+    <id type="integer">22607045</id>
+    <project_id type="integer">439559</project_id>
+    <story_type>feature</story_type>
+    <url>http://www.pivotaltracker.com/story/show/22607045</url>
+    <estimate type="float">1</estimate>
+    <current_state>accepted</current_state>
+    <description></description>
+    <name>U&#380;ytkownik zalogowany jako administrator mo&#380;e &#322;atwo kopiowa&#263; kod pozwalaj&#261;cy osadza&#263;&#160;wybrane wideo na stronach. (funkcja Embed)</name>
+    <requested_by>
+      <person>
+        <id type="integer">227119</id>
+        <name>&#321;ukasz Szrubkowski</name>
+        <initials>&#321;S</initials>
+      </person>
+    </requested_by>
+    <owned_by>
+      <person>
+        <id type="integer">51790</id>
+        <name>Hubert &#321;&#281;picki</name>
+        <initials>H&#321;</initials>
+      </person>
+    </owned_by>
+    <created_at type="datetime">2011/12/21 22:50:08 CET</created_at>
+    <updated_at type="datetime">2012/02/03 15:12:12 CET</updated_at>
+    <accepted_at type="datetime">2012/02/03 15:12:12 CET</accepted_at>
+    <comments type="array">
+      <comment>
+        <id type="integer">15140145</id>
+        <text>http://magazyn.bikelife.pl/news_stories/ultegra-pod-napieciem-do-testow
+
+Doda&#322;em do tre&#347;ci wygenerowany kod embeduj&#261;cy. Plik si&#281; pojawia, ale kontrolsy s&#261;&#160;przegl&#261;darkowe. Wi&#281;c wygl&#261;da to inaczej ni&#380; np. w stories gdzie ty doda&#322;e&#347; przyk&#322;ady 
+
+http://magazyn.s.amberbit.com/stories/paolo-bettini
+
+No i w FF 5.0.1 na Mac nie odtwarza si&#281; w og&#243;le plik WebM, ale to chyba raczej globalny problem.</text>
+        <author>
+          <person>
+            <id type="integer">227119</id>
+            <name>&#321;ukasz Szrubkowski</name>
+            <initials>&#321;S</initials>
+          </person>
+        </author>
+        <created_at type="datetime">2012/01/27 13:57:40 CET</created_at>
+      </comment>
+      <comment>
+        <id type="integer">15140865</id>
+        <text>Czy to, &#380;e zaembedowane wideo na magazyn.bikelife.pl nie jest obs&#322;ugiwane przez mediaelementjs, to kwestia tago, &#380;e embed jest w obr&#281;bie innej domeny?</text>
+        <author>
+          <person>
+            <id type="integer">227119</id>
+            <name>&#321;ukasz Szrubkowski</name>
+            <initials>&#321;S</initials>
+          </person>
+        </author>
+        <created_at type="datetime">2012/01/27 14:27:08 CET</created_at>
+      </comment>
+    </comments>
+  </story>
+  <story>
+    <id type="integer">23650699</id>
+    <project_id type="integer">439559</project_id>
+    <story_type>feature</story_type>
+    <url>http://www.pivotaltracker.com/story/show/23650699</url>
+    <estimate type="float">1</estimate>
+    <current_state>accepted</current_state>
+    <description>W domy&#347;lnej rozdzielczo&#347;ci 480x270px, domy&#347;lnie najnowyszy z listy.</description>
+    <name>U&#380;ytkownik na stronie widzi okno w kt&#243;rym wy&#347;wietlaj&#261; si&#281; pliki Video</name>
+    <requested_by>
+      <person>
+        <id type="integer">227119</id>
+        <name>&#321;ukasz Szrubkowski</name>
+        <initials>&#321;S</initials>
+      </person>
+    </requested_by>
+    <owned_by>
+      <person>
+        <id type="integer">51790</id>
+        <name>Hubert &#321;&#281;picki</name>
+        <initials>H&#321;</initials>
+      </person>
+    </owned_by>
+    <created_at type="datetime">2012/01/19 02:30:03 CET</created_at>
+    <updated_at type="datetime">2012/02/07 06:54:12 CET</updated_at>
+    <accepted_at type="datetime">2012/02/07 06:54:11 CET</accepted_at>
+    <comments type="array">
+      <comment>
+        <id type="integer">15140191</id>
+        <text>Wszystko wygl&#261;da dobrze, ale chyba musz&#281; poczeka&#263; a&#380; uporasz si&#281; z kompatybilno&#347;ci&#261; format&#243;w i przegl&#261;darek. W Safari i Chrome dzia&#322;a mi dobrze. Ale pod FF 5.0.1 np. po klikni&#281;ciu Play nic si&#281; nie dzieje.</text>
+        <author>
+          <person>
+            <id type="integer">227119</id>
+            <name>&#321;ukasz Szrubkowski</name>
+            <initials>&#321;S</initials>
+          </person>
+        </author>
+        <created_at type="datetime">2012/01/27 14:00:04 CET</created_at>
+      </comment>
+    </comments>
+  </story>
+  <story>
+    <id type="integer">24290321</id>
+    <project_id type="integer">439559</project_id>
+    <story_type>feature</story_type>
+    <url>http://www.pivotaltracker.com/story/show/24290321</url>
+    <estimate type="float">1</estimate>
+    <current_state>accepted</current_state>
+    <description></description>
+    <name>Jako administrator, mog&#281; zaznaczy&#263; &#380;e dane wideo jest &quot;Polecane&quot;</name>
+    <requested_by>
+      <person>
+        <id type="integer">51790</id>
+        <name>Hubert &#321;&#281;picki</name>
+        <initials>H&#321;</initials>
+      </person>
+    </requested_by>
+    <owned_by>
+      <person>
+        <id type="integer">134355</id>
+        <name>Marcin Horosz</name>
+        <initials>MH</initials>
+      </person>
+    </owned_by>
+    <created_at type="datetime">2012/02/01 15:13:02 CET</created_at>
+    <updated_at type="datetime">2012/02/07 07:03:14 CET</updated_at>
+    <accepted_at type="datetime">2012/02/07 07:03:14 CET</accepted_at>
+  </story>
+  <story>
+    <id type="integer">24290355</id>
+    <project_id type="integer">439559</project_id>
+    <story_type>feature</story_type>
+    <url>http://www.pivotaltracker.com/story/show/24290355</url>
+    <estimate type="float">1</estimate>
+    <current_state>accepted</current_state>
+    <description></description>
+    <name>Jako u&#380;ytkownik, mog&#281; prze&#322;&#261;czy&#263; si&#281; pomi&#281;dzy najnowszymi a polecanymi wideo. (Najnowsze listuje wszystko, polecane tylko polecane).</name>
+    <requested_by>
+      <person>
+        <id type="integer">51790</id>
+        <name>Hubert &#321;&#281;picki</name>
+        <initials>H&#321;</initials>
+      </person>
+    </requested_by>
+    <owned_by>
+      <person>
+        <id type="integer">134355</id>
+        <name>Marcin Horosz</name>
+        <initials>MH</initials>
+      </person>
+    </owned_by>
+    <created_at type="datetime">2012/02/01 15:13:27 CET</created_at>
+    <updated_at type="datetime">2012/02/07 07:03:17 CET</updated_at>
+    <accepted_at type="datetime">2012/02/07 07:03:17 CET</accepted_at>
+  </story>
+  <story>
+    <id type="integer">23650883</id>
+    <project_id type="integer">439559</project_id>
+    <story_type>feature</story_type>
+    <url>http://www.pivotaltracker.com/story/show/23650883</url>
+    <estimate type="float">1</estimate>
+    <current_state>accepted</current_state>
+    <description></description>
+    <name>U&#380;ytkownik mo&#380;e filtrowa&#263; list&#281; film&#243;w wg kataegorii (zak&#322;adki jak w Newsroomie na podstronie &quot;Magazyn&quot;)</name>
+    <requested_by>
+      <person>
+        <id type="integer">227119</id>
+        <name>&#321;ukasz Szrubkowski</name>
+        <initials>&#321;S</initials>
+      </person>
+    </requested_by>
+    <owned_by>
+      <person>
+        <id type="integer">134355</id>
+        <name>Marcin Horosz</name>
+        <initials>MH</initials>
+      </person>
+    </owned_by>
+    <created_at type="datetime">2012/01/19 02:37:53 CET</created_at>
+    <updated_at type="datetime">2012/02/07 07:03:57 CET</updated_at>
+    <accepted_at type="datetime">2012/02/07 07:03:56 CET</accepted_at>
+  </story>
+  <story>
+    <id type="integer">24553317</id>
+    <project_id type="integer">439559</project_id>
+    <story_type>feature</story_type>
+    <url>http://www.pivotaltracker.com/story/show/24553317</url>
+    <estimate type="float">1</estimate>
+    <current_state>accepted</current_state>
+    <description>Opis styl&#243;w tekstu w story https://www.pivotaltracker.com/story/show/24553997
+Kit b&#281;dzie identyczny do tego co w galerii
+login i has&#322;o: lukasz@szrubkowski.net/RoWeQ80aqz
+Ale proponuj&#281;&#160;zrobi&#263; i tak nowy kit dla strony Wideo.</description>
+    <name>Integracja font&#243;w z TypeKit</name>
+    <requested_by>
+      <person>
+        <id type="integer">227119</id>
+        <name>&#321;ukasz Szrubkowski</name>
+        <initials>&#321;S</initials>
+      </person>
+    </requested_by>
+    <owned_by>
+      <person>
+        <id type="integer">134355</id>
+        <name>Marcin Horosz</name>
+        <initials>MH</initials>
+      </person>
+    </owned_by>
+    <created_at type="datetime">2012/02/07 08:24:47 CET</created_at>
+    <updated_at type="datetime">2012/02/07 18:06:02 CET</updated_at>
+    <accepted_at type="datetime">2012/02/07 18:06:02 CET</accepted_at>
+  </story>
+  <story>
+    <id type="integer">23650921</id>
+    <project_id type="integer">439559</project_id>
+    <story_type>feature</story_type>
+    <url>http://www.pivotaltracker.com/story/show/23650921</url>
+    <estimate type="float">3</estimate>
+    <current_state>accepted</current_state>
+    <description></description>
+    <name>U&#380;ytkownik mo&#380;e wyszukiwa&#263; filmy wg wpisywanej frazy (system wyszukuje fraz&#281; we wszystkich tekstowych polach pozycji na li&#347;cie film&#243;w)</name>
+    <requested_by>
+      <person>
+        <id type="integer">227119</id>
+        <name>&#321;ukasz Szrubkowski</name>
+        <initials>&#321;S</initials>
+      </person>
+    </requested_by>
+    <owned_by>
+      <person>
+        <id type="integer">134355</id>
+        <name>Marcin Horosz</name>
+        <initials>MH</initials>
+      </person>
+    </owned_by>
+    <created_at type="datetime">2012/01/19 02:39:20 CET</created_at>
+    <updated_at type="datetime">2012/02/08 09:59:10 CET</updated_at>
+    <accepted_at type="datetime">2012/02/08 09:59:09 CET</accepted_at>
+    <comments type="array">
+      <comment>
+        <id type="integer">18305463</id>
+        <text>Za&#322;&#261;czam wizualizacje z propozycj&#261; rozwi&#261;zania graficznego menu filtruj&#261;cego i wyszukiwania. (Bez &#380;adnego pokazywania/ukrywania pola wyszukiwania)</text>
+        <author>
+          <person>
+            <id type="integer">227119</id>
+            <name>&#321;ukasz Szrubkowski</name>
+            <initials>&#321;S</initials>
+          </person>
+        </author>
+        <created_at type="datetime">2012/02/07 11:00:24 CET</created_at>
+      </comment>
+    </comments>
+    <attachments type="array">
+      <attachment>
+        <id type="integer">4740617</id>
+        <filename>wlasciwy_Video_page_search.psd</filename>
+        <uploaded_by>
+          <person>
+            <id type="integer">227119</id>
+            <name>&#321;ukasz Szrubkowski</name>
+            <initials>&#321;S</initials>
+          </person>
+        </uploaded_by>
+        <s3_resource>
+          <url>https://s3.amazonaws.com/prod.tracker2/resource/4740617/wlasciwy_Video_page_search.psd?AWSAccessKeyId=AKIAIKWOAN6H4H3QMJ6Q&amp;Expires=1368522311&amp;Signature=DjAkKbZfnlHvqjY3jhOFvhlu1HU%3D</url>
+          <expires type="datetime">2013/05/14 09:05:11 UTC</expires>
+        </s3_resource>
+        <uploaded_at type="datetime">2012/02/07 10:59:35 CET</uploaded_at>
+        <url>https://www.pivotaltracker.com/resource/download/4740617</url>
+      </attachment>
+    </attachments>
+  </story>
+  <story>
+    <id type="integer">24553997</id>
+    <project_id type="integer">439559</project_id>
+    <story_type>feature</story_type>
+    <url>http://www.pivotaltracker.com/story/show/24553997</url>
+    <estimate type="float">1</estimate>
+    <current_state>accepted</current_state>
+    <description>W za&#322;&#261;czeniu zip. W nim:
+- pliki do te&#322; pozycji listy.,
+- background do strony do umieszczenie {background: transparent url(/link) no-repeat top center}
+- t&#322;o do kontenera ze stopk&#261; strony.
+-uproszczony psd z wizualizacj&#261; strony o opisami styl&#243;w textu</description>
+    <name>Modyfikacja graficzna wg za&#322;&#261;czonego psd</name>
+    <requested_by>
+      <person>
+        <id type="integer">227119</id>
+        <name>&#321;ukasz Szrubkowski</name>
+        <initials>&#321;S</initials>
+      </person>
+    </requested_by>
+    <owned_by>
+      <person>
+        <id type="integer">134355</id>
+        <name>Marcin Horosz</name>
+        <initials>MH</initials>
+      </person>
+    </owned_by>
+    <created_at type="datetime">2012/02/07 08:49:12 CET</created_at>
+    <updated_at type="datetime">2012/02/08 11:54:45 CET</updated_at>
+    <accepted_at type="datetime">2012/02/08 11:54:45 CET</accepted_at>
+    <comments type="array">
+      <comment>
+        <id type="integer">18302073</id>
+        <text></text>
+        <author>
+          <person>
+            <id type="integer">227119</id>
+            <name>&#321;ukasz Szrubkowski</name>
+            <initials>&#321;S</initials>
+          </person>
+        </author>
+        <created_at type="datetime">2012/02/07 08:49:12 CET</created_at>
+      </comment>
+      <comment>
+        <id type="integer">18367629</id>
+        <text>Tylko trzy poprawki jeszcze.1. Menu filtrowani i wyszukiwania jak w za&#322;&#261;czonym tu https://www.pivotaltracker.com/story/show/23650921 pliku. 2. stronicowanie listy - usu&#324;my t&#281; strza&#322;eczk&#281;, ona ma pe&#322;ni&#263; inn&#261; funkkcj&#281;, ale to wdro&#380;ymy chwil&#281; p&#243;&#380;niej. 3. Link do galerii (w g&#243;rnym menu) jest jaki&#347; za szeroki.</text>
+        <author>
+          <person>
+            <id type="integer">227119</id>
+            <name>&#321;ukasz Szrubkowski</name>
+            <initials>&#321;S</initials>
+          </person>
+        </author>
+        <created_at type="datetime">2012/02/08 10:01:22 CET</created_at>
+      </comment>
+    </comments>
+    <attachments type="array">
+      <attachment>
+        <id type="integer">4739437</id>
+        <filename>Archive.zip</filename>
+        <uploaded_by>
+          <person>
+            <id type="integer">227119</id>
+            <name>&#321;ukasz Szrubkowski</name>
+            <initials>&#321;S</initials>
+          </person>
+        </uploaded_by>
+        <s3_resource>
+          <url>https://s3.amazonaws.com/prod.tracker2/resource/4739437/Archive.zip?AWSAccessKeyId=AKIAIKWOAN6H4H3QMJ6Q&amp;Expires=1368522311&amp;Signature=bac7U70AW82jFxNO419nVNoxtPI%3D</url>
+          <expires type="datetime">2013/05/14 09:05:11 UTC</expires>
+        </s3_resource>
+        <uploaded_at type="datetime">2012/02/07 08:46:25 CET</uploaded_at>
+        <url>https://www.pivotaltracker.com/resource/download/4739437</url>
+      </attachment>
+    </attachments>
+  </story>
+  <story>
+    <id type="integer">24643471</id>
+    <project_id type="integer">439559</project_id>
+    <story_type>feature</story_type>
+    <url>http://www.pivotaltracker.com/story/show/24643471</url>
+    <estimate type="float">1</estimate>
+    <current_state>accepted</current_state>
+    <description>Trzeba, zwi&#281;kszy&#263; wysoko&#347;&#263; nag&#322;&#243;wka.</description>
+    <name>U&#380;ytkownik widzi spo&#322;eczno&#347;ciowe przyciski w nag&#322;&#243;wku.</name>
+    <requested_by>
+      <person>
+        <id type="integer">134355</id>
+        <name>Marcin Horosz</name>
+        <initials>MH</initials>
+      </person>
+    </requested_by>
+    <owned_by>
+      <person>
+        <id type="integer">134355</id>
+        <name>Marcin Horosz</name>
+        <initials>MH</initials>
+      </person>
+    </owned_by>
+    <created_at type="datetime">2012/02/08 17:23:28 CET</created_at>
+    <updated_at type="datetime">2012/02/09 16:45:00 CET</updated_at>
+    <accepted_at type="datetime">2012/02/09 16:45:00 CET</accepted_at>
+  </story>
+  <story>
+    <id type="integer">24697843</id>
+    <project_id type="integer">439559</project_id>
+    <story_type>feature</story_type>
+    <url>http://www.pivotaltracker.com/story/show/24697843</url>
+    <estimate type="float">1</estimate>
+    <current_state>accepted</current_state>
+    <description></description>
+    <name>Dodanie kodu wywo&#322;uj&#261;cego reklamy</name>
+    <requested_by>
+      <person>
+        <id type="integer">227119</id>
+        <name>&#321;ukasz Szrubkowski</name>
+        <initials>&#321;S</initials>
+      </person>
+    </requested_by>
+    <owned_by>
+      <person>
+        <id type="integer">134355</id>
+        <name>Marcin Horosz</name>
+        <initials>MH</initials>
+      </person>
+    </owned_by>
+    <created_at type="datetime">2012/02/09 14:25:31 CET</created_at>
+    <updated_at type="datetime">2012/02/09 17:48:59 CET</updated_at>
+    <accepted_at type="datetime">2012/02/09 17:48:58 CET</accepted_at>
+    <comments type="array">
+      <comment>
+        <id type="integer">18435969</id>
+        <text></text>
+        <author>
+          <person>
+            <id type="integer">227119</id>
+            <name>&#321;ukasz Szrubkowski</name>
+            <initials>&#321;S</initials>
+          </person>
+        </author>
+        <created_at type="datetime">2012/02/09 14:25:31 CET</created_at>
+      </comment>
+    </comments>
+    <attachments type="array">
+      <attachment>
+        <id type="integer">4786871</id>
+        <filename>kod_wywolujacy_reklamy_w_wideo.txt</filename>
+        <uploaded_by>
+          <person>
+            <id type="integer">227119</id>
+            <name>&#321;ukasz Szrubkowski</name>
+            <initials>&#321;S</initials>
+          </person>
+        </uploaded_by>
+        <s3_resource>
+          <url>https://s3.amazonaws.com/prod.tracker2/resource/4786871/kod_wywolujacy_reklamy_w_wideo.txt?AWSAccessKeyId=AKIAIKWOAN6H4H3QMJ6Q&amp;Expires=1368522311&amp;Signature=8kKrT8yHT7dZALdcWOKx8%2B92jss%3D</url>
+          <expires type="datetime">2013/05/14 09:05:11 UTC</expires>
+        </s3_resource>
+        <uploaded_at type="datetime">2012/02/09 14:20:31 CET</uploaded_at>
+        <url>https://www.pivotaltracker.com/resource/download/4786871</url>
+      </attachment>
+      <attachment>
+        <id type="integer">4786931</id>
+        <filename>umieszczenie_reklam_w_wideo.png</filename>
+        <uploaded_by>
+          <person>
+            <id type="integer">227119</id>
+            <name>&#321;ukasz Szrubkowski</name>
+            <initials>&#321;S</initials>
+          </person>
+        </uploaded_by>
+        <s3_resource>
+          <url>https://s3.amazonaws.com/prod.tracker2/resource/4786931/umieszczenie_reklam_w_wideo.png?AWSAccessKeyId=AKIAIKWOAN6H4H3QMJ6Q&amp;Expires=1368522311&amp;Signature=VvbD8QyZ1KdUE%2Fvgai9ro8gZU1g%3D</url>
+          <expires type="datetime">2013/05/14 09:05:11 UTC</expires>
+        </s3_resource>
+        <uploaded_at type="datetime">2012/02/09 14:25:20 CET</uploaded_at>
+        <url>https://www.pivotaltracker.com/resource/download/4786931</url>
+      </attachment>
+    </attachments>
+  </story>
+  <story>
+    <id type="integer">24554085</id>
+    <project_id type="integer">439559</project_id>
+    <story_type>feature</story_type>
+    <url>http://www.pivotaltracker.com/story/show/24554085</url>
+    <estimate type="float">0</estimate>
+    <current_state>accepted</current_state>
+    <description>Jak w galerii.
+Chyba to:
+&lt;script type='text/javascript'&gt;
+  //&lt;![CDATA[
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-16165345-1']);
+    _gaq.push(['_setDomainName', '.bikelife.pl']);
+    _gaq.push(['_trackPageview']);
+    
+    (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  //]]&gt;
+&lt;/script&gt;</description>
+    <name>Dodanie kodu Google Analytics</name>
+    <requested_by>
+      <person>
+        <id type="integer">227119</id>
+        <name>&#321;ukasz Szrubkowski</name>
+        <initials>&#321;S</initials>
+      </person>
+    </requested_by>
+    <owned_by>
+      <person>
+        <id type="integer">134355</id>
+        <name>Marcin Horosz</name>
+        <initials>MH</initials>
+      </person>
+    </owned_by>
+    <created_at type="datetime">2012/02/07 08:54:04 CET</created_at>
+    <updated_at type="datetime">2012/05/09 10:12:40 CEST</updated_at>
+    <accepted_at type="datetime">2012/05/09 10:12:40 CEST</accepted_at>
+    <comments type="array">
+      <comment>
+        <id type="integer">18305599</id>
+        <text>Kod b&#281;dzie widoczny tylko na produkcji. Sprawdzi&#263; po wdro&#380;eniu.</text>
+        <author>
+          <person>
+            <id type="integer">134355</id>
+            <name>Marcin Horosz</name>
+            <initials>MH</initials>
+          </person>
+        </author>
+        <created_at type="datetime">2012/02/07 11:05:26 CET</created_at>
+      </comment>
+    </comments>
+  </story>
+  <story>
+    <id type="integer">28652745</id>
+    <project_id type="integer">439559</project_id>
+    <story_type>feature</story_type>
+    <url>http://www.pivotaltracker.com/story/show/28652745</url>
+    <estimate type="float">0</estimate>
+    <current_state>accepted</current_state>
+    <description></description>
+    <name>Wyrzu&#263;my z menu g&#322;&#243;wnego pozycj&#281; &quot;Blog&quot;</name>
+    <requested_by>
+      <person>
+        <id type="integer">227119</id>
+        <name>&#321;ukasz Szrubkowski</name>
+        <initials>&#321;S</initials>
+      </person>
+    </requested_by>
+    <owned_by>
+      <person>
+        <id type="integer">134355</id>
+        <name>Marcin Horosz</name>
+        <initials>MH</initials>
+      </person>
+    </owned_by>
+    <created_at type="datetime">2012/04/26 09:28:48 CEST</created_at>
+    <updated_at type="datetime">2012/05/09 11:15:58 CEST</updated_at>
+    <accepted_at type="datetime">2012/05/09 11:15:58 CEST</accepted_at>
+  </story>
+  <story>
+    <id type="integer">27680709</id>
+    <project_id type="integer">439559</project_id>
+    <story_type>bug</story_type>
+    <url>http://www.pivotaltracker.com/story/show/27680709</url>
+    <current_state>accepted</current_state>
+    <description></description>
+    <name>Linki w stopce prowadz&#261; do http://bikelife.pl/... tam nie ma stron statycznych. S&#261; w galerii pod adresami http://galeria.bikelife.pl/...</name>
+    <requested_by>
+      <person>
+        <id type="integer">227119</id>
+        <name>&#321;ukasz Szrubkowski</name>
+        <initials>&#321;S</initials>
+      </person>
+    </requested_by>
+    <owned_by>
+      <person>
+        <id type="integer">134355</id>
+        <name>Marcin Horosz</name>
+        <initials>MH</initials>
+      </person>
+    </owned_by>
+    <created_at type="datetime">2012/04/08 01:51:52 CEST</created_at>
+    <updated_at type="datetime">2012/05/09 11:16:10 CEST</updated_at>
+    <accepted_at type="datetime">2012/05/09 11:16:09 CEST</accepted_at>
+  </story>
+  <story>
+    <id type="integer">27680725</id>
+    <project_id type="integer">439559</project_id>
+    <story_type>bug</story_type>
+    <url>http://www.pivotaltracker.com/story/show/27680725</url>
+    <current_state>accepted</current_state>
+    <description></description>
+    <name>Fonty z TypeKit &#322;aduj&#261;&#160;si&#281;&#160;na ko&#324;cu zawarto&#347;ci. Marcin w RacePlace zrobi&#322; co&#347; &#380;eby by&#322;y &#322;adowane wcze&#347;niej. Proponuj&#281; ten myk zastosowa&#263; te&#380; tu.</name>
+    <requested_by>
+      <person>
+        <id type="integer">227119</id>
+        <name>&#321;ukasz Szrubkowski</name>
+        <initials>&#321;S</initials>
+      </person>
+    </requested_by>
+    <owned_by>
+      <person>
+        <id type="integer">134355</id>
+        <name>Marcin Horosz</name>
+        <initials>MH</initials>
+      </person>
+    </owned_by>
+    <created_at type="datetime">2012/04/08 01:53:35 CEST</created_at>
+    <updated_at type="datetime">2012/05/09 11:16:13 CEST</updated_at>
+    <accepted_at type="datetime">2012/05/09 11:16:13 CEST</accepted_at>
+  </story>
+  <story>
+    <id type="integer">28652277</id>
+    <project_id type="integer">439559</project_id>
+    <story_type>feature</story_type>
+    <url>http://www.pivotaltracker.com/story/show/28652277</url>
+    <estimate type="float">1</estimate>
+    <current_state>accepted</current_state>
+    <description>Domy&#347;lny BikeLife - Wideo
+A po przej&#347;ciu do jakiej&#347; tre&#347;ci &lt;tytu&#322; tre&#347;ci&gt; | BikeLife - Wideo</description>
+    <name>Tytu&#322; okna przegl&#261;darki zr&#243;bmy na wz&#243;r tego co w magazynie.</name>
+    <requested_by>
+      <person>
+        <id type="integer">227119</id>
+        <name>&#321;ukasz Szrubkowski</name>
+        <initials>&#321;S</initials>
+      </person>
+    </requested_by>
+    <owned_by>
+      <person>
+        <id type="integer">134355</id>
+        <name>Marcin Horosz</name>
+        <initials>MH</initials>
+      </person>
+    </owned_by>
+    <created_at type="datetime">2012/04/26 09:17:38 CEST</created_at>
+    <updated_at type="datetime">2012/05/09 11:16:15 CEST</updated_at>
+    <accepted_at type="datetime">2012/05/09 11:16:15 CEST</accepted_at>
+  </story>
+  <story>
+    <id type="integer">27680681</id>
+    <project_id type="integer">439559</project_id>
+    <story_type>bug</story_type>
+    <url>http://www.pivotaltracker.com/story/show/27680681</url>
+    <current_state>accepted</current_state>
+    <description>Teraz lest wyr&#243;wnane do lewej z tre&#347;ci&#261;&#160;strony. Powinno by&#263; centralnie jak w reszcie podstron.</description>
+    <name>Pozycjonowanie billboardu reklamowego pod g&#322;&#243;wnym menu jest z&#322;e.</name>
+    <requested_by>
+      <person>
+        <id type="integer">227119</id>
+        <name>&#321;ukasz Szrubkowski</name>
+        <initials>&#321;S</initials>
+      </person>
+    </requested_by>
+    <owned_by>
+      <person>
+        <id type="integer">134355</id>
+        <name>Marcin Horosz</name>
+        <initials>MH</initials>
+      </person>
+    </owned_by>
+    <created_at type="datetime">2012/04/08 01:47:34 CEST</created_at>
+    <updated_at type="datetime">2012/05/17 12:43:01 CEST</updated_at>
+    <accepted_at type="datetime">2012/05/17 12:43:01 CEST</accepted_at>
+  </story>
+  <story>
+    <id type="integer">27680693</id>
+    <project_id type="integer">439559</project_id>
+    <story_type>bug</story_type>
+    <url>http://www.pivotaltracker.com/story/show/27680693</url>
+    <current_state>accepted</current_state>
+    <description>Zastanawiam si&#281;&#160;czy wog&#243;le nie usun&#261;&#263; tego formatu i wszystkim FF zrobi&#263; fallback do flash'a. Opr&#243;cz ww problemu nie mam w tej chwili dobrego encodera na Mac'a. Wsparcie tej metody kodowania jest co najmniej s&#322;abe.</description>
+    <name>W FF11 na Mac wersja WebM si&#281;&#160;nie uruchamia. </name>
+    <requested_by>
+      <person>
+        <id type="integer">227119</id>
+        <name>&#321;ukasz Szrubkowski</name>
+        <initials>&#321;S</initials>
+      </person>
+    </requested_by>
+    <owned_by>
+      <person>
+        <id type="integer">134355</id>
+        <name>Marcin Horosz</name>
+        <initials>MH</initials>
+      </person>
+    </owned_by>
+    <created_at type="datetime">2012/04/08 01:50:04 CEST</created_at>
+    <updated_at type="datetime">2012/05/17 12:43:06 CEST</updated_at>
+    <accepted_at type="datetime">2012/05/17 12:43:06 CEST</accepted_at>
+    <comments type="array">
+      <comment>
+        <id type="integer">22385379</id>
+        <text>To chyba faktycznie przez b&#322;&#281;dne kodowanie webm si&#281; nie odtwarza. Na moim przyk&#322;adowym filmiku dzia&#322;a w FF.
+Pr&#243;bowa&#322;e&#347; http://www.mirovideoconverter.com do kodowania?</text>
+        <author>
+          <person>
+            <id type="integer">134355</id>
+            <name>Marcin Horosz</name>
+            <initials>MH</initials>
+          </person>
+        </author>
+        <created_at type="datetime">2012/05/09 09:49:55 CEST</created_at>
+      </comment>
+      <comment>
+        <id type="integer">22385991</id>
+        <text>W&#322;a&#347;nie tego Miro u&#380;ywam. Ale on nie daje &#380;adnej kontroli nad parametrami. Jedyne rozwi&#261;zanie sensowne to Sorenson Squeeze, ale na razie nie mam kasy &#380;eby kupi&#263; licencj&#281; :(</text>
+        <author>
+          <person>
+            <id type="integer">227119</id>
+            <name>&#321;ukasz Szrubkowski</name>
+            <initials>&#321;S</initials>
+          </person>
+        </author>
+        <created_at type="datetime">2012/05/09 10:11:51 CEST</created_at>
+      </comment>
+    </comments>
+  </story>
+  <story>
+    <id type="integer">27680669</id>
+    <project_id type="integer">439559</project_id>
+    <story_type>bug</story_type>
+    <url>http://www.pivotaltracker.com/story/show/27680669</url>
+    <current_state>accepted</current_state>
+    <description></description>
+    <name>Nie mo&#380;na dodawa&#263; du&#380;ych plik&#243;w - ograniczenie po stronie serwera.</name>
+    <requested_by>
+      <person>
+        <id type="integer">227119</id>
+        <name>&#321;ukasz Szrubkowski</name>
+        <initials>&#321;S</initials>
+      </person>
+    </requested_by>
+    <owned_by>
+      <person>
+        <id type="integer">134355</id>
+        <name>Marcin Horosz</name>
+        <initials>MH</initials>
+      </person>
+    </owned_by>
+    <created_at type="datetime">2012/04/08 01:46:07 CEST</created_at>
+    <updated_at type="datetime">2012/05/17 13:11:18 CEST</updated_at>
+    <accepted_at type="datetime">2012/05/17 13:11:18 CEST</accepted_at>
+  </story>
+  <story>
+    <id type="integer">28513013</id>
+    <project_id type="integer">439559</project_id>
+    <story_type>bug</story_type>
+    <url>http://www.pivotaltracker.com/story/show/28513013</url>
+    <current_state>delivered</current_state>
+    <description></description>
+    <name>W jednej z przegl&#261;darek na Windows, przebija&#322;a mi reklama (kwadrat), podczas odtwarzania w Full Screenie. (chyba Chrome)</name>
+    <requested_by>
+      <person>
+        <id type="integer">227119</id>
+        <name>&#321;ukasz Szrubkowski</name>
+        <initials>&#321;S</initials>
+      </person>
+    </requested_by>
+    <owned_by>
+      <person>
+        <id type="integer">134355</id>
+        <name>Marcin Horosz</name>
+        <initials>MH</initials>
+      </person>
+    </owned_by>
+    <created_at type="datetime">2012/04/24 11:19:08 CEST</created_at>
+    <updated_at type="datetime">2012/05/09 09:16:22 CEST</updated_at>
+    <comments type="array">
+      <comment>
+        <id type="integer">22384261</id>
+        <text>Musisz to naprawi&#263; po swojej stronie. Do kodu z flashem &lt;embed&gt; dodaj parametr wmode=&quot;opaque&quot; dok&#322;adnie tak:
+
+&lt;embed wmode=&quot;opaque&quot; type=&quot;application/x-shockwave-flash&quot; src=&quot;http://reklamy.bikelife.pl/www/images/779cb61330440a9e9d49acb03a2ec285.swf&quot; width=&quot;250&quot; height=&quot;250&quot; style=&quot;undefined&quot; id=&quot;Advertisement&quot; name=&quot;Advertisement&quot; quality=&quot;high&quot; allowscriptaccess=&quot;always&quot;&gt;</text>
+        <author>
+          <person>
+            <id type="integer">134355</id>
+            <name>Marcin Horosz</name>
+            <initials>MH</initials>
+          </person>
+        </author>
+        <created_at type="datetime">2012/05/09 09:14:34 CEST</created_at>
+      </comment>
+      <comment>
+        <id type="integer">22384309</id>
+        <text>naprawi to problem we wszystkich serwisach, bo w magazynie pewnie jest ten sam bug</text>
+        <author>
+          <person>
+            <id type="integer">134355</id>
+            <name>Marcin Horosz</name>
+            <initials>MH</initials>
+          </person>
+        </author>
+        <created_at type="datetime">2012/05/09 09:16:22 CEST</created_at>
+      </comment>
+    </comments>
+  </story>
+</stories>

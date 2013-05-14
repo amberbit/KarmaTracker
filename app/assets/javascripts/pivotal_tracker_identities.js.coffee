@@ -10,7 +10,6 @@ KarmaTracker.controller "PivotalTrackerIdentitiesController", ($scope, $http, $c
     ).success((data, status, headers, config) ->
       $scope.identities = data
     ).error((data, status, headers, config) ->
-      console.debug('Error fetching identities')
     )
 
   $scope.remove = (name, id) ->
@@ -21,7 +20,6 @@ KarmaTracker.controller "PivotalTrackerIdentitiesController", ($scope, $http, $c
       ).success((data, status, headers, config) ->
         $scope.updateIdentities()
       ).error((data, status, headers, config) ->
-        console.debug('Error destroying identity: '+ data.message)
       )
 
   $scope.formLooksValid = () ->
@@ -42,42 +40,41 @@ KarmaTracker.controller "PivotalTrackerIdentitiesController", ($scope, $http, $c
 
   $scope.add = () ->
     if $scope.formLooksValid()
-      unless !$scope.newIdentity.api_key? or $scope.newIdentity.api_key == ''
+      if $scope.newIdentity.api_key? and $scope.newIdentity.api_key != ''
         $http.post(
           '/api/v1/identities/pivotal_tracker?token='+$cookies.token+'&identity[name]='+$scope.newIdentity.name+'&identity[api_key]='+$scope.newIdentity.api_key
         ).success((data, status, headers, config) ->
-          $scope.reload()
+          $scope.cleanForm()
+          $scope.openAddForm()
+          $scope.updateIdentities()
         ).error((data, status, headers, config) ->
           $scope.errors['api_key'] = data.pivotal_tracker.errors.api_key[0]
-          console.debug('Error fetching identities')
         )
       else
         $http.post(
           '/api/v1/identities/pivotal_tracker?token='+$cookies.token+'&identity[name]='+$scope.newIdentity.name+'&identity[email]='+$scope.newIdentity.email+'&identity[password]='+$scope.newIdentity.password
         ).success((data, status, headers, config) ->
-          $scope.reload()
+          $scope.cleanForm()
+          $scope.updateIdentities()
         ).error((data, status, headers, config) ->
           $scope.newIdentity.email = ''
           $scope.newIdentity.password = ''
-          console.debug data
           if data.pivotal_tracker.errors.api_key?
             $scope.errors.password = "The API key related " + data.pivotal_tracker.errors.api_key[0]
           else
             $scope.errors.password = data.pivotal_tracker.errors.password[0]
-          console.debug('Error fetching identities')
         )
 
   $scope.openAddForm = () ->
-    $scope.addFormShown = true
+    $scope.addFormShown = !$scope.addFormShown
+    $scope.cleanForm()
 
-  $scope.$watch("pivotaltracker", ->
-    $scope.updateIdentities()
-  )
-
-  $scope.reload = () ->
+  $scope.cleanForm = () ->
     $scope.newIdentity.name  = ''
     $scope.newIdentity.email = ''
     $scope.newIdentity.password = ''
     $scope.newIdentity.api_key =''
-    $scope.addFormShown = false
-    $scope.updateIdentities()
+    $scope.errors = {}
+
+
+  $scope.updateIdentities()

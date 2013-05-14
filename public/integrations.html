@@ -2,17 +2,18 @@
   <div class="small-12 columns">
     <h2>Identities</h2>
     <h3>Pivotal Tracker</h3>
-    <div ng-model="pivotaltracker" ng-controller="PivotalTrackerIdentitiesController">
+    <div ng-controller="PivotalTrackerIdentitiesController">
       <div class='panel' ng-repeat="identity in identities">
         <a href="" ng-click="remove(identity.pivotal_tracker.name, identity.pivotal_tracker.id)" class="secondary-btn small">Remove</a>
         <h4 class="subheader">{{identity.pivotal_tracker.name}}</h4>
         <div class="row">
-          <div class="small-2 columns"><strong>API key</strong></div>
+          <div class="small-2 columns"><strong>API key:</strong></div>
           <div class="small-10 columns">{{identity.pivotal_tracker.api_key}}</div>
         </div>
       </div>
       <form ng-submit='add()'>
       <div class="panel" ng-show="addFormShown">
+        <a ng-click="openAddForm()" class="tiny button secondary right-align"><strong class="subheader">X</strong></a>
         <h4 class="subheader">Add a new identity</h4>
         <label>Name:
           <input type="text" ng-model="newIdentity.name" />
