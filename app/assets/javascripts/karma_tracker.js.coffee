@@ -6,6 +6,7 @@
 #= require register
 #= require integrations
 #= require pivotal_tracker_identities
+#= require git_hub_identities
 #= require tasks
 #= require flashes
 

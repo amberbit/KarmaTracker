@@ -55,6 +55,7 @@ KarmaTracker.controller "PivotalTrackerIdentitiesController", ($scope, $http, $c
           '/api/v1/identities/pivotal_tracker?token='+$cookies.token+'&identity[name]='+$scope.newIdentity.name+'&identity[email]='+$scope.newIdentity.email+'&identity[password]='+$scope.newIdentity.password
         ).success((data, status, headers, config) ->
           $scope.cleanForm()
+          $scope.openAddForm()
           $scope.updateIdentities()
         ).error((data, status, headers, config) ->
           $scope.newIdentity.email = ''
