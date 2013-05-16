@@ -1,0 +1,43 @@
+<div ng-controller="AccountController" class="row">
+  <div class="small-12 columns">
+
+    <h2>Account</h2>
+
+    <h3>User details</h3>
+    <div class="small-12 panel columns">
+       <div class="small-5 columns panel secondary">
+         <label>E-mail:
+           <input type="text" disabled=disabled value="{{user.email}}" />
+         </label>
+         <label>New e-mail:
+           <input type="text" id="email" name="email"ng-model="newEmail" />
+           <small ng-show="errors.email" class="error">{{errors.email}}</small>
+         </label>
+         <button ng-click="changeEmail()" class="button right-align small">Save changes</button>
+       </div>
+       <div class="small-6 small-offset-1 columns panel secondary">
+         <label>Set new password:
+           <input type="password" ng-model="newPassword" />
+           <small ng-show="errors.password" class="error">{{errors.password}}</small>
+         </label>
+         <label>Confirm new password:
+           <input type="password" ng-model="confirmation" />
+           <small ng-show="errors.confirmation" class="error">{{errors.confirmation}}</small>
+         </label>
+         <button ng-click="changePassword()" class="button right-align small">Save changes</button>
+
+       </div>
+    </div>
+
+    <div ng-show="enabledDestroy">
+      <h3>Remove account</h3>
+        <div class="small-12 panel columns">
+        <button ng-click="remove()" class="button right-align small">Remove</button>
+        Remove your KarmaTracker account
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
