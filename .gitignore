@@ -18,4 +18,5 @@
 /html
 /config/database.yml
 
+open-uri*
 config/app_config.yml
