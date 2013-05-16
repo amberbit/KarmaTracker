@@ -22,6 +22,7 @@ gem 'bcrypt-ruby', '~> 3.0.0', require: 'bcrypt'
 
 gem 'amberbit-config'
 gem 'coffee-rails'
+gem 'jruby-openssl'
 
 group :test do
   gem 'rspec-rails', git: 'https://github.com/rspec/rspec-rails.git', ref: 'ee3f224c61cac7d4de919a23945418fd07ada7c6'

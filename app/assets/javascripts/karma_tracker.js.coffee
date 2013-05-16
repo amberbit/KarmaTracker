@@ -7,6 +7,7 @@
 #= require integrations
 #= require pivotal_tracker_identities
 #= require git_hub_identities
+#= require account
 #= require tasks
 #= require flashes
 
@@ -32,6 +33,11 @@ KarmaTracker.controller "RootController", ($scope, $location, $cookies, FlashMes
   $scope.alert = (message) ->
     FlashMessage.type = 'alert'
     FlashMessage.string = message
+
+  $scope.success = (message) ->
+    FlashMessage.type = 'success'
+    FlashMessage.string = message
+
 
 
 

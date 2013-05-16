@@ -34,10 +34,8 @@ class PivotalTrackerIdentity < Identity
       self.api_key = key.content
       self.source_id = doc.xpath('//id').first.content
     else
-      raise Exception
+      errors.add(:api_key, 'provided API token is invalid')
     end
-  rescue
-    errors.add(:api_key, 'provided API token is invalid')
   end
 
   def validate_credentials_with_email_and_password
@@ -47,10 +45,8 @@ class PivotalTrackerIdentity < Identity
       self.api_key = key.content
       self.source_id = doc.xpath('//id').first.content
     else
-      raise Exception
+      errors.add(:password, 'provided email/password combination is invalid')
     end
-  rescue Exception
-    errors.add(:password, 'provided email/password combination is invalid')
   end
 
   def authentication_uri

@@ -19,7 +19,11 @@ KarmaTracker.config ($routeProvider) ->
   ).when('/integrations',
     controller: 'IntegrationsController',
     templateUrl: '/integrations.html'
+  ).when('/account',
+    controller: 'AccountController',
+    templateUrl: '/account.html'
   )
+
 
 
   if KarmaTrackerConfig.registration_enabled

@@ -2,7 +2,7 @@ KarmaTracker.controller "FlashesController", ($scope, FlashMessage) ->
   $scope.message = FlashMessage
 
   $scope.isAlert = () ->
-    $scope.message.type == 'alert'
+    $scope.message.type
 
   $scope.hideMsg = ->
     $scope.$apply ->
