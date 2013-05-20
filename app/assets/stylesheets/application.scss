@@ -22,6 +22,37 @@
 
 }
 
+.github{
+  margin-top: -0.5em;
+  margin-left: 0.5em;
+  height: 2em;
+  width: 2em;
+  background-image: url(image_path('blacktocat-32.png'));
+  background-repeat: no-repeat;
+  transition: background-image 0.4s;
+}
+
+.github:hover{
+  background-image: url(image_path('bluecktocat-32.png'));
+  background-repeat:no-repeat;
+}
+
+.pivotal-tracker{
+  margin-top: -0.5em;
+  margin-left: 0.5em;
+  height: 2em;
+  width: 2em;
+  background-image: url(image_path('blackpivotal-32.png'));
+  background-repeat:no-repeat;
+  transition: background-image 0.4s;
+}
+
+.pivotal-tracker:hover{
+  background-image: url(image_path('bluepivotal-32.png'));
+  background-repeat:no-repeat;
+}
+
+
 .right-align{
   float: right;
   margin-right: 0.125em;
@@ -59,7 +90,16 @@
   font-weight: bold;
 }
 
-.panel.clickable {
+.panel.project {
+  height: 4em;
+}
+
+.panel.project.icon {
+    border-left-style: none;
+  }
+
+
+.clickable {
   cursor: pointer;
 }
 

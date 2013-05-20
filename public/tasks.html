@@ -6,14 +6,32 @@
     </div>
 
     <p><a ng-href="/#/projects">Projects</a> &gt; {{project.name}}</p>
-    <div class='panel'
-      ng-repeat="task in tasks"
-      ng-class="{running: task.running}"
-      ng-click="startTracking(task)"
-      ng-show="task.visible"
-      >
+    <div ng-repeat="task in tasks">
+
+      <div class="small-10 large-11 columns panel project clickable"
+        ng-class="{running: task.running}"
+        ng-click="startTracking(task)"
+        ng-show="task.visible">
+
+
       {{task.name}}
+      </div>
+
+      <div class="small-2 large-1 columns panel project icon clickable"
+         ng-show="task.visible"
+        ng-click="openTask(project.source_name, project.name, project.source_identifier, task.source_identifier)">
+        <div ng-switch="project.source_name">
+          <div class="icon" ng-switch-when="GitHub">
+            <div class="github"></div>
+          </div>
+          <div ng-switch-when="Pivotal Tracker">
+            <div class="pivotal-tracker"></div>
+          </div>
+        </div>
+      </div>
+
     </div>
+
   </div>
 </div>
 
