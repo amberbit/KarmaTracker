@@ -28,10 +28,5 @@ KarmaTracker.controller "ProjectsController", ($scope, $http, $cookies, $locatio
 
   $scope.$watch("query.string", filter_visible  )
 
-  $scope.openProject = (source, name, identifier) ->
-    if source == 'GitHub'
-      window.open('http://github.com/' + name, '_blank')
-    else
-      window.open('http://pivotaltracker.com/s/projects/' + identifier, '_blank')
 
 

@@ -38,12 +38,6 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookies, $location, 
       )
 
 
-  $scope.openTask = (source, name, identifier, task) ->
-    if source == 'GitHub'
-      window.open('http://github.com/' + name + '/issues/' + task.split("/")[1], '_blank')
-    else
-      window.open('http://pivotaltracker.com/s/projects/' + identifier + '/stories/' + task, '_blank')
-
   $scope.$watch("query.string", ->
     for task in $scope.tasks
       task.visible = $scope.matchesQuery(task.name)

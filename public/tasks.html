@@ -12,13 +12,11 @@
         ng-class="{running: task.running}"
         ng-click="startTracking(task)"
         ng-show="task.visible">
-
-
-      {{task.name}}
+        {{task.name}}
       </div>
 
       <div class="small-2 large-1 columns panel project icon clickable"
-         ng-show="task.visible"
+        ng-show="task.visible"
         ng-click="openTask(project.source_name, project.name, project.source_identifier, task.source_identifier)">
         <div ng-switch="project.source_name">
           <div class="icon" ng-switch-when="GitHub">

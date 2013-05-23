@@ -8,6 +8,7 @@
 #= require pivotal_tracker_identities
 #= require git_hub_identities
 #= require account
+#= require timelog
 #= require tasks
 #= require flashes
 
@@ -39,7 +40,17 @@ KarmaTracker.controller "RootController", ($scope, $location, $cookies, FlashMes
     FlashMessage.string = message
 
 
+  $scope.openProject = (source, name, identifier) ->
+    if source == 'GitHub'
+      window.open('http://github.com/' + name, '_blank')
+    else
+      window.open('http://pivotaltracker.com/s/projects/' + identifier, '_blank')
 
+  $scope.openTask = (source, name, identifier, task) ->
+    if source == 'GitHub'
+      window.open('http://github.com/' + name + '/issues/' + task.split("/")[1], '_blank')
+    else
+      window.open('http://pivotaltracker.com/s/projects/' + identifier + '/stories/' + task, '_blank')
 
   if typeof($cookies.token) == 'undefined'
     return if $location.path() == '/login'

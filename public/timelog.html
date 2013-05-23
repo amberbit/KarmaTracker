@@ -1,0 +1,32 @@
+<div ng-controller="TimelogController" class="row">
+  <div class="small-12 large-12 columns">
+    <h2>Timesheet</h2>
+    <table class="table small-12 colums">
+      <thead>
+        <tr>
+          <th class="small-4 columns">Task</th>
+          <th class="small-4 columns">Project</th>
+          <th class="small-2 columns">Started at</th>
+          <th class="small-2 columns">Time spent</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="entry in entries">
+          <th class="small-4 columns"><a href="" ng-click="openTask(entry.project.source_name, entry.project.name, entry.project.source_identifier, entry.task.source_identifier)">{{entry.task.name}}</a></th>
+          <th class="small-4 columns"><a href="" ng-click="openProject(entry.project.source_name, entry.project.name, entry.project.source_identifier)">{{entry.project.name}} ({{entry.project.source_name}})</a></th>
+          <th class="small-2 columns">{{entry.time_log_entry.started_at | date:'HH:mm:ss'}}</th>
+          <th class="small-2 columns">{{getTime(entry.time_log_entry.seconds)}}</th>
+        </tr>
+      </tbody>
+    </table>
+    <table>
+     <table class="table small-4 small-offset-8 colums">
+        <tr>
+          <th class="small-6 columns">Total time</th>
+          <th class="small-6 columns">{{getTime(totalTime)}}</th>
+        </tr>
+
+
+  </div>
+</div>
+

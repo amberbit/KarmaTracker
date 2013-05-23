@@ -22,7 +22,11 @@ KarmaTracker.config ($routeProvider) ->
   ).when('/account',
     controller: 'AccountController',
     templateUrl: '/account.html'
+  ).when('/log',
+    controller: 'TimelogController',
+    templateUrl: '/timelog.html'
   )
+
 
 
 
