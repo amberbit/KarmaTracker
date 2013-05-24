@@ -1,6 +1,26 @@
 <div ng-controller="TimelogController" class="row">
   <div class="small-12 large-12 columns">
     <h2>Timesheet</h2>
+
+    <div class="small-12 columns">
+      <div class="large-3 large-offset-2 small-3 columns">
+        <label>From <input type="text" ng-model="fromDate" placeholder="2012-12-31"></input></label>
+      </div>
+      <div class="large-3 small-3 columns">
+        <label>to <input type="text" ng-model="toDate" placeholder="2012-12-31"></input></label>
+      </div>
+      <div class="large-3 small-4 columns">
+        <label>Project
+          <select ng-model="selectedProject" ng-options="project.project.id as project.project.name for project in projects">
+            <option value="">-- choose project --</option>
+          </select>
+        </label>
+      </div>
+        <div class="small-2 large-1 columns">
+          <label><br/><button class="tiny button" ng-click="getEntries()">Sumbit</button></label>
+        </div>
+    </div>
+
     <table class="table small-12 colums">
       <thead>
         <tr>
@@ -14,8 +34,10 @@
         <tr ng-repeat="entry in entries">
           <th class="small-4 columns"><a href="" ng-click="openTask(entry.project.source_name, entry.project.name, entry.project.source_identifier, entry.task.source_identifier)">{{entry.task.name}}</a></th>
           <th class="small-4 columns"><a href="" ng-click="openProject(entry.project.source_name, entry.project.name, entry.project.source_identifier)">{{entry.project.name}} ({{entry.project.source_name}})</a></th>
-          <th class="small-2 columns">{{entry.time_log_entry.started_at | date:'HH:mm:ss'}}</th>
-          <th class="small-2 columns">{{getTime(entry.time_log_entry.seconds)}}</th>
+          <th class="small-2 columns">{{entry.time_log_entry.started_at | date:'yyyy-MM-dd HH:mm:ss'}}</th>
+          <th class="small-2 columns">
+            {{getTime(entry.time_log_entry.seconds)}}
+          </th>
         </tr>
       </tbody>
     </table>
