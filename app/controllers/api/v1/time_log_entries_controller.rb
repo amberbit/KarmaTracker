@@ -46,6 +46,7 @@ module Api
         scope = scope.from_project(params[:project_id]) if params[:project_id].present?
         scope = scope.after_timestamp(params[:started_at]) if params[:started_at].present?
         scope = scope.before_timestamp(params[:stopped_at]) if params[:stopped_at].present?
+        scope.sort! { |a,b| a.started_at <=> b.started_at }
 
         @time_log_entries = scope
         render 'index'

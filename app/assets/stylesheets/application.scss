@@ -26,6 +26,29 @@
   text-align: left;
 }
 
+.tinyicon {
+  margin-top: -0.5em;
+  margin-left: 0.5em;
+  height: 1.2em;
+  width: 1.2em;
+  background-repeat: no-repeat;
+  &.edit{
+    background-image: url(image_path('page_white_edit.png'));
+  }
+  &.save{
+    background-image: url(image_path('disk.png'));
+  }
+  &.close{
+    background-image: url(image_path('cross.png'));
+  }
+  &.delete{
+    background-image: url(image_path('bin.png'));
+  }
+
+
+
+
+}
 
 .github{
   margin-top: -0.5em;
