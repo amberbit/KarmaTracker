@@ -87,7 +87,7 @@ describe 'Identities API' do
     response.status.should == 422
     Identity.count.should == 0
     json['pivotal_tracker'].has_key?('errors').should be_true
-    json['pivotal_tracker']['errors']['password'].should == ['provided email/password combination is invalid']
+    json['pivotal_tracker']['errors']['api_key'].should_not be_blank
   end
 
   # POST /api/v1/identities/git_hub
