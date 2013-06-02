@@ -1,15 +1,22 @@
 <div ng-controller="SessionController" class="row">
-  <div class="small-4 columns"></div>
-  <div class="small-4 columns">
-    <form ng-submit="signIn()">
-      <div ng-show="message" data-alert class='alert-box alert'>{{message}}</div>
-      <input type="text" ng-model="$parent.session.email" autofocus='autofocus' focus="{{focus_email}}"/>
+  <div class="blankdiv"></div>
+  <div class="small-12 large-12 columns">
+    <div class="small-12 large-8 columns">
+      <img src="/assets/kt-logo-big.png" />
+      <h5 class="subtitle">New time tracker from <a href="http://amberbit.com/" target="_blank">Amberbit</a>.</h5>
       <br/>
-      <input type="password" ng-model="$parent.session.password" focus="{{focus_password}}"/>
-      <button>Sign in!</button>
-      <a href="#/register" ng-show="registrationEnabled" class="secondary-btn">Register</a>
-    </form>
+    </div>
+
+    <div class="small-12 large-4 columns panel">
+      <form ng-submit="signIn()">
+        <div ng-show="message" data-alert class='alert-box alert'>{{message}}</div>
+        <input type="text" placeholder="e-mail address" ng-model="$parent.session.email" autofocus='autofocus' focus="{{focus_email}}"/>
+        <br/>
+        <input type="password" placeholder="password" ng-model="$parent.session.password" focus="{{focus_password}}"/>
+        <button class="button">Sign in!</button>
+        <a href="#/register" ng-show="registrationEnabled" class="button secondary right">Register</a>
+      </form>
+    </div>
   </div>
-  <div class="small-4 columns"></div>
 </div>
 

@@ -1,29 +1,36 @@
 <div ng-controller="TasksController" class="row">
-  <div class="small-12 columns">
-    <div class='search-box'>
-      <label><input type="checkbox" ng-model="current" />Show only Current</label>
-      <label>Search: <input ng-model='query.string' autofocus='autofocus'></label>
+
+    <div class="small-4 large-2 large-offset-7 columns">
+      <label><input type="checkbox" ng-model="current" />Show only current</label>
+    </div>
+    <div class='small-8 large-3 columns'>
+      <input type="text" placeholder="Search..." ng-model='query.string' autofocus='autofocus' />
+    </div>
+    <div class="small-12 large-12 columns">
+      <p><a ng-href="/#/projects">Projects</a> &gt; {{project.name}}</p>
     </div>
 
-    <p><a ng-href="/#/projects">Projects</a> &gt; {{project.name}}</p>
-    <div ng-repeat="task in tasks">
+  <div class="small-12 large-12 columns">
+
+    <div class="small-12 large-12" ng-repeat="task in tasks">
 
       <div class="small-10 large-11 columns panel project clickable"
-        ng-class="{running: task.running}"
+        ng-class="{callout: task.running, running: task.running}"
         ng-click="startTracking(task)"
         ng-show="task.visible">
         {{task.name}}
       </div>
 
       <div class="small-2 large-1 columns panel project icon clickable"
+        ng-class="{callout: task.running, running: task.running}"
         ng-show="task.visible"
         ng-click="openTask(project.source_name, project.name, project.source_identifier, task.source_identifier)">
         <div ng-switch="project.source_name">
           <div class="icon" ng-switch-when="GitHub">
-            <div class="github"></div>
+            <div class="source-icon github"></div>
           </div>
           <div ng-switch-when="Pivotal Tracker">
-            <div class="pivotal-tracker"></div>
+            <div class="source-icon pivotal-tracker"></div>
           </div>
         </div>
       </div>

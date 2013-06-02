@@ -52,6 +52,15 @@ KarmaTracker.controller "RootController", ($scope, $location, $cookies, FlashMes
     else
       window.open('http://pivotaltracker.com/s/projects/' + identifier + '/stories/' + task, '_blank')
 
+  $scope.highlightCurrentPage = (url) ->
+    if $location.url().substr(0, url.length) == url
+      return "current"
+    else
+      return ""
+
+  $scope.expandMenu = () ->
+    document.getElementById("top-bar").classList.toggle("expanded")
+
   if typeof($cookies.token) == 'undefined'
     return if $location.path() == '/login'
     $location.path '/login'
@@ -60,5 +69,6 @@ KarmaTracker.controller "RootController", ($scope, $location, $cookies, FlashMes
     $scope.signed_in = true
     if $location.path() == '/' || $location.path() == ''
       $location.path '/projects'
+
 
 

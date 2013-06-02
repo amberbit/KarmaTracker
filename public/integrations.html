@@ -7,7 +7,7 @@
     <div ng-controller="PivotalTrackerIdentitiesController">
 
       <div class='panel' ng-repeat="identity in identities">
-        <a href="" ng-click="remove(identity.pivotal_tracker.name, identity.pivotal_tracker.id)" class="secondary-btn small">Remove</a>
+        <a href="" ng-click="remove(identity.pivotal_tracker.name, identity.pivotal_tracker.id)" class="secondary button right tiny">Remove</a>
         <h4 class="subheader">{{identity.pivotal_tracker.name}}</h4>
         <div class="row">
           <div class="small-2 columns"><strong>API key:</strong></div>
@@ -17,7 +17,7 @@
 
       <form ng-submit='add()'>
         <div class="panel" ng-show="addFormShown">
-          <a ng-click="openAddForm()" class="tiny button secondary right-align"><strong class="subheader">X</strong></a>
+          <a ng-click="openAddForm()" class="tiny button secondary right-align"><span class="subheader">Close</span></a>
           <h4 class="subheader">Add a new identity</h4>
           <label>Name:
             <input type="text" ng-model="newIdentity.name" />
@@ -50,7 +50,7 @@
           </div>
         </div>
       </form>
-      <a href="" ng-show="!addFormShown" ng-click="openAddForm()" class="secondary-btn small">Add new identity</a>
+      <a href="" ng-show="!addFormShown" ng-click="openAddForm()" class="button secondary small right">Add new identity</a>
     </div>
     <br/>
 
@@ -58,7 +58,7 @@
     <div ng-controller="GitHubIdentitiesController">
 
       <div class='panel' ng-repeat="identity in identities">
-        <a href="" ng-click="remove(identity.git_hub.name, identity.git_hub.id)" class="secondary-btn small">Remove</a>
+        <a href="" ng-click="remove(identity.git_hub.name, identity.git_hub.id)" class="secondary button right tiny">Remove</a>
         <h4 class="subheader">{{identity.git_hub.name}}</h4>
         <div class="row">
           <div class="small-2 columns"><strong>API key:</strong></div>
@@ -68,7 +68,7 @@
 
       <form ng-submit='add()'>
         <div class="panel" ng-show="addFormShown">
-          <a ng-click="openAddForm()" class="tiny button secondary right-align"><strong class="subheader">X</strong></a>
+          <a ng-click="openAddForm()" class="tiny button secondary right-align"><span class="subheader">Close</span></a>
           <h4 class="subheader">Add a new identity</h4>
           <label>Name:
             <input type="text" ng-model="newIdentity.name" />
@@ -76,7 +76,7 @@
           </label>
 
           <div class="row">
-            <div class="small-6 columns">
+            <div class="small-12 large-6 large-offset-6 columns">
               <div class="panel secondary">
                 <label>Username:
                   <input type="text" id="username" name="username"ng-model="newIdentity.username" />
@@ -87,12 +87,12 @@
                   <small ng-show="errors.password" class="error">{{errors.password}}</small>
                 </label>
               </div>
-              <button class="button right-align small">Add new identity</button>
+              <button class="button small right">Add new identity</button>
             </div>
           </div>
         </div>
       </form>
-      <a href="" ng-show="!addFormShown" ng-click="openAddForm()" class="secondary-btn small">Add new identity</a>
+      <a href="" ng-show="!addFormShown" ng-click="openAddForm()" class="button secondary small right">Add new identity</a>
     </div>
 
 

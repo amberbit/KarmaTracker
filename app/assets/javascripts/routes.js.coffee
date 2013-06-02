@@ -2,29 +2,24 @@ KarmaTracker.config ($routeProvider) ->
   $routeProvider.when('/',
     template: 'Loading...'
   ).when("/login",
-    controller: 'SessionController',
     templateUrl: '/session.html'
   ).when('/logout',
     controller: 'LogoutController',
-    template: 'Logging out...'
+    template: '<div class="row">
+                 <div class="small-12 columns"><h5>Logging out...</h5></div>
+               <div>'
   ).when("/projects",
-    controller: 'ProjectsController',
     templateUrl: '/projects.html'
   ).when("/projects/:project_id/tasks",
-    controller: 'TasksController',
     templateUrl: '/tasks.html'
   ).when('/refresh',
-    controller: 'RefreshController',
     templateUrl: '/refresh.html'
   ).when('/integrations',
-    controller: 'IntegrationsController',
     templateUrl: '/integrations.html'
   ).when('/account',
-    controller: 'AccountController',
     templateUrl: '/account.html'
-  ).when('/log',
-    controller: 'TimelogController',
-    templateUrl: '/timelog.html'
+  ).when('/timesheet',
+    templateUrl: '/timesheet.html'
   )
 
 
@@ -32,7 +27,6 @@ KarmaTracker.config ($routeProvider) ->
 
   if KarmaTrackerConfig.registration_enabled
     $routeProvider.when('/register',
-      controller: 'RegisterController',
       templateUrl: '/register.html'
     )
 

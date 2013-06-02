@@ -1,26 +1,26 @@
 <div ng-controller="ProjectsController" class="row">
   <div class="small-12 large-12 columns">
 
-    <div class='search-box'>
-      Search: <input ng-model='query.string' autofocus='autofocus'>
+    <div class='small-8 small-offset-4 large-3 large-offset-9'>
+      <input type="text" placeholder="Search..." ng-model='query.string' autofocus='autofocus' />
     </div>
-    <div class="small-12 large-12 columns" ng-show="projects.none_visible">There are no projects to show.</div>
-    <div class="small-12 large-12 columns" ng-repeat="project in projects">
-
+     <div class="small-12 large-12" ng-repeat="project in projects">
       <div class="small-10 large-11 columns panel project clickable" ng-click="loadTasks(project)" ng-show="project.visible">
         {{project.name}}
         </div>
         <div class="small-2 large-1 columns panel project icon clickable" ng-show="project.visible" ng-click="openProject(project.source_name, project.name, project.source_identifier)">
           <div ng-switch="project.source_name">
             <div class="icon" ng-switch-when="GitHub">
-                <div class="github"></div>
+              <div class="small-12 small-centered source-icon github"></div>
             </div>
             <div ng-switch-when="Pivotal Tracker">
-              <div class="pivotal-tracker"></div>
+              <div class="small-12 small-centered source-icon pivotal-tracker"></div>
             </div>
           </div>
         </div>
       </div>
+      <div class="small-12 large-12" ng-show="projects.none_visible">There are no projects to show.</div>
+
 
   </div>
 </div>

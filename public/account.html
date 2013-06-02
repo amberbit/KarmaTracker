@@ -7,13 +7,10 @@
     <div class="small-12 panel columns">
        <div class="small-5 columns panel secondary">
          <label>E-mail:
-           <input type="text" disabled=disabled value="{{user.email}}" />
-         </label>
-         <label>New e-mail:
-           <input type="text" id="email" name="email"ng-model="newEmail" />
+           <input type="text" id="email" name="email" placeholder="{{user.email}}" ng-model="newEmail" />
            <small ng-show="errors.email" class="error">{{errors.email}}</small>
          </label>
-         <button ng-click="changeEmail()" class="button right-align small">Save changes</button>
+         <button ng-click="changeEmail()" class="button right small">Save changes</button>
        </div>
        <div class="small-6 small-offset-1 columns panel secondary">
          <label>Set new password:
@@ -24,7 +21,7 @@
            <input type="password" ng-model="confirmation" />
            <small ng-show="errors.confirmation" class="error">{{errors.confirmation}}</small>
          </label>
-         <button ng-click="changePassword()" class="button right-align small">Save changes</button>
+         <button ng-click="changePassword()" class="button right small">Save changes</button>
 
        </div>
     </div>

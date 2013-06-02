@@ -15,6 +15,9 @@
 
 @import "foundation/foundation-global", "foundation/components/global", "foundation/components/buttons";
 
+
+
+
 .page-header {
   h1 {
     margin-bottom: 0;
@@ -45,51 +48,69 @@
     background-image: url(image_path('bin.png'));
   }
 
-
-
-
 }
 
-.github{
-  margin-top: -0.5em;
-  margin-left: 0.5em;
-  height: 2em;
-  width: 2em;
-  background-image: url(image_path('blacktocat-32.png'));
+.top-bar-section li a:hover{
+  background-color: #000;
+}
+.current {
+  background: #F47a10 !important;
+  box-shadow: 0 -100px 50px -100px #f4cf20 inset !important;
+  
+}
+
+.logo{
+  background-image: url(image_path('ktlogo.png'));
+  background-repeat: no-repeat;
+  height: emCalc(60px);
+  width: emCalc(233px);
+  border: none;
+}
+
+.loading{
+  margin-bottom: 0.9em;
+}
+
+h5.subtitle{
+  margin-top: -0.4em;
+}
+.blankdiv{
+  height: 6em;
+}
+
+.mainshadow{
+  box-shadow: 0 10px 20px -5px #CCC
+}
+
+.source-icon{
+  background-position: center;
   background-repeat: no-repeat;
   transition: background-image 0.4s;
-}
-
-.github:hover{
-  background-image: url(image_path('bluecktocat-32.png'));
-  background-repeat:no-repeat;
-}
-
-.pivotal-tracker{
-  margin-top: -0.5em;
-  margin-left: 0.5em;
   height: 2em;
-  width: 2em;
-  background-image: url(image_path('blackpivotal-32.png'));
-  background-repeat:no-repeat;
-  transition: background-image 0.4s;
+  background-size: 100%;
+  background-position: center;
+  max-width: 2em;
+  min-width: 0.5em;
+  margin: auto;
+  &.github{
+    background-image: url(image_path('blackgh.png'));
+  }
+  &.github:hover{
+    background-image: url(image_path('orangegh.png'));
+  }
+  &.pivotal-tracker{
+    background-image: url(image_path('blackpt.png'));
+  }
+  &.pivotal-tracker:hover{
+    background-image: url(image_path('orangept.png'));
+  }
 }
-
-.pivotal-tracker:hover{
-  background-image: url(image_path('bluepivotal-32.png'));
-  background-repeat:no-repeat;
-}
-
 
 .right-align{
   float: right;
   margin-right: 0.125em;
 }
-.secondary-btn{
-  float: right;
-  @extend .button;
-  @extend .secondary;
-}
+
 .modal-message {
  .confirm-button {
    @extend .large;
@@ -116,6 +137,7 @@
 
 .panel.running {
   font-weight: bold;
+  color: #FFF;
 }
 
 .panel.project {
@@ -124,22 +146,21 @@
 
 .panel.project.icon {
     border-left-style: none;
+    padding-top: 0.8em;
   }
 
+.panel{
+  font-color: #000
+}
+
+.top-bar{
+  height:200px;
+}
 
 .clickable {
   cursor: pointer;
 }
 
-.search-box {
-  float: right;
-  margin-top: -3em;
-  text-align: right;
-  label {
-    display: inline;
-    margin-left: 20px;
-  }
-}
 
 #flash {
   .alert-box {
@@ -151,5 +172,15 @@
   position: absolute;
   height: 0px;
   padding-left: 50%;
+}
+
+.signin-form {
+  transition: height 0.4s;
+}
+
+.secondary-btn{
+  float: right;
+  @extend .button;
+  @extend .secondary;
 }
 
