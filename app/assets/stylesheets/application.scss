@@ -15,9 +15,6 @@
 
 @import "foundation/foundation-global", "foundation/components/global", "foundation/components/buttons";
 
-
-
-
 .page-header {
   h1 {
     margin-bottom: 0;
@@ -27,6 +24,11 @@
 
 .table {
   text-align: left;
+}
+
+.table tr td {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .tinyicon {

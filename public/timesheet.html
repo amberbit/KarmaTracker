@@ -1,23 +1,25 @@
 <div ng-controller="TimelogController" class="row">
   <div class="small-12 large-12 columns">
-    <h2>Timesheet</h2>
+    <h3>Timesheet</h3>
 
     <div class="small-12 columns">
       <div class="large-3 large-offset-2 small-3 columns">
-        <label>From <input type="text" ng-model="fromDate" placeholder="2012-12-31 00:00:00"></input></label>
-      </div>
-      <div class="large-3 small-3 columns">
-        <label>to <input type="text" ng-model="toDate" placeholder="2012-12-31 00:00:00"></input></label>
-      </div>
-      <div class="large-3 small-4 columns">
-        <label>Project
-          <select ng-model="selectedProject" ng-options="project.project.id as project.project.name for project in projects">
-            <option value="">-- choose project --</option>
-          </select>
-        </label>
-      </div>
-        <div class="small-2 large-1 columns">
-          <label><br/><button class="tiny button" ng-click="getEntries()">Sumbit</button></label>
+        <form defaultbutton="submit">
+          <label>From <input type="text" ng-model="fromDate" placeholder="2012-12-31 00:00:00"></input></label>
+        </div>
+        <div class="large-3 small-3 columns">
+          <label>to <input type="text" ng-model="toDate" placeholder="2012-12-31 00:00:00"></input></label>
+        </div>
+        <div class="large-3 small-4 columns">
+          <label>Project
+            <select ng-model="selectedProject" ng-options="project.project.id as project.project.name for project in projects">
+              <option value="">-- choose project --</option>
+            </select>
+          </label>
+        </div>
+          <div class="small-2 large-1 columns">
+            <label><br/><button id="submut" class="tiny button" ng-click="getEntries()">Sumbit</button></label>
+        </form>
         </div>
     </div>
 
@@ -36,19 +38,19 @@
       <tbody ng-repeat="entry in entries">
         <tr>
           <td class="small-4 columns">
-            <a href="" ng-click="openTask(entry.project.source_name, entry.project.name, entry.project.source_identifier, entry.task.source_identifier)">{{entry.task.name}}</a>
+            <a href="" title="Go to task page" ng-click="openTask(entry.project.source_name, entry.project.name, entry.project.source_identifier, entry.task.source_identifier)">{{entry.task.name}}</a>
           </td>
           <td class="small-4 columns">
-              <a href="" ng-click="openProject(entry.project.source_name, entry.project.name, entry.project.source_identifier)">{{entry.project.name}} ({{entry.project.source_name}})</a>
+              <a href="" title="Go to project page" ng-click="openProject(entry.project.source_name, entry.project.name, entry.project.source_identifier)">{{entry.project.name}} ({{entry.project.source_name}})</a>
             </td>
           <td class="small-2 columns">
             <div ng-show="!entry.editing">{{entry.time_log_entry.started_at.replace("T", " ").replace("Z", "")}}</div>
           </td>
           <td class="small-2 columns">
-            <a ng-show="entry.editing" ng-click="close(entry)" href="" class="tinyicon close right-align" /></a>
-            <a ng-show="!entry.editing" ng-click="edit(entry)" href="" class="tinyicon edit right-align" /></a>
-            <a ng-show="entry.editing" ng-click="deleteEntry(entry)" href="" class="tinyicon delete right-align" /></a>
-            <div ng-show="!entry.editing">
+            
+            <a ng-show="entry.editing" ng-click="close(entry)" href="" class="tiny button secondary right" >Cancel</a>
+            <a title="Edit this entry" ng-show="!entry.editing" ng-click="edit(entry)" href="" class="tiny button secondary right" >Edit</a>
+                        <div ng-show="!entry.editing">
             {{getTime(entry.time_log_entry.seconds)}}
             </div>
           </td>
@@ -63,9 +65,11 @@
             <small ng-show="errors.stopped_at" class="error">{{errors.stopped_at}}</small>
           </td>
           <td class="small-2 columns">
+            <button ng-show="entry.editing" ng-click="deleteEntry(entry)" href="" class="small button secondary expand" >Delete entry</button>
+            
           </td>
           <td class="small-2 columns">
-            <a ng-show="entry.editing" ng-click="updateEntry(entry)" href="" class="tinyicon save right-align" /></a>
+            <button ng-show="entry.editing" ng-click="updateEntry(entry)" href="" class="small button expand">Save</button>
           </td>
         </tr>
       </tbody>
