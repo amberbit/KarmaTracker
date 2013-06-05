@@ -108,7 +108,7 @@ h5.subtitle{
 
 .right-align{
   float: right;
-  margin-right: 0.125em;
+  margin-right: 2em;
 }
 
 .modal-message {
@@ -138,19 +138,25 @@ h5.subtitle{
 .panel.running {
   font-weight: bold;
   color: #FFF;
+
+}
+
+.glow{
+    box-shadow: 0 0 30px 0 #f4cf20;
 }
 
 .panel.project {
-  height: 4em;
+  min-height: 4em;
 }
 
 .panel.project.icon {
-    border-left-style: none;
-    padding-top: 0.8em;
+  height: 4em;
+  border-left-style: none;
+  padding-top: 0.8em;
   }
 
 .panel{
-  font-color: #000
+  font-color: #000;
 }
 
 .top-bar{
