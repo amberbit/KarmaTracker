@@ -32,6 +32,18 @@
       </ul>
     </section>
   </nav>
+  <div ng-show="runningVisible" class="running-task current">
+    <div class="small-6 large-8 columns track-bar content">
+      <div class="hide-for-small"><div class="tinyicon tracking left"></div>&nbsp; <span>Now tracking "{{runningTask.name}}"</span></div>
+      <div class="show-for-small"><div class="tinyicon tracking left"></div>&nbsp; <small class="track-bar title small">"{{runningTask.name}}"</small></div>
+      </div>
+    <div class="small-3 large-2 columns">
+      <button ng-click="stopTracking(runningTask)" class="tiny button right track-bar stop expand">Stop</button>
+    </div>
+    <div class="small-3 large-2 columns">
+      <button ng-click="goToLink('projects/'+runningTask.project_id+'/tasks')" class="tiny button right track-bar project expand">Project</button>
+    </div>
+  </div>
   </div>
 </div>
 <div ng-view>

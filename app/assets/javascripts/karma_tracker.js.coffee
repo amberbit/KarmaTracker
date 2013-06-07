@@ -21,7 +21,9 @@ KarmaTracker.factory "FlashMessage", ->
 # Root controller handles authorization
 # will redirect user to login page if $cookie.token is not set
 # otherwise, will redirect user to projects listing
-KarmaTracker.controller "RootController", ($scope, $location, $cookies, FlashMessage) ->
+KarmaTracker.controller "RootController", ($scope, $http, $location, $cookies, FlashMessage) ->
+  $scope.runningTask = {}
+  $scope.runningVisible = false
   $scope.matchesQuery = (string) ->
     string.toLowerCase().indexOf($scope.query.string.toLowerCase()) != -1
 
@@ -39,6 +41,16 @@ KarmaTracker.controller "RootController", ($scope, $location, $cookies, FlashMes
     FlashMessage.type = 'success'
     FlashMessage.string = message
 
+  $scope.getRunningTask = () ->
+    $http.get(
+        "/api/v1/tasks/running?token=#{$cookies.token}"
+      ).success((data, status, headers, config) ->
+        $scope.runningTask = data.task
+        $scope.runningVisible = true
+      ).error((data, status, headers, config) ->
+        $scope.runningTask = {}
+        $scope.runningVisible = false
+      )
 
   $scope.openProject = (source, name, identifier) ->
     if source == 'GitHub'
@@ -51,6 +63,18 @@ KarmaTracker.controller "RootController", ($scope, $location, $cookies, FlashMes
       window.open('http://github.com/' + name + '/issues/' + task.split("/")[1], '_blank')
     else
       window.open('http://pivotaltracker.com/s/projects/' + identifier + '/stories/' + task, '_blank')
+
+  $scope.goToLink = (path) ->
+    $location.path path
+
+  $scope.stopTracking = (task) ->
+    if task.running
+      $http.post(
+        "/api/v1/time_log_entries/stop?token=#{$cookies.token}"
+      ).success((data, status, headers, config) ->
+        $scope.$watch("$scope.runningTask", $scope.getRunningTask())
+      ).error((data, status, headers, config) ->
+      )
 
   $scope.highlightCurrentPage = (url) ->
     if $location.url().substr(0, url.length) == url
@@ -71,4 +95,5 @@ KarmaTracker.controller "RootController", ($scope, $location, $cookies, FlashMes
       $location.path '/projects'
 
 
+  $scope.getRunningTask()
 

@@ -31,25 +31,40 @@
   text-overflow: ellipsis;
 }
 
-.tinyicon {
-  margin-top: -0.5em;
-  margin-left: 0.5em;
-  height: 1.2em;
+.tracking {
+  margin-top: 0.3em;
+  height: 1.1em;
   width: 1.2em;
   background-repeat: no-repeat;
-  &.edit{
-    background-image: url(image_path('page_white_edit.png'));
+  background-image: url(image_path('tracking.gif'));
+
+}
+
+.track-bar {
+  &.stop {
+    margin-top: 0.3em;
+    background-color: red;
+    border-color: darkred;
   }
-  &.save{
-    background-image: url(image_path('disk.png'));
+  &.project{
+    margin-top: 0.3em;
   }
-  &.close{
-    background-image: url(image_path('cross.png'));
+  &.title{
+    font-weight: bold;
+    &.small{
+      font-size: 0.8em;
+    }
   }
-  &.delete{
-    background-image: url(image_path('bin.png'));
+  &.content{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
+}
+
+.track-bar.stop:hover{
+  background-color: darkred;
 }
 
 .top-bar-section li a:hover{
@@ -58,8 +73,18 @@
 .current {
   background: #F47a10 !important;
   box-shadow: 0 -100px 50px -100px #f4cf20 inset !important;
-  
+  &.running-task{
+    box-shadow: 0 -100px 50px -100px #f4cf20 inset !important;
+    color: #FFF;
+    font-size: 0.9em;
+    height: 2em;
+    margin-top: -2.05em;
+    line-height: 2em;
+    font-weight: bold;
+
+  }
 }
+
 
 .logo{
   background-image: url(image_path('ktlogo.png'));
