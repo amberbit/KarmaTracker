@@ -20,11 +20,15 @@ module Api
       #   => 200
       #
       #   resp.body
-      #   => [{"project": {"id":1, "name": "Sample project", "source_name": "Pivotal Tracker", "source_identifier": "123456"}},
-      #       {"project": {"id":3, "name": "Some random name "source_name": "GitHub", "source_identifier": "42"}}]
+      #   => [{"project": {"id":1, "name": "Sample project", "source_name": "Pivotal Tracker", "source_identifier": "123456", "task_count": "2"}},
+      #       {"project": {"id":3, "name": "Some random name "source_name": "GitHub", "source_identifier": "42", "task_count": "0"}}]
       #
       def index
         @projects = @api_key.user.projects
+        @projects.each do |project|
+          task_count = project.tasks.count
+          project["task_count"] = task_count
+        end
         render 'index'
       end
 
@@ -44,7 +48,7 @@ module Api
       #   => 200
       #
       #   resp.body
-      #   => {"project": {"id":1, "name": "Sample project", "source_name": "Pivotal Tracker", "source_identifier": "123456"}}
+      #   => {"project": {"id":1, "name": "Sample project", "source_name": "Pivotal Tracker", "source_identifier": "123456", "task_count": "3"}}
       #
       #
       #   resp = conn.get("/api/v1/projects/7", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
@@ -57,6 +61,8 @@ module Api
       #
       def show
         @project = Project.find(params[:id])
+        @tasks = @project.tasks
+        @project["task_count"] = @tasks.count
         if @api_key.user.projects.include? @project
           render '_show'
         else
