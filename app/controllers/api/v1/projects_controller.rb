@@ -29,6 +29,7 @@ module Api
           task_count = project.tasks.count
           project["task_count"] = task_count
         end
+        @projects.sort! { |a,b| a.name.downcase <=> b.name.downcase }
         render 'index'
       end
 
