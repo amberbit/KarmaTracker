@@ -1,14 +1,14 @@
 <div ng-controller="IntegrationsController" class="row">
   <div class="small-12 columns">
 
-    <h2>Identities</h2>
+    <h3>Identities</h3>
 
-    <h3>Pivotal Tracker</h3>
+    <h4 class="subheader">Pivotal Tracker</h4>
     <div ng-controller="PivotalTrackerIdentitiesController">
 
       <div class='panel' ng-repeat="identity in identities">
         <a href="" ng-click="remove(identity.pivotal_tracker.name, identity.pivotal_tracker.id)" class="secondary button right tiny">Remove</a>
-        <h4 class="subheader">{{identity.pivotal_tracker.name}}</h4>
+        <h5 class="subheader">{{identity.pivotal_tracker.name}}</h5>
         <div class="row">
           <div class="small-2 columns"><strong>API key:</strong></div>
           <div class="small-10 columns">{{identity.pivotal_tracker.api_key}}</div>
@@ -18,7 +18,7 @@
       <form ng-submit='add()'>
         <div class="panel" ng-show="addFormShown">
           <a ng-click="openAddForm()" class="tiny button secondary right-align"><span class="subheader">Close</span></a>
-          <h4 class="subheader">Add a new identity</h4>
+          <h5 class="subheader">Add a new identity</h5>
           <label>Name:
             <input type="text" ng-model="newIdentity.name" />
             <small ng-show="errors.name" class="error">{{errors.name}}</small>
@@ -39,7 +39,7 @@
             </div>
             <div class="small-6 columns">
               <div class="panel">
-                <h5 class="subheader">I already know my API key</h5>
+                <h6 class="subheader">I already know my API key</h6>
                 <label>API key:
                   <input type="text" ng-model="newIdentity.api_key" />
                   <small ng-show="errors.api_key" class="error">{{errors.api_key}}</small>
@@ -54,12 +54,12 @@
     </div>
     <br/>
 
-    <h3>Git Hub</h3>
+    <h4 class="subheader">Git Hub</h4>
     <div ng-controller="GitHubIdentitiesController">
 
       <div class='panel' ng-repeat="identity in identities">
         <a href="" ng-click="remove(identity.git_hub.name, identity.git_hub.id)" class="secondary button right tiny">Remove</a>
-        <h4 class="subheader">{{identity.git_hub.name}}</h4>
+        <h5 class="subheader">{{identity.git_hub.name}}</h5>
         <div class="row">
           <div class="small-2 columns"><strong>API key:</strong></div>
           <div class="small-10 columns">{{identity.git_hub.api_key}}</div>
@@ -69,7 +69,7 @@
       <form ng-submit='add()'>
         <div class="panel" ng-show="addFormShown">
           <a ng-click="openAddForm()" class="tiny button secondary right-align"><span class="subheader">Close</span></a>
-          <h4 class="subheader">Add a new identity</h4>
+          <h5 class="subheader">Add a new identity</h5>
           <label>Name:
             <input type="text" ng-model="newIdentity.name" />
             <small ng-show="errors.name" class="error">{{errors.name}}</small>
