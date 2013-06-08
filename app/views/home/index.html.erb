@@ -1,11 +1,4 @@
-<div id="flash" class="row" ng-controller="FlashesController">
-  <div ng-show="message.string" ng-class="{'small-12': true, 'columns': true, 'alert-box': true, 'alert': isAlert() == 'alert', 'success': isAlert() == 'success' }">
-    {{message.string}}
-  </div>
-</div>
-
 <div class="row page-header">
-  <div class="small-12 columns">
   <nav id="top-bar" class="top-bar" ng-show="signed_in">
     <ul class="title-area">
       <li class="name">
@@ -18,34 +11,34 @@
     <section class="top-bar-section">
       <ul class="right">
         <li class="divider"></li>
-        <li><a ng-class="highlightCurrentPage('/projects')" href="#/projects" ng-click="expandMenu()">Projects</a></li>
+        <li><a ng-class="highlightCurrentPage('projects')" href="#/projects" ng-click="expandMenu()">Projects</a></li>
         <li class="divider"></li>
-        <li><a ng-class="highlightCurrentPage('/timesheet')" href="#/timesheet" ng-click="expandMenu()">Timesheet</a></li>
+        <li><a ng-class="highlightCurrentPage('timesheet')" href="#/timesheet" ng-click="expandMenu()">Timesheet</a></li>
         <li class="divider"></li>
-        <li><a ng-class="highlightCurrentPage('/account')" href="#/account" ng-click="expandMenu()">Account</a></li>
+        <li><a ng-class="highlightCurrentPage('account')" href="#/account" ng-click="expandMenu()">Account</a></li>
         <li class="divider"></li>
-        <li><a ng-class="highlightCurrentPage('/integrations')" href="#/integrations" ng-click="expandMenu()">Integrations</a></li>
+        <li><a ng-class="highlightCurrentPage('integrations')" href="#/integrations" ng-click="expandMenu()">Integrations</a></li>
         <li class="divider"></li>
-        <li><a ng-class="highlightCurrentPage('/refresh')" href="#/refresh" class="refresh" ng-click="expandMenu()">Refresh</a></li>
+        <li><a ng-class="highlightCurrentPage('refresh')" href="#/refresh" class="refresh" ng-click="expandMenu()">Refresh</a></li>
         <li class="divider"></li>
-        <li><a ng-class="highlightCurrentPage('/logout')" href="#/logout" ng-click="expandMenu()">Log out</a></li>
+        <li><a ng-class="highlightCurrentPage('logout')" href="#/logout" ng-click="expandMenu()">Log out</a></li>
       </ul>
     </section>
   </nav>
-  <div ng-show="runningVisible" class="running-task current">
-    <div class="small-6 large-8 columns track-bar content">
-      <div class="hide-for-small"><div class="tinyicon tracking left"></div>&nbsp; <span>Now tracking "{{runningTask.name}}"</span></div>
-      <div class="show-for-small"><div class="tinyicon tracking left"></div>&nbsp; <small class="track-bar title small">"{{runningTask.name}}"</small></div>
-      </div>
-    <div class="small-3 large-2 columns">
-      <button ng-click="stopTracking(runningTask)" class="tiny button right track-bar stop expand">Stop</button>
-    </div>
-    <div class="small-3 large-2 columns">
-      <button ng-click="goToLink('projects/'+runningTask.project_id+'/tasks')" class="tiny button right track-bar project expand">Project</button>
-    </div>
+</div>
+
+<div id='top-bar-spacer'></div>
+
+<div id="flash" class="row" ng-controller="FlashesController">
+  <div class="alert-box tracking" ng-show="runningVisible" ng-click="goToLink('projects/'+runningTask.project_id+'/tasks')" class="running-task current">
+    <span>{{runningTask.name}}</span>
   </div>
+
+  <div ng-show="message.string" ng-class="{'small-12': true, 'columns': true, 'alert-box': true, 'alert': isAlert() == 'alert', 'success': isAlert() == 'success' }">
+    {{message.string}}
   </div>
 </div>
+
 <div ng-view>
 </div>
 

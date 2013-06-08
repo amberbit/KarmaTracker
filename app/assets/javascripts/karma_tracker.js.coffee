@@ -77,7 +77,7 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookies, F
       )
 
   $scope.highlightCurrentPage = (url) ->
-    if $location.url().substr(0, url.length) == url
+    if $location.url().indexOf(url) != -1
       return "current"
     else
       return ""

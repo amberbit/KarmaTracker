@@ -1,27 +1,26 @@
-<div ng-controller="TimelogController" class="row">
-  <div class="small-12 large-12 columns">
-    <h3>Timesheet</h3>
-
-    <div class="small-12 columns">
-      <div class="large-3 large-offset-2 small-3 columns">
-        <form defaultbutton="submit">
-          <label>From <input type="text" ng-model="fromDate" placeholder="2012-12-31 00:00:00"></input></label>
-        </div>
-        <div class="large-3 small-3 columns">
-          <label>to <input type="text" ng-model="toDate" placeholder="2012-12-31 00:00:00"></input></label>
-        </div>
-        <div class="large-3 small-4 columns">
-          <label>Project
-            <select ng-model="selectedProject" ng-options="project.project.id as project.project.name for project in projects">
-              <option value="">-- choose project --</option>
-            </select>
-          </label>
-        </div>
-          <div class="small-2 large-1 columns">
-            <label><br/><button id="submut" class="tiny button" ng-click="getEntries()">Sumbit</button></label>
-        </form>
-        </div>
+<div ng-controller="TimelogController" class="row boxed">
+  <div class="boxed-header">
+    <div class="large-2 span-12 columns">
+      <h4><a ng-href="/#/timesheet">Timesheet</a></h4>
     </div>
+
+    <form defaultbutton="submit" id="timesheet-form">
+      <div class="large-3 small-12 columns">
+        <label>From <input type="text" ng-model="fromDate" placeholder="2012-12-31 00:00:00"></input></label>
+      </div>
+      <div class="large-3 small-12 columns">
+        <label>to <input type="text" ng-model="toDate" placeholder="2012-12-31 00:00:00"></input></label>
+      </div>
+      <div class="large-3 small-12 columns">
+        <select ng-model="selectedProject" ng-options="project.project.id as project.project.name for project in projects">
+          <option value="">-- choose project --</option>
+        </select>
+      </div>
+      <div class="large-1 small-12 columns">
+        <button id="submut" class="tiny button" ng-click="getEntries()">Sumbit</button>
+      </div>
+    </form>
+  </div>
 
 
 

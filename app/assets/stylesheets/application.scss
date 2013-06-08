@@ -32,17 +32,21 @@
 }
 
 .tracking {
-  margin-top: 0.3em;
-  height: 1.1em;
-  width: 1.2em;
-  background-repeat: no-repeat;
   background-image: url(image_path('tracking.gif'));
-
+  background-position: 1em center;
+  background-repeat: no-repeat;
+  margin-top: -12px;
+  cursor: pointer;
+  span {
+    margin-left: 2em;
+    display: block;
+  }
 }
 
 .track-bar {
   &.stop {
     margin-top: 0.3em;
+    margin-right: 1em;
     background-color: red;
     border-color: darkred;
   }
@@ -56,9 +60,7 @@
     }
   }
   &.content{
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    margin-right: 100px;
   }
 
 }
@@ -70,21 +72,6 @@
 .top-bar-section li a:hover{
   background-color: #000;
 }
-.current {
-  background: #F47a10 !important;
-  box-shadow: 0 -100px 50px -100px #f4cf20 inset !important;
-  &.running-task{
-    box-shadow: 0 -100px 50px -100px #f4cf20 inset !important;
-    color: #FFF;
-    font-size: 0.9em;
-    height: 2em;
-    margin-top: -2.05em;
-    line-height: 2em;
-    font-weight: bold;
-
-  }
-}
-
 
 .logo{
   background-image: url(image_path('ktlogo.png'));
@@ -165,16 +152,14 @@ h5.subtitle{
   @extend .small;
 }
 
-
-.panel.running {
-  font-weight: bold;
-  color: #FFF;
-
-}
-
-.glow{
+.glow {
     box-shadow: 0 0 30px 0 #f4cf20;
 }
+
+.glow-white {
+    box-shadow: 0 0 30px 0 #fff;
+}
+
 
 .panel.project {
   min-height: 4em;
@@ -190,25 +175,39 @@ h5.subtitle{
   font-color: #000;
 }
 
-.top-bar{
-  height:200px;
+#top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 0 2em rgba(0,0,0,0.9);
+  ul { background-color: transparent; }
+
+  .current {
+    background: #F47a10 !important;
+    box-shadow: 0 -100px 50px -100px #f4cf20 inset !important;
+  }
+
+}
+
+
+#top-bar-spacer {
+  height: 50px;
+  width: 100%;
 }
 
 .clickable {
   cursor: pointer;
 }
 
-
 #flash {
+  margin-top: 0;
+  margin-bottom: 1em;
   .alert-box {
-    position: absolute;
-    margin-left: -50% !important;
     z-index: 2;
     top: 1.5em;
   }
-  position: absolute;
-  height: 0px;
-  padding-left: 50%;
 }
 
 .signin-form {
@@ -219,5 +218,30 @@ h5.subtitle{
   float: right;
   @extend .button;
   @extend .secondary;
+}
+
+.boxed {
+  border: 1px #aaa solid;
+  padding-top: 0.5em;
+  background-color: #111;
+  h4 { color: #aaa }
+  .boxed-header {
+    p { color: #aaa }
+    line-height: 2.5em;
+  }
+
+  .none-visible {
+    color: #aaa;
+    margin-bottom: 1em;
+  }
+  #timesheet-form {
+    input[type='text'] {
+      display: inline;
+      width: 12em;
+    }
+  }
+  .table {
+    background-color: #eee;
+  }
 }
 
