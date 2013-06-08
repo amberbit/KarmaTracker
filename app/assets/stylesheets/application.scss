@@ -255,4 +255,11 @@ span.project-text, span.task-text {
     background-color: #eee;
   }
 }
-
+.row.unregistered {
+  background-color: white;
+  padding-bottom: 7em;
+  box-shadow: 0 0 30px #000;
+  .panel {
+    background-color: white;
+  }
+}
