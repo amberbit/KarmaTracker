@@ -2,15 +2,6 @@ KarmaTracker::Application.routes.draw do
 
   namespace :api, defaults: {format: 'json'} do
     namespace :v1 do
-      namespace :admin do
-        resources :users, only: [:index, :show, :create, :update, :destroy]
-        resources :identities, only: [:index, :show, :update, :destroy] do
-          collection do
-            post :pivotal_tracker
-          end
-        end
-      end
-
       get '/user' => 'users#user'
       resource :user, only: [:create, :update, :destroy]
 
@@ -28,6 +19,7 @@ KarmaTracker::Application.routes.draw do
           post :git_hub
         end
       end
+
       resources :projects, only: [:index, :show] do
         collection do
           get :refresh

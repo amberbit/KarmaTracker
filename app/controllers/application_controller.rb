@@ -6,7 +6,7 @@ class ApplicationController < ActionController::API
   private
 
   def restrict_access
-    unless restrict_access_by_params(false) || restrict_access_by_header(false)
+    unless restrict_access_by_params || restrict_access_by_header
       render json: {message: 'Invalid API Token'}, status: 401
       return
     end
@@ -14,18 +14,18 @@ class ApplicationController < ActionController::API
     @current_user = @api_key.user if @api_key
   end
 
-  def restrict_access_by_header(admin=false)
+  def restrict_access_by_header
     return true if @api_key
 
     authenticate_with_http_token do |token|
-      @api_key = ApiKey.where(admin: admin).find_by_token(token)
+      @api_key = ApiKey.find_by_token(token)
     end
   end
 
-  def restrict_access_by_params(admin=false)
+  def restrict_access_by_params
     return true if @api_key
 
-    @api_key = ApiKey.where(admin: admin).find_by_token(params[:token])
+    @api_key = ApiKey.find_by_token(params[:token])
   end
 
 end
