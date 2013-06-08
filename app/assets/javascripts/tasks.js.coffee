@@ -42,7 +42,7 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookies, $location, 
 
   $scope.$watch("query.string", ->
     for task in $scope.tasks
-      task.visible = $scope.matchesQuery(task.name)
+      task.visible = $scope.matchesQuery("#{task.source_identifier} #{task.name}")
   )
 
   $scope.$watch("current", $scope.reloadTasks)
