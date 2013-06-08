@@ -101,7 +101,7 @@ h5.subtitle{
 .source-icon{
   background-position: center;
   background-repeat: no-repeat;
-  transition: background-image 0.4s;
+  transition: background 0.4s;
   height: 2em;
   background-size: 100%;
   background-position: center;
@@ -149,6 +149,10 @@ span.project-text, span.task-text {
   }
 }
 
+#searchfield {
+  border-radius: 2em;
+}
+
 .right-align{
   float: right;
   margin-right: 2em;
@@ -189,6 +193,33 @@ span.project-text, span.task-text {
 .panel.project.icon {
   height: 4em;
   border-left-style: none;
+}
+
+.panel.project, .panel.task {
+  background: rgb(240,249,255); /* Old browsers */
+
+  background: -moz-linear-gradient(top,  rgba(240,249,255,1) 0%, rgba(204,204,204,1) 47%, rgba(204,204,204,1) 100%); /* FF3.6+ */
+
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(240,249,255,1)), color-stop(47%,rgba(204,204,204,1)), color-stop(100%,rgba(204,204,204,1))); /* Chrome,Safari4+ */
+
+  background: -webkit-linear-gradient(top,  rgba(240,249,255,1) 0%,rgba(204,204,204,1) 47%,rgba(204,204,204,1) 100%); /* Chrome10+,Safari5.1+ */
+
+  background: -o-linear-gradient(top,  rgba(240,249,255,1) 0%,rgba(204,204,204,1) 47%,rgba(204,204,204,1) 100%); /* Opera 11.10+ */
+
+  background: -ms-linear-gradient(top,  rgba(240,249,255,1) 0%,rgba(204,204,204,1) 47%,rgba(204,204,204,1) 100%); /* IE10+ */
+
+  background: linear-gradient(to bottom,  rgba(240,249,255,1) 0%,rgba(204,204,204,1) 47%,rgba(204,204,204,1) 100%); /* W3C */
+
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0f9ff', endColorstr='#cccccc',GradientType=0 ); /* IE6-9 */
+}
+
+.panel.callout.running {
+  background: #F47a10 !important;
+  box-shadow: 0 -100px 50px -100px #f4cf20 inset !important;
+  color: white;
+  .label {
+    background-color: transparent;
+  }
 }
 
 #top-bar {
@@ -237,9 +268,12 @@ span.project-text, span.task-text {
 }
 
 .boxed {
-  border: 1px #777 solid;
+  border: 1px #222 solid;
+  border-bottom: 0;
   padding-top: 0.5em;
   background-color: #222;
+
+  box-shadow: 0 0 30px rgba(0,0,0,0.5);
 
   .none-visible {
     margin-bottom: 1em;

@@ -6,38 +6,35 @@
   </div>
 
   <div class="small-12 columns">
-    <h4 class="subheader">User details</h4>
-    <div class="small-12 panel columns">
-       <div class="small-5 columns panel secondary">
-         <label>E-mail:
-           <input type="text" id="email" name="email" placeholder="{{user.email}}" ng-model="newEmail" />
-           <small ng-show="errors.email" class="error">{{errors.email}}</small>
-         </label>
-         <button ng-click="changeEmail()" class="button right small">Save changes</button>
-       </div>
-       <div class="small-6 small-offset-1 columns panel secondary">
-         <label>Set new password:
-           <input type="password" ng-model="newPassword" />
-           <small ng-show="errors.password" class="error">{{errors.password}}</small>
-         </label>
-         <label>Confirm new password:
-           <input type="password" ng-model="confirmation" />
-           <small ng-show="errors.confirmation" class="error">{{errors.confirmation}}</small>
-         </label>
-         <button ng-click="changePassword()" class="button right small">Save changes</button>
-
-       </div>
-    </div>
-
-    <div ng-show="enabledDestroy">
-      <h4 class="subheader">Remove account</h4>
-        <div class="small-12 panel columns">
-        <button ng-click="remove()" class="button right-align small">Remove</button>
-        Remove your KarmaTracker account
+    <div class="row"> 
+      <div class="small-12 large-12 columns panel">
+        <h4 class="subheader">User details</h4>
+        <div class="small-5 columns panel secondary">
+          <label>E-mail:
+            <input type="text" id="email" name="email" placeholder="{{user.email}}" ng-model="newEmail" />
+            <small ng-show="errors.email" class="error">{{errors.email}}</small>
+          </label>
+          <button ng-click="changeEmail()" class="button right small">Save changes</button>
+        </div>
+        <div class="small-6 small-offset-1 columns panel secondary">
+          <label>Set new password:
+            <input type="password" ng-model="newPassword" />
+            <small ng-show="errors.password" class="error">{{errors.password}}</small>
+          </label>
+          <label>Confirm new password:
+            <input type="password" ng-model="confirmation" />
+            <small ng-show="errors.confirmation" class="error">{{errors.confirmation}}</small>
+          </label>
+          <button ng-click="changePassword()" class="button right small">Save changes</button>
+        </div>
+        <div ng-show="enabledDestroy">
+          <h4 class="subheader">Remove account</h4>
+          <div class="small-12 panel columns">
+            <button ng-click="remove()" class="button right-align small">Remove</button>
+            Remove your KarmaTracker account
+          </div>
+        </div>
       </div>
     </div>
-
   </div>
 </div>
-
-

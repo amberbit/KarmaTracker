@@ -5,98 +5,103 @@
     </div>
   </div>
 
-
   <div class="small-12 columns">
-    <h4 class="subheader">Pivotal Tracker</h4>
-    <div ng-controller="PivotalTrackerIdentitiesController">
+    <div class="row"> 
+      <div class="small-12 large-12 columns panel">
 
-      <div class='panel' ng-repeat="identity in identities">
-        <a href="" ng-click="remove(identity.pivotal_tracker.name, identity.pivotal_tracker.id)" class="secondary button right tiny">Remove</a>
-        <h5 class="subheader">{{identity.pivotal_tracker.name}}</h5>
-        <div class="row">
-          <div class="small-2 columns"><strong>API key:</strong></div>
-          <div class="small-10 columns">{{identity.pivotal_tracker.api_key}}</div>
-        </div>
-      </div>
+        <h4 class="subheader">Pivotal Tracker</h4>
+        <div ng-controller="PivotalTrackerIdentitiesController">
 
-      <form ng-submit='add()'>
-        <div class="panel" ng-show="addFormShown">
-          <a ng-click="openAddForm()" class="tiny button secondary right-align"><span class="subheader">Close</span></a>
-          <h5 class="subheader">Add a new identity</h5>
-          <label>Name:
-            <input type="text" ng-model="newIdentity.name" />
-            <small ng-show="errors.name" class="error">{{errors.name}}</small>
-          </label>
-
-          <div class="row">
-            <div class="small-6 columns">
-              <div class="panel secondary">
-                <label>E-mail:
-                  <input type="text" id="email" name="email"ng-model="newIdentity.email" />
-                  <small ng-show="errors.email" class="error">{{errors.email}}</small>
-                </label>
-                <label>Password:
-                  <input type="password" ng-model="newIdentity.password" />
-                  <small ng-show="errors.password" class="error">{{errors.password}}</small>
-                </label>
-              </div>
-            </div>
-            <div class="small-6 columns">
-              <div class="panel">
-                <h6 class="subheader">I already know my API key</h6>
-                <label>API key:
-                  <input type="text" ng-model="newIdentity.api_key" />
-                  <small ng-show="errors.api_key" class="error">{{errors.api_key}}</small>
-                </label>
-              </div>
-              <button class="button right-align small">Add new identity</button>
+          <div class='panel' ng-repeat="identity in identities">
+            <a href="" ng-click="remove(identity.pivotal_tracker.name, identity.pivotal_tracker.id)" class="secondary button right tiny">Remove</a>
+            <h5 class="subheader">{{identity.pivotal_tracker.name}}</h5>
+            <div class="row">
+              <div class="small-2 columns"><strong>API key:</strong></div>
+              <div class="small-10 columns">{{identity.pivotal_tracker.api_key}}</div>
             </div>
           </div>
-        </div>
-      </form>
-      <a href="" ng-show="!addFormShown" ng-click="openAddForm()" class="button secondary small right">Add new identity</a>
-    </div>
-    <br/>
 
-    <h4 class="subheader">Git Hub</h4>
-    <div ng-controller="GitHubIdentitiesController">
+          <form ng-submit='add()'>
+            <div class="panel" ng-show="addFormShown">
+              <a ng-click="openAddForm()" class="tiny button secondary right-align"><span class="subheader">Close</span></a>
+              <h5 class="subheader">Add a new identity</h5>
+              <label>Name:
+                <input type="text" ng-model="newIdentity.name" />
+                <small ng-show="errors.name" class="error">{{errors.name}}</small>
+              </label>
 
-      <div class='panel' ng-repeat="identity in identities">
-        <a href="" ng-click="remove(identity.git_hub.name, identity.git_hub.id)" class="secondary button right tiny">Remove</a>
-        <h5 class="subheader">{{identity.git_hub.name}}</h5>
-        <div class="row">
-          <div class="small-2 columns"><strong>API key:</strong></div>
-          <div class="small-10 columns">{{identity.git_hub.api_key}}</div>
-        </div>
-      </div>
-
-      <form ng-submit='add()'>
-        <div class="panel" ng-show="addFormShown">
-          <a ng-click="openAddForm()" class="tiny button secondary right-align"><span class="subheader">Close</span></a>
-          <h5 class="subheader">Add a new identity</h5>
-          <label>Name:
-            <input type="text" ng-model="newIdentity.name" />
-            <small ng-show="errors.name" class="error">{{errors.name}}</small>
-          </label>
-
-          <div class="row">
-            <div class="small-12 large-6 large-offset-6 columns">
-              <div class="panel secondary">
-                <label>Username:
-                  <input type="text" id="username" name="username"ng-model="newIdentity.username" />
-                  <small ng-show="errors.username" class="error">{{errors.username}}</small>
-                </label>
-                <label>Password:
-                  <input type="password" ng-model="newIdentity.password" />
-                  <small ng-show="errors.password" class="error">{{errors.password}}</small>
-                </label>
+              <div class="row">
+                <div class="small-6 columns">
+                  <div class="panel secondary">
+                    <label>E-mail:
+                      <input type="text" id="email" name="email"ng-model="newIdentity.email" />
+                      <small ng-show="errors.email" class="error">{{errors.email}}</small>
+                    </label>
+                    <label>Password:
+                      <input type="password" ng-model="newIdentity.password" />
+                      <small ng-show="errors.password" class="error">{{errors.password}}</small>
+                    </label>
+                  </div>
+                </div>
+                <div class="small-6 columns">
+                  <div class="panel">
+                    <h6 class="subheader">I already know my API key</h6>
+                    <label>API key:
+                      <input type="text" ng-model="newIdentity.api_key" />
+                      <small ng-show="errors.api_key" class="error">{{errors.api_key}}</small>
+                    </label>
+                  </div>
+                  <button class="button right-align small">Add new identity</button>
+                </div>
               </div>
-              <button class="button small right">Add new identity</button>
+            </div>
+          </form>
+          <a href="" ng-show="!addFormShown" ng-click="openAddForm()" class="button secondary small right">Add new identity</a>
+        </div>
+        <br/>
+
+        <h4 class="subheader">Git Hub</h4>
+        <div ng-controller="GitHubIdentitiesController">
+
+          <div class='panel' ng-repeat="identity in identities">
+            <a href="" ng-click="remove(identity.git_hub.name, identity.git_hub.id)" class="secondary button right tiny">Remove</a>
+            <h5 class="subheader">{{identity.git_hub.name}}</h5>
+            <div class="row">
+              <div class="small-2 columns"><strong>API key:</strong></div>
+              <div class="small-10 columns">{{identity.git_hub.api_key}}</div>
             </div>
           </div>
-        </div>
-      </form>
-      <a href="" ng-show="!addFormShown" ng-click="openAddForm()" class="button secondary small right">Add new identity</a>
-    </div>
 
+          <form ng-submit='add()'>
+            <div class="panel" ng-show="addFormShown">
+              <a ng-click="openAddForm()" class="tiny button secondary right-align"><span class="subheader">Close</span></a>
+              <h5 class="subheader">Add a new identity</h5>
+              <label>Name:
+                <input type="text" ng-model="newIdentity.name" />
+                <small ng-show="errors.name" class="error">{{errors.name}}</small>
+              </label>
+
+              <div class="row">
+                <div class="small-12 large-6 large-offset-6 columns">
+                  <div class="panel secondary">
+                    <label>Username:
+                      <input type="text" id="username" name="username"ng-model="newIdentity.username" />
+                      <small ng-show="errors.username" class="error">{{errors.username}}</small>
+                    </label>
+                    <label>Password:
+                      <input type="password" ng-model="newIdentity.password" />
+                      <small ng-show="errors.password" class="error">{{errors.password}}</small>
+                    </label>
+                  </div>
+                  <button class="button small right">Add new identity</button>
+                </div>
+              </div>
+            </div>
+          </form>
+          <a href="" ng-show="!addFormShown" ng-click="openAddForm()" class="button secondary small right">Add new identity</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
