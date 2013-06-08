@@ -4,22 +4,24 @@
       <h4><a ng-href="/#/projects">Projects</a></h4>
     </div>
     <div class='small-12 large-3 columns'>
-      <input type="text" placeholder="Search..." ng-model='query.string' autofocus='autofocus' />
+      <input type="text" placeholder="Search..." ng-model='query.string' />
     </div>
   </div>
 
   <div class="small-12 large-12 columns">
-    <div class="small-12 large-12" ng-repeat="project in projects">
-      <div class="small-10 large-11 columns panel project clickable" ng-click="loadTasks(project)" ng-show="project.visible && project.task_count > 0">
-        {{project.name}}
-      </div>
-      <div title="Go to project page" class="small-2 large-1 columns panel project icon clickable" ng-show="project.visible && project.task_count > 0" ng-click="openProject(project.source_name, project.name, project.source_identifier)">
-        <div ng-switch="project.source_name">
-          <div class="icon" ng-switch-when="GitHub">
-            <div class="small-12 small-centered source-icon github"></div>
-          </div>
-          <div ng-switch-when="Pivotal Tracker">
-            <div class="small-12 small-centered source-icon pivotal-tracker"></div>
+    <div class="row" ng-repeat="project in projects">
+      <div class="small-12 large-12 columns panel project clickable">
+        <div class="small-10 large-11 columns" ng-click="loadTasks(project)" ng-show="project.visible && project.task_count > 0">
+          <span class="project-text">{{project.name}}</span>
+        </div>
+        <div title="Go to project page" class="small-2 large-1 columns project icon clickable" ng-show="project.visible && project.task_count > 0" ng-click="openProject(project.source_name, project.name, project.source_identifier)">
+          <div ng-switch="project.source_name">
+            <div class="icon" ng-switch-when="GitHub">
+              <div class="small-12 small-centered source-icon github"></div>
+            </div>
+            <div ng-switch-when="Pivotal Tracker">
+              <div class="small-12 small-centered source-icon pivotal-tracker"></div>
+            </div>
           </div>
         </div>
       </div>

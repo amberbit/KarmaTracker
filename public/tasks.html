@@ -1,40 +1,42 @@
 <div ng-controller="TasksController" class="row boxed">
   <div class="boxed-header">
-    <div class="small-12 large-6 columns">
+    <div class="small-6 large-9 columns">
       <h4><a ng-href="/#/projects">Projects</a> &gt; {{project.name}}</h4>
     </div>
-    <div class="small-12 large-3 columns">
+    <div class='small-6 large-3 columns tasks-search'>
+      <input type="text" placeholder="Search..." ng-model='query.string' />
       <label><input type="checkbox" ng-model="current" />Show only current</label>
-    </div>
-    <div class='small-12 large-3 columns'>
-      <input type="text" placeholder="Search..." ng-model='query.string' autofocus='autofocus' />
     </div>
   </div>
 
   <div class="small-12 large-12 columns">
-    <div class="small-12 large-12" ng-repeat="task in tasks">
-
-      <div class="small-10 large-11 columns panel project clickable"
+    <div class="row" ng-repeat="task in tasks">
+      <div class="small-12 large-12 columns panel project clickable"
         ng-class="{callout: task.running, running: task.running}"
         ng-click="startTracking(task)"
         ng-show="task.visible">
-        {{task.name}}
-      </div>
 
-      <div class="small-2 large-1 columns panel project icon clickable"
-        ng-class="{callout: task.running, running: task.running}"
-        ng-show="task.visible"
-        ng-click="openTask(project.source_name, project.name, project.source_identifier, task.source_identifier)">
-        <div ng-switch="project.source_name">
-          <div class="icon" ng-switch-when="GitHub">
-            <div class="source-icon github"></div>
-          </div>
-          <div ng-switch-when="Pivotal Tracker">
-            <div class="source-icon pivotal-tracker"></div>
-            <span class="task-id">{{task.source_identifier}}</span>
+        <div class="hide-for-small large-1 columns">
+          <span class="label task-id">{{task.source_identifier}}</span>
+        </div>
+        <div class="small-10 large-10 columns">
+          <span class="task-text">{{task.name}}</span>
+        </div>
+
+        <div class="small-2 large-1 columns icon clickable"
+          ng-click="openTask(project.source_name, project.name, project.source_identifier, task.source_identifier, $event)">
+          <div ng-switch="project.source_name">
+            <div class="icon" ng-switch-when="GitHub">
+              <div class="source-icon github"></div>
+            </div>
+            <div ng-switch-when="Pivotal Tracker">
+              <div class="source-icon pivotal-tracker"></div>
+            </div>
           </div>
         </div>
+
       </div>
+
     </div>
   </div>
 </div>

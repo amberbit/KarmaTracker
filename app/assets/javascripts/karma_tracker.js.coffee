@@ -58,7 +58,9 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookies, F
     else
       window.open('http://pivotaltracker.com/s/projects/' + identifier, '_blank')
 
-  $scope.openTask = (source, name, identifier, task) ->
+  $scope.openTask = (source, name, identifier, task, event) ->
+    if event
+      event.stopPropagation()
     if source == 'GitHub'
       window.open('http://github.com/' + name + '/issues/' + task.split("/")[1], '_blank')
     else
