@@ -5,10 +5,10 @@
       <input type="text" placeholder="Search..." ng-model='query.string' autofocus='autofocus' />
     </div>
      <div class="small-12 large-12" ng-repeat="project in projects">
-      <div class="small-10 large-11 columns panel project clickable" ng-click="loadTasks(project)" ng-show="project.visible">
+       <div class="small-10 large-11 columns panel project clickable" ng-click="loadTasks(project)" ng-show="project.visible && project.task_count > 0">
         {{project.name}}
         </div>
-        <div title="Go to project page" class="small-2 large-1 columns panel project icon clickable" ng-show="project.visible" ng-click="openProject(project.source_name, project.name, project.source_identifier)">
+        <div title="Go to project page" class="small-2 large-1 columns panel project icon clickable" ng-show="project.visible && project.task_count > 0" ng-click="openProject(project.source_name, project.name, project.source_identifier)">
           <div ng-switch="project.source_name">
             <div class="icon" ng-switch-when="GitHub">
               <div class="small-12 small-centered source-icon github"></div>

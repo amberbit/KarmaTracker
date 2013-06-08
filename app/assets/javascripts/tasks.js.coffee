@@ -25,6 +25,7 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookies, $location, 
         { time_log_entry: {task_id: task.id} }
       ).success((data, status, headers, config) ->
         $scope.reloadTasks()
+        $scope.$watch("$scope.runningTask", $scope.getRunningTask())
       ).error((data, status, headers, config) ->
         console.debug('Error when starting tracking time on tasks')
       )
@@ -33,6 +34,7 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookies, $location, 
         "/api/v1/time_log_entries/stop?token=#{$cookies.token}"
       ).success((data, status, headers, config) ->
         $scope.reloadTasks()
+        $scope.$watch("$scope.runningTask", $scope.getRunningTask())
       ).error((data, status, headers, config) ->
         console.debug('Error when stopping time log entries')
       )
@@ -44,6 +46,7 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookies, $location, 
   )
 
   $scope.$watch("current", $scope.reloadTasks)
+  $scope.$watch("runningTask", $scope.reloadTasks)
 
   $http.get(
     "/api/v1/projects/#{$routeParams.project_id}/?token=#{$cookies.token}"
