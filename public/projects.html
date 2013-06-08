@@ -10,8 +10,8 @@
 
   <div class="small-12 large-12 columns">
     <div class="row" ng-repeat="project in projects">
-      <div class="small-12 large-12 columns panel project clickable">
-        <div class="small-10 large-11 columns" ng-click="loadTasks(project)" ng-show="project.visible && project.task_count > 0">
+      <div class="small-12 large-12 columns panel project clickable" ng-show="project.visible && project.task_count > 0">
+        <div class="small-10 large-11 columns" ng-click="loadTasks(project)">
           <span class="project-text">{{project.name}}</span>
         </div>
         <div title="Go to project page" class="small-2 large-1 columns project icon clickable" ng-show="project.visible && project.task_count > 0" ng-click="openProject(project.source_name, project.name, project.source_identifier)">
