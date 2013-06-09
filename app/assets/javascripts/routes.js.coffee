@@ -1,4 +1,4 @@
-KarmaTracker.config ($routeProvider) ->
+KarmaTracker.config ($routeProvider, $locationProvider) ->
   $routeProvider.when('/',
     template: 'Loading...'
   ).when("/login",
@@ -31,4 +31,4 @@ KarmaTracker.config ($routeProvider) ->
     )
 
 
-
+    #  $locationProvider.html5Mode(true);

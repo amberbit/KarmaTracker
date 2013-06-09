@@ -12,7 +12,7 @@
 #= require tasks
 #= require flashes
 
-window.KarmaTracker = angular.module('KarmaTracker', ['ngCookies'])
+window.KarmaTracker = angular.module('KarmaTracker', ['ngCookies', 'ngMobile'])
 
 # Flashe message passed from other controllers to FlashesController
 KarmaTracker.factory "FlashMessage", ->
