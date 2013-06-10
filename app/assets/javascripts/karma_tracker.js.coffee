@@ -52,7 +52,9 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookies, F
         $scope.runningVisible = false
       )
 
-  $scope.openProject = (source, name, identifier) ->
+  $scope.openProject = (source, name, identifier, event) ->
+    if event
+      event.stopPropagation()
     if source == 'GitHub'
       window.open('http://github.com/' + name, '_blank')
     else
@@ -86,6 +88,10 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookies, F
 
   $scope.expandMenu = () ->
     document.getElementById("top-bar").classList.toggle("expanded")
+
+  $scope.go = (hash) ->
+    document.getElementById("top-bar").classList.remove("expanded")
+    $location.path hash
 
   if typeof($cookies.token) == 'undefined'
     return if $location.path() == '/login'

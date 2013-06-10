@@ -11,17 +11,17 @@
     <section class="top-bar-section">
       <ul class="right">
         <li class="divider"></li>
-        <li><a ng-class="highlightCurrentPage('projects')" href="#/projects" ng-click="expandMenu()">Projects</a></li>
+        <li ng-click="go('/projects')"><a href="#/projects" ng-class="highlightCurrentPage('projects')" ng-click="expandMenu()">Projects</a></li>
         <li class="divider"></li>
-        <li><a ng-class="highlightCurrentPage('timesheet')" href="#/timesheet" ng-click="expandMenu()">Timesheet</a></li>
+        <li ng-click="go('/timesheet')"><a ng-class="highlightCurrentPage('timesheet')" href="#/timesheet" ng-click="expandMenu()">Timesheet</a></li>
         <li class="divider"></li>
-        <li><a ng-class="highlightCurrentPage('account')" href="#/account" ng-click="expandMenu()">Account</a></li>
+        <li ng-click="go('/account')"><a ng-class="highlightCurrentPage('account')" href="#/account" ng-click="expandMenu()">Account</a></li>
         <li class="divider"></li>
-        <li><a ng-class="highlightCurrentPage('integrations')" href="#/integrations" ng-click="expandMenu()">Integrations</a></li>
+        <li ng-click="go('/integrations')"><a ng-class="highlightCurrentPage('integrations')" href="#/integrations" ng-click="expandMenu()">Integrations</a></li>
         <li class="divider"></li>
-        <li><a ng-class="highlightCurrentPage('refresh')" href="#/refresh" class="refresh" ng-click="expandMenu()">Refresh</a></li>
+        <li ng-click="go('/refresh')"><a ng-class="highlightCurrentPage('refresh')" href="#/refresh" class="refresh" ng-click="expandMenu()">Refresh</a></li>
         <li class="divider"></li>
-        <li><a ng-class="highlightCurrentPage('logout')" href="#/logout" ng-click="expandMenu()">Log out</a></li>
+        <li ng-click="go('/logout')"><a ng-class="highlightCurrentPage('logout')" href="#/logout" ng-click="expandMenu()">Log out</a></li>
       </ul>
     </section>
   </nav>
