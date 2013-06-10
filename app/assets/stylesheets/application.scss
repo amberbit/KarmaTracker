@@ -320,3 +320,19 @@ span.project-text, span.task-text {
   opacity:0;
 }
 
+.footer{
+  @extend .boxed;
+  height: 6em;
+  font-size: 0.8em;
+}
+.logo-amberbit{
+  margin-top: 1.2em;
+  }
+
+.footer-text{
+  margin-top: 1.5em;
+  text-align: center;
+  }
+
+
+
