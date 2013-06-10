@@ -18,9 +18,6 @@ window.KarmaTracker = angular.module('KarmaTracker', ['ngCookies', 'ngMobile'])
 KarmaTracker.factory "FlashMessage", ->
   { string: "", type: null }
 
-# Root controller handles authorization
-# will redirect user to login page if $cookie.token is not set
-# otherwise, will redirect user to projects listing
 KarmaTracker.controller "RootController", ($scope, $http, $location, $cookies, FlashMessage) ->
   $scope.runningTask = {}
   $scope.runningVisible = false
@@ -104,4 +101,12 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookies, F
 
 
   $scope.getRunningTask()
+
+
+# This controller just has to redirect user to proper place
+KarmaTracker.controller "HomeController", ($scope, $http, $location, $cookies, FlashMessage) ->
+  if typeof($cookies.token) == 'undefined'
+    $location.path '/login'
+  else
+    $location.path '/projects'
 
