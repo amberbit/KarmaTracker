@@ -1,6 +1,6 @@
 KarmaTracker.config ($routeProvider, $locationProvider) ->
   $routeProvider.when('/',
-    template: 'Loading...'
+    templateUrl: '/home.html'
   ).when("/login",
     templateUrl: '/session.html'
   ).when('/logout',
