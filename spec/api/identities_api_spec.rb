@@ -107,6 +107,23 @@ describe 'Identities API' do
   end
 
   # POST /api/v1/identities/git_hub
+  it "should be able to add GH identity for given user with provided token" do
+    user = FactoryGirl.create :user
+    json = api_post "identities/git_hub", {token: ApiKey.last.token, identity:
+          { name: 'Just an identity', api_key: 'correct_token', username: 'fofofo'}}
+
+    response.status.should == 200
+    json.has_key?('git_hub').should be_true
+
+    Identity.count.should == 1
+    identity = Identity.last
+    identity.name.should == 'Just an identity'
+    identity.user.should == user
+    user.identities.should include(identity)
+  end
+
+
+  # POST /api/v1/identities/git_hub
   it 'should add error messages to response when adding GH identity fails' do
     FactoryGirl.create :user
     json = api_post "identities/git_hub", {token: ApiKey.last.token, identity: {name: 'Just an identity',

@@ -154,6 +154,7 @@ module Api
       # params:
       #   token - KarmaTracker API token
       #   identity[name] - identity name
+      #   identity[api_key] - GitHub API token
       #   identity[username] - username assigned to GH account
       #   identity[password] - password assigned to GH account
       #
@@ -170,6 +171,18 @@ module Api
       #
       #   resp.body
       #   => {"git_hub": {"id": 9, "name": "New identity", "api_key": "sdasdf32rfefs32", "service": "GitHub"}}
+      #
+      #   resp = conn.post("/api/v1/identities/git_hub",
+      #                    "token" => "dcbb7b36acd4438d07abafb8e28605a4",
+      #                    "identity[name]" => "New identity 1",
+      #                    "identity[username]" => "R2D2"
+      #                    "identity[api_key]" => "osdf659234sdffd3sjfsh234o7h23orfe3sk")
+      #
+      #   resp.status
+      #   => 200
+      #
+      #   resp.body
+      #   => {"git_hub": {"id": 10, "name": "New identity 1", "api_key": "osdf659234sdffd3sjfsh234o7h23orfe3sk", "service": "GitHub"}}
       #
       #   resp = conn.post("/api/v1/identities/pivotal_tracker",
       #                    "token" => "dcbb7b36acd4438d07abafb8e28605a4",

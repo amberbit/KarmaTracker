@@ -7,6 +7,7 @@ class GitHubIdentity < Identity
   attr_accessor :username, :password
 
   validate :credentials_correctness, on: :create
+  validates_presence_of :username, on: :create, if: ->(o) { o.api_key.present? }
 
   def service_name
     "GitHub"
@@ -15,7 +16,9 @@ class GitHubIdentity < Identity
   private
 
   def credentials_correctness
-    if username.present? && password.present?
+    if api_key.present?
+      validate_credentials_with_token
+    elsif username.present? && password.present?
       validate_credentials_with_username_and_password
     else
       errors.add(:api_key, 'you need to provide login credentials')
@@ -23,6 +26,26 @@ class GitHubIdentity < Identity
   rescue
     errors.add(:api_key, 'could not get response from GH; Provided credentials might be invalid')
   end
+
+  def validate_credentials_with_token
+    https = Net::HTTP.new(authentication_token_uri.host, authentication_token_uri.port)
+    https.use_ssl = true
+    https.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    req = Net::HTTP::Get.new(authentication_token_uri.path)
+    req["Authorization"] = "token " + api_key
+    res = https.request(req)
+    json = JSON.parse(res.body)
+    if json.is_a?(Array)
+      self.source_id = username
+    else
+      errors.add(:api_key, 'provided token is invalid')
+    end
+  rescue StandardError => e
+    Rails.logger.warn "Exception when validating Github identity: #{e.class}: #{e.message}"
+
+    errors.add(:api_key, 'provided token is invalid')
+  end
+
 
   def validate_credentials_with_username_and_password
     https = Net::HTTP.new(authentication_uri.host, authentication_uri.port)
@@ -37,6 +60,7 @@ class GitHubIdentity < Identity
       self.api_key = token
       self.source_id = username
     else
+      binding.pry
       errors.add(:password, 'provided username/password combination is invalid')
     end
   rescue StandardError => e
@@ -47,6 +71,10 @@ class GitHubIdentity < Identity
 
   def authentication_uri
     URI('https://api.github.com/authorizations')
+  end
+
+  def authentication_token_uri
+    URI('https://api.github.com/user/subscriptions')
   end
 
 end
