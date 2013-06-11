@@ -61,7 +61,7 @@ KarmaTracker.controller "PivotalTrackerIdentitiesController", ($scope, $http, $c
           $scope.newIdentity.email = ''
           $scope.newIdentity.password = ''
           if data.pivotal_tracker.errors.api_key?
-            $scope.errors.password = "The API key related " + data.pivotal_tracker.errors.api_key[0]
+            $scope.errors.password = data.pivotal_tracker.errors.api_key[0]
           else
             $scope.errors.password = data.pivotal_tracker.errors.password[0]
         )

@@ -82,15 +82,28 @@
               </label>
 
               <div class="row">
-                <div class="small-12 large-6 large-offset-6 columns">
+                <div class="small-6 large-6 columns">
                   <div class="panel secondary">
                     <label>Username:
-                      <input type="text" id="username" name="username"ng-model="newIdentity.username" />
+                      <input type="text" id="username" name="username" ng-model="newIdentity.username" />
                       <small ng-show="errors.username" class="error">{{errors.username}}</small>
                     </label>
                     <label>Password:
                       <input type="password" ng-model="newIdentity.password" />
                       <small ng-show="errors.password" class="error">{{errors.password}}</small>
+                    </label>
+                  </div>
+                </div>
+                <div class="small-6 large-6 columns">
+                  <div class="panel secondary">
+                    <h6 class="subheader">I already know my API key</h6>
+                    <label>Username:
+                      <input type="text" id="username_token" name="username_token "ng-model="newIdentity.username_token" />
+                      <small ng-show="errors.username_token" class="error">{{errors.username_token}}</small>
+                    </label>
+                    <label>API key:
+                      <input type="text" ng-model="newIdentity.api_key" />
+                      <small ng-show="errors.api_key" class="error">{{errors.api_key}}</small>
                     </label>
                   </div>
                   <button class="button small right">Add new identity</button>

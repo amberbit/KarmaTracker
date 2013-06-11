@@ -30,30 +30,50 @@ KarmaTracker.controller "GitHubIdentitiesController", ($scope, $http, $cookies, 
       $scope.errors['name'] = "can't be blank"
       valid = false
 
-    for field in ["username", "password"]
-      unless $scope.newIdentity[field]? and $scope.newIdentity[field] != ''
-        $scope.errors[field] = "can't be blank"
-        valid = false
+    unless $scope.newIdentity.api_key? and $scope.newIdentity.api_key != ''
+      for field in ["username", "password"]
+        unless $scope.newIdentity[field]? and $scope.newIdentity[field] != ''
+          $scope.errors[field] = "can't be blank"
+          valid = false
+
+
+
 
     valid
 
   $scope.add = () ->
     if $scope.formLooksValid()
-      $http.post(
-        '/api/v1/identities/git_hub?token='+$cookies.token+'&identity[name]='+$scope.newIdentity.name+'&identity[username]='+$scope.newIdentity.username+'&identity[password]='+$scope.newIdentity.password
-      ).success((data, status, headers, config) ->
-        $scope.cleanForm()
-        $scope.openAddForm()
-        $scope.updateIdentities()
-      ).error((data, status, headers, config) ->
-        console.debug data
-        $scope.newIdentity.username = ''
-        $scope.newIdentity.password = ''
-        if data.git_hub.errors.api_key?
-          $scope.errors.password = data.git_hub.errors.api_key[0]
-        else
-          $scope.errors.password = data.git_hub.errors.password[0]
-      )
+      if $scope.newIdentity.api_key? and $scope.newIdentity.api_key != ''
+        $http.post(
+          '/api/v1/identities/git_hub?token='+$cookies.token+'&identity[name]='+$scope.newIdentity.name+'&identity[username]='+$scope.newIdentity.username_token+'&identity[api_key]='+$scope.newIdentity.api_key
+        ).success((data, status, headers, config) ->
+          $scope.cleanForm()
+          $scope.openAddForm()
+          $scope.updateIdentities()
+        ).error((data, status, headers, config) ->
+          console.debug data
+          if data.git_hub.errors.api_key?
+            $scope.errors.api_key = data.git_hub.errors.api_key[0]
+          else
+            $scope.errors.username_token = data.git_hub.errors.username[0]
+            $scope.errors.api_key = data.git_hub.errors.password[0]
+        )
+      else
+        $http.post(
+          '/api/v1/identities/git_hub?token='+$cookies.token+'&identity[name]='+$scope.newIdentity.name+'&identity[username]='+$scope.newIdentity.username+'&identity[password]='+$scope.newIdentity.password
+        ).success((data, status, headers, config) ->
+          $scope.cleanForm()
+          $scope.openAddForm()
+          $scope.updateIdentities()
+        ).error((data, status, headers, config) ->
+          console.debug data
+          $scope.newIdentity.username = ''
+          $scope.newIdentity.password = ''
+          if data.git_hub.errors.api_key?
+            $scope.errors.password = data.git_hub.errors.api_key[0]
+          else
+            $scope.errors.password = data.git_hub.errors.password[0]
+        )
 
   $scope.openAddForm = () ->
     $scope.addFormShown = !$scope.addFormShown
@@ -63,7 +83,8 @@ KarmaTracker.controller "GitHubIdentitiesController", ($scope, $http, $cookies, 
     $scope.newIdentity.name  = ''
     $scope.newIdentity.username = ''
     $scope.newIdentity.password = ''
-    $scope.newIdentity.api_key =''
+    $scope.newIdentity.api_key = ''
+    $scope.newIdentity.username_token = ''
     $scope.errors = {}
 
 
