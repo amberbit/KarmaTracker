@@ -6,6 +6,7 @@ KarmaTracker.controller "TimelogController", ($scope, $http, $cookies, $location
   tomorrow = new Date()
   tomorrow.setDate(tomorrow.getDate()+1)
   tomorrow = $filter('date')(tomorrow,'yyyy-MM-dd 00:00:00')
+  offset = moment().zone()
 
   $scope.selectedProject = ""
   $scope.fromDate = $scope.today
@@ -65,8 +66,8 @@ KarmaTracker.controller "TimelogController", ($scope, $http, $cookies, $location
 
   $scope.close = (entry) ->
     entry.editing = false
-    entry.time_log_entry.newStartedAt = entry.time_log_entry.started_at.replace("T", " ").replace("Z", "")
-    entry.time_log_entry.newStoppedAt = entry.time_log_entry.stopped_at.replace("T", " ").replace("Z", "")
+    entry.time_log_entry.newStartedAt = moment(entry.time_log_entry.started_at).format('YYYY-MM-DD HH:mm:ss')
+    entry.time_log_entry.newStoppedAt = moment(entry.time_log_entry.stopped_at).format('YYYY-MM-DD HH:mm:ss')
     $scope.errors = {}
 
 
@@ -76,7 +77,9 @@ KarmaTracker.controller "TimelogController", ($scope, $http, $cookies, $location
     $scope.totalTime = 0
     $scope.selectedProject = "" if !$scope.selectedProject?
     $http.get(
-      "/api/v1/time_log_entries?token=#{$cookies.token}&project_id=#{$scope.selectedProject}&started_at=#{$scope.fromDate}&stopped_at=#{$scope.toDate}"
+      "/api/v1/time_log_entries?token=#{$cookies.token}&project_id=#{$scope.selectedProject}&started_at=#{moment($scope.fromDate).add('minutes', offset).format('YYYY-MM-DD HH:mm:ss')
+}&stopped_at=#{moment($scope.toDate).add('minutes', offset).format('YYYY-MM-DD HH:mm:ss')
+}"
     ).success((data, status, headers, config) ->
       $scope.entries = data
       for entry in $scope.entries
@@ -84,8 +87,8 @@ KarmaTracker.controller "TimelogController", ($scope, $http, $cookies, $location
         $scope.totalTime += entry.time_log_entry.seconds
 
         entry.editing = false
-        entry.time_log_entry.newStartedAt = entry.time_log_entry.started_at.replace("T", " ").replace("Z", "")
-        entry.time_log_entry.newStoppedAt = entry.time_log_entry.stopped_at.replace("T", " ").replace("Z", "")
+        entry.time_log_entry.newStartedAt = moment(entry.time_log_entry.started_at).format('YYYY-MM-DD HH:mm:ss')
+        entry.time_log_entry.newStoppedAt = moment(entry.time_log_entry.stopped_at).format('YYYY-MM-DD HH:mm:ss')
     ).error((data, status, headers, config) ->
     )
 
@@ -102,13 +105,18 @@ KarmaTracker.controller "TimelogController", ($scope, $http, $cookies, $location
   $scope.updateEntry = (entry) ->
     $scope.errors = {}
     $http.put(
-      "/api/v1/time_log_entries/#{entry.time_log_entry.id}?token=#{$cookies.token}&time_log_entry[started_at]=#{entry.time_log_entry.newStartedAt}&time_log_entry[stopped_at]=#{entry.time_log_entry.newStoppedAt}"
+      "/api/v1/time_log_entries/#{entry.time_log_entry.id}?token=#{$cookies.token}&time_log_entry[started_at]=#{moment(entry.time_log_entry.newStartedAt).add('minutes', offset).format('YYYY-MM-DD HH:mm:ss')
+}&time_log_entry[stopped_at]=#{moment(entry.time_log_entry.newStoppedAt).add('minutes', offset).format('YYYY-MM-DD HH:mm:ss')
+}"
     ).success((data, status, headers, config) ->
       $scope.getEntries()
     ).error((data, status, headers, config) ->
       for field in ["started_at", "stopped_at"]
         $scope.errors[field] = data.time_log_entry.errors[field][0]
     )
+
+  $scope.showLocalDate = (date) ->
+    result = moment(date).add('minutes', -offset).format('YYYY-MM-DD HH:mm:ss')
 
 
 

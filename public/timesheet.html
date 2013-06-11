@@ -43,7 +43,7 @@
               <a href="" title="Go to project page" ng-click="openProject(entry.project.source_name, entry.project.name, entry.project.source_identifier)">{{entry.project.name}} ({{entry.project.source_name}})</a>
             </td>
           <td class="small-2 columns">
-            <div ng-show="!entry.editing">{{entry.time_log_entry.started_at.replace("T", " ").replace("Z", "")}}</div>
+            <div ng-show="!entry.editing">{{showLocalDate(entry.time_log_entry.started_at.replace("T", " ").replace("Z", ""))}}</div>
           </td>
           <td class="small-2 columns">
             
