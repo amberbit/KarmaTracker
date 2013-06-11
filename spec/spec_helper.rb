@@ -77,6 +77,11 @@ def reset_fakeweb_urls
   FakeWeb.register_uri(:get, /https:\/\/api\.github\.com\/repos\/.*\/.*\/issues\?state\=open/,
     :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'git_hub', 'responses', 'issues.json')),
     :status => ['200', 'OK'])
+
+  FakeWeb.register_uri(:get, /https:\/\/api\.github\.com\/user/,
+    :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'git_hub', 'responses', 'user.json')),
+    :status => ['200', 'OK'])
+
 end
 
 RSpec.configure do |config|

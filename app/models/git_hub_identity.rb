@@ -7,7 +7,6 @@ class GitHubIdentity < Identity
   attr_accessor :username, :password
 
   validate :credentials_correctness, on: :create
-  validates_presence_of :username, on: :create, if: ->(o) { o.api_key.present? }
 
   def service_name
     "GitHub"
@@ -35,8 +34,8 @@ class GitHubIdentity < Identity
     req["Authorization"] = "token " + api_key
     res = https.request(req)
     json = JSON.parse(res.body)
-    if json.is_a?(Array)
-      self.source_id = username
+    if json["login"].present?
+      self.source_id = json["login"]
     else
       errors.add(:api_key, 'provided token is invalid')
     end
@@ -60,7 +59,6 @@ class GitHubIdentity < Identity
       self.api_key = token
       self.source_id = username
     else
-      binding.pry
       errors.add(:password, 'provided username/password combination is invalid')
     end
   rescue StandardError => e
@@ -74,7 +72,6 @@ class GitHubIdentity < Identity
   end
 
   def authentication_token_uri
-    URI('https://api.github.com/user/subscriptions')
+    URI('https://api.github.com/user')
   end
-
 end
