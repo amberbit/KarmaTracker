@@ -335,4 +335,30 @@ span.project-text, span.task-text {
   }
 
 
+#firstTip{
+  position: absolute;
+  display: block;
+  visibility: visible;
+  right: 10px;
+  top: 70px;
+  width: 300px;
+  background: black;
+  opacity: 0.952;
+  color: white;
+  z-index: 101;
+  font-family: inherit;
+  font-weight: normal;
+  transition: visibility, 1s;
+}
+
+#back-button{
+    position: relative;
+  }
+
+#back-button a {
+      padding: 9.6px 20px;
+      line-height: 2.9em;
+}
+
+
 

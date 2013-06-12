@@ -8,18 +8,23 @@
         </li>
       <li class="toggle-topbar menu-icon"><a href="" ng-click="expandMenu()"><span></span></a></li>
     </ul> 
-    <section class="top-bar-section">
+    <section id="top-bar-section" class="top-bar-section">
       <ul class="right">
         <li class="divider"></li>
         <li ng-click="go('/projects')"><a href="#/projects" ng-class="highlightCurrentPage('projects')" ng-click="expandMenu()">Projects</a></li>
         <li class="divider"></li>
         <li ng-click="go('/timesheet')"><a ng-class="highlightCurrentPage('timesheet')" href="#/timesheet" ng-click="expandMenu()">Timesheet</a></li>
         <li class="divider"></li>
-        <li ng-click="go('/account')"><a ng-class="highlightCurrentPage('account')" href="#/account" ng-click="expandMenu()">Account</a></li>
-        <li class="divider"></li>
-        <li ng-click="go('/integrations')"><a ng-class="highlightCurrentPage('integrations')" href="#/integrations" ng-click="expandMenu()">Integrations</a></li>
-        <li class="divider"></li>
-        <li ng-click="go('/refresh')"><a ng-class="highlightCurrentPage('refresh')" href="#/refresh" class="refresh" ng-click="expandMenu()">Refresh</a></li>
+        <li id="profile" ng-click="moveMenu()" class="has-dropdown"><a href="">Profile</a>
+          <ul class="dropdown">
+            <li id="back-button" class="toggle-topbar"><a href=""><< Back</a></li>
+            <li class="divider toogle-topbar"></li>
+            <li ng-click="go('/account')"><a ng-class="highlightCurrentPage('account')" href="#/account" ng-click="expandMenu()">Account</a></li>
+            <li class="divider"></li>
+            <li ng-click="go('/integrations')"><a id="integrations" ng-class="highlightCurrentPage('integrations')" href="#/integrations" ng-click="expandMenu()">Integrations</a></li>
+            <li class="divider"></li>
+            <li ng-click="go('/refresh')"><a ng-class="highlightCurrentPage('refresh')" href="#/refresh" class="refresh" ng-click="expandMenu()">Refresh</a></li>
+                      </ul>
         <li class="divider"></li>
         <li ng-click="go('/logout')"><a ng-class="highlightCurrentPage('logout')" href="#/logout" ng-click="expandMenu()">Log out</a></li>
       </ul>
@@ -57,5 +62,18 @@
   window.KarmaTrackerConfig.registration_enabled = <%= AppConfig.users.allow_register %>;
   window.KarmaTrackerConfig.registration_destroy = <%= AppConfig.users.allow_destroy %>;
 
-
 </script>
+
+<div id="firstTip" class="show-for-medium-up">
+  <span class="joyride-nub"></span>
+  <div class="joyride-content-wrapper" ng-show="firstTipVisible">
+    <p>Get started adding Pivotal Tracker or GitHub identities in Profile / Integrations panel</p>
+    <a href="" ng-click="go('/integrations'); hideFirstTip()") class="small button joyride-next-tip">Ok</a>
+    <a href="" ng-click="hideFirstTip()" class="joyride-close-tip">&times;</a>
+  </div>
+</div>
+
+
+
+
+

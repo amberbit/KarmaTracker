@@ -21,6 +21,8 @@ KarmaTracker.factory "FlashMessage", ->
 KarmaTracker.controller "RootController", ($scope, $http, $location, $cookies, FlashMessage) ->
   $scope.runningTask = {}
   $scope.runningVisible = false
+  $scope.firstTipVisible = false
+  $scope.menuIsDroppedDown = document.getElementById("top-bar").classList.contains("expanded")
   $scope.matchesQuery = (string) ->
     string.toLowerCase().indexOf($scope.query.string.toLowerCase()) != -1
 
@@ -85,6 +87,15 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookies, F
 
   $scope.expandMenu = () ->
     document.getElementById("top-bar").classList.toggle("expanded")
+    $scope.menuIsDroppedDown = document.getElementById("top-bar").classList.contains("expanded")
+
+
+  $scope.moveMenu = () ->
+    document.getElementById("profile").classList.toggle("moved")
+    if  document.getElementById("top-bar-section").style.left == ""
+      document.getElementById("top-bar-section").style.left = "-100%"
+    else
+      document.getElementById("top-bar-section").style.left = ""
 
   $scope.go = (hash) ->
     document.getElementById("top-bar").classList.remove("expanded")
@@ -100,7 +111,25 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookies, F
       $location.path '/projects'
 
 
+  $scope.checkIdentities = () ->
+    $http.get(
+      "/api/v1/identities?token=#{$cookies.token}"
+    ).success((data, status, headers, config) ->
+      console.debug data
+      if data.length == 0
+        $scope.firstTipVisible = true
+
+    ).error((data, status, headers, config) ->
+    )
+
+    $scope.hideFirstTip = () ->
+      $scope.firstTipVisible = false
+
+
+
+
   $scope.getRunningTask()
+  $scope.checkIdentities()
 
 
 # This controller just has to redirect user to proper place
