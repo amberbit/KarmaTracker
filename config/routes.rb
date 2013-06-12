@@ -36,6 +36,7 @@ KarmaTracker::Application.routes.draw do
       resources :tasks, only: [:index, :show] do
         collection do
           get :running
+          get :recent
         end
       end
     end
