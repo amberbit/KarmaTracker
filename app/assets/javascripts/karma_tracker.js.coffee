@@ -115,7 +115,6 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookies, F
     $http.get(
       "/api/v1/identities?token=#{$cookies.token}"
     ).success((data, status, headers, config) ->
-      console.debug data
       if data.length == 0
         $scope.firstTipVisible = true
 
