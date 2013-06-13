@@ -45,7 +45,6 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookies, $
     $http.get(
         "/api/v1/tasks/running?token=#{$cookies.token}"
       ).success((data, status, headers, config) ->
-        console.debug data
         $scope.runningTask = data.task
         $scope.runningVisible = true
       ).error((data, status, headers, config) ->
