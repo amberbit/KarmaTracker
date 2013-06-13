@@ -27,6 +27,3 @@ KarmaTracker.controller "ProjectsController", ($scope, $http, $cookies, $locatio
   )
 
   $scope.$watch("query.string", filter_visible  )
-
-
-

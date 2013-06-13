@@ -1,4 +1,4 @@
-KarmaTracker.controller "TasksController", ($scope, $http, $cookies, $location, $routeParams) ->
+KarmaTracker.controller "TasksController", ($scope, $http, $cookies, $location, $routeParams, broadcastService) ->
   $scope.tasks = []
   $scope.current = true
   $scope.query.string = ""
@@ -26,6 +26,8 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookies, $location, 
       ).success((data, status, headers, config) ->
         $scope.reloadTasks()
         $scope.$watch("$scope.runningTask", $scope.getRunningTask())
+        broadcastService.prepForBroadcast "refreshRecent"
+ 
       ).error((data, status, headers, config) ->
         console.debug('Error when starting tracking time on tasks')
       )
@@ -35,6 +37,8 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookies, $location, 
       ).success((data, status, headers, config) ->
         $scope.reloadTasks()
         $scope.$watch("$scope.runningTask", $scope.getRunningTask())
+
+        broadcastService.prepForBroadcast "refreshRecent"
       ).error((data, status, headers, config) ->
         console.debug('Error when stopping time log entries')
       )

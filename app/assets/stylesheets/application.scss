@@ -45,6 +45,17 @@
   }
 }
 
+.tinytracking {
+  background-image: url(image_path('tracking.gif'));
+  background-position: right;
+  background-repeat: no-repeat;
+  margin-top: -12px;
+  cursor: pointer;
+  span {
+    display: block;
+  }
+}
+
 .track-bar {
   &.stop {
     margin-top: 0.3em;
@@ -360,5 +371,16 @@ span.project-text, span.task-text {
       line-height: 2.9em;
 }
 
+.recents{
+  font-size: 0.8em;
+   }
 
+.recents ul{
+  list-style-type: none;
+  font-size: 1.2em;
+  font-weight: bold;
+}
 
+.tiny-task{
+  padding: 0.12em;
+}

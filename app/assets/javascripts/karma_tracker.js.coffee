@@ -11,6 +11,7 @@
 #= require timelog
 #= require tasks
 #= require flashes
+#= require recents
 
 window.KarmaTracker = angular.module('KarmaTracker', ['ngCookies', 'ngMobile'])
 
@@ -18,7 +19,7 @@ window.KarmaTracker = angular.module('KarmaTracker', ['ngCookies', 'ngMobile'])
 KarmaTracker.factory "FlashMessage", ->
   { string: "", type: null }
 
-KarmaTracker.controller "RootController", ($scope, $http, $location, $cookies, FlashMessage) ->
+KarmaTracker.controller "RootController", ($scope, $http, $location, $cookies, $routeParams, FlashMessage, broadcastService) ->
   $scope.runningTask = {}
   $scope.runningVisible = false
   $scope.firstTipVisible = false
@@ -44,6 +45,7 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookies, F
     $http.get(
         "/api/v1/tasks/running?token=#{$cookies.token}"
       ).success((data, status, headers, config) ->
+        console.debug data
         $scope.runningTask = data.task
         $scope.runningVisible = true
       ).error((data, status, headers, config) ->
@@ -124,8 +126,9 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookies, F
     $scope.hideFirstTip = () ->
       $scope.firstTipVisible = false
 
-
-
+  $scope.$on "handleBroadcast", () ->
+    if broadcastService.message == 'recentClicked'
+      $scope.getRunningTask()
 
   $scope.getRunningTask()
   $scope.checkIdentities()
@@ -137,4 +140,16 @@ KarmaTracker.controller "HomeController", ($scope, $http, $location, $cookies, F
     $location.path '/login'
   else
     $location.path '/projects'
+
+KarmaTracker.factory 'broadcastService', ($rootScope) ->
+  broadcastService = {message: ""}
+
+  broadcastService.prepForBroadcast = (msg) ->
+    @message = msg
+    @broadcastItem()
+
+  broadcastService.broadcastItem = () ->
+    $rootScope.$broadcast('handleBroadcast')
+
+  broadcastService
 

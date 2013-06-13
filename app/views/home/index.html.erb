@@ -1,3 +1,13 @@
+<div id="firstTip" class="show-for-medium-up">
+  <span class="joyride-nub"></span>
+  <div class="joyride-content-wrapper" ng-show="firstTipVisible">
+    <p>Get started adding Pivotal Tracker or GitHub identities in Profile / Integrations panel</p>
+    <a href="" ng-click="go('/integrations'); hideFirstTip()") class="small button joyride-next-tip">Ok</a>
+    <a href="" ng-click="hideFirstTip()" class="joyride-close-tip">&times;</a>
+  </div>
+</div>
+
+
 <div class="row page-header">
   <nav id="top-bar" class="top-bar" ng-show="signed_in">
     <ul class="title-area">
@@ -35,8 +45,10 @@
 <div id='top-bar-spacer'></div>
 
 <div id="flash" class="row" ng-controller="FlashesController">
-  <div class="alert-box tracking" ng-show="runningVisible" ng-click="goToLink('projects/'+runningTask.project_id+'/tasks')" class="running-task current">
-    <span>{{runningTask.name}}</span>
+  <div class="show-for-small">
+    <div class="alert-box tracking" ng-show="runningVisible" ng-click="goToLink('projects/'+runningTask.project_id+'/tasks')" class="running-task current">
+      <span>{{runningTask.name}}</span>
+    </div>
   </div>
 
   <div ng-show="message.string" ng-class="{'small-12': true, 'columns': true, 'alert-box': true, 'alert': isAlert() == 'alert', 'success': isAlert() == 'success' }">
@@ -44,8 +56,47 @@
   </div>
 </div>
 
-<div class='view' ng-view ng-animate="{enter: 'view-enter', leave: 'view-leave'}">
+<div class="row boxed">
+  <div class='view small-12 large-8 columns' ng-view ng-animate="{enter: 'view-enter', leave: 'view-leave'}">
+  </div>
+
+  <div class="hide-for-small large-4 columns" ng-controller="RecentsController">
+    <div class="small-12 large-12 columns">
+      <h4><a ng-href="/#/projects">Recents</a></h4>
+    </div>
+
+    <div class="large-12 columns panel recents">
+      <h4 class="subheader">Tasks</h4>
+      <div class="large-12 columns">
+        <div class="row" ng-repeat="task in lastTasks">
+          <div class="small-12 large-12 columns panel project clickable"
+            ng-class="{callout: task.running, running: task.running}"
+            ng-click="startTracking(task)">
+            <div class="small-12 large-12 columns" ng-class="{tinytracking: task.running}">
+              <span class="tiny-task">{{task.name}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="large-12 columns panel recents">
+      <h4 class="subheader">Projects</h4>
+      <div class="large-12 columns">
+        <ul>
+          <li ng-repeat="project in lastProjects">
+            <a href="" ng-click="go('/projects/'+project.id+'/tasks')">{{project.name}}</a>
+          </li>
+        </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
 </div>
+
+
 <div class="row">
   <div class="small-12 columns footer">
     <div class="small-9 large-10 columns footer-text">
@@ -63,16 +114,6 @@
   window.KarmaTrackerConfig.registration_destroy = <%= AppConfig.users.allow_destroy %>;
 
 </script>
-
-<div id="firstTip" class="show-for-medium-up">
-  <span class="joyride-nub"></span>
-  <div class="joyride-content-wrapper" ng-show="firstTipVisible">
-    <p>Get started adding Pivotal Tracker or GitHub identities in Profile / Integrations panel</p>
-    <a href="" ng-click="go('/integrations'); hideFirstTip()") class="small button joyride-next-tip">Ok</a>
-    <a href="" ng-click="hideFirstTip()" class="joyride-close-tip">&times;</a>
-  </div>
-</div>
-
 
 
 
