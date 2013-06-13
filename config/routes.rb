@@ -25,6 +25,7 @@ KarmaTracker::Application.routes.draw do
           get :refresh
           get '/refresh_for_identity/:id' => 'projects#refresh_for_identity'
           post :git_hub_activity_web_hook
+          get :recent
         end
         member do
           get :tasks

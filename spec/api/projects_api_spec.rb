@@ -1,6 +1,7 @@
 require 'spec_helper'
 require 'api/api_helper'
 require 'fakeweb'
+require 'timecop'
 
 describe 'Projects API' do
 
@@ -194,4 +195,32 @@ describe 'Projects API' do
     resp["message"].should =~ /Activity processed/
     project.reload.tasks.count.should == 1
   end
+
+
+  it 'should return a list of 5 most recently worked on projects' do
+    Project.destroy_all
+    TimeLogEntry.destroy_all
+    Task.destroy_all
+
+    @projects = []
+    10.times { @projects << FactoryGirl.create(:project) }
+
+
+    @tasks = []
+    10.times do |i|
+      @tasks << FactoryGirl.create(:task, project: @projects[i])
+    end
+
+    10.times do |i|
+      Timecop.travel((i).days.ago) do
+        FactoryGirl.create :time_log_entry, task: @tasks[9-i]
+      end
+    end
+    api_get "projects/recent", {token: Identity.last.user.api_key.token}
+    response.status.should == 200
+
+    projects = JSON.parse response.body
+    projects.map {|p| p["project"]["id"]}.should == @projects.map{|p| p.id}[5..9].reverse
+  end
+  
 end

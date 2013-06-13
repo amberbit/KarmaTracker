@@ -26,8 +26,6 @@ module Api
       def index
         @projects = @api_key.user.projects
         @projects.each do |project|
-          task_count = project.tasks.count
-          project["task_count"] = task_count
         end
         @projects.sort! { |a,b| a.name.downcase <=> b.name.downcase }
         render 'index'
@@ -62,10 +60,46 @@ module Api
       #
       def show
         @project = Project.find(params[:id])
-        @tasks = @project.tasks
-        @project["task_count"] = @tasks.count
+
         if @api_key.user.projects.include? @project
           render '_show'
+        else
+          render json: {message: 'Resource not found'}, status: 404
+        end
+      end
+
+      ##
+      # Returns a list of recent projects for a given user
+      #
+      # GET /api/v1/projects/recent
+      #
+      # params:
+      #   token - KarmaTracker API token
+      #
+      # = Examples
+      #
+      #   resp = conn.get("/api/v1/projects/recent", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
+      #
+      #   resp.status
+      #   => 200
+      #
+      #   resp.body
+      #   => [{"project": {"id":1, "name": "Sample project", "source_name": "Pivotal Tracker", "source_identifier": "123456", "task_count": "2"}},
+      #       {"project": {"id":3, "name": "Some random name "source_name": "GitHub", "source_identifier": "42", "task_count": "0"}}]
+      #
+      #   resp = conn.get("/api/v1/projects/recent", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
+      #
+      #   resp.status
+      #   => 404
+      #
+      #   resp.body
+      #   => {"message": "Resource not found"}
+      #
+      def recent
+        @projects = Project.recent(@current_user)
+
+        if @projects[0].present?
+          render 'index'
         else
           render json: {message: 'Resource not found'}, status: 404
         end

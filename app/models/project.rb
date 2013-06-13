@@ -17,6 +17,19 @@ class Project < ActiveRecord::Base
       where('p.identity_id IN(?)', identities.map(&:id)).uniq
   end
 
+  def self.recent(user = nil)
+    query = select("projects.*, MAX(time_log_entries.started_at) max_started_at").
+            joins("inner join tasks on projects.id = tasks.project_id").
+            joins("inner join time_log_entries on time_log_entries.task_id = tasks.id").
+            group("projects.id").
+            order("max_started_at desc")
+
+    query = query.where("time_log_entries.user_id = ?", user.id) if user
+
+    query.limit(5)
+  end
+
+
   def destroy_web_hook
     if source_name == 'GitHub' && web_hook
       repo_owner = name.split('/').first
