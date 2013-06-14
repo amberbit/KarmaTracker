@@ -43,7 +43,11 @@ KarmaTracker.controller "AccountController", ($scope, $http, $cookies, $location
     if !$scope.newPassword? or $scope.newPassword != ''
       if $scope.newPassword == $scope.confirmation
         $http.put(
-          "/api/v1/user?token="+$cookies.token+"&user[password]="+$scope.newPassword
+          "/api/v1/user",
+          token: $cookies.token,
+          user: {
+            password: $scope.newPassword
+          }
         ).success((data, status, headers, config) ->
           $scope.success("Password successfully changed")
           $scope.getUserInfo()
