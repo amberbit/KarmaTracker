@@ -44,7 +44,7 @@
 
 <div id='top-bar-spacer'></div>
 
-<div id="flash" class="row" ng-controller="FlashesController">
+<div id="flash" class="row" ng-class="{'signin-width': !signed_in}" ng-controller="FlashesController">
   <div class="show-for-small">
     <div class="alert-box tracking" ng-show="runningVisible" ng-click="goToLink('projects/'+runningTask.project_id+'/tasks')" class="running-task current">
       <span>{{runningTask.name}}</span>
@@ -56,10 +56,10 @@
   </div>
 </div>
 
-<div class="row boxed">
-  <div class='view small-12 large-8 columns' ng-view ng-animate="{enter: 'view-enter', leave: 'view-leave'}">
+<div class="row boxed" ng-class="{'signin-width': !signed_in}">
+  <div class='view small-12 columns' ng-class="{'large-12': !signed_in, 'large-8': signed_in}" ng-view ng-animate="{enter: 'view-enter', leave: 'view-leave'}">
   </div>
-
+  <div ng-show="signed_in">
   <div class="hide-for-small large-4 columns" ng-controller="RecentsController">
     <div class="small-12 large-12 columns">
       <h4><a ng-href="/#/projects">Recents</a></h4>
@@ -93,11 +93,11 @@
     </div>
 
   </div>
-
+  </div>
 </div>
 
 
-<div class="row">
+<div class="row" ng-class="{'signin-width': !signed_in}">
   <div class="small-12 columns footer">
     <div class="small-9 large-10 columns footer-text">
       KarmaTracker is designed and developed by <a href="http://www.amberbit.com/" target="_blank">AmberBit</a> Sp. z o. o.. We are  Ruby and mobile applications development company.
