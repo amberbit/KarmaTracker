@@ -3,7 +3,7 @@ module Api
 
     class UsersController < ApplicationController
       respond_to :json
-      before_filter :restrict_access, except: [:create]
+      before_filter :restrict_access, except: [:create, :confirm]
       before_filter :set_user
 
       ##
@@ -24,7 +24,7 @@ module Api
       #   resp.body
       #   => {"user":{"id":1,"email":"a@b.com","token":"dcbb7b36acd4438d07abafb8e28605a4"}}
       #
-      def user
+      def show
         render '_show'
       end
 
@@ -69,6 +69,7 @@ module Api
           @user = UsersFactory.new(User.new, params[:user]).create
 
           if @user.save
+            UserMailer.confirmation_email(@user, request.host).deliver
             render '_show'
           else
             render '_show', status: 422
@@ -119,6 +120,50 @@ module Api
           render '_show'
         else
           render '_show', status: 422
+        end
+      end
+
+      ##
+      # Confirm user's email.
+      #
+      # GET /api/v1/user/confirm
+      #
+      # params:
+      #   confirmation_token - user's confirmation token
+      #
+      # = Examples
+      #
+      #   resp = conn.get("/api/v1/user/confirm",
+      #                   "confirmation_token" => "4e9a06bff7603236d477f7bfacc2def5")
+      #
+      #   resp.status
+      #   => 200
+      #
+      #   resp.body
+      #
+      #   => "{"user":{"id":1,"email":"new@sample.com", "token":"7fcc0c838c7782405b7b20717e3c9ced"}}"
+      #
+      #
+      #   resp = conn.get("/api/v1/user/confirm",
+      #                   "confirmation_token" => "wrongconfirmationtoken")
+      #
+      #   resp.status
+      #   => 404
+      #
+      #   resp.body
+      #
+      #   => "{"message":"Resource not found"}"
+      #
+      #
+
+      def confirm
+        @user = User.where(confirmation_token: params[:confirmation_token]).first
+        @user.confirmation_token = nil if @user
+
+        if @user && @user.save
+          render '_show'
+        else
+          render json: {message: 'Resource not found'}, status: 404
         end
       end
 

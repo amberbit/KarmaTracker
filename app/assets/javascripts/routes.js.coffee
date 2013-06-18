@@ -20,8 +20,8 @@ KarmaTracker.config ($routeProvider, $locationProvider) ->
     templateUrl: '/account.html'
   ).when('/timesheet',
     templateUrl: '/timesheet.html'
-  )
-
+  ).otherwise(
+    redirectTo: '/')
 
 
 

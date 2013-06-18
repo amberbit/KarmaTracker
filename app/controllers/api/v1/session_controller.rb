@@ -34,8 +34,12 @@ module Api
       #
       def create
         if @user = User.authenticate(params[:session])
-          @api_key = @user.api_key
-          render 'api/v1/users/_show'
+          if @user.confirmation_token.nil?
+            @api_key = @user.api_key
+            render 'api/v1/users/_show'
+          else
+            render json: {message: 'User e-mail is not confirmed'}, status: 401
+          end
         else
           render json: {message: 'Invalid email or password'}, status: 401
         end

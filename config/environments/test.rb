@@ -34,4 +34,7 @@ KarmaTracker::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+
+  # Mailer
+  config.action_mailer.delivery_method = :test
 end

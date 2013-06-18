@@ -12,6 +12,8 @@ describe 'Session API (signing into the system)' do
 
   # POST /api/v1/session
   it 'should return user with API Token when providing correct credentials' do
+    @user.confirmation_token = nil
+    @user.save
     json = api_post "session/",
                     session: {email: @user.email, password: 'secret123'}
 
@@ -21,7 +23,7 @@ describe 'Session API (signing into the system)' do
   end
 
   # POST /api/v1/session
-  it 'should show error message when provided credentaials are invalid' do
+  it 'should show error message when provided credentials are invalid' do
     json = api_post 'session/',
                     session: {email: @user.email, password: 'wrong password'}
 
@@ -29,6 +31,17 @@ describe 'Session API (signing into the system)' do
     json.has_key?('user').should be_false
     json['message'].should == 'Invalid email or password'
   end
+
+  # POST /api/v1/session
+  it 'should show error message when provided user e-mail is not confirmed' do
+    json = api_post 'session/',
+                    session: {email: @user.email, password: 'secret123'}
+
+    response.status.should == 401
+    json.has_key?('user').should be_false
+    json['message'].should == 'User e-mail is not confirmed'
+  end
+
 
   # POST /api/v1/session
   it 'should not raise application error when no credentials were provided' do

@@ -20,6 +20,11 @@ describe 'User' do
     @user.api_key.should == ApiKey.first
   end
 
+    it 'should create user\'s confirmation_token when new user is created' do
+    @user.confirmation_token.should_not be_nil
+  end
+
+
   it 'should validate format of email when creating user' do
     @user.email = 'foo'
     @user.should_not be_valid

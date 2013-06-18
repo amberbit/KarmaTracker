@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
   has_secure_password
 
-  attr_accessible :email, :password
+  attr_accessible :email, :password, :confirmation_token
 
   has_one :api_key, dependent: :destroy
   has_many :time_log_entries, dependent: :destroy
@@ -14,6 +14,7 @@ class User < ActiveRecord::Base
 
   validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i
 
+  before_create :generate_confirmation_token
   after_create :create_api_key
 
   def self.authenticate session
@@ -28,6 +29,12 @@ class User < ActiveRecord::Base
   def projects
     Project.joins('INNER JOIN participations p ON projects.id = p.project_id').
       where('p.identity_id IN(?)', identities.map(&:id)).uniq
+  end
+
+  def generate_confirmation_token
+    begin
+      self.confirmation_token = SecureRandom.hex
+    end while User.find_by_confirmation_token(confirmation_token)
   end
 
   private

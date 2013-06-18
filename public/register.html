@@ -1,5 +1,6 @@
 <div ng-controller="RegisterController" class="row unregistered">
-  <div class="blankdiv"></div>
+  <div ng-show="confirmation_message" id="confirmationdiv" class="alert-box">{{confirmation_message}}</div>
+  <div ng-show="!confirmation_message" class="blankdiv"></div>
   <div class="small-12 large-12 columns">
     <div class="small-12 large-8 columns">
       <img src="/assets/kt-logo-big.png" />

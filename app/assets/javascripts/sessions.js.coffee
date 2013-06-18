@@ -1,6 +1,10 @@
-KarmaTracker.controller "SessionController", ($scope, $http, $cookies, $location) ->
+KarmaTracker.controller "SessionController", ($scope, $http, $cookies, $location, $routeParams) ->
+  if typeof($cookies.token) != 'undefined'
+    $location.path '/projects'
+
   $scope.session = { email: null, password: null }
   $scope.message = ''
+  $scope.confirmation_message = ""
   $scope.focusPassword = false
   $scope.registrationEnabled = KarmaTrackerConfig.registration_enabled
 
@@ -32,6 +36,16 @@ KarmaTracker.controller "SessionController", ($scope, $http, $cookies, $location
     ).error((data, status, headers, config) ->
       $scope.signInFailure(data.message)
     )
+
+  if $routeParams.confirmation_token?
+    $http.get(
+      '/api/v1/user/confirm?confirmation_token='+$routeParams.confirmation_token
+    ).success((data, status, headers, config) ->
+      $scope.confirmation_message = "Your e-mail is now confirmed, please sign in."
+    ).error((data, status, headers, config) ->
+      $scope.confirmation_message = "Confirmation token provided is not valid, or your e-mail is already confirmed. Please, sign in."
+    )
+
 
 KarmaTracker.controller "LogoutController", ($scope, $location, $cookies) ->
   delete $cookies['token']

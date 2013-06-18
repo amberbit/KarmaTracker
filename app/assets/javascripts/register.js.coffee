@@ -1,13 +1,10 @@
 KarmaTracker.controller "RegisterController", ($scope, $http, $cookies, $location) ->
   $scope.registration = { email: null, password: null, confirmation: null }
   $scope.message = ''
+  $scope.confirmation_message = ""
   $scope.errors = {}
 
   $scope.focusPassword = false
-  $scope.registerSuccess = (token) ->
-    $cookies.token = token
-    $scope.registration.email = $scope.registration.password = $scope.registration.confirmation = null
-    window.location = '/'
 
   $scope.registerFailure = (message) ->
     $scope.alert message
@@ -41,7 +38,8 @@ KarmaTracker.controller "RegisterController", ($scope, $http, $cookies, $locatio
           password: $scope.registration.password
         }
       ).success((data, status, headers, config) ->
-        $scope.registerSuccess(data.user.token)
+        $scope.registration.email = $scope.registration.password = $scope.registration.confirmation = null
+        $scope.confirmation_message = "An e-mail was sent to confirm your address, please check your mailbox and follow the instructions to log in."
       ).error((data, status, headers, config) ->
         $scope.registerFailure("Please correct the errors and try again")
         $scope.errors = {}
