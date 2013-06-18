@@ -1,6 +1,8 @@
 KarmaTracker.controller "RecentsController", ($scope, $http, $cookies, $location, broadcastService) ->
   $scope.lastTasks = []
   $scope.lastProjects = []
+  $scope.noTasks = true
+  $scope.noProjects = true
 
   $scope.startTracking = (task) ->
     if !task.running
@@ -32,8 +34,10 @@ KarmaTracker.controller "RecentsController", ($scope, $http, $cookies, $location
       $scope.lastTasks = []
       for task in data
         $scope.lastTasks.push task.task
+      $scope.noTasks = false if $scope.lastTasks.length > 0
     ).error((data, status, headers, config) ->
       $scope.lastTasks = []
+      $scope.noTasks = true
     )
 
   $scope.getRecentProjects = ->
@@ -43,8 +47,10 @@ KarmaTracker.controller "RecentsController", ($scope, $http, $cookies, $location
       $scope.lastProjects = []
       for project in data
         $scope.lastProjects.push project.project
+      $scope.noProjects = false if $scope.lastProjects.length > 0
     ).error((data, status, headers, config) ->
       $scope.lastProjects = []
+      $scope.noProjects = true
     )
 
   $scope.$on "handleBroadcast", () ->
