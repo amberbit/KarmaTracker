@@ -9,6 +9,7 @@ require 'pry'
 require 'fakeweb'
 require 'rspec/rails'
 require 'torquebox-no-op'
+require 'capybara/rspec'
 
 Dir[File.join(File.dirname(__FILE__), 'support', '**', '*.rb')].each {|f| require f}
 
@@ -33,6 +34,7 @@ RSpec.configure do |config|
     AppConfig.users.allow_register = false
   end
 
+  
 end
 
 def reset_fakeweb_urls

@@ -11,9 +11,9 @@
     <div class="small-12 large-4 columns panel">
       <form ng-submit="signIn()">
         <div ng-show="message" data-alert class='alert-box alert'>{{message}}</div>
-        <input type="text" placeholder="e-mail address" ng-model="$parent.session.email" autofocus='autofocus' focus="{{focus_email}}"/>
+        <input id="email" type="text" placeholder="e-mail address" ng-model="$parent.session.email" autofocus='autofocus' focus="{{focus_email}}"/>
         <br/>
-        <input type="password" placeholder="password" ng-model="$parent.session.password" focus="{{focus_password}}"/>
+        <input id="password" type="password" placeholder="password" ng-model="$parent.session.password" focus="{{focus_password}}"/>
         <button class="button">Sign in!</button>
         <a href="#/register" ng-show="registrationEnabled" class="button secondary right">Register</a>
       </form>

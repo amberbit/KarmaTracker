@@ -10,12 +10,12 @@
     <div class="signin-form small-12 large-4 columns panel">
       <form ng-submit="register()">
         <div ng-show="test" data-alert class='alert-box alert'>{{message}}</div>
-        <input type="text" placeholder="e-mail address"ng-model="$parent.registration.email" autofocus='autofocus' focus="{{focus_email}}"/>
+        <input id="email" type="text" placeholder="e-mail address"ng-model="$parent.registration.email" autofocus='autofocus' focus="{{focus_email}}"/>
         <small ng-show="errors.email" class="error">{{errors.email}}</small>
         <br/>
-        <input type="password" placeholder="password" ng-model="$parent.registration.password" focus="{{focus_password}}"/>
+        <input id="password" type="password" placeholder="password" ng-model="$parent.registration.password" focus="{{focus_password}}"/>
         <small ng-show="errors.password" class="error">{{errors.password}}</small>
-        <input type="password" placeholder="password confirmation" ng-model="$parent.registration.confirmation" focus="{{focus_confirmation}}"/>
+        <input id="password_confirmation" type="password" placeholder="password confirmation" ng-model="$parent.registration.confirmation" focus="{{focus_confirmation}}"/>
         <small ng-show="errors.confirmation" class="error">{{errors.confirmation}}</small>
         <button class="button">Register</button>
         <a href="#/login" class="button secondary right">Log in</a>

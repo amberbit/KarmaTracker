@@ -37,6 +37,8 @@ end
 
 group :development, :test do
   gem 'pry'
+  gem 'capybara'
+  gem 'selenium-webdriver'
 end
 
 gem 'sass-rails',   '~> 3.2.3'

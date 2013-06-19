@@ -50,9 +50,11 @@ describe 'Tasks API' do
   # GET /tasks/running
   it 'should return an error when there is no current task running' do
     user = FactoryGirl.create :user
-    expect {
-      api_get "tasks/running", {token: Identity.last.user.api_key.token}
-    }.to raise_error ActiveRecord::RecordNotFound
+    api_get "tasks/running", {token: Identity.last.user.api_key.token}
+    response.status.should == 404
+    resp = JSON.parse(response.body)
+    resp.should have_key("message")
+    resp["message"].should =~ /Resource not found/
   end
 
   # GET /tasks/running
