@@ -291,7 +291,12 @@ span.project-text, span.task-text {
   #timesheet-form {
     input[type='text'] {
       display: inline;
-      width: 12em;
+    }
+    select{
+      height: 2.2em;
+    }
+    button{
+      margin-top: 1.8em;
     }
   }
   .table {
