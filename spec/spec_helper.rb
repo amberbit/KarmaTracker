@@ -48,6 +48,10 @@ def reset_fakeweb_urls
     :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'authorization_success.xml')),
     :status => ['200', 'OK'])
 
+  FakeWeb.register_uri(:get, 'https://www.pivotaltracker.com/services/v4/me',
+    :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'authorization_success.xml')),
+    :status => ['200', 'OK'])
+
   FakeWeb.register_uri(:get, 'https://www.pivotaltracker.com/services/v4/projects',
     :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'projects.xml')),
     :status => ['200', 'OK'])
@@ -90,4 +94,5 @@ RSpec.configure do |config|
   config.before :suite do
     reset_fakeweb_urls
   end
+  Capybara.default_wait_time = 30
 end

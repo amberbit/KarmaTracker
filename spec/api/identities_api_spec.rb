@@ -79,6 +79,22 @@ describe 'Identities API' do
   end
 
   # POST /api/v1/identities/pivotal_tracker
+  it "should be able to add PT identity for given user with provided token" do
+    user = FactoryGirl.create :user
+    json = api_post "identities/pivotal_tracker", {token: ApiKey.last.token, identity:
+          { name: 'Just an identity', api_key: 'correct_token'}}
+    response.status.should == 200
+    json.has_key?('pivotal_tracker').should be_true
+
+    Identity.count.should == 1
+    identity = Identity.last
+    identity.name.should == 'Just an identity'
+    identity.user.should == user
+    user.identities.should include(identity)
+  end
+
+
+  # POST /api/v1/identities/pivotal_tracker
   it 'should add error messages to response when adding PT identity fails' do
     FactoryGirl.create :user
     json = api_post "identities/pivotal_tracker", {token: ApiKey.last.token, identity: {name: 'Just an identity',

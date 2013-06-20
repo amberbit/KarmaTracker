@@ -22,11 +22,11 @@
           </div>
 
           <form ng-submit='add()'>
-            <div class="panel" ng-show="addFormShown">
+            <div id="ptform" class="panel" ng-show="addFormShown">
               <a ng-click="openAddForm()" class="tiny button secondary right-align"><span class="subheader">Close</span></a>
               <h5 class="subheader">Add a new identity</h5>
               <label>Name:
-                <input type="text" ng-model="newIdentity.name" />
+                <input name="name" type="text" ng-model="newIdentity.name" />
                 <small ng-show="errors.name" class="error">{{errors.name}}</small>
               </label>
 
@@ -34,11 +34,11 @@
                 <div class="small-6 columns">
                   <div class="panel secondary">
                     <label>E-mail:
-                      <input type="text" id="email" name="email"ng-model="newIdentity.email" />
+                      <input name="email" type="text" id="email" name="email"ng-model="newIdentity.email" />
                       <small ng-show="errors.email" class="error">{{errors.email}}</small>
                     </label>
                     <label>Password:
-                      <input type="password" ng-model="newIdentity.password" />
+                      <input name="password" type="password" ng-model="newIdentity.password" />
                       <small ng-show="errors.password" class="error">{{errors.password}}</small>
                     </label>
                   </div>
@@ -47,7 +47,7 @@
                   <div class="panel">
                     <h6 class="subheader">I already know my API key</h6>
                     <label>API key:
-                      <input type="text" ng-model="newIdentity.api_key" />
+                      <input name="token" type="text" ng-model="newIdentity.api_key" />
                       <small ng-show="errors.api_key" class="error">{{errors.api_key}}</small>
                     </label>
                   </div>
@@ -56,7 +56,7 @@
               </div>
             </div>
           </form>
-          <a href="" ng-show="!addFormShown" ng-click="openAddForm()" class="button secondary small right">Add new identity</a>
+          <a href="" id="add_new_pt" ng-show="!addFormShown" ng-click="openAddForm()" class="button secondary small right">Add new identity</a>
         </div>
         <br/>
 
@@ -73,11 +73,11 @@
           </div>
 
           <form ng-submit='add()'>
-            <div class="panel" ng-show="addFormShown">
+            <div id="ghform" class="panel" ng-show="addFormShown">
               <a ng-click="openAddForm()" class="tiny button secondary right-align"><span class="subheader">Close</span></a>
               <h5 class="subheader">Add a new identity</h5>
               <label>Name:
-                <input type="text" ng-model="newIdentity.name" />
+                <input name="name" type="text" ng-model="newIdentity.name" />
                 <small ng-show="errors.name" class="error">{{errors.name}}</small>
               </label>
 
@@ -85,11 +85,11 @@
                 <div class="small-6 large-6 columns">
                   <div class="panel secondary">
                     <label>Username:
-                      <input type="text" id="username" name="username" ng-model="newIdentity.username" />
+                      <input name="username" type="text" id="username" name="username" ng-model="newIdentity.username" />
                       <small ng-show="errors.username" class="error">{{errors.username}}</small>
                     </label>
                     <label>Password:
-                      <input type="password" ng-model="newIdentity.password" />
+                      <input name="password" type="password" ng-model="newIdentity.password" />
                       <small ng-show="errors.password" class="error">{{errors.password}}</small>
                     </label>
                   </div>
@@ -98,7 +98,7 @@
                   <div class="panel secondary">
                     <h6 class="subheader">I already know my API key</h6>
                     <label>API key:
-                      <input type="text" ng-model="newIdentity.api_key" />
+                      <input name="token" type="text" ng-model="newIdentity.api_key" />
                       <small ng-show="errors.api_key" class="error">{{errors.api_key}}</small>
                     </label>
                   </div>
@@ -107,7 +107,7 @@
               </div>
             </div>
           </form>
-          <a href="" ng-show="!addFormShown" ng-click="openAddForm()" class="button secondary small right">Add new identity</a>
+          <a href="" id="add_new_gh" ng-show="!addFormShown" ng-click="openAddForm()" class="button secondary small right">Add new identity</a>
         </div>
       </div>
     </div>
