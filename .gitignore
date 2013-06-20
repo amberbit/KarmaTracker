@@ -21,3 +21,4 @@
 open-uri*
 config/app_config.yml
 .vagrant
+config/deploy.rb
