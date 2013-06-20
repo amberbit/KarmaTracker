@@ -8,8 +8,6 @@ gem 'jbuilder'
 gem 'activerecord-jdbc-adapter'
 gem 'activerecord-jdbcpostgresql-adapter'
 
-
-
 gem 'torquebox', '2.3.1'
 gem 'torquebox-server', '2.3.1', require: false
 gem 'torquebox-stomp', '2.3.1', require: false
@@ -39,6 +37,10 @@ group :development, :test do
   gem 'pry'
   gem 'capybara'
   gem 'selenium-webdriver'
+  gem 'capistrano', require: false
+  gem 'capistrano-ext', require: false
+  gem 'rvm', require: false
+  gem 'rvm-capistrano', require: false
 end
 
 gem 'sass-rails',   '~> 3.2.3'
