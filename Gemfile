@@ -43,6 +43,12 @@ group :development, :test do
   gem 'rvm-capistrano', require: false
 end
 
+group :development do
+  gem 'rails-erd'
+  gem 'annotate'
+end
+
 gem 'sass-rails',   '~> 3.2.3'
 gem 'uglifier', '>= 1.0.3'
 gem 'zurb-foundation', '~> 4.0.0'
+

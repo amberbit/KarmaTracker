@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: identities
+#
+#  id                       :integer          not null, primary key
+#  type                     :string(255)
+#  name                     :string(255)
+#  api_key                  :string(255)
+#  user_id                  :integer
+#  created_at               :datetime         not null
+#  updated_at               :datetime         not null
+#  last_projects_refresh_at :datetime
+#
+
 require 'net/http'
 require 'net/https'
 require 'open-uri'

@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: projects
+#
+#  id                :integer          not null, primary key
+#  name              :string(255)      not null
+#  source_name       :string(255)      not null
+#  source_identifier :string(255)      not null
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  web_hook          :string(255)
+#  web_hook_token    :string(255)
+#
+
 class Project < ActiveRecord::Base
 
   attr_accessible :name, :source_name, :source_identifier, :web_hook, :web_hook_token
