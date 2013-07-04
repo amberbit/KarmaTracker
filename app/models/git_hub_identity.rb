@@ -9,6 +9,7 @@
 #  user_id                  :integer
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
+#  source_id                :string(255)      not null
 #  last_projects_refresh_at :datetime
 #
 

@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(:version => 20130617090002) do
     t.integer  "user_id"
     t.datetime "created_at",               :null => false
     t.datetime "updated_at",               :null => false
+    t.string   "source_id",                :null => false
     t.datetime "last_projects_refresh_at"
   end
 

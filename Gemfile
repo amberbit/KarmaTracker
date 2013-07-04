@@ -31,12 +31,13 @@ group :test do
   gem 'fakeweb', require: false
   gem 'torquebox-no-op', '2.3.1', require: false
   gem 'timecop', require: false
+  gem 'capybara'
+  gem 'selenium-webdriver'
+  gem 'poltergeist'
 end
 
 group :development, :test do
   gem 'pry'
-  gem 'capybara'
-  gem 'selenium-webdriver'
   gem 'capistrano', require: false
   gem 'capistrano-ext', require: false
   gem 'rvm', require: false

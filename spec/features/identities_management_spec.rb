@@ -28,7 +28,6 @@ feature 'Identities management', register: true do
     end
     page.should have_content 'Example'
     click_link 'Remove'
-    page.driver.browser.switch_to.alert.accept
     page.should_not have_content 'Example'
   end
 
@@ -41,7 +40,6 @@ feature 'Identities management', register: true do
     end
     page.should have_content 'Example'
     click_link 'Remove'
-    page.driver.browser.switch_to.alert.accept
     page.should_not have_content 'Example'
   end
 
@@ -56,7 +54,6 @@ feature 'Identities management', register: true do
     end
     page.should have_content 'Example'
     click_link 'Remove'
-    page.driver.browser.switch_to.alert.accept
     page.should_not have_content 'Example'
   end
 
@@ -69,7 +66,6 @@ feature 'Identities management', register: true do
     end
     page.should have_content 'Example'
     click_link 'Remove'
-    page.driver.browser.switch_to.alert.accept
     page.should_not have_content 'Example'
   end
 
