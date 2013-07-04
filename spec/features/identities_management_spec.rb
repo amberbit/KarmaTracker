@@ -6,12 +6,7 @@ feature 'Identities management', register: true do
     FakeWeb.allow_net_connect = true
     user = FactoryGirl.create :user
     user.update_attribute :confirmation_token, nil
-
-    visit root_path
-    fill_in 'email', :with => user.email
-    fill_in 'password', :with => 'secret123'
-    click_button 'Sign in!'
-
+    login user
     click_link 'Profile'
     click_link 'Integrations'
     page.should have_content 'Integrations'
