@@ -3,6 +3,8 @@ require 'spec_helper'
 
 feature 'Projects management', js: true  do
 
+  let(:user) { user = create :user }
+
   let(:project1) do
     proj = create(:project, name: "KarmaTracker")
     proj.tasks << create(:task)
@@ -13,6 +15,11 @@ feature 'Projects management', js: true  do
     proj.tasks << create(:task)
     proj
   end
+  let!(:task) do
+    task = create(:task, project: project2, current_task: true, name: 'Do laundry') 
+    create(:time_log_entry, task: task, user: user)
+    task
+  end
   let(:project3) do
     proj = create(:project);
     proj.tasks << create(:task)
@@ -20,14 +27,13 @@ feature 'Projects management', js: true  do
   end
   let(:project4) { create :project }
 
-  let(:user) do
-    user = create :user
-    user.identities << create(:identity)
+  let!(:identity) do
+    identity = create(:identity)
     identity = user.identities.first
     create(:participation, project: project1, identity: identity)
     create(:participation, project: project2, identity: identity)
     create(:participation, project: project4, identity: identity)
-    user
+    identity
   end
 
   background do
@@ -49,5 +55,12 @@ feature 'Projects management', js: true  do
     fill_in 'searchfield', with: "karma"
     page.should have_content project1.name
     page.should_not have_content project2.name
+  end
+
+  scenario 'see recent projects' do
+    within '.recents.projects' do
+      page.should_not have_content project1.name
+      page.should have_content project2.name
+    end
   end
 end
