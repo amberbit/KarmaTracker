@@ -56,4 +56,32 @@ as a user I can', js: true  do
     page.should_not have_content task1.name
     page.should have_content task4.name
   end
+
+  scenario 'start/stop working on task', driver: :selenium do
+    within '.view' do
+      span = find('span', text: task1.name)
+      div = span.first(:xpath,"..").first(:xpath,"..")
+      div[:class].should_not include 'running'
+      span.click
+      div[:class].should_not include 'running'
+    end
+    within '.recents.tasks' do
+      span = find('span', text: task1.name)
+      div = span.first(:xpath,"..").first(:xpath,"..")
+      div[:class].should include 'running'
+    end
+    task1.time_log_entries.count.should == 1
+    task1.time_log_entries.first.running.should be_true
+    within '.view' do
+      span = find('span', text: task1.name)
+      span.click
+      wait_until(10) { !span.first(:xpath,"..").first(:xpath,"..")[:class].include?('running') }
+    end
+    within '.recents.tasks' do
+      span = find('span', text: task1.name)
+      div = span.first(:xpath,"..").first(:xpath,"..")
+      div[:class].should_not include 'running'
+    end
+    task1.time_log_entries.first.running.should be_false
+  end
 end

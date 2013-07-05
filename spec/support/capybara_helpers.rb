@@ -5,3 +5,10 @@ def login(user = create(:user))
   click_button 'Sign in!'
   page.should have_content 'Log out'
 end
+
+def wait_until(timeout = Capybara.default_wait_time)
+  Timeout.timeout(timeout) do
+    sleep(0.1) until value = yield
+    value
+  end
+end
