@@ -1,4 +1,4 @@
-<div ng-controller="TimelogController" class="row">
+<div ng-controller="TimesheetController" class="row">
   <div class="boxed-header">
     <div class="large-2 span-12 columns">
       <h4><a ng-href="/#/timesheet">Timesheet</a></h4>
@@ -48,7 +48,6 @@
             <div ng-show="!entry.editing">{{showLocalDate(entry.time_log_entry.started_at.replace("T", " ").replace("Z", ""))}}</div>
           </td>
           <td class="small-2 columns">
-            
             <a ng-show="entry.editing" ng-click="close(entry)" href="" class="tiny button secondary right" >Cancel</a>
             <a title="Edit this entry" ng-show="!entry.editing" ng-click="edit(entry)" href="" class="tiny button secondary right" >Edit</a>
                         <div ng-show="!entry.editing">
@@ -67,7 +66,6 @@
           </td>
           <td class="small-2 columns">
             <button ng-show="entry.editing" ng-click="deleteEntry(entry)" href="" class="small button secondary expand" >Delete entry</button>
-            
           </td>
           <td class="small-2 columns">
             <button ng-show="entry.editing" ng-click="updateEntry(entry)" href="" class="small button expand">Save</button>

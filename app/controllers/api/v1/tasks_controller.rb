@@ -32,11 +32,11 @@ module Api
       #   => {"message": "Resource not found"}
       #
       def show
-        @task = Task.where(id: params[:id]).first
-        if @task && @api_key.user.projects.include?(@task.project)
+        @task = Task.find(params[:id])
+        if @task.present? && @api_key.user.projects.include?(@task.project)
           render '_show'
         else
-          render json: {message: 'Resource not found'}, status: 404
+          render json: {message: 'Task resource not found'}, status: 404
         end
       end
 
@@ -73,7 +73,7 @@ module Api
         if log_entry && @task = log_entry.task
           render '_show'
         else
-          render json: {message: 'Resource not found'}, status: 404
+          render json: {message: '"Running" resource not found'}, status: 404
         end
       end
 
@@ -112,7 +112,7 @@ module Api
         if @tasks[0].present?
           render template: "api/v1/projects/tasks"
         else
-          render json: {message: 'Resource not found'}, status: 404
+          render json: {message: '"Recent" resource not found'}, status: 404
         end
       end
     end

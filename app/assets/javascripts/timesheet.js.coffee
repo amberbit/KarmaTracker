@@ -1,4 +1,4 @@
-KarmaTracker.controller "TimelogController", ($scope, $http, $cookies, $location, $routeParams, $filter) ->
+KarmaTracker.controller "TimesheetController", ($scope, $http, $cookies, $location, $routeParams, $filter) ->
   $scope.started_at = ''
   $scope.entries = {}
   $scope.task = {}

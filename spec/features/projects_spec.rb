@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-
-feature 'Projects management', js: true  do
+feature 'Projects management,
+  as a user I can', js: true  do
 
   let(:user) { user = create :user }
 
@@ -29,7 +29,6 @@ feature 'Projects management', js: true  do
 
   let!(:identity) do
     identity = create(:identity)
-    identity = user.identities.first
     create(:participation, project: project1, identity: identity)
     create(:participation, project: project2, identity: identity)
     create(:participation, project: project4, identity: identity)
@@ -42,7 +41,7 @@ feature 'Projects management', js: true  do
   end
 
 
-  scenario 'do see a list of my projects which have tasks' do
+  scenario 'see a list of my projects which have tasks' do
     page.should have_content 'Projects'
     page.should have_content project1.name
     page.should have_content project2.name

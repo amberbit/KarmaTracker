@@ -8,7 +8,7 @@
 #= require pivotal_tracker_identities
 #= require git_hub_identities
 #= require account
-#= require timelog
+#= require timesheet
 #= require tasks
 #= require flashes
 #= require recents
