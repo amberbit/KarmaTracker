@@ -70,7 +70,7 @@ as a user I can', js: true  do
       span.click
       div[:class].should_not include 'running'
     end
-    within '.recents.tasks' do
+    within '.recents.recent-tasks' do
       span = find('span', text: task1.name)
       div = span.first(:xpath,"..").first(:xpath,"..")
       div[:class].should include 'running'
@@ -82,7 +82,7 @@ as a user I can', js: true  do
       span.click
       wait_until(10) { !span.first(:xpath,"..").first(:xpath,"..")[:class].include?('running') }
     end
-    within '.recents.tasks' do
+    within '.recents.recent-tasks' do
       span = find('span', text: task1.name)
       div = span.first(:xpath,"..").first(:xpath,"..")
       div[:class].should_not include 'running'
@@ -91,7 +91,7 @@ as a user I can', js: true  do
   end
 
   scenario 'see recent tasks' do
-    within '.recents.tasks' do
+    within '.recents.recent-tasks' do
       page.should_not have_content task1.name
       page.should have_content task4.name
     end

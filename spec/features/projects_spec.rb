@@ -57,7 +57,7 @@ feature 'Projects management,
   end
 
   scenario 'see recent projects' do
-    within '.recents.projects' do
+    within '.recents.recent-projects' do
       page.should_not have_content project1.name
       page.should have_content project2.name
     end

@@ -48,7 +48,17 @@ feature 'Timesheet page,
 
   end
 
-  scenario 'filter entries by project'
+  scenario 'filter entries by project' do
+    select project1.name, from: 'Project'
+    click_on 'search_submit'
+    within '.time-log-entries' do
+      page.should have_content project1.name
+      page.should have_content task1.name
+      page.should_not have_content project2.name
+      page.should_not have_content task2.name
+    end
+  end
+
   scenario 'filter entries by date'
   scenario 'edit entry'
   scenario 'cancel edit entry'
