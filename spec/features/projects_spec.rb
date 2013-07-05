@@ -18,12 +18,15 @@ feature 'Projects management', js: true  do
     proj.tasks << create(:task)
     proj
   end
+  let(:project4) { create :project }
+
   let(:user) do
     user = create :user
     user.identities << create(:identity)
     identity = user.identities.first
     create(:participation, project: project1, identity: identity)
     create(:participation, project: project2, identity: identity)
+    create(:participation, project: project4, identity: identity)
     user
   end
 
@@ -33,20 +36,14 @@ feature 'Projects management', js: true  do
   end
 
 
-  scenario 'do see a list of my projects' do
+  scenario 'do see a list of my projects which have tasks' do
     page.should have_content 'Projects'
     page.should have_content project1.name
     page.should have_content project2.name
     page.should_not have_content project3.name
-  end
-
-
-  scenario "don't see projects without tasks" do
-    project4 = create :project
-    identity = user.identities.first
-    create(:participation, project: project4, identity: identity)
     page.should_not have_content project4.name
   end
+
 
   scenario "filter projects by name" do
     fill_in 'searchfield', with: "karma"
