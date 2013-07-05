@@ -30,28 +30,26 @@ feature 'Timesheet page,
   end
 
   scenario 'see all my recent time log entries with total time' do
-    within '.view' do
+    within '.timesheet-entries' do
       page.should have_content project1.name
       page.should have_content task1.name
       page.should have_content project2.name
       page.should have_content task2.name
-      table = first('table')
-      table.all('tbody').count.should == 3
-      table_date = Date.parse(table.first('tbody tr').all('td')[2].find('div').text)
+      all('tbody').count.should == 3
+      table_date = Date.parse(all('tbody')[0].all('td')[2].find('div').text)
       table_date.should == time_log_entry1.started_at.to_date
-      table_time = table.first('tbody tr').all('td')[3].find('div').text
+      table_time = all('tbody tr')[0].all('td')[3].find('div').text
       table_time.should == '01:00 hours'
-
-      all('table')[1].first('td').text.should == '03:00 hours'
     end
-
-
+    within '.timesheet-total' do
+      first('td').text.should == '03:00 hours'
+    end
   end
 
   scenario 'filter entries by project' do
     select project1.name, from: 'Project'
     click_on 'search_submit'
-    within '.time-log-entries' do
+    within '.timesheet-entries' do
       page.should have_content project1.name
       page.should have_content task1.name
       page.should_not have_content project2.name
@@ -59,8 +57,27 @@ feature 'Timesheet page,
     end
   end
 
-  scenario 'filter entries by date'
+  scenario 'filter entries by date' do
+    fill_in 'From', with: time_log_entry1.started_at.localtime + 2.hour
+    click_on 'search_submit'
+    within '.timesheet-entries' do
+      page.should_not have_content project1.name
+      page.should_not have_content task1.name
+      page.should have_content project2.name
+      page.should have_content task2.name
+      all('tbody').count.should == 2
+    end
+    fill_in 'To', with: time_log_entry3.started_at.localtime + 1.hour
+    click_on 'search_submit'
+    within '.timesheet-entries' do
+      page.should_not have_content project1.name
+      page.should_not have_content task1.name
+      page.should have_content project2.name
+      page.should have_content task2.name
+      all('tbody').count.should == 1
+    end
+  end
+
   scenario 'edit entry'
-  scenario 'cancel edit entry'
   scenario 'delete entry'
 end

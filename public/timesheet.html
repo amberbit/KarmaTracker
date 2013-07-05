@@ -9,7 +9,7 @@
         <label>From <input type="text" ng-model="fromDate" placeholder="2012-12-31 00:00:00"></input></label>
       </div>
       <div class="large-3 small-12 columns">
-        <label>to <input type="text" ng-model="toDate" placeholder="2012-12-31 00:00:00"></input></label>
+        <label>To <input type="text" ng-model="toDate" placeholder="2012-12-31 00:00:00"></input></label>
       </div>
       <div class="large-3 small-12 columns">
         <label>Project
@@ -27,7 +27,7 @@
 
 
 
-    <table class="table small-12 colums time-log-entries">
+    <table class="table small-12 colums timesheet-entries">
       <thead>
         <tr>
           <th class="small-4 columns">Task</th>
@@ -73,7 +73,7 @@
         </tr>
       </tbody>
     </table>
-     <table class="table small-4 small-offset-8 colums">
+     <table class="table small-4 small-offset-8 colums timesheet-total">
         <tr>
           <th class="small-6 columns">Total time</th>
           <td class="small-6 columns">{{getTime(totalTime)}}</td>
