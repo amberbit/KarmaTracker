@@ -9,5 +9,6 @@ FactoryGirl.define do
     factory :git_hub_identity do
       type 'GitHubIdentity'
     end
+
   end
 end

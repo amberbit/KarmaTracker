@@ -16,6 +16,7 @@ Capybara.javascript_driver = :poltergeist
 Dir[File.join(File.dirname(__FILE__), 'support', '**', '*.rb')].each {|f| require f}
 
 RSpec.configure do |config|
+  config.include FactoryGirl::Syntax::Methods
   config.mock_with :rspec
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
@@ -36,7 +37,6 @@ RSpec.configure do |config|
     AppConfig.users.allow_register = false
   end
 
-  
 end
 
 def reset_fakeweb_urls

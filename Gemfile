@@ -47,6 +47,7 @@ end
 group :development do
   gem 'rails-erd'
   gem 'annotate'
+  gem "letter_opener"
 end
 
 gem 'sass-rails',   '~> 3.2.3'

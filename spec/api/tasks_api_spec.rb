@@ -35,7 +35,7 @@ describe 'Tasks API' do
     response.status.should == 404
     resp = JSON.parse(response.body)
     resp.should have_key("message")
-    resp["message"].should =~ /Resource not found/
+    resp["message"].should =~ /Task resource not found/
   end
 
   before :each do
@@ -54,7 +54,7 @@ describe 'Tasks API' do
     response.status.should == 404
     resp = JSON.parse(response.body)
     resp.should have_key("message")
-    resp["message"].should =~ /Resource not found/
+    resp["message"].should =~ /"Running" resource not found/
   end
 
   # GET /tasks/running
