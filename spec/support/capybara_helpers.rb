@@ -12,3 +12,10 @@ def wait_until(timeout = Capybara.default_wait_time)
     value
   end
 end
+
+#poltergeist/phantomjs only
+def take_screenshot filename = "screenshot"
+  file = "#{Dir.pwd}/tmp/screenshots/#{filename}_#{Time.now.to_formatted_s(:number)}.png"
+  page.driver.render(file, :full => true)
+  puts "Saved screenshot: #{file}"
+end

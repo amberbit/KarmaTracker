@@ -36,7 +36,7 @@
           <th class="small-2 columns">Time spent</th>
         </tr>
       </thead>
-      <tbody ng-repeat="entry in entries">
+      <tbody ng-repeat="entry in entries" id="{{'timesheet_entry_' + entry.time_log_entry.id}}">
         <tr>
           <td class="small-4 columns">
             <a href="" title="Go to task page" ng-click="openTask(entry.project.source_name, entry.project.name, entry.project.source_identifier, entry.task.source_identifier)">{{entry.task.name}}</a>
@@ -61,7 +61,7 @@
             <small ng-show="errors.started_at" class="error">{{errors.started_at}}</small>
           </td>
           <td class="small-4 columns">
-            <label>stopped at<input type="text" ng-model="entry.time_log_entry.newStoppedAt" /></label>
+            <label>Stopped at<input type="text" ng-model="entry.time_log_entry.newStoppedAt" /></label>
             <small ng-show="errors.stopped_at" class="error">{{errors.stopped_at}}</small>
           </td>
           <td class="small-2 columns">

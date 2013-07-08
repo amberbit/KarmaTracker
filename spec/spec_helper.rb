@@ -37,7 +37,6 @@ RSpec.configure do |config|
     AppConfig.users.allow_register = false
   end
 
-  
 end
 
 def reset_fakeweb_urls
