@@ -50,10 +50,11 @@ class User < ActiveRecord::Base
   end
 
   def send_password_reset(host, port)
+    @host = host
+    @port = port
     generate_token(:password_reset_token)
-    self.password_reset_sent_at = Time.zone.now
-    save!
-    UserMailer.password_reset(self, host, port).deliver
+    update_password_reset_sent_at
+    sent_email
   end
 
   private
@@ -64,5 +65,14 @@ class User < ActiveRecord::Base
 
   def generate_confirmation_token
     generate_token :confirmation_token
+  end
+
+  def update_password_reset_sent_at
+    self.password_reset_sent_at = Time.zone.now
+    save!
+  end
+
+  def send_email
+    UserMailer.password_reset(self, @host, @port).deliver
   end
 end
