@@ -54,7 +54,7 @@ class User < ActiveRecord::Base
     @port = port
     generate_token(:password_reset_token)
     update_password_reset_sent_at
-    sent_email
+    send_email
   end
 
   private
