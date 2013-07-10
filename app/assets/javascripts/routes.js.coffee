@@ -20,6 +20,10 @@ KarmaTracker.config ($routeProvider, $locationProvider) ->
     templateUrl: '/account.html'
   ).when('/timesheet',
     templateUrl: '/timesheet.html'
+  ).when('/reset_password',
+    templateUrl: '/reset_password.html'
+  ).when('/edit_reset_password/:token',
+    templateUrl: '/edit_reset_password.html'
   ).otherwise(
     redirectTo: '/')
 

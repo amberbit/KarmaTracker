@@ -12,6 +12,7 @@
 #= require tasks
 #= require flashes
 #= require recents
+#= require reset_passwords
 
 window.KarmaTracker = angular.module('KarmaTracker', ['ngCookies', 'ngMobile'])
 
@@ -102,8 +103,10 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookies, $
     document.getElementById("top-bar").classList.remove("expanded")
     $location.path hash
 
-  if typeof($cookies.token) == 'undefined'
-    return if $location.path() == '/login'
+  if !$cookies.token?
+    return if $location.path() == '/login' ||
+      $location.path() == '/reset_password' ||
+      /\/edit_reset_password(\/.*)?/.test $location.path()
     $location.path '/login'
   else
     return if $location.path() == '/logout'
@@ -135,7 +138,7 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookies, $
 
 # This controller just has to redirect user to proper place
 KarmaTracker.controller "HomeController", ($scope, $http, $location, $cookies, FlashMessage) ->
-  if typeof($cookies.token) == 'undefined'
+  if !$cookies.token?
     $location.path '/login'
   else
     $location.path '/projects'
