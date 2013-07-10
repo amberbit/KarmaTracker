@@ -4,7 +4,7 @@
 #= require projects
 #= require refresh
 #= require register
-#= require integrations
+#= require identities
 #= require pivotal_tracker_identities
 #= require git_hub_identities
 #= require account

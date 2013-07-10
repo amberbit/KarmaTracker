@@ -31,16 +31,16 @@
         </member>
       </membership>
     </memberships>
-    <integrations type="array">
-      <integration>
+    <identities type="array">
+      <identity>
         <id type="integer">3</id>
         <type>Other</type>
         <name>United Federation of Planets Bug Tracker</name>
         <field_name>other_id</field_name>
         <field_label>United Federation of Planets Bug Tracker Id</field_label>
         <active>true</active>
-      </integration>
-    </integrations>
+      </identity>
+    </identities>
   </project>
   <project>
     <id>2</id>
@@ -61,7 +61,7 @@
     <last_activity_at type="datetime">2010/01/16 17:39:10 CST</last_activity_at>
     <memberships type="array">
     </memberships>
-    <integrations type="array">
-    </integrations>
+    <identities type="array">
+    </identities>
   </project>
 </projects>
