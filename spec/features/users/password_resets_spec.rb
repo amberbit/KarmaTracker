@@ -2,7 +2,7 @@ require_relative '../../spec_helper'
 
 feature 'Password reset management,
 as a user
-I can', js: true, driver: :selenium do
+I can', js: true do
 
   let(:user) { create :confirmed_user }
 
@@ -23,7 +23,16 @@ I can', js: true, driver: :selenium do
   end
 
   scenario 'reset password on edit reset password page' do
-    user.update_attributes password_reset_token: "token", password_reset_sent_at: Time.now
+    user.password_reset_token = "token"
+    user.password_reset_sent_at = Time.now
+    user.save
     visit "#/edit_password_reset/#{user.password_reset_token}"
+    page.should have_content 'Edit password'
+    new_pass = 'abc123'
+    fill_in 'password', with: new_pass
+    fill_in 'password-confirmation', with: new_pass
+    click_on 'Change password'
+    page.should have_content 'Password successfully changed'
+    User.find_by_email(user.email).try(:authenticate, new_pass).should == user
   end
 end
