@@ -8,8 +8,8 @@ feature 'Identities management', register: true do
     user.update_attribute :confirmation_token, nil
     login user
     click_link 'Profile'
-    click_link 'Integrations'
-    page.should have_content 'Integrations'
+    click_link 'Identities'
+    page.should have_content 'Identities'
     page.should have_content 'Pivotal Tracker'
   end
 

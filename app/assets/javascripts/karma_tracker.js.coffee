@@ -4,7 +4,7 @@
 #= require projects
 #= require refresh
 #= require register
-#= require integrations
+#= require identities
 #= require pivotal_tracker_identities
 #= require git_hub_identities
 #= require account
@@ -12,7 +12,7 @@
 #= require tasks
 #= require flashes
 #= require recents
-#= require reset_passwords
+#= require password_resets
 
 window.KarmaTracker = angular.module('KarmaTracker', ['ngCookies', 'ngMobile'])
 
@@ -105,8 +105,8 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookies, $
 
   if !$cookies.token?
     return if $location.path() == '/login' ||
-      $location.path() == '/reset_password' ||
-      /\/edit_reset_password(\/.*)?/.test $location.path()
+      $location.path() == '/password_reset' ||
+      /\/edit_password_reset(\/.*)?/.test $location.path()
     $location.path '/login'
   else
     return if $location.path() == '/logout'
