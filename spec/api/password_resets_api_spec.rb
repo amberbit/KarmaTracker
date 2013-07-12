@@ -24,7 +24,6 @@ describe 'ResetPasswords API' do
   end
 
   it 'should deliver the password reset email' do
-    UserMailer.should_receive(:password_reset).with(user2, host, port)
     json = api_post 'password_reset', email: user2.email
     response.status.should == 200
     json['message'].should == 'Email with reset password instructions sent'

@@ -68,6 +68,7 @@ as a user I can', js: true  do
       div = span.first(:xpath,"..").first(:xpath,"..")
       div[:class].should_not include 'running'
       span.click
+      div = span.first(:xpath,"..").first(:xpath,"..")
       div[:class].should_not include 'running'
     end
     within '.recents.recent-tasks' do
@@ -80,6 +81,7 @@ as a user I can', js: true  do
     within '.view' do
       span = find('span', text: task1.name)
       span.click
+      span = find('span', text: task1.name)
       wait_until(10) { !span.first(:xpath,"..").first(:xpath,"..")[:class].include?('running') }
     end
     within '.recents.recent-tasks' do

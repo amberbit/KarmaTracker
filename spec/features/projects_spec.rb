@@ -52,8 +52,10 @@ feature 'Projects management,
 
   scenario "filter projects by name" do
     fill_in 'searchfield', with: "karma"
-    page.should have_content project1.name
-    page.should_not have_content project2.name
+    within '.view' do
+      page.should have_content project1.name
+      page.should_not have_content project2.name
+    end
   end
 
   scenario 'see recent projects' do
