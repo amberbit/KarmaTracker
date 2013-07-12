@@ -1,4 +1,4 @@
-KarmaTracker.controller "PasswordResetsController", ($scope, $http, $location, $routeParams, FlashMessage) ->
+KarmaTracker.controller "PasswordResetsController", ($scope, $http, $routeParams) ->
   $scope.errors = {}
   $scope.data = { password: null, password_confirmation: null }
 
@@ -23,6 +23,9 @@ KarmaTracker.controller "PasswordResetsController", ($scope, $http, $location, $
     $scope.errors.password = null
     $scope.private.validatePassword($scope.data.password, $scope.data.password_confirmation)
 
+  $scope.foo = ->
+    "test"
+
   $scope.private = {
     validateEmail: (email) ->
       regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -44,13 +47,10 @@ KarmaTracker.controller "PasswordResetsController", ($scope, $http, $location, $
             confirmation: confirmation
           }
         ).success((data, status, headers, config) ->
-          $scope.private.redirect_to_main(data, 'success')
+          $scope.success(data)
+          $scope.goToLink '/'
         ).error((data, status, headers, config) ->
-          $scope.private.redirect_to_main(data.message, 'alert')
+          $scope.alert(data.message)
+          $scope.goToLink '/'
         )
-
-    redirect_to_main: (message, type) ->
-      FlashMessage.type = type
-      FlashMessage.string = message
-      $scope.goToLink '/'
   }
