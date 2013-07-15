@@ -31,6 +31,8 @@ feature 'Timesheet page,
     FakeWeb.allow_net_connect = true
     login user
     click_link 'Timesheet'
+    fill_in 'From', with: time_log_entry1.started_at.localtime - 2.hour
+    click_on 'search_submit'
   end
 
 

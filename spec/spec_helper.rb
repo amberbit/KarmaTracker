@@ -10,7 +10,9 @@ require 'fakeweb'
 require 'rspec/rails'
 require 'torquebox-no-op'
 require 'capybara/rspec'
+require 'capybara-screenshot/rspec'
 require 'capybara/poltergeist'
+require "email_spec"
 Capybara.javascript_driver = :poltergeist
 
 Dir[File.join(File.dirname(__FILE__), 'support', '**', '*.rb')].each {|f| require f}

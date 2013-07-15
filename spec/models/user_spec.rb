@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'timecop'
 
 describe 'User' do
 
@@ -29,6 +30,23 @@ describe 'User' do
     @user.email = 'foo'
     @user.should_not be_valid
     @user.errors[:email].should be_present
+  end
+
+  it 'generate token' do
+    token = 'amberbit'
+    SecureRandom.stub(:hex).and_return(token)
+    @user.generate_token :password_reset_token
+    @user.password_reset_token.should == token
+  end
+
+  it 'should update password reset sent at' do
+    begin
+      Timecop.freeze(Time.zone.now)
+      @user.send(:update_password_reset_sent_at)
+      @user.password_reset_sent_at.should == Time.zone.now
+    ensure
+      Timecop.return
+    end
   end
 
 end

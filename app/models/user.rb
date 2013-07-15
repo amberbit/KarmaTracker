@@ -43,10 +43,18 @@ class User < ActiveRecord::Base
       where('p.identity_id IN(?)', identities.map(&:id)).uniq
   end
 
-  def generate_confirmation_token
+  def generate_token(column)
     begin
-      self.confirmation_token = SecureRandom.hex
-    end while User.find_by_confirmation_token(confirmation_token)
+      self[column] = SecureRandom.hex
+    end while User.exists?(column => self[column])
+  end
+
+  def send_password_reset(host, port)
+    @host = host
+    @port = port
+    generate_token(:password_reset_token)
+    update_password_reset_sent_at
+    send_email
   end
 
   private
@@ -55,4 +63,16 @@ class User < ActiveRecord::Base
     ApiKey.create :user => self
   end
 
+  def generate_confirmation_token
+    generate_token :confirmation_token
+  end
+
+  def update_password_reset_sent_at
+    self.password_reset_sent_at = Time.zone.now
+    save!
+  end
+
+  def send_email
+    UserMailer.password_reset(self, @host, @port).deliver
+  end
 end

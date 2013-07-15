@@ -34,6 +34,8 @@ group :test do
   gem 'capybara'
   gem 'selenium-webdriver'
   gem 'poltergeist'
+  gem 'email_spec'
+  gem 'capybara-screenshot'
 end
 
 group :development, :test do

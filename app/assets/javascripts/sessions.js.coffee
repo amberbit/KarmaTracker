@@ -4,6 +4,7 @@ KarmaTracker.controller "SessionController", ($scope, $http, $cookies, $location
 
   $scope.session = { email: null, password: null }
   $scope.message = ''
+  $scope.errors = {}
   $scope.confirmation_message = ""
   $scope.focusPassword = false
   $scope.registrationEnabled = KarmaTrackerConfig.registration_enabled
@@ -36,6 +37,7 @@ KarmaTracker.controller "SessionController", ($scope, $http, $cookies, $location
     ).error((data, status, headers, config) ->
       $scope.signInFailure(data.message)
     )
+
 
   if $routeParams.confirmation_token?
     $http.get(
