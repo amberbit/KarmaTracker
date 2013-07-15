@@ -23,7 +23,6 @@ feature 'User registration', register: true do
 
   scenario 'confirms the e-mail of new registered user', js: true do
     user = FactoryGirl.create :user
- 
     visit root_path + "/#/login?confirmation_token=#{user.confirmation_token}"
     page.should have_content "Your e-mail is now confirmed, please sign in."
   end
@@ -31,7 +30,6 @@ feature 'User registration', register: true do
   scenario 'logs in with new registered user', js: true do
     user = FactoryGirl.create :user
     user.update_attribute :confirmation_token, nil
- 
     visit root_path
     fill_in 'email', :with => user.email
     fill_in 'password', :with => 'secret123'
