@@ -58,7 +58,7 @@ class TimeLogEntry < ActiveRecord::Base
 
   def self.stop_all user_id
     TimeLogEntry.where({user_id: user_id, running: true}).each do |tl|
-      tl.stopped_at = Time.zone.now
+      tl.stopped_at = Time.zone.now - 1
       tl.running = false
       tl.save!
     end

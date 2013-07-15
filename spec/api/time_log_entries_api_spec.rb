@@ -91,11 +91,13 @@ describe 'TimeLogEntry API' do
     entry.save
     entry.reload
     TimeLogEntry.where(running: true).count.should == 1
-
-    json = api_post "time_log_entries/stop", {token: @user.api_key.token }
-    TimeLogEntry.where(running: true).count.should == 0
-    json['time_log_entry']['id'].should == entry.id
-    json['time_log_entry']['running'].should == false
+    
+    Timecop.travel(1.second.from_now) do
+      json = api_post "time_log_entries/stop", {token: @user.api_key.token }
+      TimeLogEntry.where(running: true).count.should == 0
+      json['time_log_entry']['id'].should == entry.id
+      json['time_log_entry']['running'].should == false
+    end
   end
 
   # GET /time_log_entries
