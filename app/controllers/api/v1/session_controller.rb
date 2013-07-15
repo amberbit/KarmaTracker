@@ -38,7 +38,8 @@ module Api
             @api_key = @user.api_key
             render 'api/v1/users/_show'
           else
-            render json: {message: 'User e-mail is not confirmed'}, status: 401
+	    UserMailer.confirmation_email(@user, request.host).deliver
+            render json: {message: 'User email address is not confirmed, please check your inbox or spam folder.'}, status: 401
           end
         else
           render json: {message: 'Invalid email or password'}, status: 401
