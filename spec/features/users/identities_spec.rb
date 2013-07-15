@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'Identities management', register: true do
+feature 'Identities management', js: true do
 
   background do
     FakeWeb.allow_net_connect = true
@@ -13,7 +13,7 @@ feature 'Identities management', register: true do
     page.should have_content 'Pivotal Tracker'
   end
 
-  scenario 'adds and removes new Pivotal Tracker identity with credentials', js: true do
+  scenario 'adds and removes new Pivotal Tracker identity with credentials' do
     click_link 'add_new_pt'
     within 'div#ptform' do
       fill_in 'name', :with => 'Example'
@@ -26,7 +26,7 @@ feature 'Identities management', register: true do
     page.should_not have_content 'Example'
   end
 
-  scenario 'adds and removes new Pivotal Tracker identity with token', js: true do
+  scenario 'adds and removes new Pivotal Tracker identity with token' do
     click_link 'add_new_pt'
     within 'div#ptform' do
       fill_in 'name', :with => 'Example'
@@ -39,7 +39,7 @@ feature 'Identities management', register: true do
   end
 
 
-  scenario 'adds and removes new Git Hub identity with credentials', js: true do
+  scenario 'adds and removes new Git Hub identity with credentials' do
     click_link 'add_new_gh'
     within 'div#ghform' do
       fill_in 'name', :with => 'Example'
@@ -52,7 +52,7 @@ feature 'Identities management', register: true do
     page.should_not have_content 'Example'
   end
 
-  scenario 'adds and removes new Git Hub identity with token', js: true do
+  scenario 'adds and removes new Git Hub identity with token' do
     click_link 'add_new_gh'
     within 'div#ghform' do
       fill_in 'name', :with => 'Example'
@@ -64,7 +64,7 @@ feature 'Identities management', register: true do
     page.should_not have_content 'Example'
   end
 
-  scenario 'field Name should not be empty when adding new Pivotal Tracker identity', js: true do
+  scenario 'field Name should not be empty when adding new Pivotal Tracker identity' do
     click_link 'add_new_pt'
     within 'div#ptform' do
       fill_in 'email', :with => 'correct_email'
@@ -74,7 +74,7 @@ feature 'Identities management', register: true do
     page.should have_content "can't be blank"
   end
 
-  scenario 'field Name should not be empty when adding new Git Hub identity', js: true do
+  scenario 'field Name should not be empty when adding new Git Hub identity' do
     click_link 'add_new_gh'
     within 'div#ghform' do
       fill_in 'username', :with => 'correct_username'
@@ -84,7 +84,7 @@ feature 'Identities management', register: true do
     page.should have_content "can't be blank"
   end
 
-    scenario 'credential fields should not be empty when adding new Pivotal Tracker identity', js: true do
+    scenario 'credential fields should not be empty when adding new Pivotal Tracker identity' do
     click_link 'add_new_pt'
     within 'div#ptform' do
       fill_in 'name', :with => 'Example'
@@ -93,7 +93,7 @@ feature 'Identities management', register: true do
     page.should have_content "you need to provide login credentials"
   end
 
-  scenario 'credential fields should not be empty when new Git Hub identity', js: true do
+  scenario 'credential fields should not be empty when new Git Hub identity' do
     click_link 'add_new_gh'
     within 'div#ghform' do
       fill_in 'name', :with => 'Example'

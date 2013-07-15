@@ -16,7 +16,11 @@
         <input id="password" type="password" placeholder="password" ng-model="$parent.session.password" focus="{{focus_password}}"/>
         <button class="button">Sign in!</button>
         <a href="#/register" ng-show="registrationEnabled" class="button secondary right">Register</a>
-        <a href="#/password_reset" class="right">forgotten password?</a>
+        <div class='remember-me left'>
+          <input id='remember_me' type='checkbox' ng-model="session.remember_me"/>
+          <label for='remember_me'>Remember me</label>
+        </div>
+        <a class='right' href="#/password_reset" class="right">forgotten password?</a>
       </form>
     </div>
   </div>

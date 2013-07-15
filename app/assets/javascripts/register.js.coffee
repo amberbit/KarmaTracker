@@ -1,4 +1,4 @@
-KarmaTracker.controller "RegisterController", ($scope, $http, $cookies, $location) ->
+KarmaTracker.controller "RegisterController", ($scope, $http, $cookieStore, $location) ->
   $scope.registration = { email: null, password: null, confirmation: null }
   $scope.message = ''
   $scope.confirmation_message = ""

@@ -1,12 +1,13 @@
-KarmaTracker.controller "GitHubIdentitiesController", ($scope, $http, $cookies, $location) ->
+KarmaTracker.controller "GitHubIdentitiesController", ($scope, $http, $cookieStore, $location) ->
   $scope.identities = []
   $scope.newIdentity = { name: null, username: null, password: null }
   $scope.addFormShown = false
   $scope.errors = {}
+  $scope.tokenName = 'token'
 
   $scope.updateIdentities = () ->
     $http.get(
-      '/api/v1/identities?token='+$cookies.token+'&service=git_hub'
+      '/api/v1/identities?token='+$cookieStore.get($scope.tokenName)+'&service=git_hub'
     ).success((data, status, headers, config) ->
       $scope.identities = data
     ).error((data, status, headers, config) ->
@@ -16,7 +17,7 @@ KarmaTracker.controller "GitHubIdentitiesController", ($scope, $http, $cookies, 
     answer = confirm("Are you sure to remove '"+name+"'?")
     if answer
       $http.delete(
-        '/api/v1/identities/'+id+'?token='+$cookies.token
+        '/api/v1/identities/'+id+'?token='+$cookieStore.get($scope.tokenName)
       ).success((data, status, headers, config) ->
         $scope.updateIdentities()
       ).error((data, status, headers, config) ->
@@ -45,7 +46,7 @@ KarmaTracker.controller "GitHubIdentitiesController", ($scope, $http, $cookies, 
     if $scope.formLooksValid()
       if $scope.newIdentity.api_key? and $scope.newIdentity.api_key != ''
         $http.post(
-          '/api/v1/identities/git_hub?token='+$cookies.token+'&identity[name]='+$scope.newIdentity.name+'&identity[username]='+$scope.newIdentity.username_token+'&identity[api_key]='+$scope.newIdentity.api_key
+          '/api/v1/identities/git_hub?token='+$cookieStore.get($scope.tokenName)+'&identity[name]='+$scope.newIdentity.name+'&identity[username]='+$scope.newIdentity.username_token+'&identity[api_key]='+$scope.newIdentity.api_key
         ).success((data, status, headers, config) ->
           $scope.cleanForm()
           $scope.openAddForm()
@@ -60,7 +61,7 @@ KarmaTracker.controller "GitHubIdentitiesController", ($scope, $http, $cookies, 
         )
       else
         $http.post(
-          '/api/v1/identities/git_hub?token='+$cookies.token+'&identity[name]='+$scope.newIdentity.name+'&identity[username]='+$scope.newIdentity.username+'&identity[password]='+$scope.newIdentity.password
+          '/api/v1/identities/git_hub?token='+$cookieStore.get($scope.tokenName)+'&identity[name]='+$scope.newIdentity.name+'&identity[username]='+$scope.newIdentity.username+'&identity[password]='+$scope.newIdentity.password
         ).success((data, status, headers, config) ->
           $scope.cleanForm()
           $scope.openAddForm()

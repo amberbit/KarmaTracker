@@ -1,6 +1,7 @@
-KarmaTracker.controller "ProjectsController", ($scope, $http, $cookies, $location) ->
+KarmaTracker.controller "ProjectsController", ($scope, $http, $cookieStore, $location) ->
   $scope.projects = []
   $scope.query.string = ""
+  $scope.tokenName = 'token'
 
   $scope.loadTasks = (project) ->
     $location.path "/projects/#{project.id}/tasks"
@@ -16,7 +17,7 @@ KarmaTracker.controller "ProjectsController", ($scope, $http, $cookies, $locatio
 
 
   $http.get(
-    '/api/v1/projects?token='+$cookies.token
+    '/api/v1/projects?token='+$cookieStore.get($scope.tokenName)
   ).success((data, status, headers, config) ->
     $scope.projects = []
     for project in data

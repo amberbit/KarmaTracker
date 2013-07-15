@@ -1,4 +1,4 @@
-KarmaTracker.controller "AccountController", ($scope, $http, $cookies, $location) ->
+KarmaTracker.controller "AccountController", ($scope, $http, $cookieStore, $location) ->
   $scope.enabledDestroy = KarmaTrackerConfig.registration_destroy
   $scope.user = {}
   $scope.errors = {}
@@ -6,10 +6,11 @@ KarmaTracker.controller "AccountController", ($scope, $http, $cookies, $location
   $scope.newPassword = ""
   $scope.confirmation = ""
   $scope.message = ''
+  $scope.tokenName = 'token'
 
   $scope.getUserInfo = () ->
     $http.get(
-      '/api/v1/user?token='+$cookies.token
+      '/api/v1/user?token='+$cookieStore.get $scope.tokenName
     ).success((data, status, headers, config) ->
       $scope.user = data.user
     ).error((data, status, headers, config) ->
@@ -18,7 +19,7 @@ KarmaTracker.controller "AccountController", ($scope, $http, $cookies, $location
   $scope.remove = () ->
     if confirm("Are you sure to delete your account?")
       $http.delete(
-        '/api/v1/user?token='+$cookies.token
+        '/api/v1/user?token='+$cookieStore.get $scope.tokenName
       ).success((data, status, headers, config) ->
         window.location = '#/logout'
       ).error((data, status, headers, config) ->
@@ -27,7 +28,7 @@ KarmaTracker.controller "AccountController", ($scope, $http, $cookies, $location
   $scope.changeEmail = () ->
     if !$scope.newEmail? or $scope.newEmail != ''
       $http.put(
-        "/api/v1/user?token="+$cookies.token+"&user[email]="+$scope.newEmail
+        "/api/v1/user?token="+$cookieStore.get($scope.tokenName)+"&user[email]="+$scope.newEmail
       ).success((data, status, headers, config) ->
         $scope.success("E-mail successfully changed")
         $scope.getUserInfo()
@@ -44,7 +45,7 @@ KarmaTracker.controller "AccountController", ($scope, $http, $cookies, $location
       if $scope.newPassword == $scope.confirmation
         $http.put(
           "/api/v1/user",
-          token: $cookies.token,
+          token: $cookieStore.get $scope.tokenName,
           user: {
             password: $scope.newPassword
           }

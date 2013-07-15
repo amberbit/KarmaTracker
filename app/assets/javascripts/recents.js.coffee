@@ -1,13 +1,14 @@
-KarmaTracker.controller "RecentsController", ($scope, $http, $cookies, $location, broadcastService) ->
+KarmaTracker.controller "RecentsController", ($scope, $http, $cookieStore, $location, broadcastService) ->
   $scope.lastTasks = []
   $scope.lastProjects = []
   $scope.noTasks = true
   $scope.noProjects = true
+  $scope.tokenName = 'token'
 
   $scope.startTracking = (task) ->
     if !task.running
       $http.post(
-        "/api/v1/time_log_entries/?token=#{$cookies.token}",
+        "/api/v1/time_log_entries/?token=#{$cookieStore.get($scope.tokenName)}",
         { time_log_entry: {task_id: task.id} }
       ).success((data, status, headers, config) ->
         $scope.notice "You started tracking #{task.name}."
@@ -19,7 +20,7 @@ KarmaTracker.controller "RecentsController", ($scope, $http, $cookies, $location
       )
     else
       $http.post(
-        "/api/v1/time_log_entries/stop?token=#{$cookies.token}"
+        "/api/v1/time_log_entries/stop?token=#{$cookieStore.get($scope.tokenName)}"
       ).success((data, status, headers, config) ->
         $scope.getRecentTasks()
         $scope.getRecentProjects()
@@ -30,7 +31,7 @@ KarmaTracker.controller "RecentsController", ($scope, $http, $cookies, $location
 
   $scope.getRecentTasks = ->
     $http.get(
-      '/api/v1/tasks/recent?token='+$cookies.token
+      '/api/v1/tasks/recent?token='+$cookieStore.get($scope.tokenName)
     ).success((data, status, headers, config) ->
       $scope.lastTasks = []
       for task in data
@@ -43,7 +44,7 @@ KarmaTracker.controller "RecentsController", ($scope, $http, $cookies, $location
 
   $scope.getRecentProjects = ->
     $http.get(
-      '/api/v1/projects/recent?token='+$cookies.token
+      '/api/v1/projects/recent?token='+$cookieStore.get($scope.tokenName)
     ).success((data, status, headers, config) ->
       $scope.lastProjects = []
       for project in data

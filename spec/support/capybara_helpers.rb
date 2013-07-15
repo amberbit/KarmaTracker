@@ -1,7 +1,8 @@
-def login(user = create(:user))
+def login(user = create(:user), remember_me = false)
   visit root_path
   fill_in 'email', :with => user.email
   fill_in 'password', :with => 'secret123'
+  check('Remember me') if remember_me
   click_button 'Sign in!'
   page.should have_content 'Log out'
 end

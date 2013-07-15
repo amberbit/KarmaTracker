@@ -1,16 +1,20 @@
-KarmaTracker.controller "SessionController", ($scope, $http, $cookies, $location, $routeParams) ->
-  if typeof($cookies.token) != 'undefined'
+KarmaTracker.controller "SessionController", ($scope, $http, $cookieStore, $location, $routeParams) ->
+  if typeof($cookieStore.get $scope.tokenName) != 'undefined'
     $location.path '/projects'
 
-  $scope.session = { email: null, password: null }
+  $scope.session = { email: null, password: null, remember_me: false }
   $scope.message = ''
   $scope.errors = {}
   $scope.confirmation_message = ""
   $scope.focusPassword = false
   $scope.registrationEnabled = KarmaTrackerConfig.registration_enabled
+  $scope.tokenName = 'token'
 
-  $scope.signInSuccess = (token) ->
-    $cookies.token = token
+  $scope.signInSuccess = (token, remember_me) ->
+    if remember_me
+      $cookieStore.set 'token', token, { expires: 30 }
+    else
+      $cookieStore.set 'token', token
     $scope.session.email = $scope.session.password = null
     window.location = '/'
 
@@ -29,13 +33,13 @@ KarmaTracker.controller "SessionController", ($scope, $http, $cookies, $location
     $http.post(
       '/api/v1/session',
       session: {
-        email: $scope.session.email,
+        email: $scope.session.email
         password: $scope.session.password
       }
     ).success((data, status, headers, config) ->
-      $scope.signInSuccess(data.user.token)
+      $scope.signInSuccess data.user.token, $scope.session.remember_me
     ).error((data, status, headers, config) ->
-      $scope.signInFailure(data.message)
+      $scope.signInFailure data.message
     )
 
 
@@ -49,8 +53,8 @@ KarmaTracker.controller "SessionController", ($scope, $http, $cookies, $location
     )
 
 
-KarmaTracker.controller "LogoutController", ($scope, $location, $cookies) ->
-  delete $cookies['token']
+KarmaTracker.controller "LogoutController", ($scope, $location, $cookieStore) ->
+  $cookieStore.remove 'token'
   window.location = '/'
 
 
