@@ -11,7 +11,7 @@
 
   <div class="small-12 large-12 columns">
     <div class="row" ng-repeat="task in tasks">
-      <div class="small-12 large-12 columns panel project clickable"
+      <div class="small-12 large-12 columns panel task clickable"
         ng-class="{callout: task.running, running: task.running}"
         ng-click="startTracking(task)"
         ng-show="task.visible">
