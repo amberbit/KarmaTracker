@@ -65,10 +65,11 @@ as a user I can', js: true  do
   scenario 'start/stop working on task' do
     within '.view' do
       span = find('span', text: task1.name)
+      wait_until(10) { span.visible? }
       div = span.first(:xpath,"..").first(:xpath,"..")
       div[:class].should_not include 'running'
       span.click
-      div = span.first(:xpath,"..").first(:xpath,"..")
+      wait_until(10) { span.visible? }
       div[:class].should_not include 'running'
     end
     within '.recents.recent-tasks' do
@@ -82,12 +83,12 @@ as a user I can', js: true  do
       span = find('span', text: task1.name)
       span.click
       span = find('span', text: task1.name)
-      wait_until(10) { !span.first(:xpath,"..").first(:xpath,"..")[:class].include?('running') }
+      wait_until(20) { !span.first(:xpath,"..").first(:xpath,"..")[:class].include?('running') }
     end
     within '.recents.recent-tasks' do
       span = find('span', text: task1.name)
       div = span.first(:xpath,"..").first(:xpath,"..")
-      div[:class].should_not include 'running'
+      wait_until(20) { !div[:class].include? 'running' }
     end
     task1.time_log_entries.first.running.should be_false
   end

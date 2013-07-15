@@ -26,7 +26,7 @@ class User < ActiveRecord::Base
 
   validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i
 
-  before_create :generate_confirmation_token
+  before_create :generate_tokens
   after_create :create_api_key
 
   def self.authenticate session
@@ -63,8 +63,9 @@ class User < ActiveRecord::Base
     ApiKey.create :user => self
   end
 
-  def generate_confirmation_token
+  def generate_tokens
     generate_token :confirmation_token
+    generate_token :auth_token
   end
 
   def update_password_reset_sent_at

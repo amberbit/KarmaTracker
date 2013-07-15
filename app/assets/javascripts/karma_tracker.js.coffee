@@ -13,6 +13,7 @@
 #= require flashes
 #= require recents
 #= require password_resets
+#= require cookieStore_override
 
 window.KarmaTracker = angular.module('KarmaTracker', ['ngCookies', 'ngMobile'])
 
@@ -20,10 +21,11 @@ window.KarmaTracker = angular.module('KarmaTracker', ['ngCookies', 'ngMobile'])
 KarmaTracker.factory "FlashMessage", ->
   { string: "", type: null }
 
-KarmaTracker.controller "RootController", ($scope, $http, $location, $cookies, $routeParams, FlashMessage, broadcastService) ->
+KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStore, $routeParams, FlashMessage, broadcastService) ->
   $scope.runningTask = {}
   $scope.runningVisible = false
   $scope.firstTipVisible = false
+  $scope.tokenName = 'token'
   $scope.menuIsDroppedDown = document.getElementById("top-bar").classList.contains("expanded")
   $scope.matchesQuery = (string) ->
     string.toLowerCase().indexOf($scope.query.string.toLowerCase()) != -1
@@ -44,7 +46,7 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookies, $
 
   $scope.getRunningTask = () ->
     $http.get(
-        "/api/v1/tasks/running?token=#{$cookies.token}"
+        "/api/v1/tasks/running?token=#{$cookieStore.get $scope.tokenName}"
       ).success((data, status, headers, config) ->
         $scope.runningTask = data.task
         $scope.runningVisible = true
@@ -75,7 +77,7 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookies, $
   $scope.stopTracking = (task) ->
     if task.running
       $http.post(
-        "/api/v1/time_log_entries/stop?token=#{$cookies.token}"
+        "/api/v1/time_log_entries/stop?token=#{$cookieStore.get $scope.tokenName}"
       ).success((data, status, headers, config) ->
         $scope.$watch("$scope.runningTask", $scope.getRunningTask())
       ).error((data, status, headers, config) ->
@@ -103,21 +105,21 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookies, $
     document.getElementById("top-bar").classList.remove("expanded")
     $location.path hash
 
-  if !$cookies.token?
-    return if $location.path() == '/login' ||
-      $location.path() == '/password_reset' ||
-      /\/edit_password_reset(\/.*)?/.test $location.path()
-    $location.path '/login'
-  else
+  if $cookieStore.get($scope.tokenName)?
     return if $location.path() == '/logout'
     $scope.signed_in = true
     if $location.path() == '/' || $location.path() == ''
       $location.path '/projects'
+  else
+    return if $location.path() == '/login' ||
+      $location.path() == '/password_reset' ||
+      /\/edit_password_reset(\/.*)?/.test $location.path()
+    $location.path '/login'
 
 
   $scope.checkIdentities = () ->
     $http.get(
-      "/api/v1/identities?token=#{$cookies.token}"
+      "/api/v1/identities?token=#{$cookieStore.get $scope.tokenName}"
     ).success((data, status, headers, config) ->
       if data.length == 0
         $scope.firstTipVisible = true
@@ -137,11 +139,11 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookies, $
 
 
 # This controller just has to redirect user to proper place
-KarmaTracker.controller "HomeController", ($scope, $http, $location, $cookies, FlashMessage) ->
-  if !$cookies.token?
-    $location.path '/login'
-  else
+KarmaTracker.controller "HomeController", ($scope, $http, $location, $cookieStore, FlashMessage) ->
+  if $cookieStore.get($scope.tokenName)?
     $location.path '/projects'
+  else
+    $location.path '/login'
 
 KarmaTracker.factory 'broadcastService', ($rootScope) ->
   broadcastService = {message: ""}

@@ -1,2 +1,2 @@
-KarmaTracker.controller "IdentitiesController", ($scope, $http, $cookies, $location) ->
+KarmaTracker.controller "IdentitiesController", ($scope, $http, $cookieStore, $location) ->
 

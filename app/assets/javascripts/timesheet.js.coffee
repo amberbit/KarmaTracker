@@ -1,8 +1,9 @@
-KarmaTracker.controller "TimesheetController", ($scope, $http, $cookies, $location, $routeParams, $filter) ->
+KarmaTracker.controller "TimesheetController", ($scope, $http, $cookieStore, $location, $routeParams, $filter) ->
   $scope.started_at = ''
   $scope.entries = {}
   $scope.task = {}
   $scope.today = $filter('date')(new Date(),'yyyy-MM-dd 00:00:00')
+  $scope.tokenName = 'token'
   tomorrow = new Date()
   tomorrow.setDate(tomorrow.getDate()+1)
   tomorrow = $filter('date')(tomorrow,'yyyy-MM-dd 00:00:00')
@@ -19,7 +20,7 @@ KarmaTracker.controller "TimesheetController", ($scope, $http, $cookies, $locati
 
   $scope.getTaskForEntry = (entry) ->
     $http.get(
-      "/api/v1/tasks/#{entry.time_log_entry.task_id}?token=#{$cookies.token}"
+      "/api/v1/tasks/#{entry.time_log_entry.task_id}?token=#{$cookieStore.get($scope.tokenName)}"
     ).success((data, status, headers, config) ->
       entry.task = data.task
       $scope.getProjectForEntry(entry)
@@ -28,7 +29,7 @@ KarmaTracker.controller "TimesheetController", ($scope, $http, $cookies, $locati
 
   $scope.getProjectForEntry = (entry) ->
     $http.get(
-      "/api/v1/projects/#{entry.task.project_id}?token=#{$cookies.token}"
+      "/api/v1/projects/#{entry.task.project_id}?token=#{$cookieStore.get($scope.tokenName)}"
     ).success((data, status, headers, config) ->
       entry.project = data.project
     ).error((data, status, headers, config) ->
@@ -36,7 +37,7 @@ KarmaTracker.controller "TimesheetController", ($scope, $http, $cookies, $locati
 
   $scope.getProjects = () ->
     $http.get(
-      '/api/v1/projects?token='+$cookies.token
+      '/api/v1/projects?token='+$cookieStore.get($scope.tokenName)
     ).success((data, status, headers, config) ->
       $scope.projects = data
     ).error((data, status, headers, config) ->
@@ -78,7 +79,7 @@ KarmaTracker.controller "TimesheetController", ($scope, $http, $cookies, $locati
     $scope.selectedProject = "" if !$scope.selectedProject?
 
     $http.get(
-      "/api/v1/time_log_entries?token=#{$cookies.token}&project_id=#{$scope.selectedProject}&started_at=#{moment($scope.fromDate).add('minutes', offset).format('YYYY-MM-DD HH:mm:ss')
+      "/api/v1/time_log_entries?token=#{$cookieStore.get($scope.tokenName)}&project_id=#{$scope.selectedProject}&started_at=#{moment($scope.fromDate).add('minutes', offset).format('YYYY-MM-DD HH:mm:ss')
 }&stopped_at=#{moment($scope.toDate).add('minutes', offset).format('YYYY-MM-DD HH:mm:ss')
 }"
     ).success((data, status, headers, config) ->
@@ -97,7 +98,7 @@ KarmaTracker.controller "TimesheetController", ($scope, $http, $cookies, $locati
   $scope.deleteEntry = (entry) ->
     if confirm("Are you sure to delete '#{entry.task.name}' entry from the log?")
       $http.delete(
-        "/api/v1/time_log_entries/#{entry.time_log_entry.id}?token=#{$cookies.token}"
+        "/api/v1/time_log_entries/#{entry.time_log_entry.id}?token=#{$cookieStore.get($scope.tokenName)}"
       ).success((data, status, headers, config) ->
         $scope.getEntries()
       ).error((data, status, headers, config) ->
@@ -106,7 +107,7 @@ KarmaTracker.controller "TimesheetController", ($scope, $http, $cookies, $locati
   $scope.updateEntry = (entry) ->
     $scope.errors = {}
     $http.put(
-      "/api/v1/time_log_entries/#{entry.time_log_entry.id}?token=#{$cookies.token}&time_log_entry[started_at]=#{moment(entry.time_log_entry.newStartedAt).add('minutes', offset).format('YYYY-MM-DD HH:mm:ss')
+      "/api/v1/time_log_entries/#{entry.time_log_entry.id}?token=#{$cookieStore.get($scope.tokenName)}&time_log_entry[started_at]=#{moment(entry.time_log_entry.newStartedAt).add('minutes', offset).format('YYYY-MM-DD HH:mm:ss')
 }&time_log_entry[stopped_at]=#{moment(entry.time_log_entry.newStoppedAt).add('minutes', offset).format('YYYY-MM-DD HH:mm:ss')
 }"
     ).success((data, status, headers, config) ->
