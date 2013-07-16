@@ -143,19 +143,23 @@ h5.subtitle{
   margin-right: -10px;
 }
 
-span.project-text, span.task-text {
+span.project-text {
   display: block;
   padding-top: 0.5em;
 }
 
-.label.task-id {
-  padding-right: 2px;
-  padding-left: 2px;
-  margin-top: 0.5em;
-
+div.task-text {
+  position: relative;
+  left: 8px;
+  top: 7px;
+  padding-bottom: 7px;
 }
-.callout .label.task-id {
-  margin-left: 4px;
+
+.label.task-id {
+padding-right: 2px;
+padding-left: 2px;
+margin-top: 0.5em;
+
 }
 
 .tasks-search {
@@ -209,7 +213,10 @@ span.project-text, span.task-text {
 .track-control-icon {
   height: 27px;
   width: 27px;
-
+  display: inline-block;
+  margin-top: -6px;
+  margin-left: -29px;
+  top: 8px;
   &.start {
     background-image: url(image_path('start-tracking.png'));
     background-position: center;
@@ -241,6 +248,7 @@ span.project-text, span.task-text {
 .panel.callout.running {
   box-shadow: 0 -100px 50px -100px #f4cf20 inset !important;
   color: white; 
+  padding-left: 15px;
   .label {
     background-color: transparent;
   }
