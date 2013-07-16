@@ -14,6 +14,7 @@ require 'capybara-screenshot/rspec'
 require 'capybara/poltergeist'
 require "email_spec"
 Capybara.javascript_driver = :poltergeist
+Capybara.default_wait_time = 30
 
 Dir[File.join(File.dirname(__FILE__), 'support', '**', '*.rb')].each {|f| require f}
 
@@ -39,6 +40,9 @@ RSpec.configure do |config|
     AppConfig.users.allow_register = false
   end
 
+  config.before :suite do
+    reset_fakeweb_urls
+  end
 end
 
 def reset_fakeweb_urls
@@ -92,11 +96,4 @@ def reset_fakeweb_urls
     :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'git_hub', 'responses', 'user.json')),
     :status => ['200', 'OK'])
 
-end
-
-RSpec.configure do |config|
-  config.before :suite do
-    reset_fakeweb_urls
-  end
-  Capybara.default_wait_time = 30
 end

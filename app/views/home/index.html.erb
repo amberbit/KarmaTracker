@@ -72,9 +72,9 @@
         <div class="row" ng-repeat="task in lastTasks">
           <div class="small-12 large-12 columns panel project clickable"
             id="recent-time-log-entry-{{task.id}}"
-            ng-class="{callout: task.running, running: task.running}"
+            ng-class="{callout: task.id == runningTask.id, running: task.id == runningTask.id }"
             ng-click="startTracking(task)">
-            <div class="small-12 large-12 columns" ng-class="{tinytracking: task.running}">
+            <div class="small-12 large-12 columns" ng-class="{tinytracking: task.id == runningTask.id }">
               <span class="tiny-task">{{task.name}}</span>
             </div>
           </div>

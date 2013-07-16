@@ -72,7 +72,7 @@ feature 'Timesheet page,
       page.should_not have_content task1.name
       page.should have_content project2.name
       page.should have_content task2.name
-      all('tbody').count.should == 2
+      wait_until(10) { all('tbody').count == 2 }
     end
     fill_in 'To', with: time_log_entry2.started_at.localtime + 1.hour
     click_on 'search_submit'

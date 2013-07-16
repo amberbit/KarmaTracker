@@ -6,7 +6,17 @@ KarmaTracker.controller "RecentsController", ($scope, $http, $cookieStore, $loca
   $scope.tokenName = 'token'
 
   $scope.startTracking = (task) ->
-    if !task.running
+    if task.id == $scope.runningTask.id
+      $http.post(
+        "/api/v1/time_log_entries/stop?token=#{$cookieStore.get($scope.tokenName)}"
+      ).success((data, status, headers, config) ->
+        $scope.getRecentTasks()
+        $scope.getRecentProjects()
+        broadcastService.prepForBroadcast('recentClicked')
+      ).error((data, status, headers, config) ->
+        console.debug('Error when stopping time log entries')
+      )
+    else
       $http.post(
         "/api/v1/time_log_entries/?token=#{$cookieStore.get($scope.tokenName)}",
         { time_log_entry: {task_id: task.id} }
@@ -16,16 +26,6 @@ KarmaTracker.controller "RecentsController", ($scope, $http, $cookieStore, $loca
         broadcastService.prepForBroadcast('recentClicked')
       ).error((data, status, headers, config) ->
         console.debug('Error when starting tracking time on tasks')
-      )
-    else
-      $http.post(
-        "/api/v1/time_log_entries/stop?token=#{$cookieStore.get($scope.tokenName)}"
-      ).success((data, status, headers, config) ->
-        $scope.getRecentTasks()
-        $scope.getRecentProjects()
-        broadcastService.prepForBroadcast('recentClicked')
-      ).error((data, status, headers, config) ->
-        console.debug('Error when stopping time log entries')
       )
 
   $scope.getRecentTasks = ->

@@ -20,28 +20,27 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
   $scope.reloadTasks()
 
   $scope.startTracking = (task) ->
-    if !task.running
-      $http.post(
-        "/api/v1/time_log_entries/?token=#{$cookieStore.get($scope.tokenName)}",
-        { time_log_entry: {task_id: task.id} }
-      ).success((data, status, headers, config) ->
-        $scope.reloadTasks()
-        $scope.$watch("$scope.runningTask", $scope.getRunningTask())
-        broadcastService.prepForBroadcast "refreshRecent"
- 
-      ).error((data, status, headers, config) ->
-        console.debug('Error when starting tracking time on tasks')
-      )
-    else
+    if $scope.runningTask? && task.id == $scope.runningTask.id
       $http.post(
         "/api/v1/time_log_entries/stop?token=#{$cookieStore.get($scope.tokenName)}"
       ).success((data, status, headers, config) ->
-        $scope.reloadTasks()
+        $scope.runningTask = null
         $scope.$watch("$scope.runningTask", $scope.getRunningTask())
 
         broadcastService.prepForBroadcast "refreshRecent"
       ).error((data, status, headers, config) ->
         console.debug('Error when stopping time log entries')
+      )
+    else
+      $http.post(
+        "/api/v1/time_log_entries/?token=#{$cookieStore.get($scope.tokenName)}",
+        { time_log_entry: {task_id: task.id} }
+      ).success((data, status, headers, config) ->
+        $scope.runningTask = task
+        $scope.$watch("$scope.runningTask", $scope.getRunningTask())
+        broadcastService.prepForBroadcast "refreshRecent"
+      ).error((data, status, headers, config) ->
+        console.debug('Error when starting tracking time on tasks')
       )
 
 
@@ -60,5 +59,3 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
   ).error((data, status, headers, config) ->
     console.debug('Error fetching project')
   )
-
-
