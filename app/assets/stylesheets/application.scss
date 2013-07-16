@@ -152,10 +152,10 @@ span.project-text, span.task-text {
   padding-right: 2px;
   padding-left: 2px;
   margin-top: 0.5em;
-  margin-left: -25px;
+
 }
 .callout .label.task-id {
-  margin-left: -20px;
+  margin-left: 4px;
 }
 
 .tasks-search {
@@ -206,6 +206,22 @@ span.project-text, span.task-text {
 }
 
 
+.track-control-icon {
+  height: 27px;
+  width: 27px;
+
+  &.start {
+    background-image: url(image_path('start-tracking.png'));
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  &.stop {
+    background-image: url(image_path('stop-tracking.png'));
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+}
+
 .panel.project.icon {
   height: 4em;
   border-left-style: none;
@@ -219,38 +235,12 @@ span.project-text, span.task-text {
 .panel.task {
   background: rgb(240,249,255);
   box-shadow: 0 -100px 50px -100px rgb(150, 150, 150) inset !important;
-  background-image: url(image_path('start.png'));
-  background-position: center;
-  background-repeat: no-repeat;
-  transition: background-image, 0.5s;
 
-}
-
-@media #{$small} { /* Start/stop buttons are always shown for small screens, this makes them hide in larger ones */
-  .panel.task {
-    background-image: url(image_path('none.png'));
-  }
-  .panel.callout.running {
-    background-image: url(image_path('none.png')) !important;
-  }
-  
-  .panel.callout.running:hover {
-    background-image: url(image_path('stop.png')) !important;
-  
-  }
-
-  .panel.task:hover {
-    background-image: url(image_path('start.png'));
-  }
 }
 
 .panel.callout.running {
   box-shadow: 0 -100px 50px -100px #f4cf20 inset !important;
   color: white; 
-  background-position: center;
-  background-repeat: no-repeat;
-  transition: background-image, 0.5s;
-  background-image: url(image_path('stop.png'));
   .label {
     background-color: transparent;
   }
