@@ -403,6 +403,13 @@ span.project-text, span.task-text {
   color: white;
 }
 
+.remember-me {
+  margin-bottom: 5px;
+}
 .remember-me > *{
   display: inline-block;
+}
+
+.clearfix {
+  @include clearfix();
 }
