@@ -11,6 +11,7 @@ KarmaTracker.controller "RecentsController", ($scope, $http, $cookieStore, $loca
         "/api/v1/time_log_entries/?token=#{$cookieStore.get($scope.tokenName)}",
         { time_log_entry: {task_id: task.id} }
       ).success((data, status, headers, config) ->
+        $scope.notice "You started tracking #{task.name}."
         $scope.getRecentTasks()
         $scope.getRecentProjects()
         broadcastService.prepForBroadcast('recentClicked')
