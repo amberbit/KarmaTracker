@@ -12,7 +12,6 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
       for task in data
         task.task.visible = $scope.matchesQuery(task.task.name)
         $scope.tasks.push task.task
-
     ).error((data, status, headers, config) ->
       console.debug('Error fetching tasks')
     )

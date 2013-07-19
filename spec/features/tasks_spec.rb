@@ -93,4 +93,14 @@ as a user I can', js: true  do
       page.should have_content task4.name
     end
   end
+
+  scenario 'refresh tasks list' do
+    task5 = create(:task, project: project1, current_task: true, name: 'Refreshed task') 
+    create(:time_log_entry, task: task5, user: user, started_at: 3.hours.ago, stopped_at: 2.hours.ago)
+    click_on 'Profile'
+    click_on 'Refresh'
+    page.should have_content "Refreshing projects could take a few minutes and updated list of projects and tasks should appear shortly"
+    click_on 'Okay'
+    page.should have_content 'Projects/tasks import is in progress'
+  end
 end
