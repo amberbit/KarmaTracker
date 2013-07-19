@@ -16,7 +16,7 @@ feature 'User registration', register: true do
     fill_in 'password_confirmation', :with => 'password'
     click_button 'Register'
 
-    page.should have_content 'An e-mail was sent to confirm your address'
+    wait_until(10) { page.has_content? 'An e-mail was sent to confirm your address' }
     User.last.email.should == 'user123@example.com'
     User.last.confirmation_token.should_not be_nil
   end

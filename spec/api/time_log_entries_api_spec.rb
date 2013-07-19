@@ -91,7 +91,6 @@ describe 'TimeLogEntry API' do
     entry.save
     entry.reload
     TimeLogEntry.where(running: true).count.should == 1
-    
     Timecop.travel(1.second.from_now) do
       json = api_post "time_log_entries/stop", {token: @user.api_key.token }
       TimeLogEntry.where(running: true).count.should == 0

@@ -26,7 +26,7 @@ describe 'ResetPasswords API' do
   it 'should deliver the password reset email' do
     json = api_post 'password_reset', email: user2.email
     response.status.should == 200
-    json['message'].should == 'Email with reset password instructions sent'
+    json['message'].should == 'Email with password reset instructions was sent'
   end
 
   it 'should update users password' do
