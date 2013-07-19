@@ -4,20 +4,20 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
   $scope.query.string = ""
   $scope.tokenName = 'token'
 
-  $scope.reloadTasks = () ->
+  $scope.reloadTasks = ->
     $http.get(
-      "/api/v1/projects/#{$routeParams.project_id}/#{if $scope.current then "current_" else "" }tasks?token=#{$cookieStore.get($scope.tokenName)}"
+      "/api/v1/projects/#{$routeParams.project_id}/#{if $scope.current then "current_" else "" }tasks?token=#{$cookieStore.get($scope.tokenName)}#{if $scope.query.string.length > 0 then '&query=' + $scope.query.string else ''}"
     ).success((data, status, headers, config) ->
+      console.log 'success'
       $scope.tasks = []
       for task in data
-        task.task.visible = $scope.matchesQuery(task.task.name)
+        task.task.visible = true
         $scope.tasks.push task.task
 
     ).error((data, status, headers, config) ->
       console.debug('Error fetching tasks')
     )
 
-  $scope.reloadTasks()
 
   $scope.startTracking = (task) ->
     if $scope.runningTask? && task.id == $scope.runningTask.id
@@ -44,13 +44,10 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
       )
 
 
-  $scope.$watch("query.string", ->
-    for task in $scope.tasks
-      task.visible = $scope.matchesQuery("#{task.source_identifier} #{task.name}")
-  )
-
+  $scope.reloadTasks()
   $scope.$watch("current", $scope.reloadTasks)
   $scope.$watch("runningTask", $scope.reloadTasks)
+  $scope.$watch "query.string", $scope.reloadTasks
 
   $http.get(
     "/api/v1/projects/#{$routeParams.project_id}/?token=#{$cookieStore.get($scope.tokenName)}"

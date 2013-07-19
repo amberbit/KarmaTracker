@@ -15,6 +15,7 @@
 #
 
 class Task < ActiveRecord::Base
+  include PgSearch
 
   attr_accessible :project, :project_id, :source_name, :source_identifier,
                   :current_state, :story_type, :name, :current_task
@@ -26,6 +27,15 @@ class Task < ActiveRecord::Base
   validates_presence_of :project_id, :source_name, :source_identifier,
                         :current_state, :story_type
   validates_uniqueness_of :source_identifier, :scope => :source_name
+
+  pg_search_scope :search_by_name, :against => :name,
+    using: {
+      tsearch: {
+        dictionary: 'english',
+        tsvector_column: 'tsvector_name_tsearch',
+        prefix: true
+      }
+    }
 
   def self.current
     where(current_task: true)
@@ -46,4 +56,8 @@ class Task < ActiveRecord::Base
     time_log_entries.where({user_id: user_id, running: true}).present?
   end
 
+  def update_tsvector
+    query = "UPDATE tasks SET tsvector_name_tsearch = TO_TSVECTOR('english', '#{self.name.gsub("'", "''")}') WHERE id = #{self.id};"
+    ActiveRecord::Base.connection.execute query
+  end
 end
