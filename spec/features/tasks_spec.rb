@@ -75,7 +75,6 @@ as a user I can', js: true  do
     end
     task1.time_log_entries.count.should == 1
     task1.time_log_entries.first.running.should be_true
-    sleep 1
     within '.view' do
       div = find "#time-log-entry-#{task1.id}"
       div.click

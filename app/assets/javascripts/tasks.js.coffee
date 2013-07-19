@@ -8,7 +8,6 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
     $http.get(
       "/api/v1/projects/#{$routeParams.project_id}/#{if $scope.current then "current_" else "" }tasks?token=#{$cookieStore.get($scope.tokenName)}#{if $scope.query.string.length > 0 then '&query=' + $scope.query.string else ''}"
     ).success((data, status, headers, config) ->
-      console.log 'success'
       $scope.tasks = []
       for task in data
         task.task.visible = true

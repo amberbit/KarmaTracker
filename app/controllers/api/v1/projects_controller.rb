@@ -239,7 +239,11 @@ module Api
       def current_tasks
         project = Project.find(params[:id])
         if @api_key.user.projects.include?(project)
-          @tasks = project.tasks.current
+          if params[:query].present?
+            @tasks = project.tasks.current.search_by_name params[:query]
+          else
+            @tasks = project.tasks.current
+          end
           render 'tasks'
         else
           render json: {message: 'Resource not found'}, status: 404
