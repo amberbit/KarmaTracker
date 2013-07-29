@@ -20,11 +20,10 @@ describe 'User Mailer' do
     let(:token) { 'amberbit' }
     let(:user) { stub_model User, email: 'email@amberbit.com', password_reset_token: token }
     let(:host) { 'localhost' }
-    let(:port) { 666 }
 
     before(:each) do
       UserMailer.any_instance.stub(:get_root_url).and_return("amberbit.com")
-      @email = UserMailer.password_reset(user, host, port)
+      @email = UserMailer.password_reset(user, host)
     end
 
     it "should be set to be delivered to the user passed in" do

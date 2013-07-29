@@ -49,9 +49,8 @@ class User < ActiveRecord::Base
     end while User.exists?(column => self[column])
   end
 
-  def send_password_reset(host, port)
+  def send_password_reset(host)
     @host = host
-    @port = port
     generate_token(:password_reset_token)
     update_password_reset_sent_at
     send_email
@@ -74,6 +73,6 @@ class User < ActiveRecord::Base
   end
 
   def send_email
-    UserMailer.password_reset(self, @host, @port).deliver
+    UserMailer.password_reset(self, @host).deliver
   end
 end

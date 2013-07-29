@@ -12,12 +12,12 @@ I can', js: true do
 
   scenario 'request email with reset password instructions' do
     visit '/'
-    click_on 'forgotten password?'
+    click_on 'Forgotten password?'
     page.should have_content 'Reset password'
     fill_in 'Email', with: user.email
     click_on 'Reset Password'
     expect {
-      page.should have_content 'Email with reset password instructions sent'
+      page.should have_content 'Email with password reset instructions was sent'
     }.to change{ user.reload.password_reset_token }.from(nil).to String
     user.password_reset_sent_at.to_date.should == Date.today
   end

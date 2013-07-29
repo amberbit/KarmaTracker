@@ -14,15 +14,17 @@
         <input id="email" type="text" placeholder="e-mail address" ng-model="$parent.session.email" autofocus='autofocus' focus="{{focus_email}}"/>
         <br/>
         <input id="password" type="password" placeholder="password" ng-model="$parent.session.password" focus="{{focus_password}}"/>
-        <button class="button">Sign in!</button>
+        <div class='pass-row'>
+          <div class='remember-me left'>
+            <input id='remember_me' type='checkbox' ng-model="session.remember_me"/>
+            <label for='remember_me'>Remember me</label>
+          </div>
+          <a class='right forgotten-password' href="#/password_reset" class="right">Forgotten password?</a>
+      </div>
+        <div class="clearfix"></div>
+        <button class="button left">Sign in!</button>
         <a href="#/register" ng-show="registrationEnabled" class="button secondary right">Register</a>
-        <div class='remember-me left'>
-          <input id='remember_me' type='checkbox' ng-model="session.remember_me"/>
-          <label for='remember_me'>Remember me</label>
-        </div>
-        <a class='right' href="#/password_reset" class="right">forgotten password?</a>
       </form>
     </div>
   </div>
 </div>
-

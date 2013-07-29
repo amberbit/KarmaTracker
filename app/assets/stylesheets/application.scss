@@ -429,10 +429,16 @@ margin-top: 0.5em;
   width: 62em !important;
 }
 
+.password-reset {
+  background-color: white;
+}
 .reset-text {
   color: white;
 }
 
+.remember-me {
+  margin-bottom: 5px;
+}
 .remember-me > *{
   display: inline-block;
 }
@@ -469,4 +475,14 @@ margin-top: 0.5em;
 
 #view-container {
   padding: 0;
+}
+=======
+.forgotten-password {
+  font-size: 0.875em;
+  height: 21px;
+  line-height: 21px;
+  margin-bottom: 5px;
+}
+.clearfix {
+  @include clearfix();
 }

@@ -6,14 +6,14 @@ class UserMailer < ActionMailer::Base
     mail(to: @user.email, subject: 'KarmaTracker e-mail confirmation', from: 'no-reply@example.com')
   end
 
-  def password_reset user, host, port
+  def password_reset user, host
     @user = user
-    @url =  get_root_url(host, port) + "#/edit_password_reset/#{@user.password_reset_token}"
+    @url =  get_root_url(host) + "#/edit_password_reset/#{@user.password_reset_token}"
     mail(to: @user.email, subject: 'KarmaTracker password reset', from: 'no-reply@example.com')
   end
 
   private 
-    def get_root_url host, port = nil
-      root_url(host: host, port: port)
+    def get_root_url host
+      root_url(host: host)
     end
 end
