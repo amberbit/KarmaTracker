@@ -1,4 +1,5 @@
-KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $location, $routeParams, broadcastService) ->
+KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $location, $routeParams, broadcastService, $rootScope) ->
+  $rootScope.pullAllowed = true
   $scope.tasks = []
   $scope.current = true
   $scope.query.string = ""
@@ -61,5 +62,6 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
   ).error((data, status, headers, config) ->
     console.debug('Error fetching project')
   )
+
 
 

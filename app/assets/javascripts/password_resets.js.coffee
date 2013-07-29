@@ -1,4 +1,5 @@
-KarmaTracker.controller "PasswordResetsController", ($scope, $http, $location, $routeParams, FlashMessage) ->
+KarmaTracker.controller "PasswordResetsController", ($scope, $http, $location, $routeParams, FlashMessage, $rootScope) ->
+  $rootScope.pullAllowed = false
   $scope.errors = {}
   $scope.data = { password: null, password_confirmation: null }
 

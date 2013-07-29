@@ -17,11 +17,13 @@
 
 window.KarmaTracker = angular.module('KarmaTracker', ['ngCookies', 'ngMobile'])
 
+
 # Flashe message passed from other controllers to FlashesController
 KarmaTracker.factory "FlashMessage", ->
   { string: "", type: null }
 
-KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStore, $routeParams, FlashMessage, broadcastService) ->
+KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStore, $routeParams, FlashMessage, broadcastService, $rootScope) ->
+  $rootScope.pullAllowed = true
   $scope.runningTask = {}
   $scope.runningVisible = false
   $scope.firstTipVisible = false
@@ -31,7 +33,19 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
     string.toLowerCase().indexOf($scope.query.string.toLowerCase()) != -1
 
   $scope.query = {}
+  
+  refreshProjects = () ->
+    $http.get(
+      '/api/v1/projects/refresh?token='+$cookieStore.get('token')
+    ).success((data, status, headers, config) ->
+      window.location.reload(true)
+    ).error((data, status, headers, config) ->
+      window.location.reload(true)
+      console.debug('Error refreshing projects')
+    )
+    $scope.$apply();
 
+    
   $scope.notice = (message) ->
     FlashMessage.type = null
     FlashMessage.string = message
@@ -90,9 +104,15 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
       return ""
 
   $scope.expandMenu = () ->
-    document.getElementById("top-bar").classList.toggle("expanded")
-    $scope.menuIsDroppedDown = document.getElementById("top-bar").classList.contains("expanded")
-
+    if window.getComputedStyle(document.getElementById("toggle-menu")).getPropertyValue("display") != "none"
+      document.getElementById("top-bar").classList.toggle("expanded")
+      $scope.menuIsDroppedDown = document.getElementById("top-bar").classList.contains("expanded")
+      element = $("div").find("[pull-to-refresh]")
+      $rootScope.$watch("pullAllowed", (value) ->
+        $rootScope.pull(value, element)
+      , true)
+    
+    
 
   $scope.moveMenu = () ->
     document.getElementById("profile").classList.toggle("moved")
@@ -133,9 +153,31 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
   $scope.$on "handleBroadcast", () ->
     if broadcastService.message == 'recentClicked'
       $scope.getRunningTask()
-
+ 
+  $rootScope.pull = (value, element) ->
+    if value && !$scope.menuIsDroppedDown
+      $(element).hook(
+        reloadPage: false,
+        reloadEl: ->
+          refreshProjects()
+        )
+    else
+      $(element).hook("destroy")
+      
+      
   $scope.getRunningTask()
   $scope.checkIdentities()
+
+
+KarmaTracker.directive "pullToRefresh", ($rootScope) ->
+  {
+    restrict: "A",
+    link: (scope, element, attrs) ->
+      $rootScope.$watch("pullAllowed", (value) ->
+        $rootScope.pull(value, element)
+      , true)
+  }
+
 
 
 # This controller just has to redirect user to proper place

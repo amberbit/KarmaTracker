@@ -1,4 +1,5 @@
-KarmaTracker.controller "SessionController", ($scope, $http, $cookieStore, $location, $routeParams) ->
+KarmaTracker.controller "SessionController", ($scope, $http, $cookieStore, $location, $routeParams, $rootScope) ->
+  $rootScope.pullAllowed = false
   if typeof($cookieStore.get $scope.tokenName) != 'undefined'
     $location.path '/projects'
 

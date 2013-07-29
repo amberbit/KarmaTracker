@@ -1,4 +1,5 @@
-KarmaTracker.controller "RegisterController", ($scope, $http, $cookieStore, $location) ->
+KarmaTracker.controller "RegisterController", ($scope, $http, $cookieStore, $location, $rootScope) ->
+  $rootScope.pullAllowed = false
   $scope.registration = { email: null, password: null, confirmation: null }
   $scope.message = ''
   $scope.confirmation_message = ""

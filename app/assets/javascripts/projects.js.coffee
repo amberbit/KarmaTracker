@@ -1,4 +1,5 @@
-KarmaTracker.controller "ProjectsController", ($scope, $http, $cookieStore, $location) ->
+KarmaTracker.controller "ProjectsController", ($rootScope, $scope, $http, $cookieStore, $location) ->
+  $rootScope.pullAllowed = true
   $scope.projects = []
   $scope.query.string = ""
   $scope.tokenName = 'token'
@@ -28,3 +29,4 @@ KarmaTracker.controller "ProjectsController", ($scope, $http, $cookieStore, $loc
   )
 
   $scope.$watch("query.string", filter_visible  )
+  

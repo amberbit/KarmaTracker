@@ -11,12 +11,12 @@
 <div class="row page-header">
   <nav id="top-bar" class="top-bar" ng-show="signed_in">
     <ul class="title-area">
-      <li class="name" ng-click="go('/')">
+      <li class="name">
         <a href="/">
-          <img src="/assets/ktlogo.png"/>
+          <img  ng-click="go('/')" src="/assets/ktlogo.png"/>
         </a>
         </li>
-      <li class="toggle-topbar menu-icon"><a href="" ng-click="expandMenu()"><span></span></a></li>
+      <li id="toggle-menu"  ng-click="expandMenu()" class="toggle-topbar menu-icon"><a href=""><span></span></a></li>
     </ul> 
     <section id="top-bar-section" class="top-bar-section">
       <ul class="right">
@@ -29,11 +29,11 @@
           <ul class="dropdown">
             <li id="back-button" class="toggle-topbar"><a href=""><< Back</a></li>
             <li class="divider toogle-topbar"></li>
-            <li ng-click="go('/account')"><a ng-class="highlightCurrentPage('account')" href="#/account" ng-click="expandMenu()">Account</a></li>
+            <li ng-click="go('/account')"><a class="secondary-menu" ng-class="highlightCurrentPage('account')" href="#/account" ng-click="expandMenu()">Account</a></li>
             <li class="divider"></li>
-            <li ng-click="go('/identities')"><a id="identities" ng-class="highlightCurrentPage('identities')" href="#/identities" ng-click="expandMenu()">Identities</a></li>
-            <li class="divider"></li>
-            <li ng-click="go('/refresh')"><a ng-class="highlightCurrentPage('refresh')" href="#/refresh" class="refresh" ng-click="expandMenu()">Refresh</a></li>
+            <li ng-click="go('/identities')"><a class="secondary-menu" id="identities" ng-class="highlightCurrentPage('identities')" href="#/identities" ng-click="expandMenu()">Identities</a></li>
+            <li class="divider hide-for-touch"></li>
+            <li class="hide-for-touch" ng-click="go('/refresh')"><a ng-class="highlightCurrentPage('refresh')" href="#/refresh" class="refresh" ng-click="expandMenu()">Refresh</a></li>
                       </ul>
         <li class="divider"></li>
         <li ng-click="go('/logout')"><a ng-class="highlightCurrentPage('logout')" href="#/logout" ng-click="expandMenu()">Log out</a></li>
@@ -57,8 +57,14 @@
 </div>
 
 <div class="row boxed" ng-class="{'signin-width': !signed_in}">
-  <div class='view small-12 columns' ng-class="{'large-12': !signed_in, 'large-8': signed_in}" ng-view ng-animate="{enter: 'view-enter', leave: 'view-leave'}">
+  <div id="view-container" class="small-12 columns" ng-class="{'large-12': !signed_in, 'large-8': signed_in}" >
+    <div class="small-12 large-12 columns show-for-touch" pull-to-refresh></div>
+    <div class='view small-12 columns'
+        ng-view 
+        ng-animate="{enter: 'view-enter', leave: 'view-leave'}">
+    </div>
   </div>
+  
   <div ng-show="signed_in">
   <div class="hide-for-small large-4 columns" ng-controller="RecentsController">
     <div class="small-12 large-12 columns">
@@ -115,7 +121,6 @@
 
   window.KarmaTrackerConfig.registration_enabled = <%= AppConfig.users.allow_register %>;
   window.KarmaTrackerConfig.registration_destroy = <%= AppConfig.users.allow_destroy %>;
-
 </script>
 
 

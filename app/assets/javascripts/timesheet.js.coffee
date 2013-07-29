@@ -1,4 +1,5 @@
-KarmaTracker.controller "TimesheetController", ($scope, $http, $cookieStore, $location, $routeParams, $filter) ->
+KarmaTracker.controller "TimesheetController", ($scope, $http, $cookieStore, $location, $routeParams, $filter, $rootScope) ->
+  $rootScope.pullAllowed = false
   $scope.started_at = ''
   $scope.entries = {}
   $scope.task = {}
@@ -121,8 +122,5 @@ KarmaTracker.controller "TimesheetController", ($scope, $http, $cookieStore, $lo
     result = moment(date).add('minutes', -offset).format('YYYY-MM-DD HH:mm:ss')
 
 
-
-
   #$scope.getEntries()
   $scope.getProjects()
-
