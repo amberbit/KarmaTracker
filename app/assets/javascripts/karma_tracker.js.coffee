@@ -88,14 +88,14 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
   $scope.goToLink = (path) ->
     $location.path path
 
-  $scope.stopTracking = (task) ->
-    if task.running
-      $http.post(
-        "/api/v1/time_log_entries/stop?token=#{$cookieStore.get $scope.tokenName}"
-      ).success((data, status, headers, config) ->
-        $scope.$watch("$scope.runningTask", $scope.getRunningTask())
-      ).error((data, status, headers, config) ->
-      )
+  #$scope.stopTracking = (task) ->
+    #if task.running
+      #$http.post(
+        #"/api/v1/time_log_entries/stop?token=#{$cookieStore.get $scope.tokenName}"
+      #).success((data, status, headers, config) ->
+        #$scope.$watch("$scope.runningTask", $scope.getRunningTask())
+      #).error((data, status, headers, config) ->
+      #)
 
   $scope.highlightCurrentPage = (url) ->
     if $location.url().indexOf(url) != -1

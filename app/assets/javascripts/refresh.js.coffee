@@ -5,5 +5,3 @@ KarmaTracker.controller "RefreshController", ($scope, $http, $cookieStore, $loca
   ).error((data, status, headers, config) ->
     console.debug('Error refreshing projects')
   )
-
-

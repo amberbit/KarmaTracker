@@ -7,6 +7,7 @@ gem 'jbuilder'
 
 gem 'activerecord-jdbc-adapter'
 gem 'activerecord-jdbcpostgresql-adapter'
+gem 'pg_search'
 
 gem 'torquebox', '2.3.1'
 gem 'torquebox-server', '2.3.1', require: false
