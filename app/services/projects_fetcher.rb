@@ -19,10 +19,12 @@ class ProjectsFetcher
 
   def fetch_for_user(user)
     Rails.logger.info "Fetching projects for user #{user.id}"
+    user.update_attribute('refreshing_projects', true)
     user.identities.each do |identity|
       fetch_for_identity(identity)
     end
     Rails.logger.info "Successfully updated list of projects for user #{user.id}"
+    user.update_attribute('refreshing_projects', false)
   end
 
   def fetch_for_identity(identity)

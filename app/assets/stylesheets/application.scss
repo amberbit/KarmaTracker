@@ -45,6 +45,28 @@
   }
 }
 
+.alert-box.refreshing {
+  background-color: #c86209;
+  background-image: url(image_path('ajax-loader-small.gif'));
+  background-position: 1em center;
+  background-repeat: no-repeat;
+  margin-top: -13px;
+  span {
+    margin-left: 2em;
+    display: block;
+  }
+}
+
+.refreshing-top {
+  margin-top: 13px;
+}
+
+@media #{$small} {
+  .refreshing-top {
+    margin-top: 0px;
+  }
+}
+
 .tinytracking {
   background-image: url(image_path('tracking.gif'));
   background-position: right;
@@ -288,7 +310,6 @@ margin-top: 0.5em;
   background-color: #222;
   border: 1px #222 solid;
   border-bottom-width: 0;
- 
   .alert-box {
     z-index: 2;
     top: 1.5em;

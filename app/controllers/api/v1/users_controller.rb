@@ -22,7 +22,7 @@ module Api
       #   => 200
       #
       #   resp.body
-      #   => {"user":{"id":1,"email":"a@b.com","token":"dcbb7b36acd4438d07abafb8e28605a4"}}
+      #   => {"user":{"id":1,"email":"a@b.com","refreshing_projects":"false","token":"dcbb7b36acd4438d07abafb8e28605a4"}}
       #
       def show
         render '_show'
@@ -46,7 +46,7 @@ module Api
       #   => 200
       #
       #   resp.body
-      #   => "{"user":{"id":117,"email":"new@example.com","token":"5266cd376cf2a29fd810c62ed731ec3a"}}"
+      #   => "{"user":{"id":117,"email":"new@example.com","refreshing_projects":"false","token":"5266cd376cf2a29fd810c62ed731ec3a"}}"
       #
       #   resp = conn.post("/api/v1/user",
       #                   "user" => {"email" => "new@example.com", "password" => "123"})
@@ -54,7 +54,7 @@ module Api
       #   => 422
       #
       #   resp.body
-      #   => "{"user":{"id":null,"email":"new@example.com","errors":{"password":["is too short (minimum is 6 characters)"]}}}"
+      #   => "{"user":{"id":null,"email":"new@example.com","refreshing_projects":"false","errors":{"password":["is too short (minimum is 6 characters)"]}}}"
       #
       #   resp = conn.post("/api/v1/user",
       #                   "user" => {"email" => "new@example.com", "password" => "secret"})
@@ -100,7 +100,7 @@ module Api
       #
       #   resp.body
       #
-      #   => "{"user":{"id":1,"email":"new@sample.com","token":"4e9a06bff7603236d477f7bfacc2def5"}}"
+      #   => "{"user":{"id":1,"email":"new@sample.com","refreshing_projects":"false","token":"4e9a06bff7603236d477f7bfacc2def5"}}"
       #
       #   resp = conn.put("/api/v1/user",
       #                   "token" => "4e9a06bff7603236d477f7bfacc2def5",
@@ -110,7 +110,7 @@ module Api
       #   => 422
       #
       #   resp.body
-      #   => "{"user":{"id":1,"email":"user@example.com","token":"4e9a06bff7603236d477f7bfacc2def5",
+      #   => "{"user":{"id":1,"email":"user@example.com","refreshing_projects":"false","token":"4e9a06bff7603236d477f7bfacc2def5",
       #                "errors": {"email":["has already been taken"],"password":["is too short (minimum is 8 characters)"]}}}"
       #
       def update
@@ -141,7 +141,7 @@ module Api
       #
       #   resp.body
       #
-      #   => "{"user":{"id":1,"email":"new@sample.com", "token":"7fcc0c838c7782405b7b20717e3c9ced"}}"
+      #   => "{"user":{"id":1,"email":"new@sample.com","refreshing_projects":"false","token":"7fcc0c838c7782405b7b20717e3c9ced"}}"
       #
       #
       #   resp = conn.get("/api/v1/user/confirm",
@@ -183,7 +183,7 @@ module Api
       #   => 200
       #
       #   resp.body
-      #   => "{"user":{"id":1,"email":"new@sample.com","token":"4e9a06bff7603236d477f7bfacc2def5"}}"
+      #   => "{"user":{"id":1,"email":"new@sample.com","refreshing_projects":"false","token":"4e9a06bff7603236d477f7bfacc2def5"}}"
       #
       #   resp = conn.delete("/api/v1/user",
       #                   "token" => "4e9a06bff7603236d477f7bfacc2def5")
