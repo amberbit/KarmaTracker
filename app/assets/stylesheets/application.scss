@@ -177,6 +177,11 @@ div.task-text {
   left: 8px;
   top: 7px;
   padding-bottom: 7px;
+  text-overflow: ellipsis;
+}
+
+.touch .task-route {
+  margin-top: 16px;
 }
 
 .label.task-id {
@@ -482,6 +487,7 @@ margin-top: 0.5em;
 #pulled-alert {
   position: relative;
   top: 125px;
+  z-index: 0;
 }
 
 #pulled-loader {
@@ -494,7 +500,7 @@ margin-top: 0.5em;
   height: 2em;
   max-width: 2em;
   min-width: 0.5em;
-  
+  z-index: auto;
 }
 
 .touch .pullgrip {
