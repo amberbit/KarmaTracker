@@ -79,6 +79,8 @@ describe 'Projects API' do
     resp.count.should == 1
   end
 
+  it 'should return tasks for a given project with search param'
+
   # GET /projects/:id/tasks
   it 'should return an error when trying to fetch tasks from other user\'s proejct' do
     user = FactoryGirl.create :user

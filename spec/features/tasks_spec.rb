@@ -67,11 +67,11 @@ as a user I can', js: true  do
       div = find "#time-log-entry-#{task1.id}"
       div[:class].should_not include 'running'
       div.click
-      div[:class].should_not include 'running'
+      wait_until(20) { div[:class].include?('running') }
     end
     within '.recents.recent-tasks' do
       div = find "#recent-time-log-entry-#{task1.id}"
-      div[:class].should include 'running'
+      wait_until(20) { div[:class].include?('running') }
     end
     task1.time_log_entries.count.should == 1
     task1.time_log_entries.first.running.should be_true
