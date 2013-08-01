@@ -39,7 +39,7 @@ describe 'Session API (signing into the system)' do
 
     response.status.should == 401
     json.has_key?('user').should be_false
-    json['message'].should == 'User e-mail is not confirmed'
+    json['message'].should == 'User email address is not confirmed, please check your inbox or spam folder.'
   end
 
 
