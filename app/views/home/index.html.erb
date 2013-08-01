@@ -46,11 +46,15 @@
 
 <div id="flash" class="row" ng-class="{'signin-width': !signed_in}" ng-controller="FlashesController">
   <div class="show-for-small">
-    <div class="alert-box tracking" ng-show="runningVisible" ng-click="goToLink('projects/'+runningTask.project_id+'/tasks')" class="running-task current">
+    <div class="alert-box tracking" ng-show="runningVisible" ng-click="goToLink('projects/'+runningTask.project_id+'/tasks')">
       <span>{{runningTask.name}}</span>
     </div>
   </div>
-
+  <div ng-show="refreshing" ng-class="{'refreshing-top': runningVisible}">
+    <div class="alert-box refreshing">
+      <span>The list of projects is being updated.</span>
+    </div>
+  </div>
   <div ng-show="message.string" ng-class="{'small-12': true, 'columns': true, 'alert-box': true, 'alert': isAlert() == 'alert', 'success': isAlert() == 'success' }">
     {{message.string}}
   </div>

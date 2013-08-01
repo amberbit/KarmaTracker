@@ -26,6 +26,7 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
   $rootScope.pullAllowed = true
   $scope.runningTask = {}
   $scope.runningVisible = false
+  $scope.refreshing = false
   $scope.firstTipVisible = false
   $scope.tokenName = 'token'
   $scope.menuIsDroppedDown = document.getElementById("top-bar").classList.contains("expanded")
@@ -38,6 +39,7 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
     $http.get(
       '/api/v1/projects/refresh?token='+$cookieStore.get('token')
     ).success((data, status, headers, config) ->
+      $scope.refreshing = true
       window.location.reload(true)
     ).error((data, status, headers, config) ->
       window.location.reload(true)
@@ -146,6 +148,22 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
 
     ).error((data, status, headers, config) ->
     )
+    
+    
+
+    
+   $rootScope.checkRefreshingProjects = () ->
+     $http.get(
+       "/api/v1/user?token=#{$cookieStore.get $scope.tokenName}"
+     ).success((data, status, headers, config) ->
+       $scope.refreshing = data.user.refreshing_projects
+       setTimeout($rootScope.checkRefreshingProjects, 10000)
+     ).error((data, status, headers, config) ->
+       setTimeout($rootScope.checkRefreshingProjects, 10000)
+     )
+     if !$scope.$root.$$phase
+       $scope.$apply()
+
 
     $scope.hideFirstTip = () ->
       $scope.firstTipVisible = false
@@ -167,6 +185,8 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
       
   $scope.getRunningTask()
   $scope.checkIdentities()
+  $rootScope.checkRefreshingProjects()
+
 
 
 KarmaTracker.directive "pullToRefresh", ($rootScope) ->
