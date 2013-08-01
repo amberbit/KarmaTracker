@@ -146,7 +146,7 @@ h5.subtitle{
   background-size: 100%;
   background-position: center;
   max-width: 2em;
-  min-width: 0.5em;
+  min-width: 2em;
   margin: auto;
   margin-right: -15px;
   &.github{
@@ -330,7 +330,7 @@ margin-top: 0.5em;
   border: 1px #222 solid;
   border-top-width: 0;
   border-bottom: 0;
-  padding-top: 0.5em;
+  padding-top: 0.2em;
   background-color: #222;
 
   box-shadow: 0 20px 20px rgba(0,0,0,0.5);
@@ -394,7 +394,8 @@ margin-top: 0.5em;
 
 .footer{
   @extend .boxed;
-  height: 6em;
+  min-height: 6em;
+  padding-bottom: 1em;
   font-size: 0.8em;
 }
 .logo-amberbit{
@@ -467,31 +468,39 @@ margin-top: 0.5em;
 #hook {
   height: 200px;
   position: absolute;
-  margin-top: -45px;
+  margin-top: -30px;
 
   transition: margin-top, 0.5s;
 
   top: -170px;
   left: 1px;
   box-shadow: 0 146px 107px -125px #f47a10 inset !important;
+  background-color: #444;
+  
 }
 
 #pulled-alert {
   position: relative;
-  top: 145px;
+  top: 125px;
 }
 
 #pulled-loader {
   position: relative;
   right: 0;
-  top: 145px;
+  top: 110px;
   background-image: url(image_path('ajax-loader.gif'));
-  background-position: center;
+  background-position: right center;
   background-repeat: no-repeat;
   height: 2em;
   max-width: 2em;
   min-width: 0.5em;
   
+}
+
+.touch .pullgrip {
+  background-image: url("/assets/pulltorefresh.png");
+  background-position: center top;
+  background-repeat: no-repeat;
 }
 
 #view-container {
