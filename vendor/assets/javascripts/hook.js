@@ -134,10 +134,10 @@
         reload: function(el, settings) {
                 el.show();
                 el.animate(
-                  {"margin-top": "200px"}, 500
+                  {"margin-top": "180px"}, 500
                 );
                 el.delay(200).animate(
-                  {"margin-top": "100px"}, 200
+                  {"margin-top": "120px"}, 200
                 );
                 setTimeout(function () {
                     if(settings.reloadPage) {
