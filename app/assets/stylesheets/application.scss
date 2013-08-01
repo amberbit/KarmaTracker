@@ -170,18 +170,20 @@ h5.subtitle{
 span.project-text {
   display: block;
   padding-top: 0.5em;
-}
-
-div.task-text {
-  position: relative;
-  left: 8px;
-  top: 7px;
-  padding-bottom: 7px;
-  text-overflow: ellipsis;
+  word-wrap: break-word;
 }
 
 .touch .task-route {
   margin-top: 16px;
+}
+
+span.task-text {
+  margin-left: 10px;
+  width: 70%;
+  float: left;
+  word-wrap: break-word;
+  padding: 5px 0 5px;
+
 }
 
 .label.task-id {
