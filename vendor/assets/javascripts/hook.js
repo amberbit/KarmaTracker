@@ -133,12 +133,8 @@
 
         reload: function(el, settings) {
                 el.show();
-                el.animate(
-                  {"margin-top": "180px"}, 500
-                );
-                el.delay(200).animate(
-                  {"margin-top": "120px"}, 200
-                );
+                el.css("margin-top", "180px");
+                el.delay(200).css("margin-top", "120px");
                 setTimeout(function () {
                     if(settings.reloadPage) {
                         window.location.reload(true);

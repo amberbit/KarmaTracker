@@ -163,8 +163,26 @@ h5.subtitle{
   }
 }
 
+.touch .source-icon {
+  margin-right: 0px;
+  position: relative;
+  right: 5px;
+}
+
+.touch .callout .source-icon {
+  margin-right: 0px;
+  position: relative;
+  right: 10px;
+}
+
 .callout .source-icon {
   margin-right: -10px;
+  &.github:hover{
+    background-image: url(image_path('blackgh.png'));
+  }
+  &.pivotal-tracker:hover{
+    background-image: url(image_path('blackpt.png'));
+  }
 }
 
 span.project-text {
@@ -258,6 +276,10 @@ margin-top: 0.5em;
     background-position: center;
     background-repeat: no-repeat;
   }
+}
+
+.touch .track-control-icon {
+  margin-left: -16px;
 }
 
 .panel.project.icon {
@@ -481,7 +503,7 @@ margin-top: 0.5em;
 
   top: -170px;
   left: 1px;
-  box-shadow: 0 146px 107px -125px #f47a10 inset !important;
+  *box-shadow: 0 146px 107px -125px #f47a10 inset !important;
   background-color: #444;
   
 }
