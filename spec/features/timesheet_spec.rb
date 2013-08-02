@@ -1,8 +1,12 @@
 require 'spec_helper'
+require 'timecop'
 
 feature 'Timesheet page,
   as a user I can', js: true  do
-
+  
+  let(:time) { Time.local(2013, 8, 2, 15, 0, 0) }
+  
+    
   let(:date1) { 12.hours.ago }
   let(:date2) { 8.hours.ago }
   let(:date3) { 2.hours.ago }
@@ -11,14 +15,14 @@ feature 'Timesheet page,
   let(:project1) { create(:project, name: "KarmaTracker") }
   let!(:task1) { task = create(:task, project: project1, current_task: true, name: 'Do dishes') }
   let!(:time_log_entry1) { create(:time_log_entry, task: task1, user: user,
-                                  started_at: date1, stopped_at: date1 + 1.hour) }
+                                  started_at: date1, stopped_at: date1 + 1.hour + 1.second) }
 
   let(:project2) { create(:project, name: "My sweet 16 diary :O") }
   let!(:task2) { task = create(:task, project: project2, current_task: true, name: 'Do laundry') }
   let!(:time_log_entry2) { create(:time_log_entry, task: task2, user: user,
-                                  started_at: date2, stopped_at: date2 + 1.hour) }
+                                  started_at: date2, stopped_at: date2 + 1.hour + 1.second) }
   let!(:time_log_entry3) { create(:time_log_entry, task: task2, user: user,
-                                  started_at: date3, stopped_at: date3 + 1.hour) }
+                                  started_at: date3, stopped_at: date3 + 1.hour + 1.second) }
 
   let!(:identity) do
     identity = create(:identity)
@@ -28,11 +32,11 @@ feature 'Timesheet page,
   end
 
   background do
+    Timecop.travel(time)
     FakeWeb.allow_net_connect = true
     login user
     click_link 'Timesheet'
-    fill_in 'From', with: time_log_entry1.started_at.localtime - 2.hour
-    click_on 'search_submit'
+
   end
 
 
@@ -50,6 +54,18 @@ feature 'Timesheet page,
     end
     within '.timesheet-total' do
       first('td').text.should == '03:00 hours'
+    end
+  end
+  
+  scenario 'see a message if there is no time log entries'  do
+    fill_in 'From', with: time + 2.hours
+
+    click_on 'search_submit'
+    within '.timesheet-entries' do
+      page.should have_content "There are no tracked tasks"
+    end
+    within '.timesheet-total' do
+      wait_until(10) { first('td').text.should == '00:00 hours' }
     end
   end
 

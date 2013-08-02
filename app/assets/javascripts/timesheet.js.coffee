@@ -76,16 +76,15 @@ KarmaTracker.controller "TimesheetController", ($scope, $http, $cookieStore, $lo
 
 
   $scope.getEntries = () ->
-    $scope.errors = {}
-    $scope.totalTime = 0
-    $scope.selectedProject = "" if !$scope.selectedProject?
-
     $http.get(
       "/api/v1/time_log_entries?token=#{$cookieStore.get($scope.tokenName)}&project_id=#{$scope.selectedProject}&started_at=#{moment($scope.fromDate).add('minutes', offset).format('YYYY-MM-DD HH:mm:ss')
 }&stopped_at=#{moment($scope.toDate).add('minutes', offset).format('YYYY-MM-DD HH:mm:ss')
 }"
     ).success((data, status, headers, config) ->
       $scope.entries = data
+      $scope.errors = {}
+      $scope.selectedProject = "" if !$scope.selectedProject?
+      $scope.totalTime = 0
       for entry in $scope.entries
         $scope.getTaskForEntry(entry)
         $scope.totalTime += entry.time_log_entry.seconds
