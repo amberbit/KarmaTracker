@@ -4,23 +4,28 @@ class PivotalTrackerProjectsFetcher
     within_tmp do
       Rails.logger.info "Fetching projects for PT identity #{identity.api_key}"
       uri = "https://www.pivotaltracker.com/services/v4/projects"
-      open(uri, 'X-TrackerToken' => identity.api_key) do |file|
-        doc = Nokogiri::XML file
+      begin
+        open(uri, 'X-TrackerToken' => identity.api_key) do |file|
+          doc = Nokogiri::XML file
 
-        doc.xpath('//project').each do |data|
-          name = data.xpath('./name').first.content
-          source_identifier = data.xpath('./id').first.content
+          doc.xpath('//project').each do |data|
+            name = data.xpath('./name').first.content
+            source_identifier = data.xpath('./id').first.content
 
-          project = Project.where("source_name = 'Pivotal Tracker' AND source_identifier = ?", source_identifier).
-            first_or_initialize(source_name: 'Pivotal Tracker', source_identifier: source_identifier)
-          project.name = name
-          project.save
+            project = Project.where("source_name = 'Pivotal Tracker' AND source_identifier = ?", source_identifier).
+              first_or_initialize(source_name: 'Pivotal Tracker', source_identifier: source_identifier)
+            project.name = name
+            project.save
 
-          fetch_identities project, data
-          fetch_tasks project, identity
+            fetch_identities project, data
+            fetch_tasks project, identity
+          end
         end
+        Rails.logger.info "Successfully updated list of projects for PT identity #{identity.api_key}"
+      rescue OpenURI::HTTPError => e
+        UserMailer.invalid_api_key identity
+        Rails.logger.error "Error fetching projects from PT - #{e.message}. Check API key correctness."
       end
-      Rails.logger.info "Successfully updated list of projects for PT identity #{identity.api_key}"
     end
   end
 
