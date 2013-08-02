@@ -56,6 +56,7 @@ feature 'Timesheet page,
   scenario 'filter entries by project' do
     select project1.name, from: 'Project'
     click_on 'search_submit'
+    sleep 1
     within '.timesheet-entries' do
       page.should have_content project1.name
       page.should have_content task1.name

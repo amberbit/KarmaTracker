@@ -9,22 +9,28 @@ class GitHubProjectsFetcher
       response = perform_request('get', uri, {}, {'Authorization' => "token #{identity.api_key}"})
       uri = extract_next_link(response)
       repos = JSON.parse(response.body)
-      break unless repos.instance_of?(Array)
+      if repos.instance_of?(Array)
 
-      repos.each do |repo|
-        repo_name = repo['name']
-        owner_name = repo['owner']['login']
-        name = repo['full_name']
-        source_identifier = repo['id'].to_s
+        repos.each do |repo|
+          repo_name = repo['name']
+          owner_name = repo['owner']['login']
+          name = repo['full_name']
+          source_identifier = repo['id'].to_s
 
-        project = Project.where("source_name = 'GitHub' AND source_identifier = ?", source_identifier).
-          first_or_initialize(source_name: 'GitHub', source_identifier: source_identifier)
-        project.name = name
-        project.save
-        fetch_identities project, identity, repo_name, owner_name
-        fetch_tasks project, identity, repo_name, owner_name, 'open'
-        fetch_tasks project, identity, repo_name, owner_name, 'closed'
-        GitHubWebHooksManager.new({project: project}).create_hook(identity) unless project.web_hook
+          project = Project.where("source_name = 'GitHub' AND source_identifier = ?", source_identifier).
+            first_or_initialize(source_name: 'GitHub', source_identifier: source_identifier)
+          project.name = name
+          project.save
+          fetch_identities project, identity, repo_name, owner_name
+          fetch_tasks project, identity, repo_name, owner_name, 'open'
+          fetch_tasks project, identity, repo_name, owner_name, 'closed'
+          GitHubWebHooksManager.new({project: project}).create_hook(identity) unless project.web_hook
+        end
+      else
+        if repos.instance_of?(Hash) && repos['message'] == 'Bad credentials'
+          UserMailer.invalid_api_key(identity).deliver
+        end
+        break
       end
     end while uri
 

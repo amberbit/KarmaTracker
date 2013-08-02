@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'api/api_helper'
 
-describe 'User Mailer' do
+describe UserMailer do
   include EmailSpec::Helpers
   include EmailSpec::Matchers
 
@@ -16,7 +16,9 @@ describe 'User Mailer' do
     email.body.should match(user.confirmation_token)
   end
 
-  context 'password reset email' do
+  context 'password reset email,
+    should' do
+
     let(:token) { 'amberbit' }
     let(:user) { stub_model User, email: 'email@amberbit.com', password_reset_token: token }
     let(:host) { 'localhost' }
@@ -26,20 +28,47 @@ describe 'User Mailer' do
       @email = UserMailer.password_reset(user, host)
     end
 
-    it "should be set to be delivered to the user passed in" do
+    it "be set to be delivered to the user passed in" do
       @email.should deliver_to user.email
     end
 
-    it "should contain reset password instructions" do
+    it "contain reset password instructions" do
       @email.should have_body_text(/To reset your password, click the URL below/)
     end
 
-    it "should contain a link to edit reset password" do
+    it "contain a link to edit reset password" do
       @email.should have_body_text(/amberbit\.com#\/edit_password_reset\/#{token}/)
     end
 
-    it "should have the correct subject" do
+    it "have the correct subject" do
       @email.should have_subject(/KarmaTracker password reset/)
+    end
+  end
+
+
+  context 'invalid api key,
+    should' do
+
+    let(:key) { 123 }
+    let(:user) { stub_model User, email: 'email@amberbit.com' }
+    let(:identity) { stub_model Identity, type: 'PivotalTrackerIdentity',
+                     api_key: key, user: user }
+
+    before(:each) do
+      @email = UserMailer.invalid_api_key identity
+    end
+
+    it "be delivered to the user from identity" do
+      @email.should deliver_to user.email
+    end
+
+    it "contain invalid api key info" do
+      @email.should have_body_text(/Importing content for #{ identity.type } failed/)
+      @email.should have_body_text(/Please check if API key: #{ identity.api_key } is valid./)
+    end
+
+    it "should have the correct subject" do
+      @email.should have_subject(/KarmaTracker import failed. Invalid API key/)
     end
   end
 end
