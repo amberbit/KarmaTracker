@@ -5,7 +5,7 @@
   </div>
 </div>
 
-<div id="projectspage" ng-controller="ProjectsController" class="row pullgrip hide-for-small">
+<div id="projectspage" ng-controller="ProjectsController" class="row pullgrip" ng-class="{'hide-for-small': !noRecentProjects}">
   <div class="boxed-header">
     <div class="small-12 large-8 columns">
       <h4><a ng-href="/#/projects">Projects</a></h4>
@@ -35,19 +35,19 @@
     </div>
     <div class="small-12 large-12 none-visible" ng-show="projects.none_visible">There are no projects to show.</div>
   </div>
-  <div class="small-5 small-centered columns show-all-projects hide-for-medium-up">
+  <div class="small-5 small-centered columns show-all-projects hide-for-medium-up" ng-class="{'hide-for-small': noRecentProjects}">
     <div class="button" ng-click="showRecents()">See only recents</div>
   </div>
 </div>
 
-<div id="recentspage" class="hide-for-medium-up">
+<div id="recentspage" class="hide-for-medium-up" ng-class="{'hide-for-small': noRecentProjects}">
   <div id="recentscontent" class="row pullgrip" ng-controller="RecentsController">
     <div class="boxed-header recents">
       <div class="small-12 large-8 columns">
         <h4><a ng-href="/#/projects">Recent projects</a></h4>
       </div>
     </div>
-    <div class="small-12 large-12 none-visible" ng-show="noProjects">There are no recent projects.</div>
+    <div class="small-12 large-12 none-visible" ng-show="noRecentProjects">There are no recent projects.</div>
     <div ng-repeat="project in lastProjects">
       <div class="small-12 large-12 columns panel project clickable" ng-click="go('/projects/'+project.id+'/tasks')">
         <div class="small-10 large-11 columns">

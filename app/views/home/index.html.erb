@@ -95,7 +95,7 @@
     <div class="large-12 columns panel recents recent-projects">
       <h4 class="subheader">Projects</h4>
       <div class="large-12 columns">
-        <div ng-show="noProjects">There are no recent projects.</div>
+        <div ng-show="noRecentProjects">There are no recent projects.</div>
         <ul>
           <li ng-repeat="project in lastProjects">
             <a href="" ng-click="go('/projects/'+project.id+'/tasks')">{{project.name}}</a>

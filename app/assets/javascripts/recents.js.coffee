@@ -1,8 +1,8 @@
-KarmaTracker.controller "RecentsController", ($scope, $http, $cookieStore, $location, broadcastService) ->
+KarmaTracker.controller "RecentsController", ($scope, $http, $cookieStore, $location, broadcastService, $rootScope) ->
   $scope.lastTasks = []
   $scope.lastProjects = []
   $scope.noTasks = true
-  $scope.noProjects = true
+  $rootScope.noRecentProjects = true
   $scope.tokenName = 'token'
   
   
@@ -55,10 +55,10 @@ KarmaTracker.controller "RecentsController", ($scope, $http, $cookieStore, $loca
       $scope.lastProjects = []
       for project in data
         $scope.lastProjects.push project.project
-      $scope.noProjects = false if $scope.lastProjects.length > 0
+      $rootScope.noRecentProjects = false if $scope.lastProjects.length > 0
     ).error((data, status, headers, config) ->
       $scope.lastProjects = []
-      $scope.noProjects = true
+      $rootScope.noRecentProjects = true
     )
 
   $scope.$on "handleBroadcast", () ->
