@@ -1,6 +1,7 @@
 require 'spec_helper'
 
-describe 'PivotalTrackerProjectsFetcher' do
+describe 'PivotalTrackerProjectsFetcher
+should' do
 
   before :all do
     reset_fakeweb_urls
@@ -17,7 +18,7 @@ describe 'PivotalTrackerProjectsFetcher' do
     Project.count.should == 2
   end
 
-  it 'should not fetch a project twice' do
+  it 'not fetch a project twice' do
     @fetcher.fetch_for_identity(@identity)
     @fetcher.fetch_for_identity(@identity2)
     Project.count.should == 2
@@ -29,7 +30,7 @@ describe 'PivotalTrackerProjectsFetcher' do
     Project.first.identities.count.should == 1
   end
 
-  it 'should remove identities that are no longer participants in a project' do
+  it 'remove identities that are no longer participants in a project' do
     FakeWeb.register_uri(:get, 'https://www.pivotaltracker.com/services/v4/projects',
       :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'projects2.xml')),
       :status => ['200', 'OK'])
@@ -49,19 +50,19 @@ describe 'PivotalTrackerProjectsFetcher' do
     Project.first.identities.count.should == 1
   end
 
-  it 'should fetch tasks when fetching projects' do
+  it 'fetch tasks when fetching projects' do
     @fetcher.fetch_for_identity(@identity)
     Task.count.should == 2
     Project.last.tasks.count.should == 2
   end
 
-  it 'should mark current tasks appropriately' do
+  it 'mark current tasks appropriately' do
     @fetcher.fetch_for_identity(@identity)
     Task.count.should == 2
     Task.current.count.should == 1
   end
 
-  it 'should update current flag for tasks' do
+  it 'update current flag for tasks' do
     @fetcher.fetch_for_identity(@identity)
     Task.find_by_source_identifier('1').current_task.should be_true
     Task.find_by_source_identifier('4').current_task.should be_false
@@ -75,5 +76,12 @@ describe 'PivotalTrackerProjectsFetcher' do
     Task.find_by_source_identifier('4').current_task.should be_true
 
     reset_fakeweb_urls
+  end
+
+  it 'not crash import when api key is invalid' do
+    FakeWeb.register_uri(:get, "https://www.pivotaltracker.com/services/v4/projects", :status => ['401', 'Unauthorized'])
+    expect {
+      @fetcher.fetch_for_identity(@identity)
+    }.not_to raise_error(OpenURI::HTTPError)
   end
 end

@@ -74,4 +74,14 @@ describe 'GitHubProjectsFetcher' do
 
     reset_fakeweb_urls
   end
+
+  xit 'not import when api key is invalid' do
+    #stubbing doesn't work, always returns 200 OK
+    FakeWeb.clean_registry
+    FakeWeb.register_uri(:get, /https:\/\/api\.github\.com\/user\/subscriptions/,
+      :body => {"message"=>"Bad credentials"}, status: ['401', 'Unauthorized'])
+    @fetcher.fetch_for_identity(@identity)
+    Task.count.should == 2
+    Project.last.tasks.count.should == 1
+  end
 end
