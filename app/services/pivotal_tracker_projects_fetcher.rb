@@ -23,7 +23,7 @@ class PivotalTrackerProjectsFetcher
         end
         Rails.logger.info "Successfully updated list of projects for PT identity #{identity.api_key}"
       rescue OpenURI::HTTPError => e
-        UserMailer.invalid_api_key identity
+        UserMailer.invalid_api_key(identity).deliver
         Rails.logger.error "Error fetching projects from PT - #{e.message}. Check API key correctness."
       end
     end
