@@ -4,6 +4,10 @@ KarmaTracker.controller "ProjectsController", ($rootScope, $scope, $http, $cooki
   $scope.query.string = ""
   $scope.tokenName = 'token'
 
+  $scope.showRecents = () ->
+    document.getElementById("projectspage").classList.add("hide-for-small")
+    document.getElementById("recentspage").classList.remove("hide-for-small")
+  
   $scope.loadTasks = (project) ->
     $location.path "/projects/#{project.id}/tasks"
 

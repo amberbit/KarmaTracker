@@ -163,8 +163,26 @@ h5.subtitle{
   }
 }
 
+.touch .source-icon {
+  margin-right: 0px;
+  position: relative;
+  right: 5px;
+}
+
+.touch .callout .source-icon {
+  margin-right: 0px;
+  position: relative;
+  right: 10px;
+}
+
 .callout .source-icon {
   margin-right: -10px;
+  &.github:hover{
+    background-image: url(image_path('blackgh.png'));
+  }
+  &.pivotal-tracker:hover{
+    background-image: url(image_path('blackpt.png'));
+  }
 }
 
 span.project-text {
@@ -173,12 +191,17 @@ span.project-text {
   word-wrap: break-word;
 }
 
+.touch .task-route {
+  margin-top: 16px;
+}
+
 span.task-text {
   margin-left: 10px;
   width: 70%;
   float: left;
   word-wrap: break-word;
   padding: 5px 0 5px;
+
 }
 
 .label.task-id {
@@ -253,6 +276,10 @@ margin-top: 0.5em;
     background-position: center;
     background-repeat: no-repeat;
   }
+}
+
+.touch .track-control-icon {
+  margin-left: -16px;
 }
 
 .panel.project.icon {
@@ -476,7 +503,7 @@ margin-top: 0.5em;
 
   top: -170px;
   left: 1px;
-  box-shadow: 0 146px 107px -125px #f47a10 inset !important;
+  //box-shadow: 0 146px 107px -125px #f47a10 inset !important;
   background-color: #444;
   
 }
@@ -484,6 +511,7 @@ margin-top: 0.5em;
 #pulled-alert {
   position: relative;
   top: 125px;
+  z-index: 0;
 }
 
 #pulled-loader {
@@ -496,7 +524,7 @@ margin-top: 0.5em;
   height: 2em;
   max-width: 2em;
   min-width: 0.5em;
-  
+  z-index: auto;
 }
 
 .touch .pullgrip {
@@ -517,4 +545,19 @@ margin-top: 0.5em;
 }
 .clearfix {
   @include clearfix();
+}
+
+.boxed-header.recents {
+  height: 85px;
+  padding-top: 25px;
+  font-size: 1.125em;
+}
+.show-all-projects {
+
+  text-align: center;
+
+}
+
+.show-all-projects .button {
+    margin-top: 10px;
 }
