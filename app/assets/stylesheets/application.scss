@@ -546,3 +546,18 @@ margin-top: 0.5em;
 .clearfix {
   @include clearfix();
 }
+
+.boxed-header.recents {
+  height: 85px;
+  padding-top: 25px;
+  font-size: 1.125em;
+}
+.show-all-projects {
+
+  text-align: center;
+
+}
+
+.show-all-projects .button {
+    margin-top: 10px;
+}

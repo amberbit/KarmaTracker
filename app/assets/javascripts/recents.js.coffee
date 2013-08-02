@@ -4,6 +4,12 @@ KarmaTracker.controller "RecentsController", ($scope, $http, $cookieStore, $loca
   $scope.noTasks = true
   $scope.noProjects = true
   $scope.tokenName = 'token'
+  
+  
+  $scope.showAllProjects = () ->
+    document.getElementById("projectspage").classList.remove("hide-for-small")
+    document.getElementById("recentspage").classList.add("hide-for-small")
+    
 
   $scope.startTracking = (task) ->
     if task.id == $scope.runningTask.id
