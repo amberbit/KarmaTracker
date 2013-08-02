@@ -48,7 +48,7 @@
       </div>
     </div>
     <div class="small-12 large-12 none-visible" ng-show="noProjects">There are no recent projects.</div>
-    <div class="row" ng-repeat="project in lastProjects">
+    <div ng-repeat="project in lastProjects">
       <div class="small-12 large-12 columns panel project clickable" ng-click="go('/projects/'+project.id+'/tasks')">
         <div class="small-10 large-11 columns">
           <span class="project-text">{{project.name}}</span>
