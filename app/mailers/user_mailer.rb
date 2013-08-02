@@ -12,6 +12,12 @@ class UserMailer < ActionMailer::Base
     mail(to: @user.email, subject: 'KarmaTracker password reset', from: 'no-reply@example.com')
   end
 
+  def invalid_api_key identity
+    @service = identity.type
+    @api_key = identity.api_key
+    mail(to: identity.user.email, subject: 'KarmaTracker import failed. Invalid API key', from: 'no-reply@example.com')
+  end
+
   private 
     def get_root_url host
       root_url(host: host)
