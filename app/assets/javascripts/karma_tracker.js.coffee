@@ -181,11 +181,24 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
         )
     else
       $(element).hook("destroy")
-      
-      
+     
+
+  $scope.$on '$routeChangeStart', ->
+    if $location.path().indexOf('tasks') != -1
+      $http.get(
+        "api/v1/projects/#{$location.path().split('/')[2]}/pivotal_tracker_activity_web_hook_url?token=#{$cookieStore.get $scope.tokenName}"
+      ).success((data, status, headers, config) ->
+        $scope.webhookProjectURL = data.url
+      ).error((data, status, headers, config) ->
+        $scope.webhookProjectURL = null
+      )
+    else
+      $scope.webhookProjectURL = null
+  
   $scope.getRunningTask()
   $scope.checkIdentities()
   $rootScope.checkRefreshingProjects()
+    
 
 
 

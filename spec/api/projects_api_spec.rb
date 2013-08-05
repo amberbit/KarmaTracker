@@ -225,4 +225,7 @@ describe 'Projects API' do
     projects.map {|p| p["project"]["id"]}.should == @projects.map{|p| p.id}[5..9].reverse
   end
   
+  it 'should not get url of github project'
+  
+  
 end

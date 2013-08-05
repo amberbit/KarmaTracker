@@ -364,9 +364,12 @@ module Api
       #
       # GET /api/v1/projects/:id/pivotal_tracker_activity_web_hook_url
       #
+      # params:
+      #   token - KarmaTracker API token
+      #
       # = Examples
       #
-      #   resp = conn.get("api/v1/projects/1/pivotal_tracker_activity_web_hook_url")
+      #   resp = conn.get("api/v1/projects/1/pivotal_tracker_activity_web_hook_url, "token" => "dcbb7b36acd4438d07abafb8e28605a4")
       #
       #   resp.status
       #   => 200
@@ -374,7 +377,7 @@ module Api
       #   resp.body
       #   => {"url": "http://some-host.com/api/v1/projects/1/pivotal_tracker_activity_web_hook?token=W3bH0oKt043n
       #
-      #   resp = conn.get("api/v1/projects/123/pivotal_tracker_activity_web_hook_url")
+      #   resp = conn.get("api/v1/projects/123/pivotal_tracker_activity_web_hook_url, "token" => "dcbb7b36acd4438d07abafb8e28605a4"")
       #
       #   resp.status
       #   => 404
@@ -384,7 +387,7 @@ module Api
       #
       def pivotal_tracker_activity_web_hook_url
         project = Project.find(params[:id])
-        if project.users.include? @api_key.user
+        if project.users.include?(@api_key.user) && project.source_name == 'Pivotal Tracker'
           render json: {url: "#{pivotal_tracker_activity_web_hook_api_v1_project_url(project)}?token=#{project.web_hook_token}"}, status: 200
         else
           render json: {message: 'Resource not found'}, status: 404
