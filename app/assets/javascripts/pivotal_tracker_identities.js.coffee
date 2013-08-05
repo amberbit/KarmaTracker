@@ -1,6 +1,6 @@
 KarmaTracker.controller "PivotalTrackerIdentitiesController", ($scope, $http, $cookieStore, $location) ->
   $scope.identities = []
-  $scope.newIdentity = { name: null, api_key: null, email: null, password: null }
+  $scope.newIdentity = { api_key: null, email: null, password: null }
   $scope.addFormShown = false
   $scope.errors = {}
   $scope.tokenName = 'token'
@@ -13,8 +13,8 @@ KarmaTracker.controller "PivotalTrackerIdentitiesController", ($scope, $http, $c
     ).error((data, status, headers, config) ->
     )
 
-  $scope.remove = (name, id) ->
-    answer = confirm("Are you sure to remove '"+name+"'?")
+  $scope.remove = (id) ->
+    answer = confirm("Are you sure to remove Pivotal Tracker Identity?")
     if answer
       $http.delete(
         '/api/v1/identities/'+id+'?token='+$cookieStore.get($scope.tokenName)+'&service=pivotal_tracker'
@@ -26,10 +26,6 @@ KarmaTracker.controller "PivotalTrackerIdentitiesController", ($scope, $http, $c
   $scope.formLooksValid = () ->
     valid = true
     $scope.errors = {}
-
-    if !$scope.newIdentity.name? or $scope.newIdentity.name == ''
-      $scope.errors['name'] = "can't be blank"
-      valid = false
 
     unless $scope.newIdentity.api_key? or $scope.newIdentity.api_key == ''
       for field in ["email", "password"]
@@ -43,7 +39,7 @@ KarmaTracker.controller "PivotalTrackerIdentitiesController", ($scope, $http, $c
     if $scope.formLooksValid()
       if $scope.newIdentity.api_key? and $scope.newIdentity.api_key != ''
         $http.post(
-          '/api/v1/identities/pivotal_tracker?token='+$cookieStore.get($scope.tokenName)+'&identity[name]='+$scope.newIdentity.name+'&identity[api_key]='+$scope.newIdentity.api_key
+          '/api/v1/identities/pivotal_tracker?token='+$cookieStore.get($scope.tokenName)+'&identity[api_key]='+$scope.newIdentity.api_key
         ).success((data, status, headers, config) ->
           $scope.cleanForm()
           $scope.openAddForm()
@@ -53,7 +49,7 @@ KarmaTracker.controller "PivotalTrackerIdentitiesController", ($scope, $http, $c
         )
       else
         $http.post(
-          '/api/v1/identities/pivotal_tracker?token='+$cookieStore.get($scope.tokenName)+'&identity[name]='+$scope.newIdentity.name+'&identity[email]='+$scope.newIdentity.email+'&identity[password]='+$scope.newIdentity.password
+          '/api/v1/identities/pivotal_tracker?token='+$cookieStore.get($scope.tokenName)+'&identity[email]='+$scope.newIdentity.email+'&identity[password]='+$scope.newIdentity.password
         ).success((data, status, headers, config) ->
           $scope.cleanForm()
           $scope.openAddForm()
@@ -72,7 +68,6 @@ KarmaTracker.controller "PivotalTrackerIdentitiesController", ($scope, $http, $c
     $scope.cleanForm()
 
   $scope.cleanForm = () ->
-    $scope.newIdentity.name  = ''
     $scope.newIdentity.email = ''
     $scope.newIdentity.password = ''
     $scope.newIdentity.api_key =''

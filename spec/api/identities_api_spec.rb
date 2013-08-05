@@ -14,7 +14,6 @@ describe 'Identities API' do
     response.status.should == 200
     json['pivotal_tracker']['id'].should == Identity.last.id
     json['pivotal_tracker']['service'].should == "Pivotal Tracker"
-    json['pivotal_tracker']['name'].should == Identity.last.name
     json['pivotal_tracker']['api_key'].should == Identity.last.api_key
   end
 
@@ -66,14 +65,13 @@ describe 'Identities API' do
   it "should be able to add PT identity for given user" do
     user = FactoryGirl.create :user
     json = api_post "identities/pivotal_tracker", {token: ApiKey.last.token, identity:
-          { name: 'Just an identity', email: 'correct_email', password: 'correct_password'}}
+          { email: 'correct_email', password: 'correct_password'}}
 
     response.status.should == 200
     json.has_key?('pivotal_tracker').should be_true
 
     Identity.count.should == 1
     identity = Identity.last
-    identity.name.should == 'Just an identity'
     identity.user.should == user
     user.identities.should include(identity)
   end
@@ -82,13 +80,12 @@ describe 'Identities API' do
   it "should be able to add PT identity for given user with provided token" do
     user = FactoryGirl.create :user
     json = api_post "identities/pivotal_tracker", {token: ApiKey.last.token, identity:
-          { name: 'Just an identity', api_key: 'correct_token'}}
+          { api_key: 'correct_token'}}
     response.status.should == 200
     json.has_key?('pivotal_tracker').should be_true
 
     Identity.count.should == 1
     identity = Identity.last
-    identity.name.should == 'Just an identity'
     identity.user.should == user
     user.identities.should include(identity)
   end
@@ -97,8 +94,7 @@ describe 'Identities API' do
   # POST /api/v1/identities/pivotal_tracker
   it 'should add error messages to response when adding PT identity fails' do
     FactoryGirl.create :user
-    json = api_post "identities/pivotal_tracker", {token: ApiKey.last.token, identity: {name: 'Just an identity',
-           email: 'wrong_email', password: 'wrong_password'}}
+    json = api_post "identities/pivotal_tracker", {token: ApiKey.last.token, identity: {email: 'wrong_email', password: 'wrong_password'}}
 
     response.status.should == 422
     Identity.count.should == 0
@@ -110,14 +106,13 @@ describe 'Identities API' do
   it "should be able to add GH identity for given user" do
     user = FactoryGirl.create :user
     json = api_post "identities/git_hub", {token: ApiKey.last.token, identity:
-          { name: 'Just an identity', username: 'correct_username', password: 'correct_password'}}
+          { username: 'correct_username', password: 'correct_password'}}
 
     response.status.should == 200
     json.has_key?('git_hub').should be_true
 
     Identity.count.should == 1
     identity = Identity.last
-    identity.name.should == 'Just an identity'
     identity.user.should == user
     user.identities.should include(identity)
   end
@@ -126,14 +121,13 @@ describe 'Identities API' do
   it "should be able to add GH identity for given user with provided token" do
     user = FactoryGirl.create :user
     json = api_post "identities/git_hub", {token: ApiKey.last.token, identity:
-          { name: 'Just an identity', api_key: 'correct_token'}}
+          { api_key: 'correct_token'}}
 
     response.status.should == 200
     json.has_key?('git_hub').should be_true
 
     Identity.count.should == 1
     identity = Identity.last
-    identity.name.should == 'Just an identity'
     identity.user.should == user
     identity.source_id.should == 'correct_username'
     user.identities.should include(identity)
@@ -142,8 +136,7 @@ describe 'Identities API' do
   # POST /api/v1/identities/git_hub
   it 'should add error messages to response when adding GH identity fails' do
     FactoryGirl.create :user
-    json = api_post "identities/git_hub", {token: ApiKey.last.token, identity: {name: 'Just an identity',
-           username: 'wrong_username', password: 'wrong_password'}}
+    json = api_post "identities/git_hub", {token: ApiKey.last.token, identity: {username: 'wrong_username', password: 'wrong_password'}}
 
     response.status.should == 422
     Identity.count.should == 0

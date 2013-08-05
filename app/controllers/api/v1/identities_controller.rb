@@ -28,8 +28,8 @@ module Api
       #   => 200
       #
       #   resp.body
-      #   => {[{"pivotal_tracker": {"id": 1, "name": "John Doe", "api_key": "123456", "service": "Pivotal Tracker"}},
-      #       {"git_hub": {"id": 3, "name": "John Doe's GH identity", "api_key": "42", "service": "GitHub"}}]}
+      #   => {[{"pivotal_tracker": {"id": 1, "api_key": "123456", "service": "Pivotal Tracker"}},
+      #       {"git_hub": {"id": 3, "api_key": "42", "service": "GitHub"}}]}
       #
       #   resp = conn.get("/api/v1/identities",
       #                   "token" => "dcbb7b36acd4438d07abafb8e28605a4",
@@ -39,7 +39,7 @@ module Api
       #   => 200
       #
       #   resp.body
-      #   => {[{"pivotal_tracker":{"id":1,"name":"John Doe","api_key":"123456","service":"Pivotal Tracker"}}]}
+      #   => {[{"pivotal_tracker":{"id":1, "api_key":"123456","service":"Pivotal Tracker"}}]}
       #
       def index
         @identities = if params[:service]
@@ -66,7 +66,7 @@ module Api
       #   => 200
       #
       #   resp.body
-      #   => {"pivotal_tracker": {"id": 1, "name": "John Doe", "api_key": "123456", "service": "Pivotal Tracker"}}
+      #   => {"pivotal_tracker": {"id": 1, "api_key": "123456", "service": "Pivotal Tracker"}}
       #
       #
       #   resp = conn.get("/api/v1/projects/7", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
@@ -93,7 +93,6 @@ module Api
       #
       # params:
       #   token - KarmaTracker API token
-      #   identity[name] - identity name
       #   identity[api_key] - Pivotal Tracker API token
       #   identity[email] - email assigned to PT account
       #   identity[password] - password assigned to PT account
@@ -103,29 +102,26 @@ module Api
       #
       #   resp = conn.post("/api/v1/identities/pivotal_tracker",
       #                    "token" => "dcbb7b36acd4438d07abafb8e28605a4",
-      #                    "identity[name]" => "New identity",
       #                    "identity[api_key]" => "sdgs24386tr8732gfsiur32")
       #
       #   resp.status
       #   => 200
       #
       #   resp.body
-      #   => {"pivotal_tracker": {"id": 8, "name": "New identity", "api_key": "sdasdf32rfefs32", "service": "Pivotal Tracker"}}
+      #   => {"pivotal_tracker": {"id": 8, "api_key": "sdasdf32rfefs32", "service": "Pivotal Tracker"}}
       #
       #   resp = conn.post("/api/v1/identities/pivotal_tracker",
       #                    "token" => "dcbb7b36acd4438d07abafb8e28605a4",
-      #                    "identity[name]" => "New identity 2",
       #                    "identity[api_key]" => "wrong token")
       #
       #   resp.status
       #   => 422
       #
       #   resp.body
-      #   => {"pivotal_tracker": {"name": "New identity 2", "api_key": "wrong token", "errors": { "api_key": ["Is invalid"] }}}
+      #   => {"pivotal_tracker": {"api_key": "wrong token", "errors": { "api_key": ["Is invalid"] }}}
       #
       #   resp = conn.post("/api/v1/identities/pivotal_tracker",
       #                    "token" => "dcbb7b36acd4438d07abafb8e28605a4",
-      #                    "identity[name]" => "New identity 3",
       #                    "identity[email]" => "mail@example.com"
       #                    "identity[password]" => "wrong_password")
       #
@@ -133,7 +129,7 @@ module Api
       #   => 422
       #
       #   resp.body
-      #   => {"pivotal_tracker": {"name": "New identity 3", "email": "mail@example.com", "password": "wrong_password",
+      #   => {"pivotal_tracker": {"email": "mail@example.com", "password": "wrong_password",
       #                           "errors": { "password": ["does not match email"] }}}
       #
       def pivotal_tracker
@@ -153,7 +149,6 @@ module Api
       #
       # params:
       #   token - KarmaTracker API token
-      #   identity[name] - identity name
       #   identity[api_key] - GitHub API token
       #   identity[username] - username assigned to GH account
       #   identity[password] - password assigned to GH account
@@ -162,7 +157,6 @@ module Api
       #
       #   resp = conn.post("/api/v1/identities/git_hub",
       #                    "token" => "dcbb7b36acd4438d07abafb8e28605a4",
-      #                    "identity[name]" => "New identity",
       #                    "identity[username]" => "R2D2"
       #                    "identity[password]" => "fdsjfsho7h23orfesk")
       #
@@ -170,11 +164,10 @@ module Api
       #   => 200
       #
       #   resp.body
-      #   => {"git_hub": {"id": 9, "name": "New identity", "api_key": "sdasdf32rfefs32", "service": "GitHub"}}
+      #   => {"git_hub": {"id": 9, "api_key": "sdasdf32rfefs32", "service": "GitHub"}}
       #
       #   resp = conn.post("/api/v1/identities/git_hub",
       #                    "token" => "dcbb7b36acd4438d07abafb8e28605a4",
-      #                    "identity[name]" => "New identity 1",
       #                    "identity[username]" => "R2D2"
       #                    "identity[api_key]" => "osdf659234sdffd3sjfsh234o7h23orfe3sk")
       #
@@ -182,11 +175,10 @@ module Api
       #   => 200
       #
       #   resp.body
-      #   => {"git_hub": {"id": 10, "name": "New identity 1", "api_key": "osdf659234sdffd3sjfsh234o7h23orfe3sk", "service": "GitHub"}}
+      #   => {"git_hub": {"id": 10, "api_key": "osdf659234sdffd3sjfsh234o7h23orfe3sk", "service": "GitHub"}}
       #
       #   resp = conn.post("/api/v1/identities/pivotal_tracker",
       #                    "token" => "dcbb7b36acd4438d07abafb8e28605a4",
-      #                    "identity[name]" => "New identity 2",
       #                    "identity[username]" => "R2D2"
       #                    "identity[password]" => "wrongpassword")
       #
@@ -194,7 +186,7 @@ module Api
       #   => 422
       #
       #   resp.body
-      #   => {"git_hub": {"name": "New identity 2", "api_key": "wrong token", "errors": { "api_key": ["Is invalid"] }}}
+      #   => {"git_hub": {"api_key": "wrong token", "errors": { "api_key": ["Is invalid"] }}}
       #
       def git_hub
         options = (params[:identity] || {}).merge({user_id: @current_user.id})
@@ -223,7 +215,7 @@ module Api
       #   => 200
       #
       #   resp.body
-      #   => {"pivotal_tracker": {"id": 1, "name": "John Doe", "api_key": "123456", "service": "Pivotal Tracker"}}
+      #   => {"pivotal_tracker": {"id": 1, "api_key": "123456", "service": "Pivotal Tracker"}}
       #
       #   resp = conn.delete("/api/v1/identities/123", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
       #

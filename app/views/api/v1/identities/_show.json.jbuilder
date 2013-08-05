@@ -2,7 +2,6 @@ identity ||= @identity
 
 json.set! identity.to_snake_case do
   json.id identity.id
-  json.name identity.name
   json.api_key identity.api_key
   json.service identity.service_name
 
