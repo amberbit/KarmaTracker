@@ -3,11 +3,11 @@ KarmaTracker.controller "TimesheetController", ($scope, $http, $cookieStore, $lo
   $scope.started_at = ''
   $scope.entries = {}
   $scope.task = {}
-  $scope.today = $filter('date')(new Date(),'yyyy-MM-dd 00:00:00')
+  $scope.today = moment($scope.date).format('YYYY-MM-DD 00:00:00')
   $scope.tokenName = 'token'
   tomorrow = new Date()
   tomorrow.setDate(tomorrow.getDate()+1)
-  tomorrow = $filter('date')(tomorrow,'yyyy-MM-dd 00:00:00')
+  tomorrow = moment($scope.date).add('days', 1).format('YYYY-MM-DD 00:00:00')
   offset = moment().zone()
 
 
