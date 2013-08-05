@@ -56,3 +56,4 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
   ).error((data, status, headers, config) ->
     console.debug('Error fetching project')
   )
+
