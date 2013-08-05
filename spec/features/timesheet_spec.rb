@@ -33,6 +33,7 @@ feature 'Timesheet page,
     click_link 'Timesheet'
   end
 
+  after(:each) { Timecop.return }
 
   scenario 'see all my recent time log entries with total time' do
     within '.timesheet-entries' do

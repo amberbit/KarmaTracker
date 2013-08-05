@@ -6,7 +6,7 @@ as a user I can', js: true  do
 
   let(:user) { user = create :confirmed_user }
 
-  let(:project1) do
+  let!(:project1) do
     proj = create(:project, name: "KarmaTracker")
     proj
   end
