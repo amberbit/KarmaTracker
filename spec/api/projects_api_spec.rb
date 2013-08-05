@@ -225,7 +225,15 @@ describe 'Projects API' do
     projects.map {|p| p["project"]["id"]}.should == @projects.map{|p| p.id}[5..9].reverse
   end
   
-  it 'should not get url of github project'
-  
+  it 'should not get url of github project' do
+    identity = create :git_hub_identity
+    project = create :gh_project, identities: [identity]
+    
+    api_get "projects/#{project.id}/pivotal_tracker_activity_web_hook_url", {token: project.users.last.api_key.token}
+    response.status.should == 404
+    resp = JSON.parse(response.body)
+    resp.should have_key("message")
+    resp["message"].should =~ /Resource not found/
+  end
   
 end
