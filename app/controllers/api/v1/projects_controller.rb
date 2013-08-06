@@ -128,27 +128,27 @@ module Api
         ProjectsFetcher.new.background.fetch_for_user(@api_key.user)
         render json: {message: 'Projects list refresh started'}, status: 200
       end
-
+      
       ##
-      # Triggers projects list refresh for a single identities.
+      # Triggers task list refresh for a single project.
       # Refreshing runs in background, so the response is sent without waiting for it to finish.
       #
-      # GET /api/v1/projects/refresh_for_identity/:id
+      # GET /api/v1/projects/refresh_for_project/:id
       #
       # params:
       #   token - KarmaTracker API token
       #
       # = Examples
       #
-      #   resp = conn.get("/api/v1/projects/refresh_for_identity/1", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
+      #   resp = conn.get("/api/v1/projects/refresh_for_project/1", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
       #
       #   resp.status
       #   => 200
       #
       #   resp.body
-      #   => {"message": "Projects list refresh started"}
+      #   => {"message": "Project list refresh started"}
       #
-      #   resp = conn.get("/api/v1/projects/refresh_for_identity/123", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
+      #   resp = conn.get("/api/v1/projects/refresh_for_project/123", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
       #
       #   resp.status
       #   => 404
@@ -156,11 +156,12 @@ module Api
       #   resp.body
       #   => {"message": "Resource not found"}
       #
-      def refresh_for_identity
-        identity = Identity.find_by_id(params[:id])
-        if identity && identity.user.api_key == @api_key
-          ProjectsFetcher.new.background.fetch_for_identity(identity)
-          render json: {message: 'Projects list refresh started'}, status: 200
+      def refresh_for_project
+        project = Project.find(params[:id])
+        identity = @api_key.user.identities.joins(:participations).where('participations.project_id = ?', project.id).first
+        if project && @api_key.user.projects.include?(project) && @api_key.user.identities.include?(identity)
+          ProjectsFetcher.new.background.fetch_for_project(project, identity)
+          render json: {message: 'Project list refresh started'}, status: 200
         else
           render json: {message: 'Resource not found'}, status: 404
         end
