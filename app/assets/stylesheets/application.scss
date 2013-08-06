@@ -561,3 +561,39 @@ margin-top: 0.5em;
 .show-all-projects .button {
     margin-top: 10px;
 }
+
+
+.spinning-wheel {
+  background-image: url(image_path('ajax-loader.gif'));
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 2em;
+  width: 2em;
+  
+}
+
+.loading {
+  position: absolute;
+  top: 200px;
+  left: 50%;
+  z-index:99;
+  width:200px;
+  margin-left: -100px;
+  height:150px;
+  background-color:#111;
+  opacity:0.8;
+  
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -khtml-border-radius: 10px;
+  border-radius: 10px;
+
+  text-align: center;
+  padding-top: 57px;
+}
+
+
+.loading > * {
+  display: inline-block;
+  vertical-align: middle;
+}

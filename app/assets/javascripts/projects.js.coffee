@@ -3,6 +3,8 @@ KarmaTracker.controller "ProjectsController", ($rootScope, $scope, $http, $cooki
   $scope.projects = []
   $scope.query.string = ""
   $scope.tokenName = 'token'
+  $rootScope.loading = true
+
 
   $scope.showRecents = () ->
     document.getElementById("projectspage").classList.add("hide-for-small")
@@ -20,7 +22,6 @@ KarmaTracker.controller "ProjectsController", ($rootScope, $scope, $http, $cooki
 
     $scope.projects.none_visible = !any_visible
 
-
   $http.get(
     '/api/v1/projects?token='+$cookieStore.get($scope.tokenName)
   ).success((data, status, headers, config) ->
@@ -28,8 +29,11 @@ KarmaTracker.controller "ProjectsController", ($rootScope, $scope, $http, $cooki
     for project in data
       project.project.visible = $scope.matchesQuery(project.project.name)
       $scope.projects.push project.project
+    $rootScope.loading = false
     filter_visible()
   ).error((data, status, headers, config) ->
+    $rootScope.loading = false
+
   )
 
   $scope.$watch("query.string", filter_visible  )

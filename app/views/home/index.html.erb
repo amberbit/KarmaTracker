@@ -44,6 +44,7 @@
 
 <div id='top-bar-spacer'></div>
 
+
 <div id="flash" class="row" ng-class="{'signin-width': !signed_in}" ng-controller="FlashesController">
   <div class="show-for-small">
     <div class="alert-box tracking" ng-show="runningVisible" ng-click="goToLink('projects/'+runningTask.project_id+'/tasks')">
@@ -58,6 +59,12 @@
   <div ng-show="message.string" ng-class="{'small-12': true, 'columns': true, 'alert-box': true, 'alert': isAlert() == 'alert', 'success': isAlert() == 'success' }">
     {{message.string}}
   </div>
+</div>
+
+
+<div class="loading" ng-show="loading">
+  <div class="spinning-wheel"></div>
+  <div>Loading...</div>
 </div>
 
 <div class="row boxed" ng-class="{'signin-width': !signed_in}">
@@ -113,15 +120,7 @@
           <p>To use it with this project, please copy the URL above and paste it into Project - Edit Settings - Integrations - Web Hook URL, at Pivotal Tracker.</p>
         </div>
       </div>
-      
-      
-      
     </div>
-
-  
-    
-    
-    
   </div>
   </div>
 </div>

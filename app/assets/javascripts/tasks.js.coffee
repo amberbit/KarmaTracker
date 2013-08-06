@@ -5,7 +5,9 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
   $scope.query.string = ""
   $scope.tokenName = 'token'
 
+
   $scope.reloadTasks = ->
+    $rootScope.loading = true
     $http.get(
       "/api/v1/projects/#{$routeParams.project_id}/#{if $scope.current then "current_" else "" }tasks?token=#{$cookieStore.get($scope.tokenName)}#{if $scope.query.string.length > 0 then '&query=' + $scope.query.string else ''}"
     ).success((data, status, headers, config) ->
@@ -13,9 +15,10 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
       for task in data
         task.task.visible = true
         $scope.tasks.push task.task
-
+       $rootScope.loading = false
     ).error((data, status, headers, config) ->
       console.debug('Error fetching tasks')
+      $rootScope.loading = false
     )
 
 
