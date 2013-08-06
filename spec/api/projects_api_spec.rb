@@ -56,6 +56,19 @@ describe 'Projects API' do
 
     reset_fakeweb_urls
   end
+  
+  it "should fetch project's tasks" do
+    project = Project.last
+    expect {
+      api_get "projects/#{project.id}/refresh_for_project", {token: ApiKey.last.token}
+      response.status.should == 200
+      }.to change(Task.count).by(2)
+  end
+  
+  it "should not fetch tasks from not my project" 
+  
+  it "should not fetch tasks from other user's identity"
+  
 
   # GET /projects/:id/tasks
   it 'should return tasks for a given project' do

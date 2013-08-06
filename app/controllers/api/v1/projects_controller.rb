@@ -159,7 +159,7 @@ module Api
       def refresh_for_project
         project = Project.find(params[:id])
         identity = @api_key.user.identities.joins(:participations).where('participations.project_id = ?', project.id).first
-        if project && @api_key.user.projects.include?(project) && @api_key.user.identities.include?(identity)
+        if project && identity &&  @api_key.user.projects.include?(project)
           ProjectsFetcher.new.background.fetch_for_project(project, identity)
           render json: {message: 'Project list refresh started'}, status: 200
         else
