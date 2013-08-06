@@ -33,7 +33,7 @@
         </div>
       </div>
     </div>
-    <div class="small-12 large-12 none-visible" ng-show="projects.none_visible">There are no projects to show.</div>
+    <div class="small-12 large-12 none-visible" ng-show="query.string && projects.none_visible">There are no projects to show.</div>
   </div>
   <div class="small-5 small-centered columns show-all-projects hide-for-medium-up" ng-class="{'hide-for-small': noRecentProjects}">
     <div class="button" ng-click="showRecents()">See only recents</div>

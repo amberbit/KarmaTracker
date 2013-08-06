@@ -94,4 +94,13 @@ as a user I can', js: true  do
       page.should have_content task4.name
     end
   end
+  
+  scenario 'see spining wheel when loading task list's do
+    100.times { create(:task, project: project1) }
+    visit current_path
+    within '.loading' do 
+      page.should have_content 'Loading'
+    end
+  end
+  
 end

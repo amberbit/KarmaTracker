@@ -16,8 +16,8 @@ feature 'Webhook Infobox,
     FakeWeb.allow_net_connect = true
     login user
     click_on project1.name
-    page.should have_content 'WebHook Integration'
-    page.should have_content "api/v1/projects/#{project1.id}/pivotal_tracker_activity_web_hook"
+    wait_until(10) { page.has_content? 'WebHook Integration' }
+    find_field('webhook_url')['value'] =~ /api\/v1\/projects\/#{project1.id}\/pivotal_tracker_activity_web_hook/
   end
 end
   
