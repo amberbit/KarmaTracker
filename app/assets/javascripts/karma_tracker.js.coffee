@@ -247,6 +247,11 @@ KarmaTracker.directive "pullToRefresh", ($rootScope) ->
   }
 
 
+KarmaTracker.filter 'startFrom', ->
+  (input, start) ->
+    start = +start
+    input.slice start 
+
 
 # This controller just has to redirect user to proper place
 KarmaTracker.controller "HomeController", ($scope, $http, $location, $cookieStore, FlashMessage) ->

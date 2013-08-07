@@ -1,6 +1,7 @@
 ---
 default:
   projects_refresh_period: 12
+  items_per_page: 100
   users:
     allow_register: false
     allow_destroy: true

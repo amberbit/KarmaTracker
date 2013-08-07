@@ -24,10 +24,7 @@ module Api
       #       {"project": {"id":3, "name": "Some random name "source_name": "GitHub", "source_identifier": "42", "task_count": "0"}}]
       #
       def index
-        @projects = @api_key.user.projects
-        @projects.each do |project|
-        end
-        @projects.sort! { |a,b| a.name.downcase <=> b.name.downcase }
+        @projects = @api_key.user.projects.sort! { |a,b| a.name.downcase <=> b.name.downcase }
         render 'index'
       end
 

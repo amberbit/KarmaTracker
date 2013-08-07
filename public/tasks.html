@@ -16,7 +16,7 @@
   </div>
 
   <div class="small-12 large-12 columns">
-    <div class="row" ng-repeat="task in tasks">
+    <div class="row" ng-repeat="task in tasks | startFrom:currentPage*pageSize | limitTo:pageSize">
       <div class="small-12 large-12 columns panel task clickable"
         id="{{'time-log-entry-' + task.id}}"
         ng-class="{callout: task.id == runningTask.id, running: task.id == runningTask.id}"
@@ -46,6 +46,17 @@
 
       </div>
 
+    </div>
+    <div id="pagination" class="small-6 small-offset-6 large-6 large-offset-6" ng-show="tasks.length > pageSize">
+      <div class="right">
+        <button class="button small" ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
+            Previous
+        </button>
+        {{currentPage+1}} / {{numberOfPages()}}
+        <button class="button small" ng-disabled="currentPage >= tasks.length/pageSize - 1" ng-click="currentPage=currentPage+1">
+            Next
+        </button>
+      </div>
     </div>
   </div>
 </div>

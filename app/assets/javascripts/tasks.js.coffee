@@ -5,6 +5,11 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
   $scope.query.string = ""
   $scope.tokenName = 'token'
 
+  $scope.currentPage = 0
+  $scope.pageSize = KarmaTrackerConfig.items_per_page
+
+  $scope.numberOfPages = () ->
+    return Math.ceil($scope.tasks.length/$scope.pageSize)             
 
   $scope.reloadTasks = ->
     $rootScope.loading = true

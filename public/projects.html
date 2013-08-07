@@ -16,7 +16,7 @@
   </div>
 
   <div class="small-12 large-12 columns">
-    <div class="row" ng-repeat="project in projects">
+    <div class="row" ng-repeat="project in projects | startFrom:currentPage*pageSize | limitTo:pageSize">
       <div class="small-12 large-12 columns panel project clickable" ng-show="project.visible" ng-click="loadTasks(project)">
         <div class="small-10 large-11 columns">
           <span class="project-text">{{project.name}}</span>
@@ -31,6 +31,17 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+     <div id="pagination" class="small-6 small-offset-6 large-6 large-offset-6" ng-show="projects.length > pageSize">
+      <div class="right">
+        <button class="button small" ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
+            Previous
+        </button>
+        {{currentPage+1}} / {{numberOfPages()}}
+        <button class="button small" ng-disabled="currentPage >= projects.length/pageSize - 1" ng-click="currentPage=currentPage+1">
+            Next
+        </button>
       </div>
     </div>
     <div class="small-12 large-12 none-visible" ng-show="query.string && projects.none_visible">There are no projects to show.</div>
@@ -68,6 +79,7 @@
     <div class="small-5 small-centered columns show-all-projects">
       <div class="button" ng-click="showAllProjects()">See all projects</div>
     </div>
+   
   </div>
 </div>
 
