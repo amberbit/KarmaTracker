@@ -6,7 +6,7 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
   $scope.tokenName = 'token'
 
   $scope.currentPage = 0
-  $scope.pageSize = 100
+  $scope.pageSize = KarmaTrackerConfig.items_per_page
 
   $scope.numberOfPages = () ->
     return Math.ceil($scope.tasks.length/$scope.pageSize)             

@@ -6,7 +6,7 @@ KarmaTracker.controller "ProjectsController", ($rootScope, $scope, $http, $cooki
   $rootScope.loading = true
 
   $scope.currentPage = 0
-  $scope.pageSize = 100
+  $scope.pageSize = KarmaTrackerConfig.items_per_page
 
   $scope.numberOfPages = () ->
     return Math.ceil($scope.projects.length/$scope.pageSize)             
