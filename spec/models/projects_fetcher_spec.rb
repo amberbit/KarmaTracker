@@ -34,4 +34,12 @@ should' do
     GitHubProjectsFetcher.any_instance.should_receive(:fetch_tasks_for_project).with(@identity2.projects.first, @identity2)
     @fetcher.fetch_for_project(@identity2.projects.first, @identity2)
   end
+  
+  it 'update only project\'s (not tasks)' do
+    Project.delete_all
+    expect {
+      @fetcher.fetch_for_user User.first
+      Project.count.should == 4
+    }.not_to change{Task.count}
+  end
 end
