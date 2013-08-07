@@ -1,3 +1,5 @@
+#encoding: UTF-8
+
 require 'spec_helper'
 
 
@@ -36,17 +38,19 @@ as a user I can', js: true  do
   background do
     FakeWeb.allow_net_connect = true
     login user
-    find('span', text: project1.name).click
+    
   end
 
 
   scenario 'see a list of project\'s current tasks' do
+    find('span', text: project1.name).click
     page.should have_content task1.name
     page.should_not have_content task2.name
     page.should_not have_content task3.name
   end
 
   scenario 'toggle current tasks' do
+    find('span', text: project1.name).click
     page.should_not have_content task3.name
     uncheck 'Show only current'
     page.should have_content task3.name
@@ -55,6 +59,7 @@ as a user I can', js: true  do
   end
 
   scenario 'filter tasks by name' do
+    find('span', text: project1.name).click
     page.should have_content task1.name
     page.should have_content task4.name
     fill_in 'searchfield', with: "laundry"
@@ -63,6 +68,7 @@ as a user I can', js: true  do
   end
 
   scenario 'start/stop working on task' do
+    find('span', text: project1.name).click
     within '.view' do
       div = find "#time-log-entry-#{task1.id}"
       div[:class].should_not include 'running'
@@ -89,6 +95,7 @@ as a user I can', js: true  do
   end
 
   scenario 'see recent tasks' do
+    find('span', text: project1.name).click
     within '.recents.recent-tasks' do
       page.should_not have_content task1.name
       page.should have_content task4.name
@@ -97,7 +104,8 @@ as a user I can', js: true  do
   
   scenario "see spining wheel when loading task list's" do
     100.times { create(:task, project: project1) }
-    visit current_path
+    find('span', text: project1.name).click
+    wait_until(10) { page.has_content? "→ #{project1.name}" }
     within '.loading' do 
       page.should have_content 'Loading'
     end
