@@ -22,8 +22,6 @@ class GitHubProjectsFetcher
           project.name = name
           project.save
           fetch_identities project, identity, repo_name, owner_name
-          fetch_tasks project, identity, repo_name, owner_name, 'open'
-          fetch_tasks project, identity, repo_name, owner_name, 'closed'
           GitHubWebHooksManager.new({project: project}).create_hook(identity) unless project.web_hook
         end
       else
@@ -106,11 +104,9 @@ class GitHubProjectsFetcher
       uri = extract_next_link(response)
       repos = JSON.parse(response.body)
       if repos.instance_of?(Array)
-
         repo = repos.find { |repo| repo['id'].to_s == project.source_identifier }
         fetch_tasks(project, identity, repo['name'], repo['owner']['login'], 'open')
         fetch_tasks(project, identity, repo['name'], repo['owner']['login'], 'closed')
-        end
       else
         if repos.instance_of?(Hash) && repos['message'] == 'Bad credentials'
           UserMailer.invalid_api_key(identity).deliver

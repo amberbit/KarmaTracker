@@ -44,7 +44,7 @@ class Identity < ActiveRecord::Base
   private
 
   def fetch_projects
-    ProjectsFetcher.new.background.fetch_for_identity(self)
+    ProjectsFetcher.new.background.fetch_for_user(self.user)
   end
 
 end

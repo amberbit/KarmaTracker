@@ -62,7 +62,7 @@ describe 'Projects API' do
     expect {
       api_get "projects/#{project.id}/refresh_for_project", {token: ApiKey.last.token}
       response.status.should == 200
-      }.to change(Task.count).by(2)
+    }.to change{project.tasks.count}.by(2)
   end
   
   it "should not fetch tasks from not my project" 
