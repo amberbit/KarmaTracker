@@ -65,9 +65,17 @@ describe 'Projects API' do
     }.to change{project.tasks.count}.by(2)
   end
   
-  it "should not fetch tasks from not my project" 
-  
-  it "should not fetch tasks from other user's identity"
+  it "should not fetch tasks from not my project" do
+    project = Project.last
+    expect {
+      user = FactoryGirl.create :user
+      api_get "projects/#{project.id}/refresh_for_project", {token: user.api_key.token}
+      response.status.should == 404
+      resp = JSON.parse(response.body)
+      resp.should have_key("message")
+      resp["message"].should =~ /Resource not found/
+    }.not_to change{project.tasks.count}.by(2)
+  end
   
 
   # GET /projects/:id/tasks
