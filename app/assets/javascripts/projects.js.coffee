@@ -5,6 +5,11 @@ KarmaTracker.controller "ProjectsController", ($rootScope, $scope, $http, $cooki
   $scope.tokenName = 'token'
   $rootScope.loading = true
 
+  $scope.currentPage = 0
+  $scope.pageSize = 100
+
+  $scope.numberOfPages = () ->
+    return Math.ceil($scope.projects.length/$scope.pageSize)             
 
   $scope.showRecents = () ->
     document.getElementById("projectspage").classList.add("hide-for-small")

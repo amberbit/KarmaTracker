@@ -111,4 +111,10 @@ as a user I can', js: true  do
     end
   end
   
+  scenario 'paginate more than 100 tasks' do
+    100.times { create(:task, project: project1, current_task: true) }
+    find('span', text: project1.name).click
+    click_on 'Next'
+    page.should have_content Task.last.name
+  end
 end
