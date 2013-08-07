@@ -5,7 +5,6 @@ require 'fakeweb'
 describe 'Identities API' do
   # GET /api/v1/identities/:id
   it 'should return identity details' do
-    ProjectsFetcher.any_instance.should_receive(:fetch_for_identity).and_return(nil)
     FactoryGirl.create :identity
     Identity.count.should == 1
 
@@ -38,8 +37,8 @@ describe 'Identities API' do
 
     json.count.should == 2
     json.each do |identity|
-      user1.identities.map(&:id).should include(identity[identity.keys.first]['id'].to_i)
-      user2.identities.map(&:id).should_not include(identity[identity.keys.first]['id'].to_i)
+      user1.identities.reload.map(&:id).should include(identity[identity.keys.first]['id'].to_i)
+      user2.identities.reload.map(&:id).should_not include(identity[identity.keys.first]['id'].to_i)
     end
 
     json = api_get 'identities', {token: user2.api_key.token}
