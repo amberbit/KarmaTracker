@@ -26,10 +26,9 @@
         <div class="hide-for-medium hide-for-small large-1 columns">
           <span class="label task-id">{{task.source_identifier}}</span>
         </div>
-        <div src="" class="small-1 large-1 columns track-control-icon" ng-class="{'start': !task.running, 'stop': task.running}">
-        </div>
         <span class="task-text">
-          {{task.name}}
+          <div class="track-control-icon" ng-class="{'start': !task.running, 'stop': task.running}">
+          </div>{{task.name}}
         </span>
 
         <div class="small-1 large-1 columns icon clickable right"

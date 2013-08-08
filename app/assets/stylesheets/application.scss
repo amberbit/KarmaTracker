@@ -263,9 +263,11 @@ margin-top: 0.5em;
   height: 27px;
   width: 27px;
   display: inline-block;
-  margin-top: -6px;
-  margin-left: -29px;
-  top: 8px;
+  margin-right: 10px;
+  vertical-align: middle;
+  margin-top: -2px;
+  margin-left: 10px;
+  margin-bottom: 2px;
   &.start {
     background-image: url(image_path('start-tracking.png'));
     background-position: center;
