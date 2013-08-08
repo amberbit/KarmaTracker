@@ -17,19 +17,26 @@
 
   <div class="small-12 large-12 columns">
     <div class="row" ng-repeat="project in projects | startFrom:currentPage*pageSize | limitTo:pageSize">
-      <div class="small-12 large-12 columns panel project clickable" ng-show="project.visible" ng-click="loadTasks(project)">
-        <div class="small-10 large-11 columns">
-          <span class="project-text">{{project.name}}</span>
-        </div>
-        <div title="Go to project page" class="small-2 large-1 columns project icon clickable" ng-show="project.visible && project.task_count > 0" ng-click="openProject(project.source_name, project.name, project.source_identifier, $event)">
+      <div class="box-container" ng-show="project.visible">   
+        <div class="columns icon clickable right panel external-link"
+            ng-click="openProject(project.source_name, project.name, project.source_identifier, $event)">
           <div ng-switch="project.source_name">
             <div class="icon" ng-switch-when="GitHub">
-              <div class="small-12 small-centered source-icon github"></div>
+              <div class="source-icon github"></div>
             </div>
             <div ng-switch-when="Pivotal Tracker">
-              <div class="small-12 small-centered source-icon pivotal-tracker"></div>
+              <div class="source-icon pivotal-tracker"></div>
             </div>
           </div>
+        </div>
+        
+        <div class="columns panel project clickable"
+          ng-click="loadTasks(project)">
+          <span class="project-text">
+            <div class="track-control-icon start">
+            </div>
+            {{project.name}}
+          </span>
         </div>
       </div>
     </div>
@@ -59,23 +66,31 @@
       </div>
     </div>
     <div class="small-12 large-12 none-visible" ng-show="noRecentProjects">There are no recent projects.</div>
-    <div ng-repeat="project in lastProjects">
-      <div class="small-12 large-12 columns panel project clickable" ng-click="go('/projects/'+project.id+'/tasks')">
-        <div class="small-10 large-11 columns">
-          <span class="project-text">{{project.name}}</span>
-        </div>
-        <div title="Go to project page" class="small-2 large-1 columns project icon clickable" ng-click="openProject(project.source_name, project.name, project.source_identifier, $event)">
+      <div class="row" ng-repeat="project in lastProjects">
+      <div class="box-container">   
+        <div class="columns icon clickable right panel external-link"
+            ng-click="openProject(project.source_name, project.name, project.source_identifier, $event)">
           <div ng-switch="project.source_name">
             <div class="icon" ng-switch-when="GitHub">
-              <div class="small-12 small-centered source-icon github"></div>
+              <div class="source-icon github"></div>
             </div>
             <div ng-switch-when="Pivotal Tracker">
-              <div class="small-12 small-centered source-icon pivotal-tracker"></div>
+              <div class="source-icon pivotal-tracker"></div>
             </div>
           </div>
         </div>
+        
+        <div class="columns panel project clickable"
+          ng-click="loadTasks(project)">
+          <span class="project-text">
+            <div class="track-control-icon start">
+            </div>
+            {{project.name}}
+          </span>
+        </div>
       </div>
     </div>
+    
     <div class="small-5 small-centered columns show-all-projects">
       <div class="button" ng-click="showAllProjects()">See all projects</div>
     </div>

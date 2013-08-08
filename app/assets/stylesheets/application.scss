@@ -139,16 +139,14 @@ h5.subtitle{
 }
 
 .source-icon{
-  background-position: center;
   background-repeat: no-repeat;
   transition: background 0.4s;
   height: 2em;
   background-size: 100%;
   background-position: center;
-  max-width: 2em;
-  min-width: 2em;
-  margin: auto;
-  margin-right: -15px;
+  width: 2em;
+
+
   &.github{
     background-image: url(image_path('blackgh.png'));
   }
@@ -160,6 +158,15 @@ h5.subtitle{
   }
   &.pivotal-tracker:hover{
     background-image: url(image_path('orangept.png'));
+  }
+}
+
+.running .source-icon{
+  &.github:hover{
+    background-image: url(image_path('blackgh.png')) !important;
+  }
+  &.pivotal-tracker:hover{
+    background-image: url(image_path('blackpt.png')) !important;
   }
 }
 
@@ -187,8 +194,8 @@ h5.subtitle{
 
 span.project-text {
   display: block;
-  padding-top: 0.5em;
   word-wrap: break-word;
+  padding: 5px 0 5px;
 }
 
 .touch .task-route {
@@ -291,13 +298,50 @@ margin-top: 0.5em;
 
 .panel.project {
   background: rgb(240,249,255);
-  box-shadow: 0 -100px 50px -100px rgb(150, 150, 150) inset !important;
+  box-shadow: 0 -100px 100px -120px rgb(150, 150, 150) inset !important;
+  margin-right: -4em !important;
+  margin-bottom: 0 !important;
 }
 
 .panel.task {
   background: rgb(240,249,255);
-  box-shadow: 0 -100px 50px -100px rgb(150, 150, 150) inset !important;
+  box-shadow: 0 -100px 100px -120px rgb(150, 150, 150) inset !important;
+  margin-right: -4em !important;
+  margin-bottom: 0 !important;
+}
 
+
+.panel.recent-task {
+  background: rgb(240,249,255);
+  box-shadow: 0 -100px 50px -100px rgb(150, 150, 150) inset !important;
+  overflow: hidden;
+}
+
+.box-container {
+  overflow: hidden;
+  border-bottom: solid 1px black;
+}
+
+.external-link {
+
+  background: #f0f9ff !important;
+  width: 4em !important;
+  z-index: 98 !important;
+  box-shadow: 0 100px 100px -120px #969696 inset !important;
+  padding-bottom:100% !important; 
+  margin-bottom:-100% !important;
+  border-left: solid 1px #969696 !important;
+}
+.external-link.running {
+  background: transparent !important;
+  border: solid 1px #f47a10;
+  box-shadow: none !important;
+  border-left: solid 1px #c86209 !important;
+  border-top: solid 1px #c86209 !important;
+}
+
+.project-task-box {
+  overflow: hidden;
 }
 
 .panel.callout.running {
@@ -603,3 +647,4 @@ margin-top: 0.5em;
 #pagination {
   margin-top: 12px;
 }
+
