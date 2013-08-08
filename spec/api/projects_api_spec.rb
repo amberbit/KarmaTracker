@@ -56,6 +56,27 @@ describe 'Projects API' do
 
     reset_fakeweb_urls
   end
+  
+  it "should fetch project's tasks" do
+    project = Project.last
+    expect {
+      api_get "projects/#{project.id}/refresh_for_project", {token: ApiKey.last.token}
+      response.status.should == 200
+    }.to change{project.tasks.count}.by(2)
+  end
+  
+  it "should not fetch tasks from not my project" do
+    project = Project.last
+    expect {
+      user = FactoryGirl.create :user
+      api_get "projects/#{project.id}/refresh_for_project", {token: user.api_key.token}
+      response.status.should == 404
+      resp = JSON.parse(response.body)
+      resp.should have_key("message")
+      resp["message"].should =~ /Resource not found/
+    }.not_to change{project.tasks.count}.by(2)
+  end
+  
 
   # GET /projects/:id/tasks
   it 'should return tasks for a given project' do
@@ -223,6 +244,17 @@ describe 'Projects API' do
 
     projects = JSON.parse response.body
     projects.map {|p| p["project"]["id"]}.should == @projects.map{|p| p.id}[5..9].reverse
+  end
+  
+  it 'should not get url of github project' do
+    identity = create :git_hub_identity
+    project = create :gh_project, identities: [identity]
+    
+    api_get "projects/#{project.id}/pivotal_tracker_activity_web_hook_url", {token: project.users.last.api_key.token}
+    response.status.should == 404
+    resp = JSON.parse(response.body)
+    resp.should have_key("message")
+    resp["message"].should =~ /Resource not found/
   end
   
 end

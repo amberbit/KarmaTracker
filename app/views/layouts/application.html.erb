@@ -22,7 +22,7 @@
     <%= csrf_meta_tags %>
   </head>
 
-  <body ng-controller="RootController">
+  <body ng-init="date='<%= Time.now.to_s %>';" ng-controller="RootController">
     <%= yield %>
   </body>
 </html>

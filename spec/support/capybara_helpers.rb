@@ -1,5 +1,6 @@
 def login(user = create(:user), remember_me = false)
   visit root_path
+  wait_until(10) { page.has_css? '#email' }
   fill_in 'email', :with => user.email
   fill_in 'password', :with => 'secret123'
   check('Remember me') if remember_me

@@ -18,7 +18,6 @@ class PivotalTrackerProjectsFetcher
             project.save
 
             fetch_identities project, data
-            fetch_tasks project, identity
           end
         end
         Rails.logger.info "Successfully updated list of projects for PT identity #{identity.api_key}"

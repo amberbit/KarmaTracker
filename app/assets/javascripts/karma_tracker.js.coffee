@@ -35,16 +35,51 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
 
   $scope.query = {}
   
-  refreshProjects = () ->
-    $http.get(
-      '/api/v1/projects/refresh?token='+$cookieStore.get('token')
-    ).success((data, status, headers, config) ->
-      $scope.refreshing = true
-      window.location.reload(true)
-    ).error((data, status, headers, config) ->
-      window.location.reload(true)
-      console.debug('Error refreshing projects')
-    )
+  $scope.refresh = ->
+    if $location.path().indexOf('tasks') != -1
+      $http.get(
+        "api/v1/projects/#{$location.path().split('/')[2]}/refresh_for_project?token="+$cookieStore.get('token')
+      ).success((data, status, headers, config) ->
+        $scope.refreshing = true
+      ).error((data, status, headers, config) ->
+        console.debug("Error refreshing project #{$location.path().split('/')[2]}")
+        $scope.refreshing = false
+      )
+    else
+      $http.get(
+        '/api/v1/projects/refresh?token='+$cookieStore.get('token')
+      ).success((data, status, headers, config) ->
+        $rootScope.checkRefreshingProjects()
+        $scope.refreshing = true
+      ).error((data, status, headers, config) ->
+        console.debug('Error refreshing projects')
+        $scope.refreshing = false
+      )
+  
+  
+  refreshWithPull = () ->
+    if $location.path().indexOf('tasks') != -1
+      $http.get(
+        "api/v1/projects/#{$location.path().split('/')[2]}/refresh_for_project?token="+$cookieStore.get('token')
+      ).success((data, status, headers, config) ->
+        $scope.refreshing = true
+        window.location.reload(true)
+      ).error((data, status, headers, config) ->
+        $scope.refreshing = false
+        window.location.reload(true)
+        console.debug("Error refreshing project #{$location.path().split('/')[2]}")
+      )
+    else
+      $http.get(
+        '/api/v1/projects/refresh?token='+$cookieStore.get('token')
+      ).success((data, status, headers, config) ->
+        $scope.refreshing = true
+        window.location.reload(true)
+      ).error((data, status, headers, config) ->
+        $scope.refreshing = false
+        window.location.reload(true)
+        console.debug('Error refreshing projects')
+      )
     $scope.$apply();
 
     
@@ -177,15 +212,28 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
       $(element).hook(
         reloadPage: false,
         reloadEl: ->
-          refreshProjects()
+          refreshWithPull()
         )
     else
       $(element).hook("destroy")
-      
-      
+     
+
+  $scope.$on '$routeChangeStart', ->
+    if $location.path().indexOf('tasks') != -1
+      $http.get(
+        "api/v1/projects/#{$location.path().split('/')[2]}/pivotal_tracker_activity_web_hook_url?token=#{$cookieStore.get $scope.tokenName}"
+      ).success((data, status, headers, config) ->
+        $scope.webhookProjectURL = data.url
+      ).error((data, status, headers, config) ->
+        $scope.webhookProjectURL = null
+      )
+    else
+      $scope.webhookProjectURL = null
+  
   $scope.getRunningTask()
   $scope.checkIdentities()
   $rootScope.checkRefreshingProjects()
+    
 
 
 
@@ -198,6 +246,11 @@ KarmaTracker.directive "pullToRefresh", ($rootScope) ->
       , true)
   }
 
+
+KarmaTracker.filter 'startFrom', ->
+  (input, start) ->
+    start = +start
+    input.slice start 
 
 
 # This controller just has to redirect user to proper place

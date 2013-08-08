@@ -6,7 +6,7 @@ feature 'Projects management,
   let(:user) { user = create :confirmed_user }
 
   let(:project1) do
-    proj = create(:project, name: "KarmaTracker")
+    proj = create(:project, name: "ZZ KarmaTracker")
     proj.tasks << create(:task)
     proj
   end
@@ -41,12 +41,12 @@ feature 'Projects management,
   end
 
 
-  scenario 'see a list of my projects which have tasks' do
+  scenario 'see a list of all my projects' do
     page.should have_content 'Projects'
     page.should have_content project1.name
     page.should have_content project2.name
     page.should_not have_content project3.name
-    page.should_not have_content project4.name
+    page.should have_content project4.name
   end
 
 
@@ -63,5 +63,15 @@ feature 'Projects management,
       page.should_not have_content project1.name
       page.should have_content project2.name
     end
+  end
+  
+  scenario 'paginate more than 100 projects' do
+    100.times do |i| 
+      project = create(:project, source_identifier: 100+i, source_name: "Name #{i}")
+      create(:participation, project: project, identity: identity)
+    end
+    visit current_path
+    click_on 'Next'
+    page.should have_content project1.name
   end
 end

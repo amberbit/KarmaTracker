@@ -14,7 +14,7 @@
 #
 
 class Identity < ActiveRecord::Base
-  attr_accessible :name, :api_key, :user, :user_id, :source_id, :last_projects_refresh_at
+  attr_accessible :api_key, :user, :user_id, :source_id, :last_projects_refresh_at
 
   validates_uniqueness_of :api_key, :scope => :type
   validates_uniqueness_of :source_id, :scope => :type
@@ -44,7 +44,7 @@ class Identity < ActiveRecord::Base
   private
 
   def fetch_projects
-    ProjectsFetcher.new.background.fetch_for_identity(self)
+    ProjectsFetcher.new.background.fetch_for_user(self.user)
   end
 
 end

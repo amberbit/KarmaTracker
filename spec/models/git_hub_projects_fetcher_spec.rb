@@ -4,7 +4,7 @@ describe 'GitHubProjectsFetcher' do
 
   before :all do
     reset_fakeweb_urls
-    @fetcher = ProjectsFetcher.new
+    @fetcher = GitHubProjectsFetcher.new
   end
 
   before :each do
@@ -13,18 +13,18 @@ describe 'GitHubProjectsFetcher' do
   end
 
   it 'should fetch projects for an identity' do
-    @fetcher.fetch_for_identity(@identity)
+    @fetcher.fetch_projects(@identity)
     Project.count.should == 2
   end
 
   it 'should not fetch a project twice' do
-    @fetcher.fetch_for_identity(@identity)
-    @fetcher.fetch_for_identity(@identity2)
+    @fetcher.fetch_projects(@identity)
+    @fetcher.fetch_projects(@identity2)
     Project.count.should == 2
   end
 
   it 'should create associations between project and its members\' identities' do
-    @fetcher.fetch_for_identity(@identity)
+    @fetcher.fetch_projects(@identity)
     @identity.projects.count.should == 2
     Project.first.identities.count.should == 1
   end
@@ -34,7 +34,7 @@ describe 'GitHubProjectsFetcher' do
     :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'git_hub', 'responses', 'collaborators2.json')),
     :status => ['200', 'OK'])
 
-    @fetcher.fetch_for_identity(@identity)
+    @fetcher.fetch_projects(@identity)
     Identity.count.should == 2
     @identity.projects.count.should == 0
     @identity2.projects.count.should == 2
@@ -42,37 +42,41 @@ describe 'GitHubProjectsFetcher' do
 
     reset_fakeweb_urls
 
-    @fetcher.fetch_for_identity(@identity)
+    @fetcher.fetch_projects(@identity)
     Identity.count.should == 2
     @identity.projects.count.should == 2
     @identity2.projects.count.should == 0
     Project.first.identities.count.should == 1
   end
 
-  it 'should fetch tasks when fetching projects' do
-    @fetcher.fetch_for_identity(@identity)
-    Task.count.should == 2
+  it 'should fetch tasks for project' do
+    @fetcher.fetch_projects(@identity)
+    Task.count.should == 0
+    @fetcher.fetch_tasks_for_project(@identity.projects.last, @identity)
+    Task.count.should == 1
     Project.last.tasks.count.should == 1
   end
 
   it 'should mark current tasks appropriately' do
-    @fetcher.fetch_for_identity(@identity)
-    Task.count.should == 2
-    Task.current.count.should == 2
+    @fetcher.fetch_projects(@identity)
+    @fetcher.fetch_tasks_for_project(@identity.projects.last, @identity)
+    Task.count.should == 1
+    Task.current.count.should == 1
   end
 
   it 'should update current flag for tasks' do
-    @fetcher.fetch_for_identity(@identity)
+    @fetcher.fetch_projects(@identity)
+    @fetcher.fetch_tasks_for_project(@identity.projects.last, @identity)
     Task.last.current_task.should be_true
 
     FakeWeb.register_uri(:get, /https:\/\/api\.github\.com\/repos\/.*\/.*\/issues\?state\=closed/,
       :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'git_hub', 'responses', 'issues2.json')),
       :status => ['200', 'OK'])
 
-    @fetcher.fetch_for_identity(@identity)
+    @fetcher.fetch_projects(@identity)
+    @fetcher.fetch_tasks_for_project(@identity.projects.last, @identity)
     Task.last.current_task.should be_false
 
-    reset_fakeweb_urls
   end
 
   xit 'not import when api key is invalid' do
@@ -80,7 +84,7 @@ describe 'GitHubProjectsFetcher' do
     FakeWeb.clean_registry
     FakeWeb.register_uri(:get, /https:\/\/api\.github\.com\/user\/subscriptions/,
       :body => {"message"=>"Bad credentials"}, status: ['401', 'Unauthorized'])
-    @fetcher.fetch_for_identity(@identity)
+    @fetcher.fetch_projects(@identity)
     Task.count.should == 2
     Project.last.tasks.count.should == 1
   end

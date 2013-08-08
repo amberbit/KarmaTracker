@@ -5,7 +5,7 @@ should' do
 
   before :all do
     reset_fakeweb_urls
-    @fetcher = ProjectsFetcher.new
+    @fetcher = PivotalTrackerProjectsFetcher.new
   end
 
   before :each do
@@ -14,18 +14,18 @@ should' do
   end
 
   it 'should fetch projects for an identity' do
-    @fetcher.fetch_for_identity(@identity)
+    @fetcher.fetch_projects(@identity)
     Project.count.should == 2
   end
 
   it 'not fetch a project twice' do
-    @fetcher.fetch_for_identity(@identity)
-    @fetcher.fetch_for_identity(@identity2)
+    @fetcher.fetch_projects(@identity)
+    @fetcher.fetch_projects(@identity2)
     Project.count.should == 2
   end
 
   it 'should create associations between project and its members\' identities' do
-    @fetcher.fetch_for_identity(@identity)
+    @fetcher.fetch_projects(@identity)
     @identity.projects.count.should == 1
     Project.first.identities.count.should == 1
   end
@@ -35,7 +35,7 @@ should' do
       :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'projects2.xml')),
       :status => ['200', 'OK'])
 
-    @fetcher.fetch_for_identity(@identity)
+    @fetcher.fetch_projects(@identity)
     Identity.count.should == 2
     @identity.projects.count.should == 1
     @identity2.projects.count.should == 1
@@ -43,27 +43,30 @@ should' do
 
     reset_fakeweb_urls
 
-    @fetcher.fetch_for_identity(@identity)
+    @fetcher.fetch_projects(@identity)
     Identity.count.should == 2
     @identity.projects.count.should == 1
     @identity2.projects.count.should == 0
     Project.first.identities.count.should == 1
   end
 
-  it 'fetch tasks when fetching projects' do
-    @fetcher.fetch_for_identity(@identity)
+  it 'fetch tasks for project' do
+    @fetcher.fetch_projects(@identity)
+    @fetcher.fetch_tasks(@identity.projects.first, @identity)
     Task.count.should == 2
-    Project.last.tasks.count.should == 2
+    Project.first.tasks.count.should == 2
   end
 
   it 'mark current tasks appropriately' do
-    @fetcher.fetch_for_identity(@identity)
+    @fetcher.fetch_projects(@identity)
+    @fetcher.fetch_tasks(@identity.projects.last, @identity)
     Task.count.should == 2
     Task.current.count.should == 1
   end
 
   it 'update current flag for tasks' do
-    @fetcher.fetch_for_identity(@identity)
+    @fetcher.fetch_projects(@identity)
+    @fetcher.fetch_tasks(@identity.projects.last, @identity)
     Task.find_by_source_identifier('1').current_task.should be_true
     Task.find_by_source_identifier('4').current_task.should be_false
 
@@ -71,17 +74,17 @@ should' do
       :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'current_iteration2.xml')),
       :status => ['200', 'OK'])
 
-    @fetcher.fetch_for_identity(@identity)
+    @fetcher.fetch_projects(@identity)
+    @fetcher.fetch_tasks(@identity.projects.last, @identity)
     Task.find_by_source_identifier('1').current_task.should be_false
     Task.find_by_source_identifier('4').current_task.should be_true
 
-    reset_fakeweb_urls
   end
 
   it 'not crash import when api key is invalid' do
     FakeWeb.register_uri(:get, "https://www.pivotaltracker.com/services/v4/projects", :status => ['401', 'Unauthorized'])
     expect {
-      @fetcher.fetch_for_identity(@identity)
+      @fetcher.fetch_projects(@identity)
     }.not_to raise_error(OpenURI::HTTPError)
   end
 end

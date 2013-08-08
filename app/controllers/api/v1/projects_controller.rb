@@ -24,10 +24,7 @@ module Api
       #       {"project": {"id":3, "name": "Some random name "source_name": "GitHub", "source_identifier": "42", "task_count": "0"}}]
       #
       def index
-        @projects = @api_key.user.projects
-        @projects.each do |project|
-        end
-        @projects.sort! { |a,b| a.name.downcase <=> b.name.downcase }
+        @projects = @api_key.user.projects.sort! { |a,b| a.name.downcase <=> b.name.downcase }
         render 'index'
       end
 
@@ -128,27 +125,27 @@ module Api
         ProjectsFetcher.new.background.fetch_for_user(@api_key.user)
         render json: {message: 'Projects list refresh started'}, status: 200
       end
-
+      
       ##
-      # Triggers projects list refresh for a single identities.
+      # Triggers task list refresh for a single project.
       # Refreshing runs in background, so the response is sent without waiting for it to finish.
       #
-      # GET /api/v1/projects/refresh_for_identity/:id
+      # GET /api/v1/projects/refresh_for_project/:id
       #
       # params:
       #   token - KarmaTracker API token
       #
       # = Examples
       #
-      #   resp = conn.get("/api/v1/projects/refresh_for_identity/1", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
+      #   resp = conn.get("/api/v1/projects/refresh_for_project/1", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
       #
       #   resp.status
       #   => 200
       #
       #   resp.body
-      #   => {"message": "Projects list refresh started"}
+      #   => {"message": "Project list refresh started"}
       #
-      #   resp = conn.get("/api/v1/projects/refresh_for_identity/123", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
+      #   resp = conn.get("/api/v1/projects/refresh_for_project/123", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
       #
       #   resp.status
       #   => 404
@@ -156,11 +153,14 @@ module Api
       #   resp.body
       #   => {"message": "Resource not found"}
       #
-      def refresh_for_identity
-        identity = Identity.find_by_id(params[:id])
-        if identity && identity.user.api_key == @api_key
-          ProjectsFetcher.new.background.fetch_for_identity(identity)
-          render json: {message: 'Projects list refresh started'}, status: 200
+      def refresh_for_project
+        project = Project.find(params[:id])
+        identity = @api_key.user.identities.joins(:participations).
+          where('participations.project_id = ?', project.id).
+          all(readonly: false).first
+        if project && identity &&  @api_key.user.projects.include?(project)
+          ProjectsFetcher.new.background.fetch_for_project(project, identity)
+          render json: {message: 'Project list refresh started'}, status: 200
         else
           render json: {message: 'Resource not found'}, status: 404
         end
@@ -364,9 +364,12 @@ module Api
       #
       # GET /api/v1/projects/:id/pivotal_tracker_activity_web_hook_url
       #
+      # params:
+      #   token - KarmaTracker API token
+      #
       # = Examples
       #
-      #   resp = conn.get("api/v1/projects/1/pivotal_tracker_activity_web_hook_url")
+      #   resp = conn.get("api/v1/projects/1/pivotal_tracker_activity_web_hook_url, "token" => "dcbb7b36acd4438d07abafb8e28605a4")
       #
       #   resp.status
       #   => 200
@@ -374,7 +377,7 @@ module Api
       #   resp.body
       #   => {"url": "http://some-host.com/api/v1/projects/1/pivotal_tracker_activity_web_hook?token=W3bH0oKt043n
       #
-      #   resp = conn.get("api/v1/projects/123/pivotal_tracker_activity_web_hook_url")
+      #   resp = conn.get("api/v1/projects/123/pivotal_tracker_activity_web_hook_url, "token" => "dcbb7b36acd4438d07abafb8e28605a4"")
       #
       #   resp.status
       #   => 404
@@ -384,7 +387,7 @@ module Api
       #
       def pivotal_tracker_activity_web_hook_url
         project = Project.find(params[:id])
-        if project.users.include? @api_key.user
+        if project.users.include?(@api_key.user) && project.source_name == 'Pivotal Tracker'
           render json: {url: "#{pivotal_tracker_activity_web_hook_api_v1_project_url(project)}?token=#{project.web_hook_token}"}, status: 200
         else
           render json: {message: 'Resource not found'}, status: 404

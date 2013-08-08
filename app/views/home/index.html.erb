@@ -33,7 +33,7 @@
             <li class="divider"></li>
             <li ng-click="go('/identities')"><a class="secondary-menu" id="identities" ng-class="highlightCurrentPage('identities')" href="#/identities" ng-click="expandMenu()">Identities</a></li>
             <li class="divider hide-for-touch"></li>
-            <li class="hide-for-touch" ng-click="go('/refresh')"><a ng-class="highlightCurrentPage('refresh')" href="#/refresh" class="refresh" ng-click="expandMenu()">Refresh</a></li>
+            <li class="hide-for-touch" ng-click="refresh()"><a ng-class="highlightCurrentPage('refresh')" href="" class="refresh" ng-click="expandMenu()">Refresh</a></li>
                       </ul>
         <li class="divider"></li>
         <li ng-click="go('/logout')"><a ng-class="highlightCurrentPage('logout')" href="#/logout" ng-click="expandMenu()">Log out</a></li>
@@ -43,6 +43,7 @@
 </div>
 
 <div id='top-bar-spacer'></div>
+
 
 <div id="flash" class="row" ng-class="{'signin-width': !signed_in}" ng-controller="FlashesController">
   <div class="show-for-small">
@@ -58,6 +59,12 @@
   <div ng-show="message.string" ng-class="{'small-12': true, 'columns': true, 'alert-box': true, 'alert': isAlert() == 'alert', 'success': isAlert() == 'success' }">
     {{message.string}}
   </div>
+</div>
+
+
+<div class="loading" ng-show="loading">
+  <div class="spinning-wheel"></div>
+  <div>Loading...</div>
 </div>
 
 <div class="row boxed" ng-class="{'signin-width': !signed_in}">
@@ -103,8 +110,17 @@
         </ul>
         </div>
       </div>
+      <div ng-show="webhookProjectURL">
+        <div class="small-12 large-12 columns">
+          <h4><a ng-href="">WebHook Integration</a></h4>
+        </div>
+        <div class="large-12 columns panel">
+          <p>The activity web hook allows your application to listen for activity in your project, as HTTP POST requests.</p>
+          <input id="webhook_url" type="text" value="{{webhookProjectURL}}" readonly="readonly" />
+          <p>To use it with this project, please copy the URL above and paste it into Project - Edit Settings - Integrations - Web Hook URL, at Pivotal Tracker.</p>
+        </div>
+      </div>
     </div>
-
   </div>
   </div>
 </div>
@@ -125,6 +141,7 @@
 
   window.KarmaTrackerConfig.registration_enabled = <%= AppConfig.users.allow_register %>;
   window.KarmaTrackerConfig.registration_destroy = <%= AppConfig.users.allow_destroy %>;
+  window.KarmaTrackerConfig.items_per_page = <%= AppConfig.items_per_page %>;
 </script>
 
 
