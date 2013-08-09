@@ -3,17 +3,12 @@ KarmaTracker.controller "ProjectsController", ($rootScope, $scope, $http, $cooki
   $scope.projects = []
   $scope.query.string = ""
   $scope.tokenName = 'token'
-  $rootScope.loading = true
-
   $scope.currentPage = 0
   $scope.pageSize = KarmaTrackerConfig.items_per_page
+  $scope.recent = true if document.documentElement.clientWidth <= 768
 
   $scope.numberOfPages = () ->
     return Math.ceil($scope.projects.length/$scope.pageSize)             
-
-  $scope.showRecents = () ->
-    document.getElementById("projectspage").classList.add("hide-for-small")
-    document.getElementById("recentspage").classList.remove("hide-for-small")
   
   $scope.loadTasks = (project) ->
     $location.path "/projects/#{project.id}/tasks"
@@ -27,19 +22,22 @@ KarmaTracker.controller "ProjectsController", ($rootScope, $scope, $http, $cooki
 
     $scope.projects.none_visible = !any_visible
 
-  $http.get(
-    '/api/v1/projects?token='+$cookieStore.get($scope.tokenName)
-  ).success((data, status, headers, config) ->
-    $scope.projects = []
-    for project in data
-      project.project.visible = $scope.matchesQuery(project.project.name)
-      $scope.projects.push project.project
-    $rootScope.loading = false
-    filter_visible()
-  ).error((data, status, headers, config) ->
-    $rootScope.loading = false
-
-  )
+  $scope.reloadProjects = () ->
+    $rootScope.loading = true
+    $http.get(
+      "/api/v1/projects#{if $scope.recent then "/recent" else "" }?token="+$cookieStore.get($scope.tokenName)
+    ).success((data, status, headers, config) ->
+      $scope.projects = []
+      for project in data
+        project.project.visible = $scope.matchesQuery(project.project.name)
+        $scope.projects.push project.project
+      $rootScope.loading = false
+      filter_visible()
+    ).error((data, status, headers, config) ->
+      if $scope.recent
+        $scope.recent = false
+      $rootScope.loading = false
+    )
 
   $scope.$watch("query.string", filter_visible  )
-  
+  $scope.$watch("recent", $scope.reloadProjects)
