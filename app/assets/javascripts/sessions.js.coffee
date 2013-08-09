@@ -1,7 +1,5 @@
 KarmaTracker.controller "SessionController", ($scope, $http, $cookieStore, $location, $routeParams, $rootScope) ->
   $rootScope.pullAllowed = false
-  if typeof($cookieStore.get $scope.tokenName) != 'undefined'
-    $location.path '/projects'
 
   $scope.session = { email: null, password: null, remember_me: false }
   $scope.message = ''

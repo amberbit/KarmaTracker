@@ -30,4 +30,11 @@ I can', js: true do
     cookie_date = Date.parse cookie.expires.to_s
     cookie_date.should == 30.days.from_now.to_date
   end
+
+  scenario "after logout I don't get redirected to projects page" do
+    login user
+    click_on 'Log out'
+    page.should_not have_content 'Projects'
+    page.should have_field 'email'
+  end
 end
