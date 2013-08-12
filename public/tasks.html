@@ -6,7 +6,8 @@
 </div>
 <div ng-controller="TasksController" class="row pullgrip">
   <div class="boxed-header">
-    <div class="small-6 large-9 columns">
+    <div class="small-12 large-9 columns">
+      <button class="small button right refresh-button hide-for-touch" ng-click="refresh()">Refresh</button>
       <h4 class="task-route"><a ng-href="/#/projects">Projects</a> <a ng-href="/#/projects/{{project.id}}/tasks">&rarr; {{project.name}}</a></h4>
     </div>
     <div class='small-12 large-3 columns tasks-search'>
