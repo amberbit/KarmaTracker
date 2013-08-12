@@ -28,6 +28,7 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
   $scope.runningVisible = false
   $scope.refreshing = false
   $scope.firstTipVisible = false
+  $scope.webhook_tip = false
   $scope.tokenName = 'token'
   $scope.menuIsDroppedDown = document.getElementById("top-bar").classList.contains("expanded")
   $scope.matchesQuery = (string) ->

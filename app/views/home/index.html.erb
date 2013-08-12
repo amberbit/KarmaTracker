@@ -118,12 +118,12 @@
           <p>The activity web hook allows your application to listen for activity in your project, as HTTP POST requests.</p>
 
           <div>
-            <div class="arrow_box panel mainshadow">
+            <div class="arrow_box panel mainshadow" ng-show="webhook_tip">
               <strong>Information</strong><br/><br/>
               To use it with this project please copy this URL, go to Pivotal Tracker and paste it into Project - Edit Settings - Integrations - Web Hook URL.
             </div>
-            <div class="info"></div>
-          </div><input id="webhook_url" type="text" value="{{webhookProjectURL}}" readonly="readonly" />
+            <div class="info" ng-click="webhook_tip = !webhook_tip" ng-mouseover="webhook_tip = true" ng-mouseleave="webhook_tip = false"></div>
+          </div><input id="webhook_url" type="text" value="{{webhookProjectURL}}" readonly="readonly" autocomplete="off" />
         </div>
       </div>
     </div>
