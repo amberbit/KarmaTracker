@@ -21,6 +21,8 @@
     <section id="top-bar-section" class="top-bar-section">
       <ul class="right">
         <li class="divider"></li>
+        <li class="hide-for-touch" ng-click="refresh()"><a ng-class="highlightCurrentPage('refresh')" href="" class="refresh" ng-click="expandMenu()">Refresh</a></li>
+        <li class="divider hide-for-touch"></li>
         <li ng-click="go('/projects')"><a href="#/projects" ng-class="highlightCurrentPage('projects')" ng-click="expandMenu()">Projects</a></li>
         <li class="divider"></li>
         <li ng-click="go('/timesheet')"><a ng-class="highlightCurrentPage('timesheet')" href="#/timesheet" ng-click="expandMenu()">Timesheet</a></li>
@@ -32,8 +34,6 @@
             <li ng-click="go('/account')"><a class="secondary-menu" ng-class="highlightCurrentPage('account')" href="#/account" ng-click="expandMenu()">Account</a></li>
             <li class="divider"></li>
             <li ng-click="go('/identities')"><a class="secondary-menu" id="identities" ng-class="highlightCurrentPage('identities')" href="#/identities" ng-click="expandMenu()">Identities</a></li>
-            <li class="divider hide-for-touch"></li>
-            <li class="hide-for-touch" ng-click="refresh()"><a ng-class="highlightCurrentPage('refresh')" href="" class="refresh" ng-click="expandMenu()">Refresh</a></li>
                       </ul>
         <li class="divider"></li>
         <li ng-click="go('/logout')"><a ng-class="highlightCurrentPage('logout')" href="#/logout" ng-click="expandMenu()">Log out</a></li>
