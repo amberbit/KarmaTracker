@@ -114,10 +114,16 @@
         <div class="small-12 large-12 columns">
           <h4><a ng-href="">WebHook Integration</a></h4>
         </div>
-        <div class="large-12 columns panel">
+        <div id="webhook-panel" class="large-12 columns panel">
           <p>The activity web hook allows your application to listen for activity in your project, as HTTP POST requests.</p>
-          <input id="webhook_url" type="text" value="{{webhookProjectURL}}" readonly="readonly" />
-          <p>To use it with this project, please copy the URL above and paste it into Project - Edit Settings - Integrations - Web Hook URL, at Pivotal Tracker.</p>
+
+          <div>
+            <div class="arrow_box panel mainshadow" ng-show="webhook_tip">
+              <strong>Information</strong><br/><br/>
+              To use it with this project please copy this URL, go to Pivotal Tracker and paste it into Project - Edit Settings - Integrations - Web Hook URL.
+            </div>
+            <div class="info" ng-click="webhook_tip = !webhook_tip" ng-mouseover="webhook_tip = true" ng-mouseleave="webhook_tip = false"></div>
+          </div><input id="webhook_url" type="text" value="{{webhookProjectURL}}" readonly="readonly" autocomplete="off" />
         </div>
       </div>
     </div>
@@ -132,7 +138,8 @@
       KarmaTracker is designed and developed by <a href="http://www.amberbit.com/" target="_blank">AmberBit</a> Sp. z o. o.. We are  Ruby and mobile applications development company.
     </div>
     <div class="small-3 large-2 columns">
-      <a href="http://www.amberbit.com/" target="_blank"><img class="logo-amberbit" src="/assets/logo_simple.png" /></a>
+      <a href="http://www.amberbit.com/" target="_blank">
+      <img class="logo-amberbit" src="/assets/logo_simple.png" /></a>
     </div>
   </div>
 </div>
