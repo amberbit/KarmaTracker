@@ -4,12 +4,13 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
   $scope.current = true
   $scope.query.string = ""
   $scope.tokenName = 'token'
+  $scope.timer = 0
 
   $scope.currentPage = 0
   $scope.pageSize = KarmaTrackerConfig.items_per_page
 
   $scope.numberOfPages = () ->
-    return Math.ceil($scope.tasks.length/$scope.pageSize)             
+    return Math.ceil($scope.tasks.length/$scope.pageSize)
 
   $scope.reloadTasks = ->
     $rootScope.loading = true
@@ -51,11 +52,18 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
         console.debug('Error when starting tracking time on tasks')
       )
 
+  $scope.queryChanged = ->
+    query = $scope.query.string
+    clearTimeout $scope.timer
+    $scope.timer = setTimeout (->
+      $scope.reloadTasks()
+    ), 1000
 
   $scope.reloadTasks()
   $scope.$watch("current", $scope.reloadTasks)
   $scope.$watch("runningTask", $scope.reloadTasks)
-  $scope.$watch "query.string", $scope.reloadTasks
+  $scope.$watch("query.string", $scope.queryChanged)
+
 
   $http.get(
     "/api/v1/projects/#{$routeParams.project_id}/?token=#{$cookieStore.get($scope.tokenName)}"

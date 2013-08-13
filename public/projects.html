@@ -5,13 +5,16 @@
   </div>
 </div>
 
-<div id="projectspage" ng-controller="ProjectsController" class="row pullgrip" ng-class="{'hide-for-small': !noRecentProjects}">
+<div id="projectspage" ng-controller="ProjectsController" class="row pullgrip">
   <div class="boxed-header">
     <div class="small-12 large-8 columns">
+      <button class="small button right refresh-button hide-for-touch" ng-click="refresh()">Refresh</button>
       <h4><a ng-href="/#/projects">Projects</a></h4>
+
     </div>
-    <div class='small-12 large-4 columns'>
+    <div class='small-12 large-4 columns tasks-search'>
       <input type="text" id="searchfield" placeholder="Search..." ng-model='query.string' />
+      <label class="show-for-small"><input type="checkbox" ng-model="recent" />Show only recent</label>
     </div>
   </div>
 
@@ -52,49 +55,6 @@
       </div>
     </div>
     <div class="small-12 large-12 none-visible" ng-show="query.string && projects.none_visible">There are no projects to show.</div>
-  </div>
-  <div class="small-5 small-centered columns show-all-projects hide-for-medium-up" ng-class="{'hide-for-small': noRecentProjects}">
-    <div class="button" ng-click="showRecents()">See only recents</div>
-  </div>
-</div>
-
-<div id="recentspage" class="hide-for-medium-up" ng-class="{'hide-for-small': noRecentProjects}">
-  <div id="recentscontent" class="row pullgrip" ng-controller="RecentsController">
-    <div class="boxed-header recents">
-      <div class="small-12 large-8 columns">
-        <h4><a ng-href="/#/projects">Recent projects</a></h4>
-      </div>
-    </div>
-    <div class="small-12 large-12 none-visible" ng-show="noRecentProjects">There are no recent projects.</div>
-      <div class="row" ng-repeat="project in lastProjects">
-      <div class="box-container">   
-        <div class="columns icon clickable right panel external-link"
-            ng-click="openProject(project.source_name, project.name, project.source_identifier, $event)">
-          <div ng-switch="project.source_name">
-            <div class="icon" ng-switch-when="GitHub">
-              <div class="source-icon github"></div>
-            </div>
-            <div ng-switch-when="Pivotal Tracker">
-              <div class="source-icon pivotal-tracker"></div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="columns panel project clickable"
-          ng-click="loadTasks(project)">
-          <span class="project-text">
-            <div class="track-control-icon start">
-            </div>
-            {{project.name}}
-          </span>
-        </div>
-      </div>
-    </div>
-    
-    <div class="small-5 small-centered columns show-all-projects">
-      <div class="button" ng-click="showAllProjects()">See all projects</div>
-    </div>
-   
   </div>
 </div>
 

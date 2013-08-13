@@ -30,6 +30,8 @@ class Task < ActiveRecord::Base
 
   after_save :update_tsvector
 
+  default_scope order('updated_at DESC')
+
   pg_search_scope :search_by_name, :against => :name,
     using: {
       tsearch: {
