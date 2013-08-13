@@ -10,6 +10,7 @@
  *
  *= require_self
  *= require_tree .
+ *= require bootstrap.min
  *= require foundation_and_overrides
  */
 
@@ -648,4 +649,3 @@ margin-top: 0.5em;
 #pagination {
   margin-top: 12px;
 }
-

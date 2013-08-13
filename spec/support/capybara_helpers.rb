@@ -6,6 +6,7 @@ def login(user = create(:user), remember_me = false)
   check('Remember me') if remember_me
   click_button 'Sign in!'
   page.should have_content 'Log out'
+  click_link 'Ok' if page.has_link? 'Ok'
 end
 
 def wait_until(timeout = Capybara.default_wait_time)

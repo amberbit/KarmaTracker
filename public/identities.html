@@ -25,30 +25,34 @@
               <a ng-click="openAddForm()" class="tiny button secondary right-align"><span class="subheader">Close</span></a>
               <h5 class="subheader">Add a new identity</h5>
 
-              <div class="row">
-                <div class="small-6 columns">
-                  <div class="panel secondary">
-                    <label>E-mail:
-                      <input name="email" type="text" id="email" name="email"ng-model="newIdentity.email" />
-                      <small ng-show="errors.email" class="error">{{errors.email}}</small>
-                    </label>
-                    <label>Password:
-                      <input name="password" type="password" ng-model="newIdentity.password" />
-                      <small ng-show="errors.password" class="error">{{errors.password}}</small>
-                    </label>
+              <tabset>
+                <tab heading="Credentials">
+                  <div class="small-6 columns">
+                    <div class="panel secondary">
+                      <label>E-mail:
+                        <input name="email" type="text" id="email" name="email"ng-model="newIdentity.email" />
+                        <small ng-show="errors.email" class="error">{{errors.email}}</small>
+                      </label>
+                      <label>Password:
+                        <input name="password" type="password" ng-model="newIdentity.password" />
+                        <small ng-show="errors.password" class="error">{{errors.password}}</small>
+                      </label>
+                    </div>
                   </div>
-                </div>
-                <div class="small-6 columns">
-                  <div class="panel">
-                    <h6 class="subheader">I already know my API key</h6>
-                    <label>API key:
-                      <input name="token" type="text" ng-model="newIdentity.api_key" />
-                      <small ng-show="errors.api_key" class="error">{{errors.api_key}}</small>
-                    </label>
+                </tab>
+                <tab heading="API Key">
+                  <div class="small-6 columns">
+                    <div class="panel">
+                      <h6 class="subheader">I already know my API key</h6>
+                      <label>API key:
+                        <input name="token" type="text" ng-model="newIdentity.api_key" />
+                        <small ng-show="errors.api_key" class="error">{{errors.api_key}}</small>
+                      </label>
+                    </div>
                   </div>
-                  <button class="button right-align small">Add new identity</button>
-                </div>
-              </div>
+                </tab>
+              </tabset>
+              <button class="button right-align small">Add new identity</button>
             </div>
           </form>
           <a href="" id="add_new_pt" ng-show="!addFormShown" ng-click="openAddForm()" class="button secondary small right">Add new identity</a>
@@ -70,31 +74,36 @@
             <div id="ghform" class="panel" ng-show="addFormShown">
               <a ng-click="openAddForm()" class="tiny button secondary right-align"><span class="subheader">Close</span></a>
               <h5 class="subheader">Add a new identity</h5>
-
-              <div class="row">
-                <div class="small-6 large-6 columns">
-                  <div class="panel secondary">
-                    <label>Username:
-                      <input name="username" type="text" id="username" name="username" ng-model="newIdentity.username" />
-                      <small ng-show="errors.username" class="error">{{errors.username}}</small>
-                    </label>
-                    <label>Password:
-                      <input name="password" type="password" ng-model="newIdentity.password" />
-                      <small ng-show="errors.password" class="error">{{errors.password}}</small>
-                    </label>
+              <tabset>
+                <tab heading="Credentials">
+                  <div class="small-6 large-6 columns">
+                    <div class="panel secondary">
+                      <label>Username:
+                        <input name="username" type="text" id="username" name="username" ng-model="newIdentity.username" />
+                        <small ng-show="errors.username" class="error">{{errors.username}}</small>
+                      </label>
+                      <label>Password:
+                        <input name="password" type="password" ng-model="newIdentity.password" />
+                        <small ng-show="errors.password" class="error">{{errors.password}}</small>
+                      </label>
+                    </div>
                   </div>
-                </div>
-                <div class="small-6 large-6 columns">
-                  <div class="panel secondary">
-                    <h6 class="subheader">I already know my API key</h6>
-                    <label>API key:
-                      <input name="token" type="text" ng-model="newIdentity.api_key" />
-                      <small ng-show="errors.api_key" class="error">{{errors.api_key}}</small>
-                    </label>
+                </tab>
+                <tab heading="API Key">
+                  <div class="small-6 large-6 columns">
+                    <div class="panel secondary">
+                      <h6 class="subheader">I already know my API key</h6>
+                      <label>API key:
+                        <input name="token" type="text" ng-model="newIdentity.api_key" />
+                        <small ng-show="errors.api_key" class="error">{{errors.api_key}}</small>
+                      </label>
+                    </div>
                   </div>
-                  <button class="button small right">Add new identity</button>
-                </div>
-              </div>
+                </tab>
+              </tabset>
+              <br/>
+              <i>*Use Credentials or API Key</i>
+              <button class="button small right">Add new identity</button>
             </div>
           </form>
           <a href="" id="add_new_gh" ng-show="!addFormShown" ng-click="openAddForm()" class="button secondary small right">Add new identity</a>
