@@ -15,7 +15,7 @@
  */
 
 // Required global settings and mixins for Foundation
-@import "foundation/variables", "foundation/components/global", "foundation/components/buttons";
+@import "foundation/foundation-global", "foundation/components/global", "foundation/components/buttons";
 
 .page-header {
   h1 {
@@ -649,3 +649,8 @@ margin-top: 0.5em;
 #pagination {
   margin-top: 12px;
 }
+
+#ptform, #ghform {
+  height: 320px
+}
+ //= require foundation_and_overrides

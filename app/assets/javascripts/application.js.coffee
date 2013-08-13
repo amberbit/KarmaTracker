@@ -7,7 +7,5 @@
 #= require moment
 #= require hook
 #= require mousewheel
-#= require foundation
 
-$ ->
-  $(document).foundation()
+
