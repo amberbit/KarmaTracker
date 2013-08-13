@@ -21,7 +21,7 @@
           </div>
 
           <form ng-submit='add()'>
-            <div id="ptform" class="panel" ng-show="addFormShown">
+            <div id="ptform" class="panel clearfix" ng-show="addFormShown">
               <a ng-click="openAddForm()" class="tiny button secondary right-align"><span class="subheader">Close</span></a>
               <h5 class="subheader">Add a new identity</h5>
 
@@ -52,6 +52,8 @@
                   </div>
                 </tab>
               </tabset>
+              <br/>
+              <i>*Use Credentials or API Key</i>
               <button class="button right-align small">Add new identity</button>
             </div>
           </form>
@@ -62,7 +64,7 @@
         <h4 class="subheader">Git Hub</h4>
         <div ng-controller="GitHubIdentitiesController">
 
-          <div class='panel' ng-repeat="identity in identities">
+          <div class='panel clearfix' ng-repeat="identity in identities">
             <a href="" ng-click="remove(identity.git_hub.id)" class="secondary button right tiny">Remove</a>
             <div class="row">
               <div class="small-2 columns"><strong>API key:</strong></div>
