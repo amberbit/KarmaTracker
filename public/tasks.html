@@ -16,37 +16,38 @@
   </div>
 
   <div class="small-12 large-12 columns">
+
     <div class="row" ng-repeat="task in tasks | startFrom:currentPage*pageSize | limitTo:pageSize">
-      <div class="small-12 large-12 columns panel task clickable"
+<div class="box-container">   
+     <div class="columns icon clickable right panel external-link"
+          ng-click="openTask(project.source_name, project.name, project.source_identifier, task.source_identifier, $event)"
+          ng-class="{running: task.id == runningTask.id}">
+        <div ng-switch="project.source_name">
+          <div class="icon" ng-switch-when="GitHub">
+            <div class="source-icon github"></div>
+          </div>
+          <div ng-switch-when="Pivotal Tracker">
+            <div class="source-icon pivotal-tracker"></div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="columns panel task clickable"
         id="{{'time-log-entry-' + task.id}}"
         ng-class="{callout: task.id == runningTask.id, running: task.id == runningTask.id}"
         ng-click="startTracking(task)"
         ng-show="task.visible">
-
         <div class="hide-for-medium hide-for-small large-1 columns">
           <span class="label task-id">{{task.source_identifier}}</span>
         </div>
-        <div src="" class="small-1 large-1 columns track-control-icon" ng-class="{'start': !task.running, 'stop': task.running}">
-        </div>
         <span class="task-text">
-          {{task.name}}
+          <div class="track-control-icon" ng-class="{'start': !task.running, 'stop': task.running}">
+          </div>{{task.name}}
         </span>
-
-        <div class="small-1 large-1 columns icon clickable right"
-          ng-click="openTask(project.source_name, project.name, project.source_identifier, task.source_identifier, $event)">
-          <div ng-switch="project.source_name">
-            <div class="icon" ng-switch-when="GitHub">
-              <div class="source-icon github"></div>
-            </div>
-            <div ng-switch-when="Pivotal Tracker">
-              <div class="source-icon pivotal-tracker"></div>
-            </div>
-          </div>
-        </div>
-
       </div>
-
+</div>
     </div>
+    
     <div id="pagination" class="small-6 small-offset-6 large-6 large-offset-6" ng-show="tasks.length > pageSize">
       <div class="right">
         <button class="button small" ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
