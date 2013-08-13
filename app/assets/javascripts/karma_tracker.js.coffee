@@ -15,7 +15,7 @@
 #= require password_resets
 #= require cookieStore_override
 
-window.KarmaTracker = angular.module('KarmaTracker', ['ngCookies', 'ngMobile'])
+window.KarmaTracker = angular.module('KarmaTracker', ['ngCookies', 'ngMobile', 'ui.bootstrap'])
 
 
 # Flashe message passed from other controllers to FlashesController
@@ -148,25 +148,22 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
 
     ).error((data, status, headers, config) ->
     )
-    
-    
 
-    
-   $rootScope.checkRefreshingProjects = () ->
-     $http.get(
-       "/api/v1/user?token=#{$cookieStore.get $scope.tokenName}"
-     ).success((data, status, headers, config) ->
-       $scope.refreshing = data.user.refreshing_projects
-       setTimeout($rootScope.checkRefreshingProjects, 10000)
-     ).error((data, status, headers, config) ->
-       setTimeout($rootScope.checkRefreshingProjects, 10000)
-     )
-     if !$scope.$root.$$phase
-       $scope.$apply()
+  $rootScope.checkRefreshingProjects = () ->
+   $http.get(
+     "/api/v1/user?token=#{$cookieStore.get $scope.tokenName}"
+   ).success((data, status, headers, config) ->
+     $scope.refreshing = data.user.refreshing_projects
+     setTimeout($rootScope.checkRefreshingProjects, 10000)
+   ).error((data, status, headers, config) ->
+     setTimeout($rootScope.checkRefreshingProjects, 10000)
+   )
+   if !$scope.$root.$$phase
+     $scope.$apply()
 
 
-    $scope.hideFirstTip = () ->
-      $scope.firstTipVisible = false
+  $scope.hideFirstTip = () ->
+    $scope.firstTipVisible = false
 
   $scope.$on "handleBroadcast", () ->
     if broadcastService.message == 'recentClicked'
@@ -218,4 +215,3 @@ KarmaTracker.factory 'broadcastService', ($rootScope) ->
     $rootScope.$broadcast('handleBroadcast')
 
   broadcastService
-

@@ -7,8 +7,6 @@ feature 'Identities management', js: true do
     user = FactoryGirl.create :user
     user.update_attribute :confirmation_token, nil
     login user
-    click_link 'Profile'
-    click_link 'Identities'
     page.should have_content 'Identities'
     page.should have_content 'Pivotal Tracker'
   end
@@ -16,78 +14,55 @@ feature 'Identities management', js: true do
   scenario 'adds and removes new Pivotal Tracker identity with credentials' do
     click_link 'add_new_pt'
     within 'div#ptform' do
-      fill_in 'name', :with => 'Example'
       fill_in 'email', :with => 'correct_email'
       fill_in 'password', :with => 'correct_password'
       click_button "Add new identity"
     end
-    page.should have_content 'Example'
+    page.should have_content 'API Key'
     click_link 'Remove'
-    page.should_not have_content 'Example'
+    page.should_not have_content 'API Key'
   end
 
   scenario 'adds and removes new Pivotal Tracker identity with token' do
     click_link 'add_new_pt'
+    find('a', text: "API Key").click
     within 'div#ptform' do
-      fill_in 'name', :with => 'Example'
       fill_in 'token', :with => 'correct_token'
       click_button "Add new identity"
     end
-    page.should have_content 'Example'
+    page.should have_content 'API Key'
     click_link 'Remove'
-    page.should_not have_content 'Example'
+    page.should_not have_content 'API Key'
   end
 
 
   scenario 'adds and removes new Git Hub identity with credentials' do
     click_link 'add_new_gh'
     within 'div#ghform' do
-      fill_in 'name', :with => 'Example'
       fill_in 'username', :with => 'correct_username'
       fill_in 'password', :with => 'correct_password'
       click_button "Add new identity"
     end
-    page.should have_content 'Example'
+    page.should have_content 'API Key'
     click_link 'Remove'
-    page.should_not have_content 'Example'
+    page.should_not have_content 'API Key'
   end
 
   scenario 'adds and removes new Git Hub identity with token' do
     click_link 'add_new_gh'
+    find('a', text: "API Key").click
     within 'div#ghform' do
-      fill_in 'name', :with => 'Example'
       fill_in 'token', :with => 'correct_token'
       click_button "Add new identity"
     end
-    page.should have_content 'Example'
+    page.should have_content 'API Key'
     click_link 'Remove'
-    page.should_not have_content 'Example'
+    page.should_not have_content 'API Key'
   end
 
-  scenario 'field Name should not be empty when adding new Pivotal Tracker identity' do
+  scenario 'credential fields should not be empty when adding new Pivotal Tracker identity' do
     click_link 'add_new_pt'
     within 'div#ptform' do
-      fill_in 'email', :with => 'correct_email'
-      fill_in 'password', :with => 'correct_password'
-      click_button "Add new identity"
-    end
-    page.should have_content "can't be blank"
-  end
-
-  scenario 'field Name should not be empty when adding new Git Hub identity' do
-    click_link 'add_new_gh'
-    within 'div#ghform' do
-      fill_in 'username', :with => 'correct_username'
-      fill_in 'password', :with => 'correct_password'
-      click_button "Add new identity"
-    end
-    page.should have_content "can't be blank"
-  end
-
-    scenario 'credential fields should not be empty when adding new Pivotal Tracker identity' do
-    click_link 'add_new_pt'
-    within 'div#ptform' do
-      fill_in 'name', :with => 'Example'
       click_button "Add new identity"
     end
     page.should have_content "you need to provide login credentials"
@@ -96,7 +71,6 @@ feature 'Identities management', js: true do
   scenario 'credential fields should not be empty when new Git Hub identity' do
     click_link 'add_new_gh'
     within 'div#ghform' do
-      fill_in 'name', :with => 'Example'
       click_button "Add new identity"
     end
     page.should have_content "can't be blank"
