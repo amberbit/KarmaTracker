@@ -64,14 +64,15 @@ describe 'Tasks API' do
     response.status.should == 200
 
     project = JSON.parse(response.body)['task']
-    project['id'].should == Task.last.id
-    project['project_id'].should == Task.last.project_id
-    project['source_name'].should == Task.last.source_name
-    project['source_identifier'].should == Task.last.source_identifier
-    project['current_state'].should == Task.last.current_state
-    project['story_type'].should == Task.last.story_type
-    project['current_task'].should == Task.last.current_task
-    project['name'].should == Task.last.name
+    task = Task.first
+    project['id'].should == task.id
+    project['project_id'].should == task.project_id
+    project['source_name'].should == task.source_name
+    project['source_identifier'].should == task.source_identifier
+    project['current_state'].should == task.current_state
+    project['story_type'].should == task.story_type
+    project['current_task'].should == task.current_task
+    project['name'].should == task.name
   end
 
 
