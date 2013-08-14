@@ -20,7 +20,7 @@
 
   <div class="small-12 large-12 columns">
     <div class="row" ng-repeat="project in projects | startFrom:currentPage*pageSize | limitTo:pageSize">
-      <div class="box-container" ng-show="project.visible">   
+      <div class="box-container">
         <div class="columns icon clickable right panel external-link"
             ng-click="openProject(project.source_name, project.name, project.source_identifier, $event)">
           <div ng-switch="project.source_name">
