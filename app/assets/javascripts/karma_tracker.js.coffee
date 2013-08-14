@@ -33,8 +33,19 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
   $scope.menuIsDroppedDown = document.getElementById("top-bar").classList.contains("expanded")
   $scope.matchesQuery = (string) ->
     string.toLowerCase().indexOf($scope.query.string.toLowerCase()) != -1
-
+  $scope.username = ''
   $scope.query = {}
+  
+  $http.get(
+    '/api/v1/user?token='+$cookieStore.get('token')
+  ).success((data, status, headers, config) ->
+    $scope.username = data.user.email.split('@')[0].split(/\.|-|_/).join(" ")
+    $scope.username = $scope.username.replace /\w+/g, (str) ->
+      str.charAt(0).toUpperCase() + str.substr(1).toLowerCase()
+  ).error((data, status, headers, config) ->
+  )
+
+
   
   $scope.refresh = ->
     if $location.path().indexOf('tasks') != -1
