@@ -64,7 +64,7 @@ feature 'Projects management,
       page.should have_content project2.name
     end
   end
-  
+
   scenario 'paginate more than 100 projects' do
     100.times do |i| 
       project = create(:project, source_identifier: 100+i, source_name: "Name #{i}")

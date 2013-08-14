@@ -20,6 +20,18 @@ describe 'Projects API' do
     JSON.parse(response.body).count.should == 3
   end
 
+  # GET /projects?query=search_term
+  it 'should return searched project' do
+    identity = Identity.last
+    p = create :project, name: "The next Google", identities: [identity]
+    api_get 'projects?query=google', {token: identity.user.api_key.token}
+    response.status.should == 200
+    resp = JSON.parse(response.body)
+    resp.count.should == 1
+    project = resp.last["project"]
+    project["id"] = p.id
+  end
+
   # GET /projects/:id
   it 'should return a single project' do
     api_get "projects/#{Project.last.id}", {token: Identity.last.user.api_key.token}
@@ -104,8 +116,8 @@ describe 'Projects API' do
     t = FactoryGirl.create(:task, name: "Do 100 pushups", project: project)
     api_get "projects/#{project.id}/tasks?query=push", {token: Identity.last.user.api_key.token}
     resp = JSON.parse(response.body)
-    task = resp.last["task"]
     resp.count.should == 1
+    task = resp.last["task"]
     task["id"] = t.id
     task["project_id"] = t.project_id
     task["source_name"] = t.source_name
