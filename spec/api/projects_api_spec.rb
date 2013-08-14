@@ -56,7 +56,7 @@ describe 'Projects API' do
 
     reset_fakeweb_urls
   end
-  
+
   it "should fetch project's tasks" do
     project = Project.last
     expect {
@@ -64,7 +64,7 @@ describe 'Projects API' do
       response.status.should == 200
     }.to change{project.tasks.count}.by(2)
   end
-  
+
   it "should not fetch tasks from not my project" do
     project = Project.last
     expect {
@@ -76,7 +76,6 @@ describe 'Projects API' do
       resp["message"].should =~ /Resource not found/
     }.not_to change{project.tasks.count}.by(2)
   end
-  
 
   # GET /projects/:id/tasks
   it 'should return tasks for a given project' do
@@ -100,7 +99,23 @@ describe 'Projects API' do
     resp.count.should == 1
   end
 
-  it 'should return tasks for a given project with search param'
+  it 'should return tasks for a given project with search param' do
+    project = Project.last
+    t = FactoryGirl.create(:task, name: "Do 100 pushups", project: project)
+    api_get "projects/#{project.id}/tasks?query=push", {token: Identity.last.user.api_key.token}
+    resp = JSON.parse(response.body)
+    task = resp.last["task"]
+    resp.count.should == 1
+    task["id"] = t.id
+    task["project_id"] = t.project_id
+    task["source_name"] = t.source_name
+    task["source_identifier"] = t.source_identifier
+    task["current_state"] = t.current_state
+    task["story_type"] = t.story_type
+    task["name"] = t.name
+    task["current_task"] = t.current_task
+    task["running"] = false
+  end
 
   # GET /projects/:id/tasks
   it 'should return an error when trying to fetch tasks from other user\'s proejct' do
