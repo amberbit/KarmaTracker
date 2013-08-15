@@ -24,9 +24,11 @@ module Api
       #       {"project": {"id":3, "name": "Some random name "source_name": "GitHub", "source_identifier": "42", "task_count": "0"}}]
       #
       def index
+        @items_per_page = AppConfig.items_per_page
         @projects = @api_key.user.projects
         @projects = @projects.search_by_name(params[:query]) if params[:query].present?
-        @projects = @projects.sort! { |a,b| a.name.downcase <=> b.name.downcase }
+        @projects = @projects.sort!{ |a,b| a.name.downcase <=> b.name.downcase }.
+          paginate(page: params[:page], per_page: @items_per_page )
         render 'index'
       end
 
