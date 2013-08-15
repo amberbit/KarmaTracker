@@ -14,11 +14,15 @@ describe 'Projects API' do
   end
 
   # GET /projects
-  it 'should return an array of user projects' do
-    api_get 'projects', {token: Identity.last.user.api_key.token}
+  it 'should return paginated array of user projects' do
+    AppConfig.stub(:items_per_page).and_return(2)
+    api_get 'projects?page=2', {token: Identity.last.user.api_key.token}
     response.status.should == 200
-    JSON.parse(response.body).count.should == 3
+    resp = JSON.parse(response.body)
+    resp['total_count'].to_i.should == 3
+    resp['projects'].count.should == 1
   end
+
 
   # GET /projects?query=search_term
   it 'should return searched project' do
