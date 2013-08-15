@@ -31,8 +31,8 @@ describe 'Projects API' do
     api_get 'projects?query=google', {token: identity.user.api_key.token}
     response.status.should == 200
     resp = JSON.parse(response.body)
-    resp.count.should == 1
-    project = resp.last["project"]
+    resp['projects'].count.should == 1
+    project = resp['projects'].last["project"]
     project["id"] = p.id
   end
 
@@ -273,7 +273,7 @@ describe 'Projects API' do
     api_get "projects/recent", {token: Identity.last.user.api_key.token}
     response.status.should == 200
 
-    projects = JSON.parse response.body
+    projects = JSON.parse(response.body)['projects']
     projects.map {|p| p["project"]["id"]}.should == @projects.map{|p| p.id}[5..9].reverse
   end
   

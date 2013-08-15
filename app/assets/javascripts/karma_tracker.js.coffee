@@ -31,11 +31,8 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
   $scope.webhook_tip = false
   $scope.tokenName = 'token'
   $scope.menuIsDroppedDown = document.getElementById("top-bar").classList.contains("expanded")
-  $scope.matchesQuery = (string) ->
-    string.toLowerCase().indexOf($scope.query.string.toLowerCase()) != -1
-
   $scope.query = {}
-  
+
   $scope.refresh = ->
     if $location.path().indexOf('tasks') != -1
       $rootScope.loading = true
@@ -61,8 +58,7 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
         $scope.refreshing = false
         $rootScope.loading = false
       )
-  
-  
+
   refreshWithPull = () ->
     if $location.path().indexOf('tasks') != -1
       $http.get(
@@ -88,7 +84,6 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
       )
     $scope.$apply();
 
-    
   $scope.notice = (message) ->
     FlashMessage.type = null
     FlashMessage.string = message
