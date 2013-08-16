@@ -27,11 +27,11 @@ KarmaTracker.controller "ProjectsController", ($rootScope, $scope, $http, $cooki
         $scope.projects.push project.project
       $rootScope.loading = false
     ).error((data, status, headers, config) ->
+      console.debug 'Error fetching projects'
       if $scope.recent
         $scope.recent = false
       $rootScope.loading = false
     )
-
 
   $scope.queryChanged = ->
     query = $scope.query.string
