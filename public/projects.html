@@ -48,7 +48,16 @@
         <button class="button small" ng-disabled="currentPage == 0" ng-click="reloadProjects(currentPage-1)">
             Previous
         </button>
-        {{currentPage+1}} / {{numberOfPages()}}
+        <div class="dropdown">
+          <a class="dropdown-toggle">
+          {{currentPage+1}} / {{numberOfPages()}}
+          </a>
+          <ul class="dropdown-menu">
+            <li ng-repeat="choice in items">
+            <a ng-click="reloadProjects(choice.value)">{{choice.text}}</a>
+            </li>
+          </ul>
+        </div>
         <button class="button small" ng-disabled="currentPage+1 >= numberOfPages()" ng-click="reloadProjects(currentPage+1)">
             Next
         </button>

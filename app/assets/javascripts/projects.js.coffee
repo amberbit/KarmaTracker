@@ -8,6 +8,7 @@ KarmaTracker.controller "ProjectsController", ($rootScope, $scope, $http, $cooki
   $scope.pageSize = KarmaTrackerConfig.items_per_page
   $scope.recent = true if document.documentElement.clientWidth <= 768
   $scope.timer = 0
+  $scope.items = []
 
   $scope.numberOfPages = ->
     return Math.ceil($scope.totalCount/$scope.pageSize)
@@ -26,8 +27,9 @@ KarmaTracker.controller "ProjectsController", ($rootScope, $scope, $http, $cooki
       for project in data['projects']
         $scope.projects.push project.project
       $rootScope.loading = false
+      $scope.initItems()
     ).error((data, status, headers, config) ->
-      console.debug 'Error fetching projects'
+      console.debug "Error fetching projects. Status: #{status}"
       if $scope.recent
         $scope.recent = false
       $rootScope.loading = false
@@ -42,3 +44,10 @@ KarmaTracker.controller "ProjectsController", ($rootScope, $scope, $http, $cooki
 
   $scope.$watch("query.string", $scope.queryChanged)
   $scope.$watch("recent", $scope.reloadProjects)
+
+
+  $scope.initItems = ->
+    $scope.items = []
+    numberOfPages = $scope.numberOfPages()
+    for i in [0..(numberOfPages-1)]
+      $scope.items.push { text: "#{i+1}/#{numberOfPages}", value: i }
