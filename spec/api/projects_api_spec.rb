@@ -6,10 +6,10 @@ require 'timecop'
 describe 'Projects API' do
 
   before :each do
-    FactoryGirl.create :identity
+    @identity = create :identity
     3.times do
       FactoryGirl.create :project
-      Project.last.identities << Identity.last
+      Project.last.identities << @identity
     end
   end
 
@@ -21,6 +21,7 @@ describe 'Projects API' do
     resp = JSON.parse(response.body)
     resp['total_count'].to_i.should == 3
     resp['projects'].count.should == 1
+    AppConfig.unstub(:items_per_page)
   end
 
 
@@ -94,15 +95,16 @@ describe 'Projects API' do
   end
 
   # GET /projects/:id/tasks
-  it 'should return tasks for a given project' do
-    2.times { Project.last.tasks << FactoryGirl.create(:task)  }
-    project = FactoryGirl.create :project
-    project.identities << Identity.last
-    t = FactoryGirl.create(:task)
-    project.tasks << t
-    api_get "projects/#{project.id}/tasks", {token: Identity.last.user.api_key.token}
+  it 'should return paginated tasks for a given project' do
+    AppConfig.stub(:items_per_page).and_return(2)
+    project = Project.last
+    3.times { project.tasks << create(:task)  }
+    t = Task.last
+    api_get "projects/#{project.id}/tasks?page=2", {token: @identity.user.api_key.token}
     resp = JSON.parse(response.body)
-    task = resp.last["task"]
+    resp['total_count'].should == 3
+    resp['tasks'].count.should == 1
+    task = resp['tasks'].last["task"]
     task["id"] = t.id
     task["project_id"] = t.project_id
     task["source_name"] = t.source_name
@@ -111,8 +113,8 @@ describe 'Projects API' do
     task["story_type"] = t.story_type
     task["name"] = t.name
     task["current_task"] = t.current_task
-    task["running"] = t.running?(Identity.last.user.id)
-    resp.count.should == 1
+    task["running"] = t.running?(@identity.user.id)
+    AppConfig.unstub(:items_per_page)
   end
 
   it 'should return tasks for a given project with search param' do
@@ -120,8 +122,8 @@ describe 'Projects API' do
     t = FactoryGirl.create(:task, name: "Do 100 pushups", project: project)
     api_get "projects/#{project.id}/tasks?query=push", {token: Identity.last.user.api_key.token}
     resp = JSON.parse(response.body)
-    resp.count.should == 1
-    task = resp.last["task"]
+    resp['tasks'].count.should == 1
+    task = resp['tasks'].last["task"]
     task["id"] = t.id
     task["project_id"] = t.project_id
     task["source_name"] = t.source_name
@@ -151,7 +153,7 @@ describe 'Projects API' do
     api_get "projects/#{Project.last.id}/current_tasks", {token: Identity.last.user.api_key.token}
     response.status.should == 200
     resp = JSON.parse(response.body)
-    task = resp.last["task"]
+    task = resp['tasks'].last["task"]
     task["id"] = t.id
     task["project_id"] = t.project_id
     task["source_name"] = t.source_name
@@ -161,7 +163,7 @@ describe 'Projects API' do
     task["name"] = t.name
     task["current_task"] = t.current_task
     task["running"] = t.running?(Identity.last.user.id)
-    resp.count.should == 1
+    resp['tasks'].count.should == 1
   end
 
   # GET /projects/:id/current_tasks

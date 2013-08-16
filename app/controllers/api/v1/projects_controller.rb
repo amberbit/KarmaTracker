@@ -202,8 +202,10 @@ module Api
       def tasks
         project = Project.find_by_id(params[:id])
         if project && @api_key.user.projects.include?(project)
+          @items_per_page = AppConfig.items_per_page
           @tasks = project.tasks
           @tasks = @tasks.search_by_name params[:query] if params[:query].present?
+          @tasks = @tasks.paginate(page: params[:page], per_page: @items_per_page )
           render 'tasks'
         else
           render json: {message: 'Resource not found'}, status: 404
@@ -240,8 +242,10 @@ module Api
       def current_tasks
         project = Project.find(params[:id])
         if @api_key.user.projects.include?(project)
+          @items_per_page = AppConfig.items_per_page
           @tasks = project.tasks.current
           @tasks = @tasks.search_by_name params[:query] if params[:query].present?
+          @tasks = @tasks.paginate(page: params[:page], per_page: @items_per_page )
           render 'tasks'
         else
           render json: {message: 'Resource not found'}, status: 404

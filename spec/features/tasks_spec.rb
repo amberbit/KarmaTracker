@@ -38,7 +38,6 @@ as a user I can', js: true  do
   background do
     FakeWeb.allow_net_connect = true
     login user
-    
   end
 
 
@@ -113,9 +112,20 @@ as a user I can', js: true  do
   end
   
   scenario 'paginate more than 100 tasks' do
-    100.times { create(:task, project: project1, current_task: true) }
+    AppConfig.stub(:items_per_page).and_return(2)
     find('span', text: project1.name).click
     click_on 'Next'
     page.should have_content Task.last.name
+    AppConfig.unstub(:items_per_page)
+  end
+
+  scenario 'paginate with dropdown' do
+    20.times do |i| 
+      create(:task, project: project1, current_task: true)
+    end
+    find('span', text: project1.name).click
+    find('.dropdown-toggle').click
+    find('.dropdown-menu').all('a')[6].click
+    page.should have_content 'Sample task nr 11'
   end
 end

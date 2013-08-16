@@ -5,25 +5,31 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
   $scope.query.string = ""
   $scope.tokenName = 'token'
   $scope.timer = 0
-
   $scope.currentPage = 0
   $scope.pageSize = KarmaTrackerConfig.items_per_page
+  $scope.totalCount = 0
+  $scope.items = []
 
-  $scope.numberOfPages = () ->
-    return Math.ceil($scope.tasks.length/$scope.pageSize)
+  $scope.numberOfPages = ->
+    return Math.ceil($scope.totalCount/$scope.pageSize)
 
-  $scope.reloadTasks = ->
+  $scope.reloadTasks = (pageNr) ->
+    if !pageNr? || isNaN(pageNr)
+      pageNr = 0
     $rootScope.loading = true
     $http.get(
-      "/api/v1/projects/#{$routeParams.project_id}/#{if $scope.current then "current_" else "" }tasks?token=#{$cookieStore.get($scope.tokenName)}#{if $scope.query.string.length > 0 then '&query=' + $scope.query.string else ''}"
+      "/api/v1/projects/#{$routeParams.project_id}/#{if $scope.current then "current_" else "" }tasks?token=#{$cookieStore.get($scope.tokenName)}#{if $scope.query.string.length > 0 then '&query=' + $scope.query.string else ''}&page=#{pageNr+1}"
     ).success((data, status, headers, config) ->
+      $scope.totalCount = parseInt(data['total_count'])
+      $scope.currentPage = pageNr
       $scope.tasks = []
-      for task in data
+      for task in data['tasks']
         task.task.visible = true
         $scope.tasks.push task.task
        $rootScope.loading = false
+       $scope.initItems()
     ).error((data, status, headers, config) ->
-      console.debug('Error fetching tasks')
+      console.debug("Error fetching tasks. Status: #{status}")
       $rootScope.loading = false
     )
 
@@ -73,3 +79,9 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
     console.debug('Error fetching project')
   )
 
+
+  $scope.initItems = ->
+    $scope.items = []
+    numberOfPages = $scope.numberOfPages()
+    for i in [0..(numberOfPages-1)]
+      $scope.items.push { text: "#{i+1}/#{numberOfPages}", value: i }

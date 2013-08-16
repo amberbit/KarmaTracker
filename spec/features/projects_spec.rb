@@ -70,6 +70,7 @@ feature 'Projects management,
     visit current_path
     click_on 'Next'
     page.should have_content project1.name
+    AppConfig.unstub(:items_per_page)
   end
 
   scenario 'paginate with dropdown' do
@@ -82,5 +83,6 @@ feature 'Projects management,
     find('.dropdown-toggle').click
     find('.dropdown-menu').all('a')[6].click
     page.should have_content 'Sample project nr 20'
+    AppConfig.unstub(:items_per_page)
   end
 end
