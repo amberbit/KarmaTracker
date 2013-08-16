@@ -34,11 +34,14 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
   $scope.matchesQuery = (string) ->
     string.toLowerCase().indexOf($scope.query.string.toLowerCase()) != -1
   $scope.username = ''
+  $scope.gravatar_url = ''
   $scope.query = {}
   
   $http.get(
     '/api/v1/user?token='+$cookieStore.get('token')
   ).success((data, status, headers, config) ->
+    console.debug data
+    $scope.gravatar_url = data.user.gravatar_url
     $scope.username = data.user.email.split('@')[0].split(/\.|-|_/).join(" ")
     $scope.username = $scope.username.replace /\w+/g, (str) ->
       str.charAt(0).toUpperCase() + str.substr(1).toLowerCase()

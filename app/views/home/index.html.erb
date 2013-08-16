@@ -25,7 +25,7 @@
         <li class="divider"></li>
         <li ng-click="go('/timesheet')"><a ng-class="highlightCurrentPage('timesheet')" href="#/timesheet" ng-click="expandMenu()">Timesheet</a></li>
         <li class="divider"></li>
-        <li id="profile" ng-click="moveMenu()" class="has-dropdown"><a href="">{{username}}</a>
+        <li id="profile" ng-click="moveMenu()" class="has-dropdown"><a href=""><img id="gravatar" ng-src="{{gravatar_url}}?s=35&d=mm" /> {{username}}</a>
           <ul class="dropdown">
             <li id="back-button" class="toggle-topbar"><a href=""><< Back</a></li>
             <li class="divider toogle-topbar"></li>
