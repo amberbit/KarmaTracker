@@ -40,7 +40,6 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
   $http.get(
     '/api/v1/user?token='+$cookieStore.get('token')
   ).success((data, status, headers, config) ->
-    console.debug data
     $scope.gravatar_url = data.user.gravatar_url
     $scope.username = data.user.email.split('@')[0].split(/\.|-|_/).join(" ")
     $scope.username = $scope.username.replace /\w+/g, (str) ->
