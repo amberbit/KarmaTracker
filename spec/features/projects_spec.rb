@@ -64,14 +64,25 @@ feature 'Projects management,
       page.should have_content project2.name
     end
   end
-  
-  scenario 'paginate more than 100 projects' do
-    100.times do |i| 
-      project = create(:project, source_identifier: 100+i, source_name: "Name #{i}")
-      create(:participation, project: project, identity: identity)
-    end
+
+  scenario 'paginate projects' do
+    AppConfig.stub(:items_per_page).and_return(2)
     visit current_path
     click_on 'Next'
     page.should have_content project1.name
+    AppConfig.unstub(:items_per_page)
+  end
+
+  scenario 'paginate with dropdown' do
+    20.times do |i| 
+      project = create(:project, source_identifier: 100+i, source_name: "Name #{i}")
+      create(:participation, project: project, identity: identity)
+    end
+    AppConfig.stub(:items_per_page).and_return(2)
+    visit current_path
+    find('.dropdown-toggle').click
+    find('.dropdown-menu').all('a')[6].click
+    wait_until(10) { page.has_content?  'Sample project nr 20' }
+    AppConfig.unstub(:items_per_page)
   end
 end

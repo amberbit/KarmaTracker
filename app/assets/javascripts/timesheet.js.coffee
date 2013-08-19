@@ -41,7 +41,7 @@ KarmaTracker.controller "TimesheetController", ($scope, $http, $cookieStore, $lo
     $http.get(
       '/api/v1/projects?token='+$cookieStore.get($scope.tokenName)
     ).success((data, status, headers, config) ->
-      $scope.projects = data
+      $scope.projects = data['projects']
     ).error((data, status, headers, config) ->
     )
 

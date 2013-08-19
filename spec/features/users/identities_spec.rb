@@ -7,6 +7,9 @@ feature 'Identities management', js: true do
     user = FactoryGirl.create :user
     user.update_attribute :confirmation_token, nil
     login user
+    within '#firstTip' do
+      click_on 'Ok'
+    end
     page.should have_content 'Identities'
     page.should have_content 'Pivotal Tracker'
   end

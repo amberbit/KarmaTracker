@@ -24,7 +24,11 @@ module Api
       #       {"project": {"id":3, "name": "Some random name "source_name": "GitHub", "source_identifier": "42", "task_count": "0"}}]
       #
       def index
-        @projects = @api_key.user.projects.sort! { |a,b| a.name.downcase <=> b.name.downcase }
+        @items_per_page = AppConfig.items_per_page
+        @projects = @api_key.user.projects
+        @projects = @projects.search_by_name(params[:query]) if params[:query].present?
+        @projects = @projects.sort!{ |a,b| a.name.downcase <=> b.name.downcase }.
+          paginate(page: params[:page], per_page: @items_per_page )
         render 'index'
       end
 
@@ -198,11 +202,10 @@ module Api
       def tasks
         project = Project.find_by_id(params[:id])
         if project && @api_key.user.projects.include?(project)
-          if params[:query].present?
-            @tasks = project.tasks.search_by_name params[:query]
-          else
-            @tasks = project.tasks
-          end
+          @items_per_page = AppConfig.items_per_page
+          @tasks = project.tasks
+          @tasks = @tasks.search_by_name params[:query] if params[:query].present?
+          @tasks = @tasks.paginate(page: params[:page], per_page: @items_per_page )
           render 'tasks'
         else
           render json: {message: 'Resource not found'}, status: 404
@@ -239,11 +242,10 @@ module Api
       def current_tasks
         project = Project.find(params[:id])
         if @api_key.user.projects.include?(project)
-          if params[:query].present?
-            @tasks = project.tasks.current.search_by_name params[:query]
-          else
-            @tasks = project.tasks.current
-          end
+          @items_per_page = AppConfig.items_per_page
+          @tasks = project.tasks.current
+          @tasks = @tasks.search_by_name params[:query] if params[:query].present?
+          @tasks = @tasks.paginate(page: params[:page], per_page: @items_per_page )
           render 'tasks'
         else
           render json: {message: 'Resource not found'}, status: 404

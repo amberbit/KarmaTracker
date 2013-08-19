@@ -19,8 +19,8 @@
   </div>
 
   <div class="small-12 large-12 columns">
-    <div class="row" ng-repeat="project in projects | startFrom:currentPage*pageSize | limitTo:pageSize">
-      <div class="box-container" ng-show="project.visible">   
+    <div class="row" ng-repeat="project in projects">
+      <div class="box-container">
         <div class="columns icon clickable right panel external-link"
             ng-click="openProject(project.source_name, project.name, project.source_identifier, $event)">
           <div ng-switch="project.source_name">
@@ -32,7 +32,6 @@
             </div>
           </div>
         </div>
-        
         <div class="columns panel project clickable"
           ng-click="loadTasks(project)">
           <span class="project-text">
@@ -43,13 +42,22 @@
         </div>
       </div>
     </div>
-     <div id="pagination" class="small-6 small-offset-6 large-6 large-offset-6" ng-show="projects.length > pageSize">
+     <div id="pagination" class="small-9 small-offset-1 large-6 large-offset-1" ng-show="totalCount > pageSize">
       <div class="right">
-        <button class="button small" ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
+        <button class="button small" ng-disabled="currentPage == 0" ng-click="reloadProjects(currentPage-1)">
             Previous
         </button>
-        {{currentPage+1}} / {{numberOfPages()}}
-        <button class="button small" ng-disabled="currentPage >= projects.length/pageSize - 1" ng-click="currentPage=currentPage+1">
+        <div class="dropdown">
+          <a class="dropdown-toggle">
+          {{currentPage+1}} / {{numberOfPages()}}
+          </a>
+          <ul class="dropdown-menu">
+            <li ng-repeat="choice in items">
+            <a ng-click="reloadProjects(choice.value)">{{choice.text}}</a>
+            </li>
+          </ul>
+        </div>
+        <button class="button small" ng-disabled="currentPage+1 >= numberOfPages()" ng-click="reloadProjects(currentPage+1)">
             Next
         </button>
       </div>

@@ -1,3 +1,4 @@
-json.array! @projects do |p|
-  json.partial! "api/v1/projects/show", project: p
+json.projects @projects, partial: 'api/v1/projects/show', as: :project
+if @projects.respond_to?(:total_entries)
+  json.total_count @projects.total_entries
 end
