@@ -13,7 +13,7 @@
 class User < ActiveRecord::Base
   has_secure_password
 
-  attr_accessible :email, :password, :confirmation_token, :refreshing_projects
+  attr_accessible :email, :password, :confirmation_token, :refreshing_projects, :gravatar_url
 
   has_one :api_key, dependent: :destroy
   has_many :time_log_entries, dependent: :destroy
@@ -28,6 +28,7 @@ class User < ActiveRecord::Base
 
   before_create :generate_tokens
   after_create :create_api_key
+  after_create :gravatar_url
 
   def self.authenticate session
     session ||= {}
@@ -47,6 +48,10 @@ class User < ActiveRecord::Base
     begin
       self[column] = SecureRandom.hex
     end while User.exists?(column => self[column])
+  end
+  
+  def gravatar_url
+    gravatar_url = "http://www.gravatar.com/avatar/" + Digest::MD5.hexdigest(self.email)
   end
 
   def send_password_reset(host)

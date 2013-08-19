@@ -31,7 +31,20 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
   $scope.webhook_tip = false
   $scope.tokenName = 'token'
   $scope.menuIsDroppedDown = document.getElementById("top-bar").classList.contains("expanded")
+  $scope.username = ''
+  $scope.gravatar_url = ''
   $scope.query = {}
+
+  $http.get(
+    '/api/v1/user?token='+$cookieStore.get('token')
+  ).success((data, status, headers, config) ->
+    $scope.gravatar_url = data.user.gravatar_url
+    $scope.username = data.user.email.split('@')[0].split(/\.|-|_/).join(" ")
+    $scope.username = $scope.username.replace /\w+/g, (str) ->
+      str.charAt(0).toUpperCase() + str.substr(1).toLowerCase()
+  ).error((data, status, headers, config) ->
+  )
+
 
   $scope.refresh = ->
     if $location.path().indexOf('tasks') != -1
@@ -126,22 +139,13 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
   $scope.goToLink = (path) ->
     $location.path path
 
-  #$scope.stopTracking = (task) ->
-    #if task.running
-      #$http.post(
-        #"/api/v1/time_log_entries/stop?token=#{$cookieStore.get $scope.tokenName}"
-      #).success((data, status, headers, config) ->
-        #$scope.$watch("$scope.runningTask", $scope.getRunningTask())
-      #).error((data, status, headers, config) ->
-      #)
-
   $scope.highlightCurrentPage = (url) ->
     if $location.url().indexOf(url) != -1
       return "current"
     else
       return ""
 
-  $scope.expandMenu = () ->
+  $scope.expandMenu = ->
     if window.getComputedStyle(document.getElementById("toggle-menu")).getPropertyValue("display") != "none"
       document.getElementById("top-bar").classList.toggle("expanded")
       $scope.menuIsDroppedDown = document.getElementById("top-bar").classList.contains("expanded")
@@ -149,10 +153,8 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
       $rootScope.$watch("pullAllowed", (value) ->
         $rootScope.pull(value, element)
       , true)
-    
-    
 
-  $scope.moveMenu = () ->
+  $scope.moveMenu = ->
     document.getElementById("profile").classList.toggle("moved")
     if  document.getElementById("top-bar-section").style.left == ""
       document.getElementById("top-bar-section").style.left = "-100%"
@@ -175,7 +177,7 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
     $location.path '/login'
 
 
-  $scope.checkIdentities = () ->
+  $scope.checkIdentities = ->
     $http.get(
       "/api/v1/identities?token=#{$cookieStore.get $scope.tokenName}"
     ).success((data, status, headers, config) ->
@@ -185,7 +187,7 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
     ).error((data, status, headers, config) ->
     )
 
-  $rootScope.checkRefreshingProjects = () ->
+  $rootScope.checkRefreshingProjects = ->
    $http.get(
      "/api/v1/user?token=#{$cookieStore.get $scope.tokenName}"
    ).success((data, status, headers, config) ->
@@ -198,13 +200,13 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
      $scope.$apply()
 
 
-  $scope.hideFirstTip = () ->
+  $scope.hideFirstTip = ->
     $scope.firstTipVisible = false
 
   $scope.$on "handleBroadcast", () ->
     if broadcastService.message == 'recentClicked'
       $scope.getRunningTask()
- 
+
   $rootScope.pull = (value, element) ->
     if value && !$scope.menuIsDroppedDown
       $(element).hook(
@@ -214,7 +216,6 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
         )
     else
       $(element).hook("destroy")
-     
 
   $scope.$on '$routeChangeStart', ->
     if $location.path().indexOf('tasks') != -1
@@ -227,12 +228,10 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
       )
     else
       $scope.webhookProjectURL = null
-  
+
   $scope.getRunningTask()
   $scope.checkIdentities()
   $rootScope.checkRefreshingProjects()
-    
-
 
 
 KarmaTracker.directive "pullToRefresh", ($rootScope) ->

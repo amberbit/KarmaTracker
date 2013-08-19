@@ -9,14 +9,19 @@
     <div class="row"> 
       <div class="small-12 large-12 columns panel">
         <h4 class="subheader">User details</h4>
-        <div class="small-5 columns panel secondary">
+        <div class="small-12 large-5 columns panel secondary">
+        <div class="left">
+          <a ng-href="http://gravatar.com/profile/{{gravatar_url}}" target="_blank"><img ng-src="{{gravatar_url}}?s=42&d=mm" title="Gravatar image" /></a>
+        </div>
+        <div class="small-10 large-10 columns">
           <label>E-mail:
             <input type="text" id="email" name="email" placeholder="{{user.email}}" ng-model="newEmail" />
             <small ng-show="errors.email" class="error">{{errors.email}}</small>
           </label>
+        </div>
           <button ng-click="changeEmail()" class="button right small">Save changes</button>
         </div>
-        <div class="small-6 small-offset-1 columns panel secondary">
+        <div class="small-12 large-6 large-offset-1 columns panel secondary">
           <label>Set new password:
             <input type="password" ng-model="newPassword" />
             <small ng-show="errors.password" class="error">{{errors.password}}</small>
