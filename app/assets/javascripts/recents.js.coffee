@@ -38,7 +38,7 @@ KarmaTracker.controller "RecentsController", ($scope, $http, $cookieStore, $loca
       '/api/v1/tasks/recent?token='+$cookieStore.get($scope.tokenName)
     ).success((data, status, headers, config) ->
       $scope.lastTasks = []
-      for task in data
+      for task in data['tasks']
         $scope.lastTasks.push task.task
       $scope.noTasks = false if $scope.lastTasks.length > 0
     ).error((data, status, headers, config) ->

@@ -12,7 +12,7 @@ default:
 development:
   users:
     allow_register: true
- 
+
 test:
 
 staging:

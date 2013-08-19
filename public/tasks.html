@@ -18,7 +18,7 @@
 
   <div class="small-12 large-12 columns">
 
-    <div class="row" ng-repeat="task in tasks | startFrom:currentPage*pageSize | limitTo:pageSize">
+    <div class="row" ng-repeat="task in tasks">
 <div class="box-container">   
      <div class="columns icon clickable right panel external-link"
           ng-click="openTask(project.source_name, project.name, project.source_identifier, task.source_identifier, $event)"
@@ -64,7 +64,7 @@
             </li>
           </ul>
         </div>
-        <button class="button small" ng-disabled="currentPage >= tasks.length/pageSize - 1" ng-click="currentPage=currentPage+1">
+        <button class="button small" ng-disabled="currentPage+1 == numberOfPages()" ng-click="currentPage=currentPage+1">
             Next
         </button>
       </div>

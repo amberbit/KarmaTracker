@@ -82,7 +82,7 @@ feature 'Projects management,
     visit current_path
     find('.dropdown-toggle').click
     find('.dropdown-menu').all('a')[6].click
-    page.should have_content 'Sample project nr 20'
+    wait_until(10) { page.has_content?  'Sample project nr 20' }
     AppConfig.unstub(:items_per_page)
   end
 end

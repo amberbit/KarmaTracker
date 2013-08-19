@@ -100,7 +100,7 @@ as a user I can', js: true  do
       page.should have_content task4.name
     end
   end
-  
+
   scenario "see spining wheel when loading tasks list" do
     100.times { create(:task, project: project1) }
     find('span', text: project1.name).click
@@ -110,22 +110,26 @@ as a user I can', js: true  do
       page.should have_content 'Loading'
     end
   end
-  
-  scenario 'paginate more than 100 tasks' do
-    AppConfig.stub(:items_per_page).and_return(2)
+
+  scenario 'paginate tasks' do
+    AppConfig.stub(:items_per_page).and_return(1)
+    visit current_path
     find('span', text: project1.name).click
     click_on 'Next'
-    page.should have_content Task.last.name
+    wait_until(10) { page.has_content? task4.name }
     AppConfig.unstub(:items_per_page)
   end
 
   scenario 'paginate with dropdown' do
+    AppConfig.stub(:items_per_page).and_return(2)
     20.times do |i| 
       create(:task, project: project1, current_task: true)
     end
+    visit current_path
     find('span', text: project1.name).click
     find('.dropdown-toggle').click
     find('.dropdown-menu').all('a')[6].click
-    page.should have_content 'Sample task nr 11'
+    wait_until(10) { page.has_content? 'Sample task nr 11' }
+    AppConfig.unstub(:items_per_page)
   end
 end

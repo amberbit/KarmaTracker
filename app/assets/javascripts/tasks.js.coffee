@@ -14,7 +14,7 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
     return Math.ceil($scope.totalCount/$scope.pageSize)
 
   $scope.reloadTasks = (pageNr) ->
-    if !pageNr? || isNaN(pageNr)
+    if !pageNr? || isNaN(pageNr) || typeof(pageNr) == 'boolean'
       pageNr = 0
     $rootScope.loading = true
     $http.get(
