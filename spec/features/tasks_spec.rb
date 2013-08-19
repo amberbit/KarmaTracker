@@ -111,12 +111,29 @@ as a user I can', js: true  do
     end
   end
 
-  scenario 'paginate tasks' do
+  scenario 'paginate tasks with prev/next', driver: :selenium do
     AppConfig.stub(:items_per_page).and_return(1)
     visit current_path
     find('span', text: project1.name).click
-    click_on 'Next'
-    wait_until(10) { page.has_content? task4.name }
+    sleep 1
+    within '.view' do
+      page.should have_content task4.name
+      page.should_not have_content task1.name
+    end
+    within '#pagination' do
+      click_on 'Next'
+    end
+    within '.view' do
+      page.should have_content task1.name
+      page.should_not have_content task4.name
+    end
+    within '#pagination' do
+      click_on 'Previous'
+    end
+    within '.view' do
+      page.should have_content task4.name
+      page.should_not have_content task1.name
+    end
     AppConfig.unstub(:items_per_page)
   end
 
