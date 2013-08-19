@@ -40,7 +40,7 @@ KarmaTracker.controller "ProjectsController", ($rootScope, $scope, $http, $cooki
     clearTimeout $scope.timer
     $scope.timer = setTimeout (->
       $scope.reloadProjects()
-    ), 1000
+    ), 500
 
   $scope.$watch("query.string", $scope.queryChanged)
   $scope.$watch("recent", $scope.reloadProjects)

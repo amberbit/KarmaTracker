@@ -63,7 +63,7 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
     clearTimeout $scope.timer
     $scope.timer = setTimeout (->
       $scope.reloadTasks()
-    ), 1000
+    ), 500
 
   $scope.reloadTasks()
   $scope.$watch("current", $scope.reloadTasks)
