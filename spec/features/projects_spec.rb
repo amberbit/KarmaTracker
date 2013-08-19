@@ -5,30 +5,13 @@ feature 'Projects management,
 
   let(:user) { user = create :confirmed_user }
 
-  let(:project1) do
-    proj = create(:project, name: "ZZ KarmaTracker")
-    proj.tasks << create(:task)
-    proj
-  end
-  let(:project2) do
-    proj = create(:project, name: "My sweet 16 diary :O");
-    proj.tasks << create(:task)
-    proj
-  end
-  let!(:task) do
-    task = create(:task, project: project2, current_task: true, name: 'Do laundry') 
-    create(:time_log_entry, task: task, user: user)
-    task
-  end
-  let(:project3) do
-    proj = create(:project);
-    proj.tasks << create(:task)
-    proj
-  end
+  let(:project1) { create(:project, name: "ZZ KarmaTracker") }
+  let(:project2) { create(:project, name: "My sweet 16 diary :O") }
+  let(:project3) { create(:project) }
   let(:project4) { create :project }
 
   let!(:identity) do
-    identity = create(:identity)
+    identity = create(:identity, user: user)
     create(:participation, project: project1, identity: identity)
     create(:participation, project: project2, identity: identity)
     create(:participation, project: project4, identity: identity)
@@ -65,11 +48,22 @@ feature 'Projects management,
     end
   end
 
-  scenario 'paginate projects' do
+  scenario 'paginate projects with prev/next' do
     AppConfig.stub(:items_per_page).and_return(2)
     visit current_path
-    click_on 'Next'
+    page.should have_content project2.name
+    page.should_not have_content project1.name
+    sleep 1
+    within '#pagination' do
+      click_on 'Next'
+    end
     page.should have_content project1.name
+    page.should_not have_content project2.name
+    within '#pagination' do
+      click_on 'Previous'
+    end
+    page.should have_content project2.name
+    page.should_not have_content project1.name
     AppConfig.unstub(:items_per_page)
   end
 
