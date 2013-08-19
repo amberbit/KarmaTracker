@@ -17,10 +17,12 @@ KarmaTracker.controller "ProjectsController", ($rootScope, $scope, $http, $cooki
     $location.path "/projects/#{project.id}/tasks"
 
   $scope.reloadProjects = (pageNr = 0) ->
+    console.log 'reload'
     $rootScope.loading = true
     $http.get(
       "/api/v1/projects#{if $scope.recent then "/recent" else "" }?token=#{$cookieStore.get($scope.tokenName)}#{if $scope.query.string.length > 0 then '&query=' + $scope.query.string else ''}&page=#{pageNr+1}"
     ).success((data, status, headers, config) ->
+      console.log 'finished'
       $scope.totalCount = parseInt data['total_count']
       $scope.currentPage = pageNr
       $scope.projects = []

@@ -40,6 +40,7 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
   ).success((data, status, headers, config) ->
     $scope.gravatar_url = data.user.gravatar_url
     $scope.username = data.user.email.split('@')[0].split(/\.|-|_/).join(" ")
+    $scope.userId = data.user.id
     $scope.username = $scope.username.replace /\w+/g, (str) ->
       str.charAt(0).toUpperCase() + str.substr(1).toLowerCase()
   ).error((data, status, headers, config) ->
@@ -61,6 +62,18 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
       )
     else
       $rootScope.loading = true
+      client = Stomp.client(KarmaTrackerConfig.stomp_url)
+      client.connect( null, null, ->
+
+        $scope.$on('Torquebox.KarmaTracker.RefreshFinished', ->
+          client.disconnect
+        )
+
+        client.subscribe( "/users/#{$scope.userId}", ->
+          $scope.processProjects message
+        )
+      )
+
       $http.get(
         '/api/v1/projects/refresh?token='+$cookieStore.get('token')
       ).success((data, status, headers, config) ->

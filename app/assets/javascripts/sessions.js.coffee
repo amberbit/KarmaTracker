@@ -54,6 +54,7 @@ KarmaTracker.controller "SessionController", ($scope, $http, $cookieStore, $loca
 
 KarmaTracker.controller "LogoutController", ($scope, $location, $cookieStore) ->
   $cookieStore.remove 'token'
+  $scope.userId = null
   window.location = '/'
 
 

@@ -8,4 +8,17 @@ TorqueBox.configure do
     cron "0 0 * * * ?"
   end
 
+  stop do
+    stomplets do
+      users do
+        class 'UsersStomplet'
+        route 'users/:id'
+      end
+
+      projects do
+        class 'ProjectsStomplet'
+        route 'projects/:id/subscribe'
+      end
+    end
+  end
 end
