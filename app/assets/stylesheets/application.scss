@@ -729,16 +729,16 @@ margin-top: 0.5em;
   margin-top: 2px;
 }
 
-.dropdown {
+#pagination .dropdown {
   display: inline-block;
   cursor: pointer;
 }
 
-.dropdown a {
+a:hover {
   text-decoration:none;
 }
 
-.dropdown-menu {
+#pagination .dropdown-menu {
   -moz-border-radius: 0;
   border-radius: 0;
   border: solid 1px #cccccc;
@@ -747,7 +747,7 @@ margin-top: 0.5em;
   min-width: 20px;
 }
 
-.dropdown li {
+#pagination .dropdown li {
   font-size: 0.875em;
   cursor: pointer;
   line-height: 1.125em;
@@ -757,13 +757,13 @@ margin-top: 0.5em;
   }
 }
 
-.dropdown li a {
+#pagination .dropdown li a {
   color: #555555 !important;
   background: transparent !important;
 }
 
 #gravatar{
-  margin-bottom: -11px;
+  margin-bottom: 4px;
   margin-right: 10px;
 }
 
@@ -785,3 +785,4 @@ h4 a.refresh{
       margin-right: 0;
     }
 }
+
