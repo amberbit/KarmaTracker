@@ -38,7 +38,7 @@
         ng-class="{callout: task.id == runningTask.id, running: task.id == runningTask.id}"
         ng-click="startTracking(task)"
         ng-show="task.visible">
-        <div class="hide-for-medium hide-for-small large-1 columns">
+        <div class="label-box hide-for-small large-1 columns">
           <span class="label task-id">{{task.source_identifier}}</span>
         </div>
         <span class="task-text">
