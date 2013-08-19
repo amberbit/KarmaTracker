@@ -121,15 +121,14 @@ as a user I can', js: true  do
   end
 
   scenario 'paginate with dropdown' do
-    AppConfig.stub(:items_per_page).and_return(2)
-    20.times do |i| 
-      create(:task, project: project1, current_task: true)
-    end
+    create(:task, project: project1, current_task: true)
+    AppConfig.stub(:items_per_page).and_return(1)
     visit current_path
     find('span', text: project1.name).click
+    wait_until(20) { page.has_css? '.dropdown-toggle' }
     find('.dropdown-toggle').click
-    find('.dropdown-menu').all('a')[6].click
-    wait_until(10) { page.has_content? 'Sample task nr 11' }
+    all('.dropdown-menu a')[1].click
+    wait_until(10) { page.has_content? task4.name }
     AppConfig.unstub(:items_per_page)
   end
 end

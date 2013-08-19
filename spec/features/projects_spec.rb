@@ -74,15 +74,11 @@ feature 'Projects management,
   end
 
   scenario 'paginate with dropdown' do
-    20.times do |i| 
-      project = create(:project, source_identifier: 100+i, source_name: "Name #{i}")
-      create(:participation, project: project, identity: identity)
-    end
     AppConfig.stub(:items_per_page).and_return(2)
     visit current_path
     find('.dropdown-toggle').click
-    find('.dropdown-menu').all('a')[6].click
-    wait_until(10) { page.has_content?  'Sample project nr 20' }
+    all('.dropdown-menu a')[1].click
+    wait_until(20) { page.has_content? project1.name  }
     AppConfig.unstub(:items_per_page)
   end
 end
