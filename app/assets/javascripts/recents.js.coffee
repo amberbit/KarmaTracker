@@ -4,12 +4,10 @@ KarmaTracker.controller "RecentsController", ($scope, $http, $cookieStore, $loca
   $scope.noTasks = true
   $rootScope.noRecentProjects = true
   $scope.tokenName = 'token'
-  
-  
-  $scope.showAllProjects = () ->
+
+  $scope.showAllProjects = ->
     document.getElementById("projectspage").classList.remove("hide-for-small")
     document.getElementById("recentspage").classList.add("hide-for-small")
-    
 
   $scope.startTracking = (task) ->
     if task.id == $scope.runningTask.id
@@ -40,7 +38,7 @@ KarmaTracker.controller "RecentsController", ($scope, $http, $cookieStore, $loca
       '/api/v1/tasks/recent?token='+$cookieStore.get($scope.tokenName)
     ).success((data, status, headers, config) ->
       $scope.lastTasks = []
-      for task in data
+      for task in data['tasks']
         $scope.lastTasks.push task.task
       $scope.noTasks = false if $scope.lastTasks.length > 0
     ).error((data, status, headers, config) ->
@@ -53,7 +51,7 @@ KarmaTracker.controller "RecentsController", ($scope, $http, $cookieStore, $loca
       '/api/v1/projects/recent?token='+$cookieStore.get($scope.tokenName)
     ).success((data, status, headers, config) ->
       $scope.lastProjects = []
-      for project in data
+      for project in data['projects']
         $scope.lastProjects.push project.project
       $rootScope.noRecentProjects = false if $scope.lastProjects.length > 0
     ).error((data, status, headers, config) ->

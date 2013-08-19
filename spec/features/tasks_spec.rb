@@ -38,7 +38,6 @@ as a user I can', js: true  do
   background do
     FakeWeb.allow_net_connect = true
     login user
-    
   end
 
 
@@ -101,7 +100,7 @@ as a user I can', js: true  do
       page.should have_content task4.name
     end
   end
-  
+
   scenario "see spining wheel when loading tasks list" do
     100.times { create(:task, project: project1) }
     find('span', text: project1.name).click
@@ -111,11 +110,25 @@ as a user I can', js: true  do
       page.should have_content 'Loading'
     end
   end
-  
-  scenario 'paginate more than 100 tasks' do
-    100.times { create(:task, project: project1, current_task: true) }
+
+  scenario 'paginate tasks' do
+    AppConfig.stub(:items_per_page).and_return(1)
+    visit current_path
     find('span', text: project1.name).click
     click_on 'Next'
-    page.should have_content Task.last.name
+    wait_until(10) { page.has_content? task4.name }
+    AppConfig.unstub(:items_per_page)
+  end
+
+  scenario 'paginate with dropdown' do
+    create(:task, project: project1, current_task: true)
+    AppConfig.stub(:items_per_page).and_return(1)
+    visit current_path
+    find('span', text: project1.name).click
+    wait_until(20) { page.has_css? '.dropdown-toggle' }
+    find('.dropdown-toggle').click
+    all('.dropdown-menu a')[1].click
+    wait_until(10) { page.has_content? task4.name }
+    AppConfig.unstub(:items_per_page)
   end
 end

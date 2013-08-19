@@ -39,7 +39,8 @@ should' do
     Identity.count.should == 2
     @identity.projects.count.should == 1
     @identity2.projects.count.should == 1
-    Project.first.identities.count.should == 2
+    project = Project.first
+    project.identities.count.should == 2
 
     reset_fakeweb_urls
 
@@ -47,7 +48,7 @@ should' do
     Identity.count.should == 2
     @identity.projects.count.should == 1
     @identity2.projects.count.should == 0
-    Project.first.identities.count.should == 1
+    project.identities.reload.count.should == 1
   end
 
   it 'fetch tasks for project' do

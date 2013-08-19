@@ -10,7 +10,6 @@
  *
  *= require_self
  *= require_tree .
- *= require bootstrap.min
  *= require foundation_and_overrides
  */
 
@@ -728,6 +727,39 @@ margin-top: 0.5em;
 
 .refresh-button{
   margin-top: 2px;
+}
+
+.dropdown {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.dropdown a {
+  text-decoration:none;
+}
+
+.dropdown-menu {
+  -moz-border-radius: 0;
+  border-radius: 0;
+  border: solid 1px #cccccc;
+  margin: 0;
+  padding: 0;
+  min-width: 20px;
+}
+
+.dropdown li {
+  font-size: 0.875em;
+  cursor: pointer;
+  line-height: 1.125em;
+  margin: 0;
+  &:hover, &:focus {
+    background: #eeeeee;
+  }
+}
+
+.dropdown li a {
+  color: #555555 !important;
+  background: transparent !important;
 }
 
 #gravatar{

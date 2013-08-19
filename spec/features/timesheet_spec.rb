@@ -11,7 +11,6 @@ feature 'Timesheet page,
     @date1 =  12.hours.ago 
     @date2 = 8.hours.ago
     @date3 = 2.hours.ago
-    
     @user = create :confirmed_user
     @project1 = create(:project, name: "KarmaTracker")
     @task1 = create(:task, project: @project1, current_task: true, name: 'Do dishes')
@@ -23,11 +22,9 @@ feature 'Timesheet page,
                                   started_at: @date2, stopped_at: @date2 + 1.hour + 1.second)
     @time_log_entry3 = create(:time_log_entry, task: @task2, user: @user,
                                   started_at: @date3, stopped_at: @date3 + 1.hour + 1.second)
-    
     @identity = create(:identity)
     create(:participation, project: @project1, identity: @identity)
     create(:participation, project: @project2, identity: @identity)
-    
     FakeWeb.allow_net_connect = true
     login @user
     click_link 'Timesheet'

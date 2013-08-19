@@ -13,6 +13,7 @@
 #
 
 class Project < ActiveRecord::Base
+  include PgSearch
 
   attr_accessible :name, :source_name, :source_identifier, :web_hook, :web_hook_token
 
@@ -24,6 +25,16 @@ class Project < ActiveRecord::Base
 
   before_create :generate_web_hook_token
   before_destroy :destroy_web_hook
+  after_save :update_tsvector
+
+  pg_search_scope :search_by_name, :against => :name,
+    using: {
+      tsearch: {
+        dictionary: 'english',
+        tsvector_column: 'tsvector_name_tsearch',
+        prefix: true
+      }
+    }
 
   def users
     User.joins('INNER JOIN identities i ON i.user_id = users.id
@@ -58,4 +69,9 @@ class Project < ActiveRecord::Base
     end while self.class.exists?(web_hook_token: web_hook_token)
   end
 
+  private 
+    def update_tsvector
+      query = "UPDATE projects SET tsvector_name_tsearch = TO_TSVECTOR('english', '#{self.name.gsub("'", "''")}') WHERE id = #{self.id};"
+      ActiveRecord::Base.connection.execute query
+    end
 end
