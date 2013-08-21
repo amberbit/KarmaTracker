@@ -14,9 +14,10 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
     return Math.ceil($scope.totalCount/$scope.pageSize)
 
   $scope.reloadTasks = (pageNr) ->
+    $rootScope.loading = true
     if !pageNr? || isNaN(pageNr) || typeof(pageNr) == 'boolean'
       pageNr = 0
-    $rootScope.loading = true
+
     $http.get(
       "/api/v1/projects/#{$routeParams.project_id}/#{if $scope.current then "current_" else "" }tasks?token=#{$cookieStore.get($scope.tokenName)}#{if $scope.query.string.length > 0 then '&query=' + $scope.query.string else ''}&page=#{pageNr+1}"
     ).success((data, status, headers, config) ->
@@ -26,8 +27,8 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
       for task in data['tasks']
         task.task.visible = true
         $scope.tasks.push task.task
-       $rootScope.loading = false
        $scope.initItems()
+       $rootScope.loading = false
     ).error((data, status, headers, config) ->
       console.debug("Error fetching tasks. Status: #{status}")
       $rootScope.loading = false
@@ -58,12 +59,13 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
         console.debug('Error when starting tracking time on tasks')
       )
 
-  $scope.queryChanged = ->
+  $scope.queryChanged = () ->
     query = $scope.query.string
-    clearTimeout $scope.timer
+    clearTimeout $scope.timer if $scope.timer != 0
     $scope.timer = setTimeout (->
       $scope.reloadTasks()
-    ), 500
+      $scope.$apply()
+    ), 1000
 
   $scope.reloadTasks()
   $scope.$watch("current", $scope.reloadTasks)
@@ -85,3 +87,4 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
     numberOfPages = $scope.numberOfPages()
     for i in [0..(numberOfPages-1)]
       $scope.items.push { text: "#{i+1}/#{numberOfPages}", value: i }
+
