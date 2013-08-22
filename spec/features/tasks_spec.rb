@@ -141,8 +141,8 @@ as a user I can', js: true  do
     create(:task, project: project1, current_task: true)
     AppConfig.stub(:items_per_page).and_return(1)
     visit current_path
+    wait_until(20) { page.has_css? '.dropdown-toggle', visible: true }
     find('span', text: project1.name).click
-    wait_until(20) { page.has_css? '.dropdown-toggle' }
     find('.dropdown-toggle').click
     all('.dropdown-menu a')[1].click
     wait_until(10) { page.has_content? task4.name }

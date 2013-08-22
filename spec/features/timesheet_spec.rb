@@ -3,7 +3,6 @@ require 'timecop'
 
 feature 'Timesheet page,
   as a user I can', js: true  do
-  
 
   background do
     @time = Time.local(2013, 8, 2, 15, 0, 0)
@@ -28,6 +27,9 @@ feature 'Timesheet page,
     FakeWeb.allow_net_connect = true
     login @user
     click_link 'Timesheet'
+    within '.view' do
+      page.should have_content 'Timesheet'
+    end
   end
 
   after(:each) { Timecop.return }
@@ -48,7 +50,7 @@ feature 'Timesheet page,
       first('td').text.should == '03:00 hours'
     end
   end
-  
+
   scenario 'see a message if there is no time log entries'  do
     fill_in 'From', with: @time + 2.hours
 
