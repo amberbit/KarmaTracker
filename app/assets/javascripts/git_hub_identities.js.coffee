@@ -32,10 +32,6 @@ KarmaTracker.controller "GitHubIdentitiesController", ($scope, $http, $cookieSto
         unless $scope.newIdentity[field]? and $scope.newIdentity[field] != ''
           $scope.errors[field] = "can't be blank"
           valid = false
-
-
-
-
     valid
 
   $scope.add = () ->
