@@ -51,7 +51,7 @@
   </div>
   <div ng-show="refreshing" ng-class="{'refreshing-top': runningVisible}">
     <div class="alert-box refreshing">
-      <span>The list of projects is being updated.</span>
+      <span>The list of {{refreshing}} is being updated.</span>
     </div>
   </div>
   <div ng-show="message.string" ng-class="{'small-12': true, 'columns': true, 'alert-box': true, 'alert': isAlert() == 'alert', 'success': isAlert() == 'success' }">

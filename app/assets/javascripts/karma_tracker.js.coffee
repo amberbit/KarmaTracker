@@ -52,7 +52,7 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
       $http.get(
         "api/v1/projects/#{$location.path().split('/')[2]}/refresh_for_project?token="+$cookieStore.get('token')
       ).success((data, status, headers, config) ->
-        $scope.refreshing = true
+        $scope.refreshing = 'tasks'
         $rootScope.loading = false
       ).error((data, status, headers, config) ->
         console.debug("Error refreshing project #{$location.path().split('/')[2]}")
@@ -64,7 +64,7 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
       $http.get(
         '/api/v1/projects/refresh?token='+$cookieStore.get('token')
       ).success((data, status, headers, config) ->
-        $scope.refreshing = true
+        $scope.refreshing = 'projects'
         $rootScope.loading = false
       ).error((data, status, headers, config) ->
         console.debug('Error refreshing projects')
