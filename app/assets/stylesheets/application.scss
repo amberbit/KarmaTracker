@@ -782,6 +782,12 @@ h4 a.refresh{
     }
 }
 
+@media only screen and (max-width: 756px) {
+  h4 a.refresh{
+    margin-top: 1px;
+    }
+}
+
 .sidepanel{
   margin-bottom: 1em !important;
   border-radius: 5px;
