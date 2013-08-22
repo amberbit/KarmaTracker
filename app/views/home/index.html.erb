@@ -104,7 +104,9 @@
 
           <div class="row" ng-repeat="project in lastProjects">
             <div ng-click="go('/projects/'+project.id+'/tasks')" class="large-12 colums panel recent-task clickable">
-              {{project.name}}
+              <div class="small-12 large-12 columns">
+                <span class="tiny-task">{{project.name}}</span>
+              </div>
             </div>
           </div>
 
