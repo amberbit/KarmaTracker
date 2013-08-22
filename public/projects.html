@@ -26,17 +26,17 @@
             ng-click="openProject(project.source_name, project.name, project.source_identifier, $event)">
           <div ng-switch="project.source_name">
             <div class="icon" ng-switch-when="GitHub">
-              <div class="source-icon github"></div>
+              <div class="source-icon github" title="See project in GitHub"></div>
             </div>
             <div ng-switch-when="Pivotal Tracker">
-              <div class="source-icon pivotal-tracker"></div>
+              <div class="source-icon pivotal-tracker" title="See project in Pivotal Tracker"></div>
             </div>
           </div>
         </div>
         <div class="columns panel project clickable"
           ng-click="loadTasks(project)">
           <span class="project-text">
-            <div class="track-control-icon start">
+            <div class="track-control-icon start project" title="Start tracking task of this project">
             </div>
             {{project.name}}
           </span>
