@@ -56,7 +56,9 @@ module Api
       #   => 200
       #
       #   resp.body
-      #   => {"task":{"id":1,"project_id":63,"source_name":"GitHub","source_identifier":"9216238/9","current_state":"open","story_type":"issue","current_task":true,"name":"Sample name","running":true}}
+      #   => {"task":{"id":1,"project_id":63,"source_name":"GitHub","source_identifier":"9216238/9",
+      #               "current_state":"open","story_type":"issue","current_task":true,"name":"Sample name",
+      #               "running":true,"started_at":"2013-08-22T13:44:47Z"}}
       #
       #
       #   resp = conn.get("/api/v1/tasks/running", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
@@ -68,9 +70,9 @@ module Api
       #   => {"message": "Resource not found"}
       #
       def running
-        log_entry  = @current_user.time_log_entries.where(running: true).first
+        @log_entry  = @current_user.time_log_entries.where(running: true).first
 
-        if log_entry && @task = log_entry.task
+        if @log_entry && @task = @log_entry.task
           render '_show'
         else
           render json: {message: '"Running" resource not found'}, status: 404
