@@ -111,7 +111,7 @@ as a user I can', js: true  do
     end
   end
 
-  scenario 'paginate tasks with prev/next', driver: :selenium do
+  scenario 'paginate tasks with prev/next' do
     AppConfig.stub(:items_per_page).and_return(1)
     visit current_path
     find('span', text: project1.name).click

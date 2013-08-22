@@ -6,7 +6,12 @@ feature 'Projects management,
   let(:user) { user = create :confirmed_user }
 
   let(:project1) { create(:project, name: "ZZ KarmaTracker") }
-  let(:project2) { create(:project, name: "My sweet 16 diary :O") }
+  let(:project2)  do
+    proj = create(:project, name: "My sweet 16 diary :O")
+    task = create :task, project: proj
+    create :time_log_entry, user: user, task: task
+    proj
+  end
   let(:project3) { create(:project) }
   let(:project4) { create :project }
 
@@ -51,25 +56,32 @@ feature 'Projects management,
   scenario 'paginate projects with prev/next' do
     AppConfig.stub(:items_per_page).and_return(2)
     visit current_path
-    page.should have_content project2.name
-    page.should_not have_content project1.name
+    within '.view' do
+      page.should have_content project2.name
+      page.should_not have_content project1.name
+    end
     sleep 1
     within '#pagination' do
       click_on 'Next'
     end
-    page.should have_content project1.name
-    page.should_not have_content project2.name
+    within '.view' do
+      page.should have_content project1.name
+      page.should_not have_content project2.name
+    end
     within '#pagination' do
       click_on 'Previous'
     end
-    page.should have_content project2.name
-    page.should_not have_content project1.name
+    within '.view' do
+      page.should have_content project2.name
+      page.should_not have_content project1.name
+    end
     AppConfig.unstub(:items_per_page)
   end
 
   scenario 'paginate with dropdown' do
     AppConfig.stub(:items_per_page).and_return(2)
     visit current_path
+    wait_until(10) { page.has_css?('.dropdown-toggle', visible: true) }
     find('.dropdown-toggle').click
     all('.dropdown-menu a')[1].click
     wait_until(20) { page.has_content? project1.name  }
