@@ -51,7 +51,7 @@
     
     <div id="pagination" class="small-9 small-offset-1 large-6 large-offset-1" ng-show="totalCount> pageSize">
       <div class="right">
-        <button class="button small" ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
+        <button class="button small" ng-disabled="currentPage == 0" ng-click="reloadTasks(currentPage-1)">
             Previous
         </button>
         <div class="dropdown">
@@ -64,7 +64,7 @@
             </li>
           </ul>
         </div>
-        <button class="button small" ng-disabled="currentPage+1 == numberOfPages()" ng-click="currentPage=currentPage+1">
+        <button class="button small" ng-disabled="currentPage+1 == numberOfPages()" ng-click="reloadTasks(currentPage+1)">
             Next
         </button>
       </div>

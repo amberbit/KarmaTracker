@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 source 'http://torquebox.org/rubygems/'
 
-gem 'rails', '3.2.13'
+gem 'rails', '3.2.14'
 gem 'rails-api'
 gem 'jbuilder', '~> 1.5.0'
 
