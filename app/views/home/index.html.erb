@@ -46,7 +46,7 @@
 <div id="flash" class="row" ng-class="{'signin-width': !signed_in}" ng-controller="FlashesController">
   <div class="show-for-small">
     <div class="alert-box tracking" ng-show="runningVisible" ng-click="goToLink('projects/'+runningTask.project_id+'/tasks')">
-      <span>{{runningTask.name}}</span>
+      <span class="right counter">{{runningTime}}</span> <span>{{runningTask.name}}</span>
     </div>
   </div>
   <div ng-show="refreshing" ng-class="{'refreshing-top': runningVisible}">
@@ -89,8 +89,8 @@
             id="recent-time-log-entry-{{task.id}}"
             ng-class="{callout: task.id == runningTask.id, running: task.id == runningTask.id }"
             ng-click="startTracking(task)">
-            <div class="small-12 large-12 columns" ng-class="{tinytracking: task.id == runningTask.id }">
-              <span class="tiny-task">{{task.name}}</span>
+            <div class="small-12 large-12 columns">
+              <span class="right counter" ng-show="task.running">{{runningTime}}</span><span class="tiny-task">{{task.name}}</span>
             </div>
           </div>
         </div>
