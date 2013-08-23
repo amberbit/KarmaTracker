@@ -1,4 +1,5 @@
 task ||= @task
+log_entry ||= @log_entry
 
 json.task do
   json.id task.id
@@ -10,4 +11,5 @@ json.task do
   json.current_task task.current_task
   json.name task.name
   json.running task.running?(@current_user.id)
+  json.started_at log_entry.started_at if log_entry
 end

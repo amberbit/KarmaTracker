@@ -22,7 +22,7 @@ window.KarmaTracker = angular.module('KarmaTracker', ['ngCookies', 'ngMobile', '
 KarmaTracker.factory "FlashMessage", ->
   { string: "", type: null }
 
-KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStore, $routeParams, FlashMessage, broadcastService, $rootScope) ->
+KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStore, $routeParams, FlashMessage, broadcastService, $rootScope, $timeout) ->
   $rootScope.pullAllowed = true
   $scope.runningTask = {}
   $scope.runningVisible = false
@@ -34,6 +34,8 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
   $scope.username = ''
   $scope.gravatar_url = ''
   $scope.query = {}
+  $scope.runningStartedAt = ""
+  $scope.runningTime = ""
 
   $http.get(
     '/api/v1/user?token='+$cookieStore.get('token')
@@ -44,7 +46,42 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
       str.charAt(0).toUpperCase() + str.substr(1).toLowerCase()
   ).error((data, status, headers, config) ->
   )
-
+  
+  $scope.getRunningTask = () ->
+    $http.get(
+        "/api/v1/tasks/running?token=#{$cookieStore.get $scope.tokenName}"
+      ).success((data, status, headers, config) ->
+        $scope.runningStartedAt = data.task.started_at
+        $scope.timeCounter()
+        $scope.runningTask = data.task
+        $scope.runningVisible = true
+      ).error((data, status, headers, config) ->
+        $scope.runningStartedAt = ""
+        $scope.timeCounter()
+        $scope.runningTask = {}
+        $scope.runningVisible = false
+      )
+      
+  timeFormat = (milliseconds) ->
+    result = ""
+    timePad = (str) ->
+      while str.length < 2
+        str = "0" + str
+      str    
+    seconds = Math.floor((milliseconds / 1000) % 60).toString()
+    minutes = Math.floor((milliseconds / (60000)) % 60).toString()
+    hours = Math.floor(milliseconds / (3600000)).toString()
+    result = timePad(hours) + ":" if hours > 0
+    result = result + timePad(minutes) + ":" + timePad(seconds)
+     
+  $scope.timeCounter = () ->
+    if $scope.runningStartedAt
+      duration = moment().diff(moment($scope.runningStartedAt), "milliseconds")
+      $scope.runningTime = timeFormat(duration)
+      runningTimeout = $timeout($scope.timeCounter, 1000)
+    else
+      $timeout.cancel(runningTimeout) if runningTimeout
+      $scope.runningTime = ""
 
   $scope.refresh = ->
     if $location.path().indexOf('tasks') != -1
@@ -109,16 +146,7 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
     FlashMessage.type = 'success'
     FlashMessage.string = message
 
-  $scope.getRunningTask = () ->
-    $http.get(
-        "/api/v1/tasks/running?token=#{$cookieStore.get $scope.tokenName}"
-      ).success((data, status, headers, config) ->
-        $scope.runningTask = data.task
-        $scope.runningVisible = true
-      ).error((data, status, headers, config) ->
-        $scope.runningTask = {}
-        $scope.runningVisible = false
-      )
+
 
   $scope.openProject = (source, name, identifier, event) ->
     if event
