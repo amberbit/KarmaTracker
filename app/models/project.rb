@@ -25,8 +25,8 @@ class Project < ActiveRecord::Base
 
   before_create :generate_web_hook_token
   before_destroy :destroy_web_hook
-  after_save :update_tsvector
 
+  after_save :update_tsvector
   pg_search_scope :search_by_name, :against => :name,
     using: {
       tsearch: {
