@@ -1,6 +1,6 @@
 <div ng-controller="IdentitiesController" class="row">
   <div class="boxed-header">
-    <div class="large-2 span-12 columns">
+    <div class="large-2 small-12 columns">
       <h4><a ng-href="/#/identities">Identities</a></h4>
     </div>
   </div>
@@ -12,7 +12,7 @@
         <h4 class="subheader">Pivotal Tracker</h4>
         <div ng-controller="PivotalTrackerIdentitiesController">
 
-          <div class='panel' ng-repeat="identity in identities">
+          <div class='panel contentpanel' ng-repeat="identity in identities">
             <a href="" ng-click="remove(identity.pivotal_tracker.id)" class="secondary button right tiny">Remove</a>
             <div class="row">
               <div class="small-2 columns"><strong>API key:</strong></div>
@@ -21,16 +21,16 @@
           </div>
 
           <form ng-submit='add()'>
-            <div id="ptform" class="panel" ng-show="addFormShown">
+            <div id="ptform" class="panel contentpanel" ng-show="addFormShown">
               <a ng-click="openAddForm()" class="tiny button secondary right-align"><span class="subheader">Close</span></a>
               <h5 class="subheader">Add a new identity</h5>
 
               <tabset>
                 <tab heading="Credentials">
-                  <div class="small-6 columns">
-                    <div class="panel secondary">
+                  <div class="small-12 large-6 columns">
+                    <div>
                       <label>E-mail:
-                        <input name="email" type="text" id="email" name="email"ng-model="newIdentity.email" />
+                        <input name="email" type="text" id="email" name="email" ng-model="newIdentity.email" />
                         <small ng-show="errors.email" class="error">{{errors.email}}</small>
                       </label>
                       <label>Password:
@@ -39,19 +39,29 @@
                       </label>
                     </div>
                   </div>
+                  <div class="hide-for-small large-6 columns panel">
+                    <p class="subheader">Sign in with your credentials in order to get projects and stories information from
+                    your Pivotal Tracker account via API.<br/><br/>
+                    You can also provide a valid API token under API Key tab.</p>
+                  </div>
                 </tab>
                 <tab heading="API Key">
-                  <div class="small-6 columns">
-                    <div class="panel">
-                      <h6 class="subheader">I already know my API key</h6>
+                  <div class="small-12 large-6 columns">
+                    <div>
                       <label>API key:
                         <input name="token" type="text" ng-model="newIdentity.api_key" />
                         <small ng-show="errors.api_key" class="error">{{errors.api_key}}</small>
                       </label>
                     </div>
                   </div>
+                  <div class="hide-for-small large-6 columns panel">
+                    <p class="subheader">Get access to the information of your projects and stories from Pivotal Tracker providing a valid API token.<br/><br/>
+                    You can check your API tokens or create a new one going to Pivotal Tracker,
+                    under <a href="https://www.pivotaltracker.com/profile#api" target="_blank">Profile / API Token</a> section.</p>
+                  </div>
                 </tab>
               </tabset>
+              <br/>
               <button class="button right-align small">Add new identity</button>
             </div>
           </form>
@@ -62,7 +72,7 @@
         <h4 class="subheader">Git Hub</h4>
         <div ng-controller="GitHubIdentitiesController">
 
-          <div class='panel' ng-repeat="identity in identities">
+          <div class='panel contentpanel' ng-repeat="identity in identities">
             <a href="" ng-click="remove(identity.git_hub.id)" class="secondary button right tiny">Remove</a>
             <div class="row">
               <div class="small-2 columns"><strong>API key:</strong></div>
@@ -71,13 +81,13 @@
           </div>
 
           <form ng-submit='add()'>
-            <div id="ghform" class="panel" ng-show="addFormShown">
+            <div id="ghform" class="panel contentpanel" ng-show="addFormShown">
               <a ng-click="openAddForm()" class="tiny button secondary right-align"><span class="subheader">Close</span></a>
               <h5 class="subheader">Add a new identity</h5>
               <tabset>
                 <tab heading="Credentials">
-                  <div class="small-6 large-6 columns">
-                    <div class="panel secondary">
+                  <div class="small-12 large-6 columns">
+                    <div>
                       <label>Username:
                         <input name="username" type="text" id="username" name="username" ng-model="newIdentity.username" />
                         <small ng-show="errors.username" class="error">{{errors.username}}</small>
@@ -88,10 +98,15 @@
                       </label>
                     </div>
                   </div>
+                  <div class="hide-for-small large-6 columns panel">
+                    <p class="subheader">Sign in with your credentials in order to get projects and stories information from
+                    your GitHub account via API.<br/><br/>
+                    You can also provide a valid API token under API Key tab.</p>
+                  </div>
                 </tab>
                 <tab heading="API Key">
-                  <div class="small-6 large-6 columns">
-                    <div class="panel secondary">
+                  <div class="small-12 large-6 columns">
+                    <div>
                       <h6 class="subheader">I already know my API key</h6>
                       <label>API key:
                         <input name="token" type="text" ng-model="newIdentity.api_key" />
@@ -99,10 +114,14 @@
                       </label>
                     </div>
                   </div>
+                  <div class="hide-for-small large-6 columns panel">
+                    <p class="subheader">Get access to the information of your projects and stories from GitHub providing a valid Personal Access Token.<br/><br/>
+                    You can check your Personal Access Tokens or create a new one going to GitHub,
+                    under <a href="https://github.com/settings/applications" target="_blank">Account Settings / Applications</a> section.</p>
+                  </div>
                 </tab>
               </tabset>
               <br/>
-              <i>*Use Credentials or API Key</i>
               <button class="button small right">Add new identity</button>
             </div>
           </form>

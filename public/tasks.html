@@ -24,11 +24,11 @@
           ng-click="openTask(project.source_name, project.name, project.source_identifier, task.source_identifier, $event)"
           ng-class="{running: task.id == runningTask.id}">
         <div ng-switch="project.source_name">
-          <div class="icon" ng-switch-when="GitHub">
+          <div class="icon" ng-switch-when="GitHub" title="See details in GitHub">
             <div class="source-icon github"></div>
           </div>
           <div ng-switch-when="Pivotal Tracker">
-            <div class="source-icon pivotal-tracker"></div>
+            <div class="source-icon pivotal-tracker" title="See details in Pivotal Tracker"></div>
           </div>
         </div>
       </div>
@@ -42,9 +42,9 @@
           <span class="label task-id">{{task.source_identifier}}</span>
         </div>
         <span class="task-text">
-          <div class="track-control-icon" ng-class="{'start': !task.running, 'stop': task.running}">
-          </div>{{task.name}}
+          {{task.name}}
         </span>
+        <div class="track-control-icon" title="Start tracking" ng-class="{'start': !task.running, 'stop': task.running}"></div>
       </div>
 </div>
     </div>
