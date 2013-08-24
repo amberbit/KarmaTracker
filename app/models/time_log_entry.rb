@@ -92,10 +92,10 @@ class TimeLogEntry < ActiveRecord::Base
       errors.add :stopped_at, "id:#{ scope.from_timestamp(stopped_at).first.id }"
     end
 
-    #if started_at.present? && stopped_at.present? && scope.within_timerange(started_at, stopped_at).present?
-      #errors.add :stopped_at, 'should not overlap other time log entries', { id: scope.within_timerange(started_at, stopped_at).first.id }
-      #errors.add :stopped_at, "id:#{ scope.within_timerange(started_at, stopped_at).first.id }"
-    #end
+    if started_at.present? && stopped_at.present? && scope.within_timerange(started_at, stopped_at).present?
+      errors.add :stopped_at, 'should not overlap other time log entries', { id: scope.within_timerange(started_at, stopped_at).first.id }
+      errors.add :stopped_at, "id:#{ scope.within_timerange(started_at, stopped_at).first.id }"
+    end
   end
 
   def time_in_future
