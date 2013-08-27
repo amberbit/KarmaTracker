@@ -34,6 +34,7 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
   $scope.username = ''
   $scope.gravatar_url = ''
   $scope.query = {}
+  $scope.userId = null
 
   $http.get(
     '/api/v1/user?token='+$cookieStore.get('token')
@@ -61,29 +62,18 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
         $rootScope.loading = false
       )
     else
-      $rootScope.loading = true
-      client = Stomp.client(KarmaTrackerConfig.stomp_url)
-      client.connect( null, null, ->
-
-        $scope.$on('Torquebox.KarmaTracker.RefreshFinished', ->
-          client.disconnect
-        )
-
-        client.subscribe( "/users/#{$scope.userId}", ->
-          $scope.processProjects message
-        )
-      )
-
-      $http.get(
-        '/api/v1/projects/refresh?token='+$cookieStore.get('token')
-      ).success((data, status, headers, config) ->
-        $scope.refreshing = true
-        $rootScope.loading = false
-      ).error((data, status, headers, config) ->
-        console.debug('Error refreshing projects')
-        $scope.refreshing = false
-        $rootScope.loading = false
-      )
+      #$rootScope.loading = true
+      subscribeToProjects()
+      #$http.get(
+        #'/api/v1/projects/refresh?token='+$cookieStore.get('token')
+      #).success((data, status, headers, config) ->
+        #$scope.refreshing = true
+        #$rootScope.loading = false
+      #).error((data, status, headers, config) ->
+        #console.debug('Error refreshing projects')
+        #$scope.refreshing = false
+        #$rootScope.loading = false
+      #)
 
   refreshWithPull = () ->
     if $location.path().indexOf('tasks') != -1
@@ -245,6 +235,19 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
   $scope.getRunningTask()
   $scope.checkIdentities()
   $rootScope.checkRefreshingProjects()
+
+  subscribeToProjects = ->
+    client = Stomp.client(KarmaTrackerConfig.stomp_url)
+    console.log client
+    client.connect( null, null, ->
+      client.subscribe( "/projects/subscribe", ->
+        console.log 'received a message'
+        $scope.processProjects message
+        client.disconnect
+      )
+    , (error) ->
+      console.log error
+      )
 
 
 KarmaTracker.directive "pullToRefresh", ($rootScope) ->

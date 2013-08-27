@@ -1,4 +1,5 @@
 module ApplicationHelper
+  include TorqueBox::Injectors
 
   def perform_request type, url, params, headers
     uri = URI.parse(url)
@@ -17,4 +18,8 @@ module ApplicationHelper
     http.request(request)
   end
 
+
+  def stomp_url
+    inject( 'stomp-endpoint' )
+  end
 end

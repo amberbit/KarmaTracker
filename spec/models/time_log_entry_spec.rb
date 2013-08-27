@@ -3,9 +3,13 @@ require 'spec_helper'
 describe 'TimeLogEntry' do
 
   before :each do
+    @time = Time.local(2013, 8, 2, 15, 0, 0)
+    Timecop.travel(@time)
     @user = FactoryGirl.create :user
     @task = FactoryGirl.create :task
   end
+
+  after(:each) { Timecop.return }
 
   it 'should validate start and stop times order' do
     tl = TimeLogEntry.new user: @user, task: @task, started_at: 1.hours.ago, stopped_at: 2.hours.ago
