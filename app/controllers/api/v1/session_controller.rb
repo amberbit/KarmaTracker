@@ -64,7 +64,12 @@ module Api
         if data.nil?
           render json: {message: 'OmniAuth authentication failed'}, status: 401
         else
-          user = User.find_or_create_by_email data.info.email
+          user = User.find_by_email data.info.email
+          unless user.present?
+            password = SecureRandom.hex(6)
+            user = User.new(email: data.info.email, password: password)
+            UserMailer.account_created(user, request.host, params[:provider], password).deliver
+          end
           user.oauth_token = data.credentials.token
           user.oauth_token_expires_at = Time.at(data.credentials.expires_at).utc
           user.confirmation_token = nil
