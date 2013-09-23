@@ -13,7 +13,7 @@ describe 'User' do
     invalid_user = User.create email: @user.email, password: nil
     invalid_user.valid?.should be_false
     invalid_user.errors.full_messages.should include "Email has already been taken"
-    invalid_user.errors.full_messages.should include "Password digest can't be blank"
+    invalid_user.errors.full_messages.should include "Password can't be blank"
   end
 
   it 'should create user\'s api_key when new user is created' do
