@@ -12,6 +12,7 @@ default:
   google_api:
     client_id: 
     secret: 
+    callback_url: 
 
 
 development:
