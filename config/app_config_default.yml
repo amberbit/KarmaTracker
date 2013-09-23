@@ -7,7 +7,12 @@ default:
     allow_destroy: true
     password_min_chars: 6
   web_hooks:
-    git_hub: 'http://localhost:3000/api/v1/projects/git_hub_activity_web_hook'
+    git_hub: 
+
+  google_api:
+    client_id: 
+    secret: 
+
 
 development:
   users:
