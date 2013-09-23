@@ -57,5 +57,6 @@ group :development do
   gem 'rails-erd'
   gem 'annotate'
   gem "letter_opener"
+  gem 'letter_opener_web', '~> 1.1.0'
 end
 

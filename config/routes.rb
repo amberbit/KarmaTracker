@@ -54,5 +54,8 @@ KarmaTracker::Application.routes.draw do
   match '/500' => 'errors#exception'
   match '/auth/:provider/callback' => 'api/v1/session#oauth', via: :get
 
+  if Rails.env.development?
+    mount LetterOpenerWeb::Engine, at: "/letter_opener"
+  end
   root to: 'home#index'
 end
