@@ -11,7 +11,7 @@
 #
 
 class User < ActiveRecord::Base
-  has_secure_password validations: false
+  has_secure_password
 
   attr_accessible :email, :password, :confirmation_token, :refreshing_projects, :gravatar_url, :oauth_token
 
@@ -22,7 +22,7 @@ class User < ActiveRecord::Base
   validates :email, presence: true, uniqueness: true
   validates :password, presence: { on: :create },
                        length: { minimum: (AppConfig.users.password_min_chars || 6) },
-                       if: -> { password_digest_changed? && oauth_token.nil? }
+                       if: :password_digest_changed?
 
   validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i
 
