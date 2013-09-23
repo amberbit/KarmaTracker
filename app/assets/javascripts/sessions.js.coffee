@@ -51,6 +51,19 @@ KarmaTracker.controller "SessionController", ($scope, $http, $cookieStore, $loca
       $scope.confirmation_message = "Confirmation token provided is not valid, or your e-mail is already confirmed. Please, sign in."
     )
 
+  if $location.path().endsWith('/oauth') && $routeParams.email? && $routeParams.oauth_token?
+    $http.post(
+      '/api/v1/session/oauth_verify',
+      {
+        email: $routeParams.email
+        token: $routeParams.oauth_token
+      }
+    ).success((data, status, headers, config) ->
+      $scope.signInSuccess data.user.token
+    ).error((data, status, headers, config) ->
+      $scope.signInFailure data.message
+    )
+
 
 KarmaTracker.controller "LogoutController", ($scope, $location, $cookieStore) ->
   $cookieStore.remove 'token'

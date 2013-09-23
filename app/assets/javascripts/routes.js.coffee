@@ -3,6 +3,9 @@ KarmaTracker.config ($routeProvider, $locationProvider) ->
     templateUrl: '/home.html'
   ).when("/login",
     templateUrl: '/session.html'
+  ).when("/oauth",
+    controller: 'SessionController',
+    templateUrl: '/oauth.html'
   ).when('/logout',
     controller: 'LogoutController',
     template: '<div class="row">

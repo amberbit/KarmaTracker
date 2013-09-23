@@ -201,6 +201,7 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
   else
     return if $location.path() == '/login' ||
       $location.path() == '/password_reset' ||
+      $location.path() == '/oauth' ||
       /\/edit_password_reset(\/.*)?/.test $location.path()
     $location.path '/login'
 
@@ -282,7 +283,7 @@ KarmaTracker.filter 'startFrom', ->
 KarmaTracker.controller "HomeController", ($scope, $http, $location, $cookieStore, FlashMessage) ->
   if $cookieStore.get($scope.tokenName)?
     $location.path '/projects'
-  else
+  else if !$location.path '/oauth'
     $location.path '/login'
 
 KarmaTracker.factory 'broadcastService', ($rootScope) ->
