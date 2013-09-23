@@ -28,6 +28,7 @@ gem 'jruby-openssl'
 gem 'omniauth', '~> 1.1.0'
 gem 'omniauth-google-oauth2'
 gem 'google-api-client', '~> 0.6.4'
+gem 'will_paginate', '~> 3.0.5'
 
 group :test do
   gem 'rspec-rails', git: 'https://github.com/rspec/rspec-rails.git', ref: 'ee3f224c61cac7d4de919a23945418fd07ada7c6'
