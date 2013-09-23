@@ -11,9 +11,9 @@
 #
 
 class User < ActiveRecord::Base
-  has_secure_password
+  has_secure_password validations: false
 
-  attr_accessible :email, :password, :confirmation_token, :refreshing_projects, :gravatar_url
+  attr_accessible :email, :password, :confirmation_token, :refreshing_projects, :gravatar_url, :oauth_token
 
   has_one :api_key, dependent: :destroy
   has_many :time_log_entries, dependent: :destroy
@@ -22,7 +22,7 @@ class User < ActiveRecord::Base
   validates :email, presence: true, uniqueness: true
   validates :password, presence: { on: :create },
                        length: { minimum: (AppConfig.users.password_min_chars || 6) },
-                       if: :password_digest_changed?
+                       if: -> { password_digest_changed? && oauth_token.nil? }
 
   validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i
 
@@ -49,9 +49,9 @@ class User < ActiveRecord::Base
       self[column] = SecureRandom.hex
     end while User.exists?(column => self[column])
   end
-  
+
   def gravatar_url
-    gravatar_url = "http://www.gravatar.com/avatar/" + Digest::MD5.hexdigest(self.email)
+    @gravatar_url ||= "http://www.gravatar.com/avatar/" + Digest::MD5.hexdigest(self.email)
   end
 
   def send_password_reset(host)
