@@ -21,3 +21,8 @@ def take_screenshot filename = "screenshot"
   page.driver.render(file, :full => true)
   puts "Saved screenshot: #{file}"
 end
+
+#wait for "Loading... " spinner disappears
+def wait_for_loading(timeout = 20)
+  wait_until(timeout) { find('.loading', visible: false).present? }
+end
