@@ -16,16 +16,6 @@ require "email_spec"
 Capybara.javascript_driver = :poltergeist
 Capybara.default_wait_time = 30
 
-OmniAuth.config.test_mode = true
-omniauth_hash = { 'provider' => 'google',
-                  'uid' => '12345',
-                  'info' => {
-                      'email' => 'test@example.com',
-                  },
-                  'credentials' => { 'token' => 'abc1234',
-                                     'expires_at' => 2.hours.from_now.to_i }
-}
-OmniAuth.config.add_mock(:google, omniauth_hash)
 
 
 Dir[File.join(File.dirname(__FILE__), 'support', '**', '*.rb')].each {|f| require f}
@@ -37,7 +27,7 @@ RSpec.configure do |config|
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
-  config.use_transactional_fixtures = false
+  config.use_transactional_fixtures = true
 
   # If true, the base class of anonymous controllers will be inferred
   # automatically. This will be the default behavior in future versions of
@@ -54,6 +44,23 @@ RSpec.configure do |config|
 
   config.before :suite do
     reset_fakeweb_urls
+  end
+
+  config.before(:each, omniauth: true) do
+    OmniAuth.config.test_mode = true
+    omniauth_hash = { 'provider' => 'google',
+                      'uid' => '12345',
+                      'info' => {
+                        'email' => 'test@example.com',
+                      },
+                      'credentials' => { 'token' => 'abc1234',
+                                         'expires_at' => 2.hours.from_now.to_i }
+    }
+    OmniAuth.config.add_mock(:google, omniauth_hash)
+  end
+
+  config.after(:each, omniauth: true) do
+    OmniAuth.config.test_mode = false
   end
 end
 
@@ -109,3 +116,5 @@ def reset_fakeweb_urls
     :status => ['200', 'OK'])
 
 end
+
+

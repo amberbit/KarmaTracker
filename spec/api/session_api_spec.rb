@@ -53,18 +53,9 @@ describe 'Session API (signing into the system)' do
   end
 
   # GET /auth/:provider/callback
-  it "should return 401 - 'OmniAuth authentication failed' when no OmniAuth data in request" do
-    get "auth/:google/callback"
-    json = JSON.parse(response.body) rescue {}
-    response.status.should == 401
-    json['message'].should == 'OmniAuth authentication failed'
-  end
-
-  # GET /auth/:provider/callback
-  it "should find existing user and redirect" do
+  it "should find existing user and redirect", omniauth: true do
     user = create :user, email: 'test@example.com', oauth_token: 'abc1234'
     get '/'
-    request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:google]
     expect {
       get "auth/google/callback", provider: 'google'
     }.not_to change{ User.count }
@@ -74,7 +65,7 @@ describe 'Session API (signing into the system)' do
   end
 
   # GET /auth/:provider/callback
-  it "should create new user and redirect" do
+  it "should create new user and redirect", omniauth: true do
     get '/'
     request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:google]
     expect {
