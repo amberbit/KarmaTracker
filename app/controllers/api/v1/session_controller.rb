@@ -69,7 +69,7 @@ module Api
             UserMailer.account_created(user, request.host, params[:provider], password).deliver
           end
           user.oauth_token = data.credentials.token
-          user.oauth_token_expires_at = Time.at(data.credentials.expires_at).utc
+          user.oauth_token_expires_at = data.credentials.expires_at.nil? ? nil : Time.at(data.credentials.expires_at).utc
           user.confirmation_token = nil
           user.save
           redirect_to "/#/oauth?email=#{user.email}&oauth_token=#{user.oauth_token}"
@@ -108,7 +108,7 @@ module Api
         if params[:email].present? && params[:token].present?
           @user = User.find_by_email params[:email]
           if @user.present? && @user.oauth_token.present? && @user.oauth_token == params[:token]
-            if @user.oauth_token_expires_at > Time.now
+            if @user.oauth_token_expires_at.nil? || @user.oauth_token_expires_at > Time.now
               @user.update_column :oauth_token, nil
               @api_key = @user.api_key
               render 'api/v1/users/_show'
