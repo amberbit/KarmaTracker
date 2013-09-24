@@ -73,6 +73,19 @@ describe 'Session API (signing into the system)' do
     response.should redirect_to("/#/oauth?email=#{user.email}&oauth_token=#{user.oauth_token}")
   end
 
+  # GET /auth/:provider/callback
+  it "should create new user and redirect" do
+    get '/'
+    request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:google]
+    expect {
+      get "auth/google/callback", provider: 'google'
+    }.to change{ User.count }.by(1)
+    json = JSON.parse(response.body) rescue {}
+    response.status.should == 302
+    response.should redirect_to("/#/oauth?email=test@example.com&oauth_token=abc1234")
+  end
+
+
   # POST /api/v1/session/oauth_verify
   it 'should return user with API Token when providing correct email and token' do
     @user.oauth_token = 'lolz'
