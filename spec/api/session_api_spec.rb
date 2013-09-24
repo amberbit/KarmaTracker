@@ -65,7 +65,9 @@ describe 'Session API (signing into the system)' do
     user = create :user, email: 'test@example.com', oauth_token: 'abc1234'
     get '/'
     request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:google]
-    get "auth/google/callback", provider: 'google'
+    expect {
+      get "auth/google/callback", provider: 'google'
+    }.not_to change{ User.count }
     json = JSON.parse(response.body) rescue {}
     response.status.should == 302
     response.should redirect_to("/#/oauth?email=#{user.email}&oauth_token=#{user.oauth_token}")
