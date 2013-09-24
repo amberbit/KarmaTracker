@@ -57,8 +57,6 @@ module Api
       # Request object should have OmniAuth hash https://github.com/intridea/omniauth/wiki/Auth-Hash-Schema
       # which will contain information about the just authenticated user including a unique id, the strategy they just used for authentication, and personal details such as name and email address as available. For an in-depth description of what the authentication hash might contain, see the Auth Hash Schema wiki page.
       # https://github.com/intridea/omniauth/wiki/Auth-Hash-Schema
-      #
-      #TODO: handle clicking cancel
       def oauth
         data = request.env["omniauth.auth"]
         if data.nil?
