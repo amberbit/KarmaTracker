@@ -49,7 +49,7 @@ module Api
 
       ##
       # Callback method for OmniAuth (Google, Github etc) login HTTP (not json!) callbacks. Extract user data, creates/updates user with 
-      # token login and expire time. Redirects to '#/oauth' page
+      # token login and expire time. Get or create user. Redirects to '#/oauth' page
       #
       # GET /auth/:provider/callback
       #
@@ -116,7 +116,7 @@ module Api
               render 'api/v1/users/_show'
             else
               render json: {message: 'OmniAuth token expired'}, status: 400
-           end
+            end
           else
             render json: {message: 'Invalid OmniAuth token or user'}, status: 401
           end
