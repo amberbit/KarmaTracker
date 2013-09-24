@@ -7,4 +7,6 @@ Rails.application.config.middleware.use OmniAuth::Builder do
     prompt: '',
     access_type: 'online'
   }
+
+  provider :github, AppConfig.github_api.client_id, AppConfig.github_api.secret, scope: "user:email"
 end
