@@ -37,7 +37,7 @@ KarmaTracker::Application.configure do
 
   # Mailer
   config.action_mailer.raise_delivery_errors = true
-  config.action_mailer.delivery_method = :letter_opener
+  config.action_mailer.delivery_method = ENV['USER'] == 'vagrant' ? :letter_opener_web : :letter_opener
   #config.action_mailer.smtp_settings = {
   #  :address              => "smtp.gmail.com",
   #  :port                 => 587,

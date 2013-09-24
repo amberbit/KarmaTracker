@@ -103,7 +103,9 @@ as a user I can', js: true  do
 
   scenario "see spining wheel when loading tasks list" do
     100.times { create(:task, project: project1) }
-    find('span', text: project1.name).click
+    within '.view' do
+      find('span', text: project1.name).click
+    end
     wait_until(10) { page.has_content? "→ #{project1.name}" }
     uncheck 'Show only current'
     within '.loading' do 

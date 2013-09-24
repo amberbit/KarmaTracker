@@ -46,7 +46,7 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
       str.charAt(0).toUpperCase() + str.substr(1).toLowerCase()
   ).error((data, status, headers, config) ->
   )
-  
+
   $scope.getRunningTask = () ->
     $http.get(
         "/api/v1/tasks/running?token=#{$cookieStore.get $scope.tokenName}"
@@ -61,19 +61,19 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
         $scope.runningTask = {}
         $scope.runningVisible = false
       )
-      
+
   timeFormat = (milliseconds) ->
     result = ""
     timePad = (str) ->
       while str.length < 2
         str = "0" + str
-      str    
+      str
     seconds = Math.floor((milliseconds / 1000) % 60).toString()
     minutes = Math.floor((milliseconds / (60000)) % 60).toString()
     hours = Math.floor(milliseconds / (3600000)).toString()
     result = timePad(hours) + ":" if hours > 0
     result = result + timePad(minutes) + ":" + timePad(seconds)
-     
+
   $scope.timeCounter = () ->
     if $scope.runningStartedAt
       duration = moment().diff(moment($scope.runningStartedAt), "milliseconds")
@@ -201,6 +201,7 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
   else
     return if $location.path() == '/login' ||
       $location.path() == '/password_reset' ||
+      $location.path() == '/oauth' ||
       /\/edit_password_reset(\/.*)?/.test $location.path()
     $location.path '/login'
 
@@ -282,7 +283,7 @@ KarmaTracker.filter 'startFrom', ->
 KarmaTracker.controller "HomeController", ($scope, $http, $location, $cookieStore, FlashMessage) ->
   if $cookieStore.get($scope.tokenName)?
     $location.path '/projects'
-  else
+  else if !$location.path '/oauth'
     $location.path '/login'
 
 KarmaTracker.factory 'broadcastService', ($rootScope) ->

@@ -1,3 +1,4 @@
+#= require js_extensions
 #= require angular
 #= require angular-cookies
 #= require angular-mobile
@@ -7,5 +8,4 @@
 #= require moment
 #= require hook
 #= require mousewheel
-
 

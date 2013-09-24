@@ -5,7 +5,7 @@ def login(user = create(:user), remember_me = false)
   fill_in 'password', :with => 'secret123'
   check('Remember me') if remember_me
   click_button 'Sign in!'
-  page.should have_content 'Log out'
+  page.should have_content 'Recents'
 end
 
 def wait_until(timeout = Capybara.default_wait_time)
