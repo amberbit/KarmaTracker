@@ -16,6 +16,18 @@ require "email_spec"
 Capybara.javascript_driver = :poltergeist
 Capybara.default_wait_time = 30
 
+OmniAuth.config.test_mode = true
+omniauth_hash = { 'provider' => 'google',
+                  'uid' => '12345',
+                  'info' => {
+                      'email' => 'test@example.com',
+                  },
+                  'credentials' => { 'token' => 'abc1234',
+                                     'expires_at' => 2.hours.from_now.to_i }
+}
+OmniAuth.config.add_mock(:google, omniauth_hash)
+
+
 Dir[File.join(File.dirname(__FILE__), 'support', '**', '*.rb')].each {|f| require f}
 
 RSpec.configure do |config|
