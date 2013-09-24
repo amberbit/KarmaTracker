@@ -28,7 +28,7 @@ feature 'Timesheet page,
     login @user
     click_link 'Timesheet'
     within '.view' do
-      page.should have_content 'Timesheet'
+      wait_until(10) { page.has_content? 'Timesheet' }
     end
   end
 

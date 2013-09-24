@@ -116,7 +116,9 @@ as a user I can', js: true  do
   scenario 'paginate tasks with prev/next' do
     AppConfig.stub(:items_per_page).and_return(1)
     visit current_path
-    find('span', text: project1.name).click
+    within '.view' do
+      find('span', text: project1.name).click
+    end
     sleep 1
     within '.view' do
       page.should have_content task4.name
@@ -142,7 +144,9 @@ as a user I can', js: true  do
   scenario 'paginate with dropdown' do
     AppConfig.stub(:items_per_page).and_return(1)
     visit current_path
-    find('span', text: project1.name).click
+    within '.view' do
+      find('span', text: project1.name).click
+    end
     sleep 1
     within '.view' do
       page.should have_content task4.name
