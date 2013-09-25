@@ -25,10 +25,13 @@ gem 'uglifier', '>= 1.0.3'
 gem 'bcrypt-ruby', '~> 3.0.0', require: 'bcrypt'
 gem 'amberbit-config'
 gem 'jruby-openssl'
+gem 'will_paginate', '~> 3.0.5'
+
+#OmniAuth: Google, GitHub
 gem 'omniauth', '~> 1.1.0'
 gem 'omniauth-google-oauth2'
-gem 'google-api-client', '~> 0.6.4'
-gem 'will_paginate', '~> 3.0.5'
+gem 'omniauth-github', '~> 1.1.1'
+
 
 group :test do
   gem 'rspec-rails', git: 'https://github.com/rspec/rspec-rails.git', ref: 'ee3f224c61cac7d4de919a23945418fd07ada7c6'

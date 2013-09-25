@@ -53,6 +53,7 @@ KarmaTracker::Application.routes.draw do
   match '/404' => 'errors#not_found'
   match '/500' => 'errors#exception'
   match '/auth/:provider/callback' => 'api/v1/session#oauth', via: :get
+  match '/auth/failure' => 'api/v1/session#failure', via: :get
 
   if Rails.env.development?
     mount LetterOpenerWeb::Engine, at: "/letter_opener"

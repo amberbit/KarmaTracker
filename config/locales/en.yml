@@ -3,3 +3,6 @@
 
 en:
   hello: "Hello world"
+
+  errors:
+    omniauth_fail: "Failed to authenticate with %{provider}. Reason: %{reason}"
