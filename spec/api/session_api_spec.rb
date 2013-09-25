@@ -55,7 +55,6 @@ describe 'Session API (signing into the system)' do
   # GET /auth/:provider/callback
   it "should find existing user and redirect", omniauth: true do
     user = create :user, email: 'test@example.com', oauth_token: 'abc1234'
-    get '/'
     expect {
       get "auth/google/callback", provider: 'google'
     }.not_to change{ User.count }
@@ -66,7 +65,7 @@ describe 'Session API (signing into the system)' do
 
   # GET /auth/:provider/callback
   it "should create new user and redirect", omniauth: true do
-    get '/'
+    get '/' #init request object
     request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:google]
     expect {
       get "auth/google/callback", provider: 'google'
@@ -75,7 +74,6 @@ describe 'Session API (signing into the system)' do
     response.status.should == 302
     response.should redirect_to("/#/oauth?email=test@example.com&oauth_token=abc1234")
   end
-
 
   # GET /auth/:provider/callback
   it "should redirect to failure action", omniauth: true do
@@ -86,9 +84,9 @@ describe 'Session API (signing into the system)' do
     response.should redirect_to(root_path + 'auth/failure?message=invalid_credentials&strategy=google')
   end
 
-  # GET /auth/:provider/callback
+  # GET /auth/failure
   it "should handle omniauth failures" do
-    get auth_failure_path, message: 'invalid_credentials', strategy: 'google'
+    get 'auth/failure', message: 'invalid_credentials', strategy: 'google'
     json = JSON.parse(response.body) rescue {}
     response.status.should == 302
     response.should redirect_to(root_path)
