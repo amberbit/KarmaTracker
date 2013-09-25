@@ -10,3 +10,7 @@ Rails.application.config.middleware.use OmniAuth::Builder do
 
   provider :github, AppConfig.github_api.client_id, AppConfig.github_api.secret, scope: "user:email"
 end
+
+OmniAuth.config.on_failure = Proc.new { |env|
+  OmniAuth::FailureEndpoint.new(env).redirect_to_failure
+}
