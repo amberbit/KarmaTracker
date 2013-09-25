@@ -77,6 +77,23 @@ describe 'Session API (signing into the system)' do
   end
 
 
+  # GET /auth/:provider/callback
+  it "should redirect to failure action", omniauth: true do
+    OmniAuth.config.mock_auth[:google] = :invalid_credentials
+    get "auth/google/callback", provider: 'google'
+    json = JSON.parse(response.body) rescue {}
+    response.status.should == 302
+    response.should redirect_to(root_path + 'auth/failure?message=invalid_credentials&strategy=google')
+  end
+
+  # GET /auth/:provider/callback
+  it "should handle omniauth failures" do
+    get auth_failure_path, message: 'invalid_credentials', strategy: 'google'
+    json = JSON.parse(response.body) rescue {}
+    response.status.should == 302
+    response.should redirect_to(root_path)
+  end
+
   # POST /api/v1/session/oauth_verify
   it 'should return user with API Token when providing correct email and token' do
     @user.oauth_token = 'lolz'
