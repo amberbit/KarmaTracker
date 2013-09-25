@@ -122,6 +122,29 @@ module Api
           render json: {message: 'Email and OmniAuth token required'}, status: 404
         end
       end
+
+      ##
+      # OmniAuth login failure handler
+      #
+      # GET /api/v1/session/failure
+      #
+      # params:
+      #   strategy - name of OmniAuth strategy that failed
+      #   message - fail reason
+      #
+      # = Examples
+      #
+      #   resp = conn.get("/api/v1/session/failure",
+      #                    "message" => "invalid_credentials")
+      #                    "strategy" => 'google',
+      #   resp.status
+      #   => 302
+      #
+      def failure
+        redirect_to root_path, error: I18n.t('errors.omniauth_fail',
+                                        provider: params[:strategy].capitalize,
+                                        reason: params[:message].gsub('_', ' '))
+      end
     end
   end
 end
