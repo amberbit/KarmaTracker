@@ -7,5 +7,3 @@
 #= require moment
 #= require hook
 #= require mousewheel
-
-
