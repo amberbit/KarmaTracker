@@ -1,15 +1,17 @@
 TorqueBox.configure do
+
+  topic '/queues/public'
+
   web do
     context '/'
   end
 
-  job ProjectsRefresher do
-    description "Periodically refreshes projects list for each user identity"
-    cron "0 0 * * * ?"
+  stomp do
+    host 'localhost'
   end
 
   stomplet ProjectsStomplet do
-    route '/projects/subscribe'
+    route '/queues/public'
   end
 
 end
