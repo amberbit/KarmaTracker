@@ -1,10 +1,14 @@
-# projects_stomplet.rb
 require 'torquebox-stomp'
 
 class ProjectsStomplet < TorqueBox::Stomp::JmsStomplet
-  def initialize()
+
+  def initialize
     super
-    @destination = inject( '/projects/subscribe' )
+  end
+
+  def configure(config = {})
+    super
+    @destination = TorqueBox.fetch('/queues/public')
   end
 
   def on_message(stomp_message, session)
@@ -22,4 +26,5 @@ class ProjectsStomplet < TorqueBox::Stomp::JmsStomplet
                  @destination,
                  "user_id='#{user_id}'" )
   end
+
 end
