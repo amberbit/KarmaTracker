@@ -237,10 +237,10 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
   $rootScope.checkRefreshingProjects()
 
   subscribeToProjects = ->
-    client = new Stomp.Client()
+    client = new Stomp.Client('localhost', 8675, false)
     console.log client
     client.connect( ->
-      client.subscribe( "/public", ->
+      client.subscribe( "/queues/public", ->
         console.log 'received a message'
         $scope.processProjects message
         client.disconnect
