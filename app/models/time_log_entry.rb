@@ -1,18 +1,3 @@
-# == Schema Information
-#
-# Table name: time_log_entries
-#
-#  id         :integer          not null, primary key
-#  task_id    :integer
-#  user_id    :integer          not null
-#  running    :boolean          default(FALSE)
-#  started_at :datetime         not null
-#  stopped_at :datetime
-#  seconds    :integer          default(0), not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#
-
 class TimeLogEntry < ActiveRecord::Base
 
   attr_accessible :task, :task_id, :user, :user_id, :running, :started_at, :stopped_at, :seconds

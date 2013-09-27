@@ -1,18 +1,3 @@
-# == Schema Information
-#
-# Table name: identities
-#
-#  id                       :integer          not null, primary key
-#  type                     :string(255)
-#  name                     :string(255)
-#  api_key                  :string(255)
-#  user_id                  :integer
-#  created_at               :datetime         not null
-#  updated_at               :datetime         not null
-#  source_id                :string(255)      not null
-#  last_projects_refresh_at :datetime
-#
-
 class Identity < ActiveRecord::Base
   attr_accessible :api_key, :user, :user_id, :source_id, :last_projects_refresh_at
 
