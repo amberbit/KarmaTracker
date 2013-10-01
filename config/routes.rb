@@ -33,6 +33,7 @@ KarmaTracker::Application.routes.draw do
           get ':id/refresh_for_project' => 'projects#refresh_for_project'
           post :git_hub_activity_web_hook
           get :recent
+          get :also_working
         end
         member do
           get :tasks

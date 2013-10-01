@@ -396,6 +396,46 @@ module Api
         end
       end
 
+
+      ##
+      # Returns user's other project names on which other users are currently also working.
+      #
+      # GET /api/v1/projects/also_working
+      #
+      # params:
+      #   token - KarmaTracker API token
+      #
+      # = Examples
+      #
+      #   resp = conn.get("api/v1/projects/also_working, "token" => "dcbb7b36acd4438d07abafb8e28605a4")
+      #
+      #   resp.status
+      #   => 200
+      #
+      #   resp.body
+      #   => { 'Project name' => { email: user_email@example.com, gravatar: user_gravatar_url, task_name: 'Task name'} }
+      #
+      #
+      #   resp = conn.get("api/v1/projects/also_working, "token" => "dcbb7b36acd4438d07abafb8e28605a4"")
+      #
+      #   resp.status
+      #   => 204
+      #
+      #   resp.body
+      #   => {"message": "No projects found"}
+      #
+      def also_working
+        ids = @api_key.user.projects.map(&:id)
+        if ids.present?
+          projects_data = Project.also_working(ids).map { |p|task = p.tasks.joins(:time_log_entries).where('time_log_entries.running = ?', true).first;
+                                                          { p.name => { email: task.time_log_entries.first.user.email,
+                                                                            gravatar: task.time_log_entries.first.user.gravatar_url,
+                                                                            task_name: task.name }}}
+          render json: projects_data, status: 200
+        else
+          render json: { message: 'No projects found' }, status: 204
+        end
+      end
     end
   end
 end
