@@ -35,6 +35,8 @@ class TimeLogEntry < ActiveRecord::Base
     joins(:task).where('tasks.project_id = ?', project_id)
   }
 
+  scope :running, where(running: true)
+
   def start
     self.running = true
     self.started_at = Time.zone.now
