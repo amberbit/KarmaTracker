@@ -415,9 +415,9 @@ module Api
       #   => 200
       #
       #   resp.body
-      #   => { 'Project name' => { 'Task name' => { { email: email@example.com, gravatar: gravatar_url}, { email: email2@example.com, gravatar: gravatar_url2}},
-      #                          { 'Task name2' => { { email: email3@example.com, gravatar: gravatar_url3}}},
-      #        'Project name2' => { 'Task name3' => { { email: email4@example.com, gravatar: gravatar_url4}}}}
+      #   => { 'Project name' => [11, { 'Task name' => { { email: email@example.com, gravatar: gravatar_url}, { email: email2@example.com, gravatar: gravatar_url2}},
+      #                          { 'Task name2' => { { email: email3@example.com, gravatar: gravatar_url3}}}],
+      #        'Project name2' => { 'Task name3' => [12, { { email: email4@example.com, gravatar: gravatar_url4}}}}]
       #
       #
       #   resp = conn.get("api/v1/projects/also_working, "token" => "dcbb7b36acd4438d07abafb8e28605a4"")
