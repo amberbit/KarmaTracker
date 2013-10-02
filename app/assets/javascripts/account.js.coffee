@@ -9,7 +9,7 @@ KarmaTracker.controller "AccountController", ($scope, $http, $cookieStore, $loca
   $scope.message = ''
   $scope.tokenName = 'token'
 
-  $scope.getUserInfo = () ->
+  $scope.getUserInfo = ->
     $http.get(
       '/api/v1/user?token='+$cookieStore.get $scope.tokenName
     ).success((data, status, headers, config) ->
@@ -17,7 +17,7 @@ KarmaTracker.controller "AccountController", ($scope, $http, $cookieStore, $loca
     ).error((data, status, headers, config) ->
     )
 
-  $scope.remove = () ->
+  $scope.remove = ->
     if confirm("Are you sure to delete your account?")
       $http.delete(
         '/api/v1/user?token='+$cookieStore.get $scope.tokenName
@@ -26,7 +26,7 @@ KarmaTracker.controller "AccountController", ($scope, $http, $cookieStore, $loca
       ).error((data, status, headers, config) ->
       )
 
-  $scope.changeEmail = () ->
+  $scope.changeEmail = ->
     if !$scope.newEmail? or $scope.newEmail != ''
       $http.put(
         "/api/v1/user?token="+$cookieStore.get($scope.tokenName)+"&user[email]="+$scope.newEmail
@@ -40,7 +40,7 @@ KarmaTracker.controller "AccountController", ($scope, $http, $cookieStore, $loca
     else
       $scope.errors.email = "can't be blank"
 
-  $scope.changePassword = () ->
+  $scope.changePassword = ->
     $scope.errors = {}
     if !$scope.newPassword? or $scope.newPassword != ''
       if $scope.newPassword == $scope.confirmation
@@ -68,4 +68,5 @@ KarmaTracker.controller "AccountController", ($scope, $http, $cookieStore, $loca
       $scope.errors.password = "can't be blank"
 
 
-  $scope.getUserInfo()
+  if $cookieStore.get($scope.tokenName)?
+    $scope.getUserInfo()

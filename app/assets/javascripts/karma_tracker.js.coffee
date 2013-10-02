@@ -39,17 +39,19 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
   $scope.alsoWorking = []
   $scope.location = null
 
-  $http.get(
-    '/api/v1/user?token='+$cookieStore.get('token')
-  ).success((data, status, headers, config) ->
-    $scope.gravatar_url = data.user.gravatar_url
-    $scope.username = data.user.email.split('@')[0].split(/\.|-|_/).join(" ")
-    $scope.username = $scope.username.replace /\w+/g, (str) ->
-      str.charAt(0).toUpperCase() + str.substr(1).toLowerCase()
-  ).error((data, status, headers, config) ->
-  )
 
-  $scope.getRunningTask = () ->
+  if $cookieStore.get($scope.tokenName)?
+    $http.get(
+      '/api/v1/user?token='+$cookieStore.get('token')
+    ).success((data, status, headers, config) ->
+      $scope.gravatar_url = data.user.gravatar_url
+      $scope.username = data.user.email.split('@')[0].split(/\.|-|_/).join(" ")
+      $scope.username = $scope.username.replace /\w+/g, (str) ->
+        str.charAt(0).toUpperCase() + str.substr(1).toLowerCase()
+    ).error((data, status, headers, config) ->
+    )
+
+  $scope.getRunningTask = ->
     $http.get(
         "/api/v1/tasks/running?token=#{$cookieStore.get $scope.tokenName}"
       ).success((data, status, headers, config) ->
@@ -282,9 +284,10 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
     else
       $scope.location = null
 
-  $scope.getRunningTask()
-  $scope.checkIdentities()
-  $rootScope.checkRefreshingProjects()
+  if $cookieStore.get($scope.tokenName)?
+    $scope.getRunningTask()
+    $scope.checkIdentities()
+    $rootScope.checkRefreshingProjects()
 
   $scope.$on "$locationChangeSuccess", (event, currentLocation) ->
     if currentLocation.match(/projects$/) or currentLocation.match(/projects\/\d*\/tasks$/)

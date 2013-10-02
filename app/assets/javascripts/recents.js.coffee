@@ -67,5 +67,6 @@ KarmaTracker.controller "RecentsController", ($scope, $http, $cookieStore, $loca
       $scope.getRecentProjects()
 
 
-  $scope.getRecentTasks()
-  $scope.getRecentProjects()
+  if $cookieStore.get($scope.tokenName)?
+    $scope.getRecentTasks()
+    $scope.getRecentProjects()
