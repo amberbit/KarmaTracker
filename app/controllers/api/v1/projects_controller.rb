@@ -1,6 +1,8 @@
 module Api
   module V1
     class ProjectsController < ApplicationController
+      include ::ApplicationHelper
+
       respond_to :json
       before_filter :restrict_access, except: [:pivotal_tracker_activity_web_hook, :git_hub_activity_web_hook]
 
@@ -129,7 +131,7 @@ module Api
         ProjectsFetcher.new.background.fetch_for_user(@api_key.user)
         render json: {message: 'Projects list refresh started'}, status: 200
       end
-      
+
       ##
       # Triggers task list refresh for a single project.
       # Refreshing runs in background, so the response is sent without waiting for it to finish.
@@ -413,7 +415,9 @@ module Api
       #   => 200
       #
       #   resp.body
-      #   => { 'Project name' => { email: user_email@example.com, gravatar: user_gravatar_url, task_name: 'Task name'} }
+      #   => { 'Project name' => { 'Task name' => { { email: email@example.com, gravatar: gravatar_url}, { email: email2@example.com, gravatar: gravatar_url2}},
+      #                          { 'Task name2' => { { email: email3@example.com, gravatar: gravatar_url3}}},
+      #        'Project name2' => { 'Task name3' => { { email: email4@example.com, gravatar: gravatar_url4}}}}
       #
       #
       #   resp = conn.get("api/v1/projects/also_working, "token" => "dcbb7b36acd4438d07abafb8e28605a4"")
@@ -427,11 +431,7 @@ module Api
       def also_working
         ids = @api_key.user.projects.map(&:id)
         if ids.present?
-          projects_data = Project.also_working(ids).map { |p|task = p.tasks.joins(:time_log_entries).where('time_log_entries.running = ?', true).first;
-                                                          { p.name => { email: task.time_log_entries.first.user.email,
-                                                                            gravatar: task.time_log_entries.first.user.gravatar_url,
-                                                                            task_name: task.name }}}
-          render json: projects_data, status: 200
+          render json: also_working_hash(ids), status: 200
         else
           render json: { message: 'No projects found' }, status: 204
         end
