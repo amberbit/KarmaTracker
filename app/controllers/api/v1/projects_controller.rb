@@ -425,15 +425,15 @@ module Api
       #   resp.status
       #   => 204
       #
-      #   resp.body
-      #   => {"message": "No projects found"}
+      #   resp.body == ""
+      #   204 doesn't return a body
       #
       def also_working
         ids = @api_key.user.projects.map(&:id)
         if ids.present?
           render json: also_working_hash(ids), status: 200
         else
-          render json: { message: 'No projects found' }, status: 204
+          render json: nil, status: 204
         end
       end
     end
