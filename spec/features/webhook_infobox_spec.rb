@@ -12,7 +12,7 @@ feature 'Webhook Infobox,
   let!(:identity) { create(:identity) }
   let!(:participation) { create(:participation, project: project1, identity: identity) }
 
-  scenario 'see web hook integration info', driver: :selenium do
+  scenario 'see web hook integration info' do
     FakeWeb.allow_net_connect = true
     login user
     wait_for_loading
