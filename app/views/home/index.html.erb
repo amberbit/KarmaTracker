@@ -136,11 +136,11 @@
         <div class="large-12 columns">
           <div ng-show="location && location == 'projects'">
             <div ng-repeat="(project, data) in alsoWorking" class='row'>
-              <div ng-click="go('/projects/'+data[0]+'/tasks')" class="large-12 colums panel recent-task clickable">
+              <div ng-click="go('/projects/'+data[0]+'/tasks')" class="large-12 colums panel recent-task clickable" id="project_{{data[0]}}">
                 <div class="small-12 large-12 columns">
                   <span class="tiny-task project-name">{{project}}</span>
                   <div ng-repeat="(task, users) in data[1]" class='right' >
-                    <span ng-repeat="user in users">
+                    <span ng-repeat="user in users" id="user_{{user.id}}">
                       <img id="gravatar" ng-src="{{user.gravatar}}?s=25&d=mm" title="{{user.email +' - '+task}}" class='has-tip' data-tooltip"/>
                     </span>
                   </div>

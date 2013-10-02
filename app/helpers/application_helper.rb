@@ -24,7 +24,8 @@ module ApplicationHelper
       tasks = {}
       project.tasks.joins(:time_log_entries).where('time_log_entries.running = ?', true).uniq.each do |task|
         users = task.time_log_entries.joins(:user).running.reject{ |tle| tle.user == @api_key.user}
-        .map{ |tle| { email: tle.user.email,
+        .map{ |tle| { id: tle.user.id,
+                      email: tle.user.email,
                       gravatar: tle.user.gravatar_url }}
         next if users.empty?
         tasks[task.name] = users
