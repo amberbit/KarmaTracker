@@ -4,6 +4,8 @@ KarmaTracker.controller "RecentsController", ($scope, $http, $cookieStore, $loca
   $scope.noTasks = true
   $rootScope.noRecentProjects = true
   $scope.tokenName = 'token'
+  $scope.alsoWorking = []
+  $scope.location = null
 
   $scope.showAllProjects = ->
     document.getElementById("projectspage").classList.remove("hide-for-small")
@@ -64,6 +66,29 @@ KarmaTracker.controller "RecentsController", ($scope, $http, $cookieStore, $loca
       $scope.getRecentTasks()
       $scope.getRecentProjects()
 
+  $scope.alsoWorking = ->
+    $http.get(
+      "/api/v1/projects/also_working?token=#{$cookieStore.get($scope.tokenName)}"
+    ).success((data, status, headers, config) ->
+      $scope.alsoWorking = data
+      setLocation()
+    ).error((data, status, headers, config) ->
+      console.debug "Error fetching who is also working ATM."
+    )
+
+  setLocation = ->
+    if $location.path().match /projects\/\d*\/tasks$/
+      $scope.location = $location.path().match(/projects\/(\d*)\/tasks$/)[1]
+      for project, data of $scope.alsoWorking
+        if $scope.location == data[0].toString()
+          $scope.alsoWorking = data[1]
+          break
+    else if $location.path().match /projects$/
+      $scope.location = 'projects'
+    else
+      $scope.location = null
+
   $scope.getRecentTasks()
   $scope.getRecentProjects()
+  $scope.alsoWorking()
 

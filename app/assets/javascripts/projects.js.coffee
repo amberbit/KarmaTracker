@@ -9,7 +9,6 @@ KarmaTracker.controller "ProjectsController", ($rootScope, $scope, $http, $cooki
   $scope.recent = true if document.documentElement.clientWidth <= 768
   $scope.timer = 0
   $scope.items = []
-  $scope.alsoWorking = []
 
   $scope.numberOfPages = ->
     return Math.ceil($scope.totalCount/$scope.pageSize)
@@ -50,17 +49,8 @@ KarmaTracker.controller "ProjectsController", ($rootScope, $scope, $http, $cooki
     for i in [0..(numberOfPages-1)]
       $scope.items.push { text: "#{i+1}/#{numberOfPages}", value: i }
 
-  $scope.alsoWorking = ->
-    $http.get(
-      "/api/v1/projects/also_working?token=#{$cookieStore.get($scope.tokenName)}"
-    ).success((data, status, headers, config) ->
-      console.log data
-    ).error((data, status, headers, config) ->
-      console.debug "Error fetching who is also working ATM."
-    )
 
   $scope.$watch("recent", $scope.reloadProjects)
   $scope.$watch("query.string", $scope.queryChanged)
-  $scope.alsoWorking()
 
 
