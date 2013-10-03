@@ -18,6 +18,7 @@ module ApplicationHelper
   end
 
   #TODO: use inject instead of each?
+  #TODO: move to view!
   def also_working_hash(ids)
     projects = {}
     Project.also_working(ids).each do |project|
@@ -28,7 +29,7 @@ module ApplicationHelper
                       email: tle.user.email,
                       gravatar: tle.user.gravatar_url }}
         next if users.empty?
-        tasks[task.name] = users
+        tasks[task.name] = [task.id, users]
       end
       projects[project.name] = [project.id, tasks]
     end
