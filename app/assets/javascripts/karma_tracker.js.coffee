@@ -316,7 +316,7 @@ KarmaTracker.filter 'startFrom', ->
 KarmaTracker.controller "HomeController", ($scope, $http, $location, $cookieStore, FlashMessage) ->
   if $cookieStore.get($scope.tokenName)?
     $location.path '/projects'
-  else if !($location.path == '/oauth')
+  else if !($location.path().match(/oauth/))
     $location.path '/login'
 
 KarmaTracker.factory 'broadcastService', ($rootScope) ->
