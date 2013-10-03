@@ -153,7 +153,7 @@
           <div ng-show="location && location != 'projects'">
             <div ng-repeat="(task_name, task_data) in alsoWorking" class='row'>
               <div class="small-12 large-12 columns" id="task_{{task_data[0]}}">
-                <span ng-repeat="user in task_data[1]" class='left'>
+                <span ng-repeat="user in task_data[1]" class='left' id="user_{{user.id}}">
                   <img id="gravatar" ng-src="{{user.gravatar}}?s=25&d=mm" title="{{user.email}}" class='has-tip' data-tooltip"/>
                 </span>
                 <span class="tiny-task project-name">{{task_name}}</span>
