@@ -1,6 +1,8 @@
 module Api
   module V1
     class ProjectsController < ApplicationController
+      include ::ApplicationHelper
+
       respond_to :json
       before_filter :restrict_access, except: [:pivotal_tracker_activity_web_hook, :git_hub_activity_web_hook]
 
@@ -129,7 +131,7 @@ module Api
         ProjectsFetcher.new.background.fetch_for_user(@api_key.user)
         render json: {message: 'Projects list refresh started'}, status: 200
       end
-      
+
       ##
       # Triggers task list refresh for a single project.
       # Refreshing runs in background, so the response is sent without waiting for it to finish.
@@ -396,6 +398,44 @@ module Api
         end
       end
 
+
+      ##
+      # Returns user's other project names on which other users are currently also working.
+      #
+      # GET /api/v1/projects/also_working
+      #
+      # params:
+      #   token - KarmaTracker API token
+      #
+      # = Examples
+      #
+      #   resp = conn.get("api/v1/projects/also_working, "token" => "dcbb7b36acd4438d07abafb8e28605a4")
+      #
+      #   resp.status
+      #   => 200
+      #
+      #   resp.body
+      #   => { 'Project name' => [11, { 'Task name' => { { email: email@example.com, gravatar: gravatar_url}, { email: email2@example.com, gravatar: gravatar_url2}},
+      #                          { 'Task name2' => { { email: email3@example.com, gravatar: gravatar_url3}}}],
+      #        'Project name2' => { 'Task name3' => [12, { { email: email4@example.com, gravatar: gravatar_url4}}}}]
+      #
+      #
+      #   resp = conn.get("api/v1/projects/also_working, "token" => "dcbb7b36acd4438d07abafb8e28605a4"")
+      #
+      #   resp.status
+      #   => 204
+      #
+      #   resp.body == ""
+      #   204 doesn't return a body
+      #
+      def also_working
+        ids = @api_key.user.projects.map(&:id)
+        if ids.present?
+          render json: also_working_hash(ids), status: 200
+        else
+          render json: nil, status: 204
+        end
+      end
     end
   end
 end

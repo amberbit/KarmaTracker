@@ -36,18 +36,22 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
   $scope.query = {}
   $scope.runningStartedAt = ""
   $scope.runningTime = ""
+  $scope.alsoWorking = []
+  $scope.location = null
 
-  $http.get(
-    '/api/v1/user?token='+$cookieStore.get('token')
-  ).success((data, status, headers, config) ->
-    $scope.gravatar_url = data.user.gravatar_url
-    $scope.username = data.user.email.split('@')[0].split(/\.|-|_/).join(" ")
-    $scope.username = $scope.username.replace /\w+/g, (str) ->
-      str.charAt(0).toUpperCase() + str.substr(1).toLowerCase()
-  ).error((data, status, headers, config) ->
-  )
 
-  $scope.getRunningTask = () ->
+  if $cookieStore.get($scope.tokenName)?
+    $http.get(
+      '/api/v1/user?token='+$cookieStore.get('token')
+    ).success((data, status, headers, config) ->
+      $scope.gravatar_url = data.user.gravatar_url
+      $scope.username = data.user.email.split('@')[0].split(/\.|-|_/).join(" ")
+      $scope.username = $scope.username.replace /\w+/g, (str) ->
+        str.charAt(0).toUpperCase() + str.substr(1).toLowerCase()
+    ).error((data, status, headers, config) ->
+    )
+
+  $scope.getRunningTask = ->
     $http.get(
         "/api/v1/tasks/running?token=#{$cookieStore.get $scope.tokenName}"
       ).success((data, status, headers, config) ->
@@ -109,7 +113,7 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
         $rootScope.loading = false
       )
 
-  refreshWithPull = () ->
+  refreshWithPull = ->
     if $location.path().indexOf('tasks') != -1
       $http.get(
         "api/v1/projects/#{$location.path().split('/')[2]}/refresh_for_project?token="+$cookieStore.get('token')
@@ -198,12 +202,6 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
     $scope.signed_in = true
     if $location.path() == '/' || $location.path() == ''
       $location.path '/projects'
-  else
-    return if $location.path() == '/login' ||
-      $location.path() == '/password_reset' ||
-      $location.path() == '/oauth' ||
-      /\/edit_password_reset(\/.*)?/.test $location.path()
-    $location.path '/login'
 
 
   $scope.checkIdentities = ->
@@ -258,9 +256,38 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
     else
       $scope.webhookProjectURL = null
 
-  $scope.getRunningTask()
-  $scope.checkIdentities()
-  $rootScope.checkRefreshingProjects()
+  $scope.setAlsoWorking = ->
+    $http.get(
+      "/api/v1/projects/also_working?token=#{$cookieStore.get($scope.tokenName)}"
+    ).success((data, status, headers, config) ->
+      $scope.alsoWorking = data
+      setLocation()
+    ).error((data, status, headers, config) ->
+      console.debug "Error fetching who is also working ATM."
+    )
+
+  setLocation = ->
+    if $location.path().match /projects\/\d*\/tasks$/
+      $scope.location = $location.path().match(/projects\/(\d*)\/tasks$/)[1]
+      for project, data of $scope.alsoWorking
+        if $scope.location == data[0].toString()
+          $scope.alsoWorking = data[1]
+          break
+    else if $location.path().match /projects$/
+      $scope.location = 'projects'
+    else
+      $scope.location = null
+
+  if $cookieStore.get($scope.tokenName)?
+    $scope.getRunningTask()
+    $scope.checkIdentities()
+    $rootScope.checkRefreshingProjects()
+
+  $scope.$on "$locationChangeSuccess", (event, currentLocation) ->
+    if currentLocation.match(/projects$/) or currentLocation.match(/projects\/\d*\/tasks$/)
+      $scope.setAlsoWorking()
+    else
+      $scope.alsoWorking = null
 
 
 KarmaTracker.directive "pullToRefresh", ($rootScope) ->
@@ -283,7 +310,11 @@ KarmaTracker.filter 'startFrom', ->
 KarmaTracker.controller "HomeController", ($scope, $http, $location, $cookieStore, FlashMessage) ->
   if $cookieStore.get($scope.tokenName)?
     $location.path '/projects'
-  else if !$location.path '/oauth'
+  else
+    return if $location.path().match(/oauth/) ||
+      $location.path() == '/login' ||
+      $location.path() == '/password_reset' ||
+      /\/edit_password_reset(\/.*)?/.test $location.path()
     $location.path '/login'
 
 KarmaTracker.factory 'broadcastService', ($rootScope) ->
@@ -293,7 +324,7 @@ KarmaTracker.factory 'broadcastService', ($rootScope) ->
     @message = msg
     @broadcastItem()
 
-  broadcastService.broadcastItem = () ->
+  broadcastService.broadcastItem = ->
     $rootScope.$broadcast('handleBroadcast')
 
   broadcastService

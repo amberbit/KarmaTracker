@@ -1,17 +1,3 @@
-# == Schema Information
-#
-# Table name: projects
-#
-#  id                :integer          not null, primary key
-#  name              :string(255)      not null
-#  source_name       :string(255)      not null
-#  source_identifier :string(255)      not null
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
-#  web_hook          :string(255)
-#  web_hook_token    :string(255)
-#
-
 class Project < ActiveRecord::Base
   include PgSearch
 
@@ -36,6 +22,11 @@ class Project < ActiveRecord::Base
       }
     }
 
+    scope :also_working,  ->(ids) { joins(:tasks).
+                              joins('LEFT OUTER JOIN time_log_entries ON tasks.id = time_log_entries.task_id').
+                              joins('INNER JOIN users ON users.id = time_log_entries.user_id').
+                              where('time_log_entries.running = ? AND projects.id IN (?)', true, ids).
+                              includes( tasks: [time_log_entries: :user]).uniq }
   def users
     User.joins('INNER JOIN identities i ON i.user_id = users.id
                 INNER JOIN participations p ON i.id = p.identity_id').

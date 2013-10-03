@@ -4,6 +4,8 @@ KarmaTracker.controller "RecentsController", ($scope, $http, $cookieStore, $loca
   $scope.noTasks = true
   $rootScope.noRecentProjects = true
   $scope.tokenName = 'token'
+  $scope.alsoWorking = []
+  $scope.location = null
 
   $scope.showAllProjects = ->
     document.getElementById("projectspage").classList.remove("hide-for-small")
@@ -64,6 +66,7 @@ KarmaTracker.controller "RecentsController", ($scope, $http, $cookieStore, $loca
       $scope.getRecentTasks()
       $scope.getRecentProjects()
 
-  $scope.getRecentTasks()
-  $scope.getRecentProjects()
 
+  if $cookieStore.get($scope.tokenName)?
+    $scope.getRecentTasks()
+    $scope.getRecentProjects()

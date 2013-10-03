@@ -31,7 +31,7 @@ class ProjectsFetcher
     Rails.logger.info "Successfully updated list of projects for user #{user.id}"
     user.update_attribute('refreshing_projects', false)
   end
-  
+
   def fetch_for_project(project, identity)
     user = identity.user
     user.update_attribute('refreshing_projects', true)
@@ -44,5 +44,5 @@ class ProjectsFetcher
     identity.update_attribute('last_projects_refresh_at', DateTime.now)
     user.update_attribute('refreshing_projects', false)
   end
-  
+
 end

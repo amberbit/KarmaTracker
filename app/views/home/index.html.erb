@@ -12,10 +12,10 @@
   <nav id="top-bar" class="top-bar" ng-show="signed_in">
     <ul class="title-area">
       <li class="name">
-        <a href="/">
-          <img  ng-click="go('/')" src="/assets/ktlogo.png"/>
-        </a>
-        </li>
+      <a href="/">
+        <img  ng-click="go('/')" src="/assets/ktlogo.png"/>
+      </a>
+      </li>
       <li id="toggle-menu"  ng-click="expandMenu()" class="toggle-topbar menu-icon"><a href=""><span></span></a></li>
     </ul> 
     <section id="top-bar-section" class="top-bar-section">
@@ -26,13 +26,13 @@
         <li ng-click="go('/timesheet')"><a ng-class="highlightCurrentPage('timesheet')" href="#/timesheet" ng-click="expandMenu()">Timesheet</a></li>
         <li class="divider"></li>
         <li id="profile" ng-click="moveMenu()" class="has-dropdown"><a href=""><img id="gravatar" ng-src="{{gravatar_url}}?s=35&d=mm" /> {{username}}</a>
-          <ul class="dropdown">
-            <li id="back-button" class="toggle-topbar"><a href=""><< Back</a></li>
-            <li class="divider toogle-topbar"></li>
-            <li ng-click="go('/account')"><a class="secondary-menu" ng-class="highlightCurrentPage('account')" href="#/account" ng-click="expandMenu()">Account</a></li>
-            <li class="divider"></li>
-            <li ng-click="go('/identities')"><a class="secondary-menu" id="identities" ng-class="highlightCurrentPage('identities')" href="#/identities" ng-click="expandMenu()">Identities</a></li>
-                      </ul>
+        <ul class="dropdown">
+          <li id="back-button" class="toggle-topbar"><a href=""><< Back</a></li>
+          <li class="divider toogle-topbar"></li>
+          <li ng-click="go('/account')"><a class="secondary-menu" ng-class="highlightCurrentPage('account')" href="#/account" ng-click="expandMenu()">Account</a></li>
+          <li class="divider"></li>
+          <li ng-click="go('/identities')"><a class="secondary-menu" id="identities" ng-class="highlightCurrentPage('identities')" href="#/identities" ng-click="expandMenu()">Identities</a></li>
+        </ul>
         <li class="divider"></li>
         <li ng-click="go('/logout')"><a ng-class="highlightCurrentPage('logout')" href="#/logout" ng-click="expandMenu()">Log out</a></li>
       </ul>
@@ -69,38 +69,38 @@
   <div id="view-container" class="small-12 columns" ng-class="{'large-12': !signed_in, 'large-8': signed_in}" >
     <div class="small-12 large-12 columns show-for-touch" pull-to-refresh></div>
     <div class='view small-12 columns'
-        ng-view 
-        ng-animate="{enter: 'view-enter', leave: 'view-leave'}">
+      ng-view 
+      ng-animate="{enter: 'view-enter', leave: 'view-leave'}">
     </div>
   </div>
-  
-  <div ng-show="signed_in">
-  <div class="hide-for-small large-4 columns" ng-controller="RecentsController">
-    <div class="small-12 large-12 columns">
-      <h4><a ng-href="">Recents</a></h4>
-    </div>
 
-    <div class="large-12 columns panel recents recent-tasks sidepanel">
-      <h4 class="subheader">Tasks</h4>
-      <div class="large-12 columns">
-        <div ng-show="noTasks">There are no recent tasks.</div>
-        <div class="row" ng-repeat="task in lastTasks">
-          <div class="small-12 large-12 columns panel recent-task clickable"
-            id="recent-time-log-entry-{{task.id}}"
-            ng-class="{callout: task.id == runningTask.id, running: task.id == runningTask.id }"
-            ng-click="startTracking(task)">
-            <div class="small-12 large-12 columns">
-              <span class="right counter" ng-show="task.running">{{runningTime}}</span><span class="tiny-task">{{task.name}}</span>
+  <div ng-show="signed_in">
+    <div class="hide-for-small large-4 columns" ng-controller="RecentsController">
+      <div class="small-12 large-12 columns">
+        <h4><a ng-href="">Recents</a></h4>
+      </div>
+
+      <div class="large-12 columns panel recents recent-tasks sidepanel">
+        <h4 class="subheader">Tasks</h4>
+        <div class="large-12 columns">
+          <div ng-show="noTasks">There are no recent tasks.</div>
+          <div class="row" ng-repeat="task in lastTasks">
+            <div class="small-12 large-12 columns panel recent-task clickable"
+              id="recent-time-log-entry-{{task.id}}"
+              ng-class="{callout: task.id == runningTask.id, running: task.id == runningTask.id }"
+              ng-click="startTracking(task)">
+              <div class="small-12 large-12 columns">
+                <span class="right counter" ng-show="task.running">{{runningTime}}</span><span class="tiny-task">{{task.name}}</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="large-12 columns panel recents recent-projects sidepanel">
-      <h4 class="subheader">Projects</h4>
-      <div class="large-12 columns">
-        <div ng-show="noRecentProjects">There are no recent projects.</div>
+      <div class="large-12 columns panel recents recent-projects sidepanel">
+        <h4 class="subheader">Projects</h4>
+        <div class="large-12 columns">
+          <div ng-show="noRecentProjects">There are no recent projects.</div>
 
           <div class="row" ng-repeat="project in lastProjects">
             <div ng-click="go('/projects/'+project.id+'/tasks')" class="large-12 colums panel recent-task clickable">
@@ -109,7 +109,6 @@
               </div>
             </div>
           </div>
-
         </div>
       </div>
 
@@ -129,10 +128,42 @@
           </div><input id="webhook_url" type="text" value="{{webhookProjectURL}}" readonly="readonly" autocomplete="off" />
         </div>
       </div>
+
+    </div>
+    <div class="hide-for-small large-4 columns right" ng-controller="HomeController">
+
+      <div ng-show="alsoWorking" class="also-working large-12 columns panel sidepanel recents">
+        <h4 class="subheader">Currently also working</h4>
+        <div class="large-12 columns">
+          <div ng-show="location && location == 'projects'">
+            <div ng-repeat="(project_name, project_data) in alsoWorking" class='row'>
+              <div ng-click="go('/projects/'+project_data[0]+'/tasks')" class="large-12 colums panel recent-task clickable" id="project_{{project_data[0]}}">
+                <div class="small-12 large-12 columns">
+                  <span class="tiny-task project-name">{{project_name}}</span>
+                  <div ng-repeat="(task_name, task_data) in project_data[1]" class='right' >
+                    <span ng-repeat="user in task_data[1]" id="user_{{user.id}}">
+                      <img id="gravatar" ng-src="{{user.gravatar}}?s=25&d=mm" title="{{user.email +' - '+task}}" class='has-tip' data-tooltip"/>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div ng-show="location && location != 'projects'">
+            <div ng-repeat="(task_name, task_data) in alsoWorking" class='row'>
+              <div class="small-12 large-12 columns" id="task_{{task_data[0]}}">
+                <span ng-repeat="user in task_data[1]" class='left' id="user_{{user.id}}">
+                  <img id="gravatar" ng-src="{{user.gravatar}}?s=25&d=mm" title="{{user.email}}" class='has-tip' data-tooltip"/>
+                </span>
+                <span class="tiny-task project-name">{{task_name}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  </div>
-</div>
 
 
 <div class="row" ng-class="{'signin-width': !signed_in}">
@@ -142,16 +173,16 @@
     </div>
     <div class="small-3 large-2 columns">
       <a href="http://www.amberbit.com/" target="_blank">
-      <img class="logo-amberbit" src="/assets/logo_simple.png" /></a>
+        <img class="logo-amberbit" src="/assets/logo_simple.png" /></a>
     </div>
   </div>
 </div>
 <script type="text/javascript">
-  window.KarmaTrackerConfig = {};
+window.KarmaTrackerConfig = {};
 
-  window.KarmaTrackerConfig.registration_enabled = <%= AppConfig.users.allow_register %>;
-  window.KarmaTrackerConfig.registration_destroy = <%= AppConfig.users.allow_destroy %>;
-  window.KarmaTrackerConfig.items_per_page = <%= AppConfig.items_per_page %>;
+window.KarmaTrackerConfig.registration_enabled = <%= AppConfig.users.allow_register %>;
+window.KarmaTrackerConfig.registration_destroy = <%= AppConfig.users.allow_destroy %>;
+window.KarmaTrackerConfig.items_per_page = <%= AppConfig.items_per_page %>;
 </script>
 
 

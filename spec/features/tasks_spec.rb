@@ -161,5 +161,44 @@ as a user I can', js: true  do
       page.should_not have_content task4.name
     end
     AppConfig.unstub(:items_per_page)
-end
   end
+
+
+  scenario 'see who else is working on other tasks' do
+    user2 = create :confirmed_user
+    identity2 = create(:identity, user: user2)
+    create(:participation, project: project2, identity: identity2)
+    TimeLogEntry.delete_all
+    user2_running_entry = create :time_log_entry, user: user2, task: task2,
+      stopped_at: nil, running: true
+    my_running_entry = create :time_log_entry, user: user, task: task2,
+      stopped_at: nil, running: true
+
+    user3 = create :confirmed_user
+    identity3 = create(:identity, user: user3)
+    create(:participation, project: project2, identity: identity)
+    task3 = create :task, project: project2, current_task: true
+    user3_running_entry = create :time_log_entry, user: user3, task: task3,
+      stopped_at: nil, running: true
+
+    within '.view' do
+      find('span', text: project2.name).click
+    end
+    page.should have_content 'Currently also working'
+    within '.also-working' do
+      page.should_not have_content project2.name
+      within "#task_#{task2.id}" do
+        page.should_not have_css("#user_#{user.id}") #don't diplay me
+        page.should have_css("#user_#{user2.id}")
+        page.should_not have_css("#user_#{user3.id}")
+        page.should have_css('img#gravatar')
+      end
+      within "#task_#{task3.id}" do
+        page.should_not have_css("#user_#{user.id}") #don't diplay me
+        page.should_not have_css("#user_#{user2.id}")
+        page.should have_css("#user_#{user3.id}")
+        page.should have_css('img#gravatar')
+      end
+    end
+  end
+end
