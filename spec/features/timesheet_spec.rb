@@ -26,7 +26,10 @@ feature 'Timesheet page,
     create(:participation, project: @project2, identity: @identity)
     FakeWeb.allow_net_connect = true
     login @user
-    click_link 'Timesheet'
+    wait_for_loading
+    within '.top-bar-section' do
+      click_link 'Timesheet'
+    end
     within '.view' do
       wait_until(10) { page.has_content? 'Timesheet' }
     end

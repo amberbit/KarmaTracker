@@ -15,6 +15,7 @@ feature 'Webhook Infobox,
   scenario 'see web hook integration info' do
     FakeWeb.allow_net_connect = true
     login user
+    sleep 1
     wait_for_loading
     within '.view' do
       first('span', text: project1.name).click
