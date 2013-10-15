@@ -25,6 +25,7 @@ feature 'Timesheet page,
     create(:participation, project: @project1, identity: @identity)
     create(:participation, project: @project2, identity: @identity)
     FakeWeb.allow_net_connect = true
+    Capybara.reset_session!
     login @user
     sleep 1
     wait_for_loading
@@ -59,7 +60,7 @@ feature 'Timesheet page,
     fill_in 'From', with: @time + 2.hours
     click_on 'search_submit'
     within '.timesheet-entries' do
-      page.should have_content "There are no tracked tasks"
+      wait_until(10) { page.has_content? "There are no tracked tasks" }
     end
     within '.timesheet-total' do
       wait_until(10) { first('td').text.should == '00:00 hours' }
@@ -73,7 +74,7 @@ feature 'Timesheet page,
     within '.timesheet-entries' do
       page.should have_content @project1.name
       page.should have_content @task1.name
-      page.should_not have_content @project2.name
+      wait_until(10) { page.has_no_content? @project2.name }
       page.should_not have_content @task2.name
     end
   end

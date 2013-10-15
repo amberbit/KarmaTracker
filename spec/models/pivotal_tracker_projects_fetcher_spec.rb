@@ -40,7 +40,7 @@ should' do
     @identity.projects.count.should == 1
     @identity2.projects.count.should == 1
     project = Project.first
-    project.identities.count.should == 2
+    wait_until(10) { project.identities.count == 2 }
 
     reset_fakeweb_urls
 
@@ -55,7 +55,7 @@ should' do
     @fetcher.fetch_projects(@identity)
     @fetcher.fetch_tasks(@identity.projects.first, @identity)
     Task.count.should == 2
-    Project.first.tasks.count.should == 2
+    wait_until(10) { Project.first.tasks.count == 2 }
   end
 
   it 'mark current tasks appropriately' do

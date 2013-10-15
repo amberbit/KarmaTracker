@@ -6,6 +6,7 @@ feature 'Identities management', js: true do
     FakeWeb.allow_net_connect = true
     user = FactoryGirl.create :user
     user.update_attribute :confirmation_token, nil
+    Capybara.reset_session!
     login user
     within '#firstTip' do
       click_on 'Ok'
