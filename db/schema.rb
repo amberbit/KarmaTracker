@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130814120853) do
+ActiveRecord::Schema.define(:version => 20130830072235) do
 
   create_table "api_keys", :force => true do |t|
     t.string   "token",      :null => false
@@ -88,6 +88,8 @@ ActiveRecord::Schema.define(:version => 20130814120853) do
     t.datetime "password_reset_sent_at"
     t.string   "auth_token"
     t.boolean  "refreshing_projects",    :default => false
+    t.string   "oauth_token"
+    t.datetime "oauth_token_expires_at"
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true

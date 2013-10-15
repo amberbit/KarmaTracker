@@ -1,19 +1,3 @@
-# == Schema Information
-#
-# Table name: tasks
-#
-#  id                :integer          not null, primary key
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
-#  project_id        :integer          not null
-#  name              :text             not null
-#  source_name       :string(255)      not null
-#  source_identifier :string(255)      not null
-#  current_state     :string(255)      not null
-#  story_type        :string(255)      not null
-#  current_task      :boolean          default(FALSE)
-#
-
 class Task < ActiveRecord::Base
   include PgSearch
 

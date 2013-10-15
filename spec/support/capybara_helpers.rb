@@ -5,7 +5,7 @@ def login(user = create(:user), remember_me = false)
   fill_in 'password', :with => 'secret123'
   check('Remember me') if remember_me
   click_button 'Sign in!'
-  page.should have_content 'Log out'
+  page.should have_content 'Recents'
 end
 
 def wait_until(timeout = Capybara.default_wait_time)
@@ -20,4 +20,9 @@ def take_screenshot filename = "screenshot"
   file = "#{Dir.pwd}/tmp/screenshots/#{filename}_#{Time.now.to_formatted_s(:number)}.png"
   page.driver.render(file, :full => true)
   puts "Saved screenshot: #{file}"
+end
+
+#wait for "Loading... " spinner disappears
+def wait_for_loading(timeout = 20)
+  wait_until(timeout) { find('.loading', visible: false).present? }
 end

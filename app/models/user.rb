@@ -1,19 +1,7 @@
-# == Schema Information
-#
-# Table name: users
-#
-#  id                 :integer          not null, primary key
-#  email              :string(255)
-#  password_digest    :string(255)
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  confirmation_token :string(255)
-#
-
 class User < ActiveRecord::Base
   has_secure_password
 
-  attr_accessible :email, :password, :confirmation_token, :refreshing_projects, :gravatar_url
+  attr_accessible :email, :password, :confirmation_token, :refreshing_projects, :gravatar_url, :oauth_token
 
   has_one :api_key, dependent: :destroy
   has_many :time_log_entries, dependent: :destroy
@@ -49,9 +37,9 @@ class User < ActiveRecord::Base
       self[column] = SecureRandom.hex
     end while User.exists?(column => self[column])
   end
-  
+
   def gravatar_url
-    gravatar_url = "http://www.gravatar.com/avatar/" + Digest::MD5.hexdigest(self.email)
+    @gravatar_url ||= "http://www.gravatar.com/avatar/" + Digest::MD5.hexdigest(self.email)
   end
 
   def send_password_reset(host)

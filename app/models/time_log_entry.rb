@@ -1,18 +1,3 @@
-# == Schema Information
-#
-# Table name: time_log_entries
-#
-#  id         :integer          not null, primary key
-#  task_id    :integer
-#  user_id    :integer          not null
-#  running    :boolean          default(FALSE)
-#  started_at :datetime         not null
-#  stopped_at :datetime
-#  seconds    :integer          default(0), not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#
-
 class TimeLogEntry < ActiveRecord::Base
 
   attr_accessible :task, :task_id, :user, :user_id, :running, :started_at, :stopped_at, :seconds
@@ -50,6 +35,8 @@ class TimeLogEntry < ActiveRecord::Base
     joins(:task).where('tasks.project_id = ?', project_id)
   }
 
+  scope :running, where(running: true)
+
   def start
     self.running = true
     self.started_at = Time.zone.now
@@ -83,11 +70,18 @@ class TimeLogEntry < ActiveRecord::Base
     scope = scope.where("id <> ?", id) if self.persisted?
 
     if started_at.present? && scope.from_timestamp(started_at).present?
-      errors.add :started_at, 'should not overlap other time log entries'
+      errors.add :started_at, 'should not overlap other time log entries', { id: scope.from_timestamp(started_at).first.id }
+      errors.add :started_at, "id:#{ scope.from_timestamp(started_at).first.id }"
+    end
+
+    if stopped_at.present? && scope.from_timestamp(stopped_at).present?
+      errors.add :stopped_at, 'should not overlap other time log entries', { id: scope.from_timestamp(stopped_at).first.id }
+      errors.add :stopped_at, "id:#{ scope.from_timestamp(stopped_at).first.id }"
     end
 
     if started_at.present? && stopped_at.present? && scope.within_timerange(started_at, stopped_at).present?
-      errors.add :stopped_at, 'should not overlap other time log entries'
+      errors.add :stopped_at, 'should not overlap other time log entries', { id: scope.within_timerange(started_at, stopped_at).first.id }
+      errors.add :stopped_at, "id:#{ scope.within_timerange(started_at, stopped_at).first.id }"
     end
   end
 

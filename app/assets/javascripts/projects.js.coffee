@@ -37,17 +37,20 @@ KarmaTracker.controller "ProjectsController", ($rootScope, $scope, $http, $cooki
 
   $scope.queryChanged = ->
     query = $scope.query.string
-    clearTimeout $scope.timer
+    clearTimeout $scope.timer if $scope.timer != 0
     $scope.timer = setTimeout (->
       $scope.reloadProjects()
-    ), 500
-
-  $scope.$watch("query.string", $scope.queryChanged)
-  $scope.$watch("recent", $scope.reloadProjects)
-
+      $scope.$apply()
+    ), 1000
 
   $scope.initItems = ->
     $scope.items = []
     numberOfPages = $scope.numberOfPages()
     for i in [0..(numberOfPages-1)]
       $scope.items.push { text: "#{i+1}/#{numberOfPages}", value: i }
+
+
+  $scope.$watch("recent", $scope.reloadProjects)
+  $scope.$watch("query.string", $scope.queryChanged)
+
+

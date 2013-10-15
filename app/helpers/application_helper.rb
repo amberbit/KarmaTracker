@@ -17,4 +17,22 @@ module ApplicationHelper
     http.request(request)
   end
 
+  #TODO: use inject instead of each?
+  #TODO: move to view!
+  def also_working_hash(ids)
+    projects = {}
+    Project.also_working(ids).each do |project|
+      tasks = {}
+      project.tasks.joins(:time_log_entries).where('time_log_entries.running = ?', true).uniq.each do |task|
+        users = task.time_log_entries.joins(:user).running.reject{ |tle| tle.user == @api_key.user}
+        .map{ |tle| { id: tle.user.id,
+                      email: tle.user.email,
+                      gravatar: tle.user.gravatar_url }}
+        next if users.empty?
+        tasks[task.name] = [task.id, users]
+      end
+      projects[project.name] = [project.id, tasks]
+    end
+    projects
+  end
 end

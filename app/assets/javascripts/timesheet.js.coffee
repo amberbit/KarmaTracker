@@ -37,7 +37,7 @@ KarmaTracker.controller "TimesheetController", ($scope, $http, $cookieStore, $lo
     ).error((data, status, headers, config) ->
     )
 
-  $scope.getProjects = () ->
+  $scope.getProjects = ->
     $http.get(
       '/api/v1/projects?token='+$cookieStore.get($scope.tokenName)
     ).success((data, status, headers, config) ->
@@ -75,7 +75,7 @@ KarmaTracker.controller "TimesheetController", ($scope, $http, $cookieStore, $lo
 
 
 
-  $scope.getEntries = () ->
+  $scope.getEntries = ->
     $rootScope.loading = true
     $http.get(
       "/api/v1/time_log_entries?token=#{$cookieStore.get($scope.tokenName)}&project_id=#{$scope.selectedProject}&started_at=#{moment($scope.fromDate).add('minutes', offset).format('YYYY-MM-DD HH:mm:ss')
@@ -112,20 +112,19 @@ KarmaTracker.controller "TimesheetController", ($scope, $http, $cookieStore, $lo
     $scope.errors = {}
     $http.put(
       "/api/v1/time_log_entries/#{entry.time_log_entry.id}?token=#{$cookieStore.get($scope.tokenName)}&time_log_entry[started_at]=#{moment(entry.time_log_entry.newStartedAt).add('minutes', offset).format('YYYY-MM-DD HH:mm:ss')
-}&time_log_entry[stopped_at]=#{moment(entry.time_log_entry.newStoppedAt).add('minutes', offset).format('YYYY-MM-DD HH:mm:ss')
-}"
+      }&time_log_entry[stopped_at]=#{moment(entry.time_log_entry.newStoppedAt).add('minutes', offset).format('YYYY-MM-DD HH:mm:ss')
+      }"
     ).success((data, status, headers, config) ->
       $scope.getEntries()
     ).error((data, status, headers, config) ->
       for field in ["started_at", "stopped_at"]
-        $scope.errors[field] = data.time_log_entry.errors[field][0]
+        if data.time_log_entry.errors[field]?
+          $scope.errors[field] = data.time_log_entry.errors[field][0]
+          $scope.errors.id = data.time_log_entry.errors[field][1].split(':')[1] if data.time_log_entry.errors[field][1]?
     )
 
   $scope.showLocalDate = (date) ->
     result = moment(date).add('minutes', -offset).format('YYYY-MM-DD HH:mm:ss')
 
-
   $scope.getEntries()
   $scope.getProjects()
-  
-

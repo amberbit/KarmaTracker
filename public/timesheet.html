@@ -37,7 +37,7 @@
         </tr>
       </thead>
       <tbody ng-repeat="entry in entries" id="{{'timesheet_entry_' + entry.time_log_entry.id}}">
-        <tr>
+        <tr ng-class="{ 'error-row': entry.time_log_entry.id == errors.id }">
           <td class="small-4 columns">
             <a href="" title="Go to task page" ng-click="openTask(entry.project.source_name, entry.project.name, entry.project.source_identifier, entry.task.source_identifier)">{{entry.task.name}}</a>
           </td>
@@ -48,7 +48,7 @@
             <div ng-show="!entry.editing">{{showLocalDate(entry.time_log_entry.started_at.replace("T", " ").replace("Z", ""))}}</div>
           </td>
           <td class="small-2 columns">
-            <a ng-show="entry.editing" ng-click="close(entry)" href="" class="tiny button secondary right" >Cancel</a>
+            <a ng-show="entry.editing" ng-click="close(entry)" href="" class="tiny button secondary right " >Cancel</a>
             <a title="Edit this entry" ng-show="!entry.editing" ng-click="edit(entry)" href="" class="tiny button secondary right" >Edit</a>
                         <div ng-show="!entry.editing">
             {{getTime(entry.time_log_entry.seconds)}}

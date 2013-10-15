@@ -11,6 +11,7 @@
  *= require_self
  *= require_tree .
  *= require foundation_and_overrides
+ *= require auth-buttons
  */
 
 // Required global settings and mixins for Foundation
@@ -146,6 +147,8 @@ h5.subtitle{
   background-size: 100%;
   background-position: center;
   width: 2em;
+  margin-left: 2px;  
+  margin-top: -1px;
 
 
   &.github{
@@ -171,17 +174,6 @@ h5.subtitle{
   }
 }
 
-.touch .source-icon {
-  margin-right: 0px;
-  position: relative;
-  right: 5px;
-}
-
-.touch .callout .source-icon {
-  margin-right: 0px;
-  position: relative;
-  right: 10px;
-}
 
 .callout .source-icon {
   margin-right: -10px;
@@ -204,8 +196,8 @@ span.project-text {
 }
 
 span.task-text {
-  margin-left: 10px;
-  width: 85%;
+  margin-left: 20px;
+  width: 70%;
   float: left;
   word-wrap: break-word;
   padding: 5px 0 5px;
@@ -216,7 +208,7 @@ span.task-text {
 .label.task-id {
 padding-right: 2px;
 padding-left: 2px;
-margin-top: 0.5em;
+
 
 }
 
@@ -265,6 +257,7 @@ margin-top: 0.5em;
 
 .panel {
   color: #000;
+  background-color: #efefef;
 }
 
 
@@ -274,18 +267,24 @@ margin-top: 0.5em;
   display: inline-block;
   margin-right: 10px;
   vertical-align: middle;
-  margin-top: -2px;
+  margin-top: 1px;
   margin-left: 10px;
   margin-bottom: 2px;
+  margin-right: 4em;
+  float:right;
   &.start {
     background-image: url(image_path('start-tracking.png'));
     background-position: center;
     background-repeat: no-repeat;
+  }  
+  &.start.project {
+    margin-top: -2px;
   }
   &.stop {
     background-image: url(image_path('stop-tracking.png'));
     background-position: center;
     background-repeat: no-repeat;
+    margin-right: 4.4em;
   }
 }
 
@@ -389,7 +388,7 @@ margin-top: 0.5em;
   border-bottom-width: 0;
   .alert-box {
     z-index: 2;
-    top: 1.5em;
+    top: 0.8em;
   }
 }
 
@@ -729,16 +728,16 @@ margin-top: 0.5em;
   margin-top: 2px;
 }
 
-.dropdown {
+#pagination .dropdown {
   display: inline-block;
   cursor: pointer;
 }
 
-.dropdown a {
+a:hover {
   text-decoration:none;
 }
 
-.dropdown-menu {
+#pagination .dropdown-menu {
   -moz-border-radius: 0;
   border-radius: 0;
   border: solid 1px #cccccc;
@@ -747,7 +746,7 @@ margin-top: 0.5em;
   min-width: 20px;
 }
 
-.dropdown li {
+#pagination .dropdown li {
   font-size: 0.875em;
   cursor: pointer;
   line-height: 1.125em;
@@ -757,18 +756,18 @@ margin-top: 0.5em;
   }
 }
 
-.dropdown li a {
+#pagination .dropdown li a {
   color: #555555 !important;
   background: transparent !important;
 }
 
 #gravatar{
-  margin-bottom: -11px;
+  margin-bottom: 4px;
   margin-right: 10px;
 }
 
 h4 a.refresh{
-  margin-top: 8px;
+  margin-top: 7px;
   margin-left: 10px;
   float: left;
   font-size: 0.7em;
@@ -784,4 +783,78 @@ h4 a.refresh{
       padding-left: 0.9375em !important;
       margin-right: 0;
     }
+}
+
+.error-row {
+  background-color: #f2dede;
+}
+
+@media only screen and (max-width: 756px) {
+  h4 a.refresh{
+    margin-top: 1px;
+    }
+  span.task-text {
+    width: 80%;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  span.task-text {
+    width: 62%;
+  }
+}
+.sidepanel{
+  margin-bottom: 1em !important;
+  border-radius: 5px;
+  box-shadow: 0 100px 100px -100px #969696 inset !important;
+}
+
+.contentpanel{
+  margin-bottom: 1em !important;
+  box-shadow: 0 100px 100px -120px #969696 inset !important;
+}
+
+#ghform .tab-content, 
+#ptform .tab-content {
+  border-style: solid;
+  border-width: 1px;
+  border-color: #d4d4d4;
+  margin-bottom: 0.0625em;
+  padding: 0.625em;
+  background: #eeeeee;
+}
+#ghform .nav,
+#ptform .nav {
+  margin-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+}
+
+#ghform .nav-tabs,
+#ptform .nav-tabs{
+ border: 0;
+}
+#ghform .nav-tabs .active a, #ghform .nav-tabs .active a:hover, #ghform .nav-tabs .active a:focus,
+#ptform .nav-tabs .active a, #ptform .nav-tabs .active a:hover, #ptform .nav-tabs .active a:focus{
+  background-color: #eee;
+  color: #000;
+}
+
+#ghform .nav-tabs li a, #ghform .nav-tabs li a:hover, #ghform .nav-tabs li a:focus,
+#ptform .nav-tabs li a, #ptform .nav-tabs li a:hover, #ptform .nav-tabs li a:focus {
+  background-color: #ccc;
+  color: #555;
+  border: 1px solid #d4d4d4;
+  border-bottom: 0;
+  cursor: pointer;
+}
+
+.counter{
+  color: #fff;
+  font-weight: bold;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+
+.project-name {
+  line-height: 28px;
 }

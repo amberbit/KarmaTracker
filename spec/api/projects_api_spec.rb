@@ -278,16 +278,24 @@ describe 'Projects API' do
     projects = JSON.parse(response.body)['projects']
     projects.map {|p| p["project"]["id"]}.should == @projects.map{|p| p.id}[5..9].reverse
   end
-  
+
   it 'should not get url of github project' do
     identity = create :git_hub_identity
     project = create :gh_project, identities: [identity]
-    
     api_get "projects/#{project.id}/pivotal_tracker_activity_web_hook_url", {token: project.users.last.api_key.token}
     response.status.should == 404
     resp = JSON.parse(response.body)
     resp.should have_key("message")
     resp["message"].should =~ /Resource not found/
   end
-  
+
+
+  # GET /api/v1/projects/also_working
+  it 'should not find any projects' do
+    @identity = Identity.last
+    @identity.projects.destroy_all
+    api_get "projects/also_working", {token: @identity.user.api_key.token}
+    response.status.should == 204
+    response.body.should be_empty
+  end
 end

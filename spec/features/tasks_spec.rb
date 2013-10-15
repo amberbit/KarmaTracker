@@ -103,7 +103,9 @@ as a user I can', js: true  do
 
   scenario "see spining wheel when loading tasks list" do
     100.times { create(:task, project: project1) }
-    find('span', text: project1.name).click
+    within '.view' do
+      find('span', text: project1.name).click
+    end
     wait_until(10) { page.has_content? "→ #{project1.name}" }
     uncheck 'Show only current'
     within '.loading' do 
@@ -111,24 +113,92 @@ as a user I can', js: true  do
     end
   end
 
-  scenario 'paginate tasks' do
+  scenario 'paginate tasks with prev/next' do
     AppConfig.stub(:items_per_page).and_return(1)
     visit current_path
-    find('span', text: project1.name).click
-    click_on 'Next'
-    wait_until(10) { page.has_content? task4.name }
+    within '.view' do
+      find('span', text: project1.name).click
+    end
+    sleep 1
+    within '.view' do
+      page.should have_content task4.name
+      page.should_not have_content task1.name
+    end
+    within '#pagination' do
+      click_on 'Next'
+    end
+    within '.view' do
+      page.should have_content task1.name
+      page.should_not have_content task4.name
+    end
+    within '#pagination' do
+      click_on 'Previous'
+    end
+    within '.view' do
+      page.should have_content task4.name
+      page.should_not have_content task1.name
+    end
     AppConfig.unstub(:items_per_page)
   end
 
   scenario 'paginate with dropdown' do
-    create(:task, project: project1, current_task: true)
     AppConfig.stub(:items_per_page).and_return(1)
     visit current_path
-    find('span', text: project1.name).click
-    wait_until(20) { page.has_css? '.dropdown-toggle' }
-    find('.dropdown-toggle').click
-    all('.dropdown-menu a')[1].click
-    wait_until(10) { page.has_content? task4.name }
+    within '.view' do
+      find('span', text: project1.name).click
+    end
+    sleep 1
+    within '.view' do
+      page.should have_content task4.name
+      page.should_not have_content task1.name
+    end
+    within '#pagination' do
+      find('.dropdown-toggle').click
+      all('.dropdown-menu a')[1].click
+    end
+    within '.view' do
+      page.should have_content task1.name
+      page.should_not have_content task4.name
+    end
     AppConfig.unstub(:items_per_page)
+  end
+
+
+  scenario 'see who else is working on other tasks' do
+    user2 = create :confirmed_user
+    identity2 = create(:identity, user: user2)
+    create(:participation, project: project2, identity: identity2)
+    TimeLogEntry.delete_all
+    user2_running_entry = create :time_log_entry, user: user2, task: task2,
+      stopped_at: nil, running: true
+    my_running_entry = create :time_log_entry, user: user, task: task2,
+      stopped_at: nil, running: true
+
+    user3 = create :confirmed_user
+    identity3 = create(:identity, user: user3)
+    create(:participation, project: project2, identity: identity)
+    task3 = create :task, project: project2, current_task: true
+    user3_running_entry = create :time_log_entry, user: user3, task: task3,
+      stopped_at: nil, running: true
+
+    within '.view' do
+      find('span', text: project2.name).click
+    end
+    page.should have_content 'Currently also working'
+    within '.also-working' do
+      page.should_not have_content project2.name
+      within "#task_#{task2.id}" do
+        page.should_not have_css("#user_#{user.id}") #don't diplay me
+        page.should have_css("#user_#{user2.id}")
+        page.should_not have_css("#user_#{user3.id}")
+        page.should have_css('img#gravatar')
+      end
+      within "#task_#{task3.id}" do
+        page.should_not have_css("#user_#{user.id}") #don't diplay me
+        page.should_not have_css("#user_#{user2.id}")
+        page.should have_css("#user_#{user3.id}")
+        page.should have_css('img#gravatar')
+      end
+    end
   end
 end

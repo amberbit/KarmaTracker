@@ -18,6 +18,14 @@ class UserMailer < ActionMailer::Base
     mail(to: identity.user.email, subject: 'KarmaTracker import failed. Invalid API key', from: 'no-reply@example.com')
   end
 
+  def account_created(user, host, provider, password)
+    @user = user
+    @url = get_root_url(host)
+    @provider = provider
+    @password = password
+    mail(to: @user.email, subject: 'KarmaTracker account created', from: 'no-reply@example.com')
+  end
+
   private 
     def get_root_url host
       root_url(host: host)

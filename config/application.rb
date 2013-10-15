@@ -6,6 +6,7 @@ require "action_controller/railtie"
 require "action_mailer/railtie"
 require "active_resource/railtie"
 require "sprockets/railtie"
+require 'omniauth'
 # require "rails/test_unit/railtie"
 
 if defined?(Bundler)
@@ -67,5 +68,10 @@ module KarmaTracker
 
     # Handling errors by KT
     config.exceptions_app = self.routes
+
+    config.middleware.use Rack::MethodOverride
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use ActionDispatch::Session::CookieStore
+    config.middleware.use ActionDispatch::Flash
   end
 end

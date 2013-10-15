@@ -1,13 +1,24 @@
 ---
 default:
   projects_refresh_period: 12
-  items_per_page: 100
+  items_per_page: 20
   users:
     allow_register: false
     allow_destroy: true
     password_min_chars: 6
   web_hooks:
-    git_hub: 'http://localhost:3000/api/v1/projects/git_hub_activity_web_hook'
+    git_hub: 
+
+  google_api:
+    client_id: 
+    secret: 
+    callback_url: 
+
+  github_api:
+    client_id: 
+    secret: 
+
+
 
 development:
   users:

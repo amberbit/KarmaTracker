@@ -15,7 +15,11 @@ feature 'Webhook Infobox,
   scenario 'see web hook integration info' do
     FakeWeb.allow_net_connect = true
     login user
-    click_on project1.name
+    sleep 1
+    wait_for_loading
+    within '.view' do
+      first('span', text: project1.name).click
+    end
     wait_until(10) { page.has_content? 'WebHook Integration' }
     find_field('webhook_url')['value'] =~ /api\/v1\/projects\/#{project1.id}\/pivotal_tracker_activity_web_hook/
   end
