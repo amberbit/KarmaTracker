@@ -71,7 +71,7 @@ def reset_fakeweb_urls
   FakeWeb.register_uri(:get, 'https://wrong_email:wrong_password@www.pivotaltracker.com/services/v4/me',
     :body => 'Access Denied', :status => ['401', 'Unauthorized'])
 
-  FakeWeb.register_uri(:get, 'https://correct_email:correct_password@www.pivotaltracker.com/services/v4/me',
+  FakeWeb.register_uri(:get, 'https://correct_email%40example.com:correct_password@www.pivotaltracker.com/services/v4/me',
     :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'authorization_success.xml')),
     :status => ['200', 'OK'])
 
@@ -95,7 +95,7 @@ def reset_fakeweb_urls
   FakeWeb.register_uri(:post, 'https://wrong_username:wrong_password@api.github.com/authorizations',
     :body => 'Access Denied', :status => ['401', 'Unauthorized'])
 
-  FakeWeb.register_uri(:post, 'https://correct_username:correct_password@api.github.com/authorizations',
+  FakeWeb.register_uri(:post, 'https://correct_username%40example.com:correct_password@api.github.com/authorizations',
     :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'git_hub', 'responses', 'authorization_success.json')),
     :status => ['201', 'OK'])
 

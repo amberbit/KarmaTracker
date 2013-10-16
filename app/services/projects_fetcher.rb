@@ -19,30 +19,30 @@ class ProjectsFetcher
 
   def fetch_for_user(user)
     Rails.logger.info "Fetching projects for user #{user.id}"
-    user.update_attribute('refreshing_projects', true)
+    user.update_attribute('refreshing', 'projects')
     user.identities.each do |identity|
       case identity.type
-          when 'PivotalTrackerIdentity'
-            PivotalTrackerProjectsFetcher.new.fetch_projects identity
-          when 'GitHubIdentity'
-            GitHubProjectsFetcher.new.fetch_projects identity
-        end
+      when 'PivotalTrackerIdentity'
+        PivotalTrackerProjectsFetcher.new.fetch_projects identity
+      when 'GitHubIdentity'
+        GitHubProjectsFetcher.new.fetch_projects identity
+      end
     end
     Rails.logger.info "Successfully updated list of projects for user #{user.id}"
-    user.update_attribute('refreshing_projects', false)
+    user.update_attribute('refreshing', nil)
   end
 
   def fetch_for_project(project, identity)
     user = identity.user
-    user.update_attribute('refreshing_projects', true)
+    user.update_attribute('refreshing', 'tasks')
     case identity.type
-      when 'PivotalTrackerIdentity'
-        PivotalTrackerProjectsFetcher.new.fetch_tasks project, identity
-      when 'GitHubIdentity'
-        GitHubProjectsFetcher.new.fetch_tasks_for_project project, identity
+    when 'PivotalTrackerIdentity'
+      PivotalTrackerProjectsFetcher.new.fetch_tasks project, identity
+    when 'GitHubIdentity'
+      GitHubProjectsFetcher.new.fetch_tasks_for_project project, identity
     end
     identity.update_attribute('last_projects_refresh_at', DateTime.now)
-    user.update_attribute('refreshing_projects', false)
+    user.update_attribute('refreshing', nil)
   end
 
 end

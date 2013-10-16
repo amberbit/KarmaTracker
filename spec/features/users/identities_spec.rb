@@ -6,6 +6,7 @@ feature 'Identities management', js: true do
     FakeWeb.allow_net_connect = true
     user = FactoryGirl.create :user
     user.update_attribute :confirmation_token, nil
+    Capybara.reset_session!
     login user
     within '#firstTip' do
       click_on 'Ok'
@@ -17,7 +18,7 @@ feature 'Identities management', js: true do
   scenario 'adds and removes new Pivotal Tracker identity with credentials' do
     click_link 'add_new_pt'
     within 'div#ptform' do
-      fill_in 'email', :with => 'correct_email'
+      fill_in 'email', :with => 'correct_email@example.com'
       fill_in 'password', :with => 'correct_password'
       click_button "Add new identity"
     end
@@ -42,7 +43,7 @@ feature 'Identities management', js: true do
   scenario 'adds and removes new Git Hub identity with credentials' do
     click_link 'add_new_gh'
     within 'div#ghform' do
-      fill_in 'username', :with => 'correct_username'
+      fill_in 'username', :with => 'correct_username@example.com'
       fill_in 'password', :with => 'correct_password'
       click_button "Add new identity"
     end

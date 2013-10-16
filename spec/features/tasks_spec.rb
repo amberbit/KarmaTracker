@@ -37,6 +37,7 @@ as a user I can', js: true  do
 
   background do
     FakeWeb.allow_net_connect = true
+    Capybara.reset_session!
     login user
   end
 

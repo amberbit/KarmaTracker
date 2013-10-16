@@ -218,7 +218,7 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
    $http.get(
      "/api/v1/user?token=#{$cookieStore.get $scope.tokenName}"
    ).success((data, status, headers, config) ->
-     $scope.refreshing = data.user.refreshing_projects
+     $scope.refreshing = if data.user.refreshing? then data.user.refreshing else null
      setTimeout($rootScope.checkRefreshingProjects, 10000)
    ).error((data, status, headers, config) ->
      setTimeout($rootScope.checkRefreshingProjects, 10000)

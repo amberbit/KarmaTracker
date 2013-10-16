@@ -24,7 +24,7 @@ describe GitHubIdentity do
     GitHubIdentity.count.should == 0
     gi = GitHubIdentity.new
     gi.user = FactoryGirl.create :user
-    gi.username = 'correct_username'
+    gi.username = 'correct_username@example.com'
     gi.password = 'correct_password'
     gi.save
     GitHubIdentity.count.should == 1

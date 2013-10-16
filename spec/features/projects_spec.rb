@@ -133,7 +133,7 @@ feature 'Projects management,
     TimeLogEntry.delete_all
     create :time_log_entry, user: user2, task: different_task, stopped_at: nil
     visit current_path
-    page.should_not have_content 'Currently also working'
+    wait_until(20) { page.has_no_content? 'Currently also working' }
     page.should_not have_css '.also-working'
   end
 

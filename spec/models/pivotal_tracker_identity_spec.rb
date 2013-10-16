@@ -22,7 +22,7 @@ describe PivotalTrackerIdentity do
     PivotalTrackerIdentity.count.should == 0
     pi = PivotalTrackerIdentity.new
     pi.user = FactoryGirl.create :user
-    pi.email = 'correct_email'
+    pi.email = 'correct_email@example.com'
     pi.password = 'correct_password'
     pi.save
     PivotalTrackerIdentity.count.should == 1

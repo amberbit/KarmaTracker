@@ -22,7 +22,7 @@ module Api
       #   => 200
       #
       #   resp.body
-      #   => {"user":{"id":1,"email":"a@b.com","refreshing_projects":"false", 
+      #   => {"user":{"id":1,"email":"a@b.com","refreshing":"tasks",
       #               "gravatar_url":"http://www.gravatar.com/avatar/b642b4217b3sds456sd7d5f4c4452",
       #                "token":"dcbb7b36acd4438d07abafb8e28605a4"}}
       #
@@ -48,7 +48,7 @@ module Api
       #   => 200
       #
       #   resp.body
-      #   => "{"user":{"id":117,"email":"new@example.com","refreshing_projects":"false",
+      #   => "{"user":{"id":117,"email":"new@example.com",
       #                "gravatar_url":"http://www.gravatar.com/avatar/b642b4217b3sds456sd7d5f4c4452",
       #                "token":"5266cd376cf2a29fd810c62ed731ec3a"}}"
       #
@@ -58,7 +58,7 @@ module Api
       #   => 422
       #
       #   resp.body
-      #   => "{"user":{"id":null,"email":"new@example.com","refreshing_projects":"false",
+      #   => "{"user":{"id":null,"email":"new@example.com",
       #                "gravatar_url":"http://www.gravatar.com/avatar/b642b4217b3sds456sd7d5f4c4452",
       #                "errors":{"password":["is too short (minimum is 6 characters)"]}}}"
       #
@@ -106,7 +106,7 @@ module Api
       #
       #   resp.body
       #
-      #   => "{"user":{"id":1,"email":"new@sample.com","refreshing_projects":"false",
+      #   => "{"user":{"id":1,"email":"new@sample.com",
       #                "gravatar_url":"http://www.gravatar.com/avatar/b642b4217b3sds456sd7d5f4c4452",
       #                "token":"4e9a06bff7603236d477f7bfacc2def5"}}"
       #
@@ -118,7 +118,7 @@ module Api
       #   => 422
       #
       #   resp.body
-      #   => "{"user":{"id":1,"email":"user@example.com","refreshing_projects":"false",
+      #   => "{"user":{"id":1,"email":"user@example.com",
       #                "gravatar_url":"http://www.gravatar.com/avatar/b642b4217b3sds456sd7d5f4c4452",
       #                "token":"4e9a06bff7603236d477f7bfacc2def5",
       #                "errors": {"email":["has already been taken"],"password":["is too short (minimum is 8 characters)"]}}}"
@@ -151,7 +151,7 @@ module Api
       #
       #   resp.body
       #
-      #   => "{"user":{"id":1,"email":"new@sample.com","refreshing_projects":"false",
+      #   => "{"user":{"id":1,"email":"new@sample.com",
       #                "gravatar_url":"http://www.gravatar.com/avatar/b642b4217b3sds456sd7d5f4c4452",
       #                "token":"7fcc0c838c7782405b7b20717e3c9ced"}}"
       #
@@ -195,7 +195,7 @@ module Api
       #   => 200
       #
       #   resp.body
-      #   => "{"user":{"id":1,"email":"new@sample.com","refreshing_projects":"false",
+      #   => "{"user":{"id":1,"email":"new@sample.com",
       #                "gravatar_url":"http://www.gravatar.com/avatar/b642b4217b3sds456sd7d5f4c4452",
       #                "token":"4e9a06bff7603236d477f7bfacc2def5"}}"
       #

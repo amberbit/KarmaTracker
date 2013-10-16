@@ -64,7 +64,7 @@ describe 'Identities API' do
   it "should be able to add PT identity for given user" do
     user = FactoryGirl.create :user
     json = api_post "identities/pivotal_tracker", {token: ApiKey.last.token, identity:
-          { email: 'correct_email', password: 'correct_password'}}
+          { email: 'correct_email@example.com', password: 'correct_password'}}
 
     response.status.should == 200
     json.has_key?('pivotal_tracker').should be_true
@@ -105,7 +105,7 @@ describe 'Identities API' do
   it "should be able to add GH identity for given user" do
     user = FactoryGirl.create :user
     json = api_post "identities/git_hub", {token: ApiKey.last.token, identity:
-          { username: 'correct_username', password: 'correct_password'}}
+          { username: 'correct_username@example.com', password: 'correct_password'}}
 
     response.status.should == 200
     json.has_key?('git_hub').should be_true
