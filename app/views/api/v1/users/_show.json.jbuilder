@@ -8,7 +8,7 @@ json.user do
     json.token user.api_key.token
   end
 
-  json.refreshing_projects user.refreshing_projects
+  json.refreshing user.refreshing if user.refreshing
   json.gravatar_url user.gravatar_url
 
   unless user.valid?

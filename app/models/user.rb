@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
   has_secure_password
 
-  attr_accessible :email, :password, :confirmation_token, :refreshing_projects, :gravatar_url, :oauth_token
+  attr_accessible :email, :password, :confirmation_token, :refreshing, :gravatar_url, :oauth_token
 
   has_one :api_key, dependent: :destroy
   has_many :time_log_entries, dependent: :destroy
