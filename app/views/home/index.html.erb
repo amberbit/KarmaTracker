@@ -142,7 +142,7 @@
                   <span class="tiny-task project-name">{{project_name}}</span>
                   <div ng-repeat="(task_name, task_data) in project_data[1]" class='right' >
                     <span ng-repeat="user in task_data[1]" id="user_{{user.id}}">
-                      <img id="gravatar" ng-src="{{user.gravatar}}?s=25&d=mm" title="{{user.email +' - '+task}}" class='has-tip' data-tooltip"/>
+                      <img id="gravatar" ng-src="{{user.gravatar}}?s=25&d=mm" title="{{user.email +' - '+task_name}}" class='has-tip' data-tooltip"/>
                     </span>
                   </div>
                 </div>

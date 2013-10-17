@@ -25,6 +25,7 @@ class PivotalTrackerActivityWebHook
     task.name = name.content if name
     task.story_type = story_type.content if story_type
     task.current_state = current_state.content if current_state
+    taks.current_task = true if current_state == 'started' || current_state == 'unstarted'
     task.project = @project
     if task.save
       Rails.logger.info "Processing web activit hook request for PT project #{@project.source_identifier} finished successfully"

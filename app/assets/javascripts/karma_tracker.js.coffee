@@ -260,7 +260,7 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
     $http.get(
       "/api/v1/projects/also_working?token=#{$cookieStore.get($scope.tokenName)}"
     ).success((data, status, headers, config) ->
-      $scope.alsoWorking = data
+      $scope.alsoWorking = if data == '' || Object.keys(data).length == 0 then [] else data
       setLocation()
     ).error((data, status, headers, config) ->
       console.debug "Error fetching who is also working ATM."

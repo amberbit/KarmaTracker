@@ -31,6 +31,7 @@ module ApplicationHelper
         next if users.empty?
         tasks[task.name] = [task.id, users]
       end
+      next if tasks.empty?
       projects[project.name] = [project.id, tasks]
     end
     projects
