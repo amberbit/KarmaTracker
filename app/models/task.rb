@@ -33,7 +33,7 @@ class Task < ActiveRecord::Base
     query = select("tasks.*, MAX(time_log_entries.started_at) max_started_at").
             joins("inner join time_log_entries on time_log_entries.task_id = tasks.id").
             group("tasks.id").
-            order("max_started_at desc")
+            reorder("max_started_at desc")
 
     query = query.where("time_log_entries.user_id = ?", user.id) if user
 

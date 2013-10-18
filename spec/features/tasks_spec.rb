@@ -94,13 +94,32 @@ as a user I can', js: true  do
     task1.time_log_entries.first.running.should be_false
   end
 
-  scenario 'see recent tasks' do
-    find('span', text: project1.name).click
+  scenario 'see recent tasks in right order' do
+    recent_task2 = create(:task, project: project1, current_task: true, name: 'Write a blog post')
+    create(:time_log_entry, task: recent_task2, user: user, started_at: 50.minutes.ago, stopped_at: 20.minutes.ago)
+    visit current_path
+    within '.view' do
+      find('span', text: project1.name).click
+    end
     within '.recents.recent-tasks' do
       page.should_not have_content task1.name
-      page.should have_content task4.name
+      page.body.should =~ /#{recent_task2.name}.*#{task4.name}/m
     end
   end
+
+  #edge case which occured when default_scope in tasks was added
+  scenario "don't see tasks ordered by updated at in recent" do
+    updated_at_task = create(:task, project: project1, current_task: true, name: 'Old recent- but updated at now')
+    create(:time_log_entry, task: updated_at_task, user: user, started_at: 50.days.ago, stopped_at: 49.days.ago)
+    visit current_path
+    within '.view' do
+      find('span', text: project1.name).click
+    end
+    within '.recents.recent-tasks' do
+      page.body.should =~ /#{task4.name}.*#{updated_at_task.name}/m
+    end
+  end
+
 
   scenario "see spining wheel when loading tasks list" do
     100.times { create(:task, project: project1) }
