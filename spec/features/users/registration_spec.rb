@@ -11,7 +11,7 @@ feature 'User registration', register: true do
     visit root_path
     page.should have_content("Register")
     click_link 'Register'
-
+    wait_until(10) { page.has_css? '#password_confirmation' }
     fill_in 'email', :with => 'user123@example.com'
     fill_in 'password', :with => 'password'
     fill_in 'password_confirmation', :with => 'password'
