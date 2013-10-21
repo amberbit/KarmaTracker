@@ -15,7 +15,7 @@
 #= require password_resets
 #= require cookieStore_override
 
-window.KarmaTracker = angular.module('KarmaTracker', ['ngCookies', 'ngMobile', 'ui.bootstrap'])
+window.KarmaTracker = angular.module('KarmaTracker', ['ngCookies', 'ngMobile', 'ngRoute', 'ui.bootstrap'])
 
 
 # Flashe message passed from other controllers to FlashesController

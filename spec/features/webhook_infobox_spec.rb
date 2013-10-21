@@ -18,6 +18,7 @@ feature 'Webhook Infobox,
     sleep 1
     wait_for_loading
     within '.view' do
+      wait_until(10) { page.has_content? project1.name }
       first('span', text: project1.name).click
     end
     wait_until(10) { page.has_content? 'WebHook Integration' }
