@@ -17,12 +17,16 @@ Clone KarmaTracker repository:
 
     git clone https://github.com/amberbit/KarmaTracker.git
 
-In KarmaTracker directory run Bundler in jruby with following options which are required to properly install torquebox-server gem:
+or
+
+    git clone git@github.com:amberbit/KarmaTracker.git
+
+In KarmaTracker directory run Bundler with following jruby flags which are required to properly install torquebox-server gem:
 
     cd KarmaTracker/
     jruby -J-Xms2048m -J-Xmx2048m -w -S bundle install
 
-Poltergeist gem requires PhantomJS. To install PhantomJS follow instructions in [poltergeist readme](https://github.com/jonleighton/poltergeist/blob/master/README.md#installing-phantomjs).
+Poltergeist gem requires PhantomJS to run tests. To install PhantomJS follow instructions in [poltergeist readme](https://github.com/jonleighton/poltergeist/blob/master/README.md#installing-phantomjs).
 
 Create database configuration file /config/database.yml using template from /config/database.template.yml. Fill in username and password of your PostgreSQL user.
 
