@@ -38,4 +38,10 @@ feature 'User registration', register: true do
     page.should have_content "Projects"
   end
 
+  scenario 'display "Register" header on registration screen', js: true do
+    visit root_path
+    click_link 'Register'
+    page.should have_selector('h4', text: "Register")
+  end
+
 end
