@@ -31,6 +31,7 @@ Poltergeist gem requires PhantomJS to run tests. To install PhantomJS follow ins
 Create database configuration file /config/database.yml using template from /config/database.template.yml. Fill in username and password of your PostgreSQL user.
 
 **Note:** Postgres 9.2 might need to use port 5432.
+
 **Note:** You might need to edit pg_hba config file to allow connections via TCP/IP.
 
 Populate database for development and test.
