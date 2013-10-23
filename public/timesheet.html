@@ -9,10 +9,10 @@
 
     <form defaultbutton="submit" id="timesheet-form">
       <div class="large-3 small-12 columns">
-        <label>From <input type="text" ng-model="fromDate" placeholder="2012-12-31 00:00:00"></input></label>
+        <label>From <input type="datetime-local" ng-model="fromDate" placeholder="2012-12-31 00:00:00"></input></label>
       </div>
       <div class="large-3 small-12 columns">
-        <label>To <input type="text" ng-model="toDate" placeholder="2012-12-31 00:00:00"></input></label>
+        <label>To <input type="datetime-local" ng-model="toDate" placeholder="2012-12-31 00:00:00"></input></label>
       </div>
       <div class="large-3 small-12 columns">
         <label>Project
@@ -60,11 +60,11 @@
         </tr>
         <tr ng-show="entry.editing">
           <td class="small-4 columns">
-            <label>Started at<input type="text" ng-model="entry.time_log_entry.newStartedAt" /></label>
+            <label>Started at<input type="datetime-local" ng-model="entry.time_log_entry.newStartedAt" /></label>
             <small ng-show="errors.started_at" class="error">{{errors.started_at}}</small>
           </td>
           <td class="small-4 columns">
-            <label>Stopped at<input type="text" ng-model="entry.time_log_entry.newStoppedAt" /></label>
+            <label>Stopped at<input type="datetime-local" ng-model="entry.time_log_entry.newStoppedAt" /></label>
             <small ng-show="errors.stopped_at" class="error">{{errors.stopped_at}}</small>
           </td>
           <td class="small-2 columns">
