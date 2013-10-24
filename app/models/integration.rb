@@ -1,4 +1,4 @@
-class Identity < ActiveRecord::Base
+class Integration < ActiveRecord::Base
   attr_accessible :api_key, :user, :user_id, :source_id, :last_projects_refresh_at
 
   validates_uniqueness_of :api_key, :scope => :type
@@ -18,7 +18,7 @@ class Identity < ActiveRecord::Base
 
   def self.by_service(service)
     service = service.camelize
-    sevice = service.concat('Identity') unless service =~ /Identity\z/
+    sevice = service.concat('Integration') unless service =~ /Integration\z/
     where(:type => service)
   end
 

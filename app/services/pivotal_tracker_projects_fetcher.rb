@@ -1,11 +1,11 @@
 class PivotalTrackerProjectsFetcher
 
-  def fetch_projects(identity)
+  def fetch_projects(integration)
     within_tmp do
-      Rails.logger.info "Fetching projects for PT identity #{identity.api_key}"
+      Rails.logger.info "Fetching projects for PT integration #{integration.api_key}"
       uri = "https://www.pivotaltracker.com/services/v4/projects"
       begin
-        open(uri, 'X-TrackerToken' => identity.api_key) do |file|
+        open(uri, 'X-TrackerToken' => integration.api_key) do |file|
           doc = Nokogiri::XML file
 
           doc.xpath('//project').each do |data|
@@ -17,43 +17,43 @@ class PivotalTrackerProjectsFetcher
             project.name = name
             project.save
 
-            fetch_identities project, data
+            fetch_integrations project, data
           end
         end
-        Rails.logger.info "Successfully updated list of projects for PT identity #{identity.api_key}"
+        Rails.logger.info "Successfully updated list of projects for PT integration #{integration.api_key}"
       rescue OpenURI::HTTPError => e
-        UserMailer.invalid_api_key(identity).deliver
+        UserMailer.invalid_api_key(integration).deliver
         Rails.logger.error "Error fetching projects from PT - #{e.message}. Check API key correctness."
       end
     end
   end
 
-  def fetch_identities(project, data)
+  def fetch_integrations(project, data)
     within_tmp do
-      Rails.logger.info "Fetching identities for PT project #{project.source_identifier}"
-      identities = []
+      Rails.logger.info "Fetching integrations for PT project #{project.source_identifier}"
+      integrations = []
       data.xpath('./memberships/membership').each do |membership|
         pt_id = membership.xpath('./member/person/id').first.content
-        identity = PivotalTrackerIdentity.find_by_source_id(pt_id)
-        identities << identity if identity.present?
+        integration = PivotalTrackerIntegration.find_by_source_id(pt_id)
+        integrations << integration if integration.present?
       end
 
-      identities.each do |identity|
-        project.identities << identity unless project.identities.include?(identity)
+      integrations.each do |integration|
+        project.integrations << integration unless project.integrations.include?(integration)
       end
 
-      project.identities.each do |identity|
-        project.identities.delete(identity) unless identities.include?(identity)
+      project.integrations.each do |integration|
+        project.integrations.delete(integration) unless integrations.include?(integration)
       end
-      Rails.logger.info "Successfully updated list of identities for PT project #{project.source_identifier}"
+      Rails.logger.info "Successfully updated list of integrations for PT project #{project.source_identifier}"
     end
   end
 
-  def fetch_tasks(project, identity)
+  def fetch_tasks(project, integration)
     within_tmp do
       Rails.logger.info "Fetching tasks for PT project #{project.source_identifier}"
       uri = "https://www.pivotaltracker.com/services/v4/projects/#{project.source_identifier}/stories"
-      open(uri, 'X-TrackerToken' => identity.api_key) do |file|
+      open(uri, 'X-TrackerToken' => integration.api_key) do |file|
         doc = Nokogiri::XML file
 
         doc.xpath('//story').each do |data|
@@ -71,16 +71,16 @@ class PivotalTrackerProjectsFetcher
           task.save
         end
       end
-      fetch_current_tasks project, identity
+      fetch_current_tasks project, integration
       Rails.logger.info "Successfully updated list of tasks for PT project #{project.source_identifier}"
     end
   end
 
-  def fetch_current_tasks(project, identity)
+  def fetch_current_tasks(project, integration)
     within_tmp do
       Rails.logger.info "Fetching current tasks for PT project #{project.source_identifier}"
       uri = "https://www.pivotaltracker.com/services/v4/projects/#{project.source_identifier}/iterations/current"
-      open(uri, 'X-TrackerToken' => identity.api_key) do |file|
+      open(uri, 'X-TrackerToken' => integration.api_key) do |file|
         doc = Nokogiri::XML(file)
 
         current_tasks_ids = []

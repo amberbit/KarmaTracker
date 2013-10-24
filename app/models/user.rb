@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
 
   has_one :api_key, dependent: :destroy
   has_many :time_log_entries, dependent: :destroy
-  has_many :identities, dependent: :destroy
+  has_many :integrations, dependent: :destroy
 
   validates :email, presence: true, uniqueness: true
   validates :password, presence: { on: :create },
@@ -29,7 +29,7 @@ class User < ActiveRecord::Base
 
   def projects
     Project.joins('INNER JOIN participations p ON projects.id = p.project_id').
-      where('p.identity_id IN(?)', identities.map(&:id)).uniq
+      where('p.identity_id IN(?)', integrations.map(&:id)).uniq
   end
 
   def generate_token(column)
