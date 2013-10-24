@@ -26,12 +26,12 @@ as a user I can', js: true  do
   end
   let!(:task2) { create(:task, project: project2, current_task: true) }
 
-  let!(:identity) do
-    identity = create(:identity, user: user)
-    identity = user.identities.first
-    create(:participation, project: project1, identity: identity)
-    create(:participation, project: project2, identity: identity)
-    identity
+  let!(:integration) do
+    integration = create(:integration, user: user)
+    integration = user.integrations.first
+    create(:participation, project: project1, integration: integration)
+    create(:participation, project: project2, integration: integration)
+    integration
   end
 
 
@@ -196,8 +196,8 @@ as a user I can', js: true  do
 
   scenario 'see who else is working on other tasks' do
     user2 = create :confirmed_user
-    identity2 = create(:identity, user: user2)
-    create(:participation, project: project2, identity: identity2)
+    integration2 = create(:integration, user: user2)
+    create(:participation, project: project2, integration: integration2)
     TimeLogEntry.delete_all
     user2_running_entry = create :time_log_entry, user: user2, task: task2,
       stopped_at: nil, running: true
@@ -205,8 +205,8 @@ as a user I can', js: true  do
       stopped_at: nil, running: true
 
     user3 = create :confirmed_user
-    identity3 = create(:identity, user: user3)
-    create(:participation, project: project2, identity: identity)
+    integration3 = create(:integration, user: user3)
+    create(:participation, project: project2, integration: integration)
     task3 = create :task, project: project2, current_task: true
     user3_running_entry = create :time_log_entry, user: user3, task: task3,
       stopped_at: nil, running: true

@@ -6,17 +6,17 @@ require 'timecop'
 describe 'Projects API' do
 
   before :each do
-    @identity = create :identity
+    @integration = create :integration
     3.times do
       FactoryGirl.create :project
-      Project.last.identities << @identity
+      Project.last.integrations << @integration
     end
   end
 
   # GET /projects
   it 'should return paginated array of user projects' do
     AppConfig.stub(:items_per_page).and_return(2)
-    api_get 'projects?page=2', {token: Identity.last.user.api_key.token}
+    api_get 'projects?page=2', {token: Integration.last.user.api_key.token}
     response.status.should == 200
     resp = JSON.parse(response.body)
     resp['total_count'].to_i.should == 3
@@ -27,9 +27,9 @@ describe 'Projects API' do
 
   # GET /projects?query=search_term
   it 'should return searched project' do
-    identity = Identity.last
-    p = create :project, name: "The next Google", identities: [identity]
-    api_get 'projects?query=google', {token: identity.user.api_key.token}
+    integration = Integration.last
+    p = create :project, name: "The next Google", integrations: [integration]
+    api_get 'projects?query=google', {token: integration.user.api_key.token}
     response.status.should == 200
     resp = JSON.parse(response.body)
     resp['projects'].count.should == 1
@@ -39,7 +39,7 @@ describe 'Projects API' do
 
   # GET /projects/:id
   it 'should return a single project' do
-    api_get "projects/#{Project.last.id}", {token: Identity.last.user.api_key.token}
+    api_get "projects/#{Project.last.id}", {token: Integration.last.user.api_key.token}
     response.status.should == 200
 
     project = JSON.parse(response.body)['project']
@@ -100,7 +100,7 @@ describe 'Projects API' do
     project = Project.last
     3.times { project.tasks << create(:task)  }
     t = Task.last
-    api_get "projects/#{project.id}/tasks?page=2", {token: @identity.user.api_key.token}
+    api_get "projects/#{project.id}/tasks?page=2", {token: @integration.user.api_key.token}
     resp = JSON.parse(response.body)
     resp['total_count'].should == 3
     resp['tasks'].count.should == 1
@@ -113,14 +113,14 @@ describe 'Projects API' do
     task["story_type"] = t.story_type
     task["name"] = t.name
     task["current_task"] = t.current_task
-    task["running"] = t.running?(@identity.user.id)
+    task["running"] = t.running?(@integration.user.id)
     AppConfig.unstub(:items_per_page)
   end
 
   it 'should return tasks for a given project with search param' do
     project = Project.last
     t = FactoryGirl.create(:task, name: "Do 100 pushups", project: project)
-    api_get "projects/#{project.id}/tasks?query=push", {token: Identity.last.user.api_key.token}
+    api_get "projects/#{project.id}/tasks?query=push", {token: Integration.last.user.api_key.token}
     resp = JSON.parse(response.body)
     resp['tasks'].count.should == 1
     task = resp['tasks'].last["task"]
@@ -150,7 +150,7 @@ describe 'Projects API' do
     t = FactoryGirl.create(:task, current_task: true)
     Project.last.tasks << t
     2.times { Project.last.tasks << FactoryGirl.create(:task, current_task: false) }
-    api_get "projects/#{Project.last.id}/current_tasks", {token: Identity.last.user.api_key.token}
+    api_get "projects/#{Project.last.id}/current_tasks", {token: Integration.last.user.api_key.token}
     response.status.should == 200
     resp = JSON.parse(response.body)
     task = resp['tasks'].last["task"]
@@ -162,7 +162,7 @@ describe 'Projects API' do
     task["story_type"] = t.story_type
     task["name"] = t.name
     task["current_task"] = t.current_task
-    task["running"] = t.running?(Identity.last.user.id)
+    task["running"] = t.running?(Integration.last.user.id)
     resp['tasks'].count.should == 1
   end
 
@@ -272,7 +272,7 @@ describe 'Projects API' do
         FactoryGirl.create :time_log_entry, task: @tasks[9-i]
       end
     end
-    api_get "projects/recent", {token: Identity.last.user.api_key.token}
+    api_get "projects/recent", {token: Integration.last.user.api_key.token}
     response.status.should == 200
 
     projects = JSON.parse(response.body)['projects']
@@ -280,8 +280,8 @@ describe 'Projects API' do
   end
 
   it 'should not get url of github project' do
-    identity = create :git_hub_identity
-    project = create :gh_project, identities: [identity]
+    integration = create :git_hub_integration
+    project = create :gh_project, integrations: [integration]
     api_get "projects/#{project.id}/pivotal_tracker_activity_web_hook_url", {token: project.users.last.api_key.token}
     response.status.should == 404
     resp = JSON.parse(response.body)
@@ -292,9 +292,9 @@ describe 'Projects API' do
 
   # GET /api/v1/projects/also_working
   it 'should not find any projects' do
-    @identity = Identity.last
-    @identity.projects.destroy_all
-    api_get "projects/also_working", {token: @identity.user.api_key.token}
+    @integration = Integration.last
+    @integration.projects.destroy_all
+    api_get "projects/also_working", {token: @integration.user.api_key.token}
     response.status.should == 204
     response.body.should be_empty
   end

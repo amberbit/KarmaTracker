@@ -6,15 +6,15 @@ require 'timecop'
 describe 'Tasks API' do
 
   before :each do
-    FactoryGirl.create :identity
+    FactoryGirl.create :integration
     FactoryGirl.create :project
     FactoryGirl.create :task
-    Project.last.identities << Identity.last
+    Project.last.integrations << Integration.last
   end
 
   # GET /tasks/:id
   it 'should return a single task' do
-    api_get "tasks/#{Task.last.id}", {token: Identity.last.user.api_key.token}
+    api_get "tasks/#{Task.last.id}", {token: Integration.last.user.api_key.token}
     response.status.should == 200
 
     project = JSON.parse(response.body)['task']
@@ -40,9 +40,9 @@ describe 'Tasks API' do
 
   before :each do
     project = FactoryGirl.create :project
-    identity = FactoryGirl.create :identity
-    project.identities << identity
-    @user = identity.user
+    integration = FactoryGirl.create :integration
+    project.integrations << integration
+    @user = integration.user
     @task = FactoryGirl.create :task, project: project
   end
 
@@ -50,7 +50,7 @@ describe 'Tasks API' do
   # GET /tasks/running
   it 'should return an error when there is no current task running' do
     user = FactoryGirl.create :user
-    api_get "tasks/running", {token: Identity.last.user.api_key.token}
+    api_get "tasks/running", {token: Integration.last.user.api_key.token}
     response.status.should == 404
     resp = JSON.parse(response.body)
     resp.should have_key("message")
@@ -60,7 +60,7 @@ describe 'Tasks API' do
   # GET /tasks/running
   it 'should return a single running task' do
     api_post "time_log_entries/", {token: @user.api_key.token, time_log_entry: {task_id: @task.id} }
-    api_get "tasks/running", {token: Identity.last.user.api_key.token}
+    api_get "tasks/running", {token: Integration.last.user.api_key.token}
     response.status.should == 200
 
     project = JSON.parse(response.body)['task']
@@ -89,7 +89,7 @@ describe 'Tasks API' do
       end
     end
 
-    api_get "tasks/recent", {token: Identity.last.user.api_key.token}
+    api_get "tasks/recent", {token: Integration.last.user.api_key.token}
     response.status.should == 200
 
     tasks = JSON.parse(response.body)['tasks']

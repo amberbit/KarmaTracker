@@ -4,13 +4,13 @@ describe 'Project' do
 
   before :each do
     @project = FactoryGirl.create :project
-    @project.identities << FactoryGirl.create(:identity)
+    @project.integrations << FactoryGirl.create(:integration)
   end
 
-  it 'should not allow one identity to be added to a project twice' do
-    @project.identities.count.should == 1
-    @project.identities << Identity.last
-    @project.reload.identities.count.should == 1
+  it 'should not allow one integration to be added to a project twice' do
+    @project.integrations.count.should == 1
+    @project.integrations << Integration.last
+    @project.reload.integrations.count.should == 1
     @project.users.count.should == 1
     User.last.projects.count.should == 1
   end
