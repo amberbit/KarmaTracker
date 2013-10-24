@@ -17,15 +17,18 @@ describe PivotalTrackerActivityWebHook do
     @project.tasks.last.source_identifier.should == "1231231"
     @project.tasks.last.story_type.should == "feature"
     @project.tasks.last.current_state.should == "unscheduled"
+    @project.tasks.last.current_task.should == false
   end
 
   it 'should update existing task' do
     @hook.process_request File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_create.xml'))
     @project.tasks.count.should == 1
     @project.tasks.last.current_state.should == "unscheduled"
+    @project.tasks.last.current_task.should == false
 
     @hook.process_request File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_update.xml'))
     @project.tasks.count.should == 1
     @project.tasks.last.current_state.should == "started"
+    @project.tasks.last.current_task.should == true
   end
 end
