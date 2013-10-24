@@ -10,6 +10,10 @@ I can', js: true do
     FakeWeb.allow_net_connect = true
     visit root_path
   end
+  
+  scenario 'see "Log in" header on login screen' do
+    page.should have_selector('h4', text: "Log in")
+  end
 
   scenario 'log in' do
     fill_in 'email', :with => user.email

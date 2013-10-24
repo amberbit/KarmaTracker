@@ -590,6 +590,10 @@ padding-left: 2px;
   line-height: 21px;
   margin-bottom: 5px;
 }
+.switch-link {
+  padding-top: 13px;
+  padding-bottom: 12px;
+}
 .clearfix {
   @include clearfix();
 }

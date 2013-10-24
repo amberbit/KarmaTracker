@@ -3,11 +3,11 @@ KarmaTracker.controller "TimesheetController", ($scope, $http, $cookieStore, $lo
   $scope.started_at = ''
   $scope.entries = {}
   $scope.task = {}
-  $scope.today = moment($scope.date).format('YYYY-MM-DD 00:00:00')
+  $scope.today = moment($scope.date).format('YYYY-MM-DDT00:00:00')
   $scope.tokenName = 'token'
   tomorrow = new Date()
   tomorrow.setDate(tomorrow.getDate()+1)
-  tomorrow = moment($scope.date).add('days', 1).format('YYYY-MM-DD 00:00:00')
+  tomorrow = moment($scope.date).add('days', 1).format('YYYY-MM-DDT00:00:00')
   offset = moment().zone()
 
 
@@ -69,8 +69,8 @@ KarmaTracker.controller "TimesheetController", ($scope, $http, $cookieStore, $lo
 
   $scope.close = (entry) ->
     entry.editing = false
-    entry.time_log_entry.newStartedAt = moment(entry.time_log_entry.started_at).format('YYYY-MM-DD HH:mm:ss')
-    entry.time_log_entry.newStoppedAt = moment(entry.time_log_entry.stopped_at).format('YYYY-MM-DD HH:mm:ss')
+    entry.time_log_entry.newStartedAt = moment(entry.time_log_entry.started_at).format('YYYY-MM-DDTHH:mm:ss')
+    entry.time_log_entry.newStoppedAt = moment(entry.time_log_entry.stopped_at).format('YYYY-MM-DDTHH:mm:ss')
     $scope.errors = {}
 
 
@@ -91,8 +91,8 @@ KarmaTracker.controller "TimesheetController", ($scope, $http, $cookieStore, $lo
         $scope.totalTime += entry.time_log_entry.seconds
 
         entry.editing = false
-        entry.time_log_entry.newStartedAt = moment(entry.time_log_entry.started_at).format('YYYY-MM-DD HH:mm:ss')
-        entry.time_log_entry.newStoppedAt = moment(entry.time_log_entry.stopped_at).format('YYYY-MM-DD HH:mm:ss')
+        entry.time_log_entry.newStartedAt = moment(entry.time_log_entry.started_at).format('YYYY-MM-DDTHH:mm:ss')
+        entry.time_log_entry.newStoppedAt = moment(entry.time_log_entry.stopped_at).format('YYYY-MM-DDTHH:mm:ss')
       $rootScope.loading = false
     ).error((data, status, headers, config) ->
       $rootScope.loading = false    

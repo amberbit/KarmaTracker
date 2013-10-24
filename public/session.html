@@ -9,6 +9,7 @@
     </div>
 
     <div class="small-12 large-4 columns panel">
+      <h4>Log in</h4>
       <form ng-submit="signIn()">
         <div ng-show="message" data-alert class='alert-box alert'>{{message}}</div>
         <input id="email" type="email" placeholder="e-mail address" ng-model="$parent.session.email" autofocus='autofocus' focus="{{focus_email}}"/>
@@ -24,8 +25,10 @@
       <br/>
         <div class="clearfix"></div>
         <button class="button left">Sign in!</button>
-        <a href="#/register" ng-show="registrationEnabled" class="button secondary right">Register</a>
+        <a href="#/register" ng-show="registrationEnabled" class="switch-link right">Register</a>
       </form>
+      <br/>
+      <div class="clearfix"></div>
       <a class='left btn-auth btn-google' href="/auth/google">Google login</a>
       <a class='right btn-auth btn-github' href="/auth/github">GitHub login</a>
     </div>
