@@ -62,9 +62,9 @@ module Api
       #   => {"message": "Resource not found"}
       #
       def show
-        @project = Project.find(params[:id])
+        @project = Project.find_by_id(params[:id])
 
-        if @api_key.user.projects.include? @project
+        if @project.present? && @api_key.user.projects.include?(@project)
           render '_show'
         else
           render json: {message: 'Resource not found'}, status: 404

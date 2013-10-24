@@ -50,7 +50,19 @@ describe 'Projects API' do
   end
 
   # GET /projects/:id
-  it 'should return an error when trying to fetch other user\'s project' do
+  it 'should return an error message when trying to fetch non-existing project' do
+    user = FactoryGirl.create :user
+    expect {
+      api_get "projects/-1", {token: user.api_key.token}
+    }.not_to raise_error(ActiveRecord::RecordNotFound)
+    response.status.should == 404
+    resp = JSON.parse(response.body)
+    resp.should have_key("message")
+    resp["message"].should =~ /Resource not found/
+  end
+
+  # GET /projects/:id
+  it 'should return an error message when trying to fetch other user\'s project' do
     user = FactoryGirl.create :user
     api_get "projects/#{Project.last.id}", {token: user.api_key.token}
     response.status.should == 404
