@@ -29,6 +29,18 @@ describe 'Tasks API' do
   end
 
   # GET /tasks/:id
+  it 'should return an error message when trying to fetch non-existing task' do
+    user = FactoryGirl.create :user
+    expect {
+      api_get "tasks/-1", {token: user.api_key.token}
+    }.not_to raise_error
+    response.status.should == 404
+    resp = JSON.parse(response.body)
+    resp.should have_key("message")
+    resp["message"].should =~ /Task resource not found/
+  end
+
+  # GET /tasks/:id
   it 'should return an error when trying to fetch tasks from other user\'s project' do
     user = FactoryGirl.create :user
     api_get "tasks/#{Task.last.id}", {token: user.api_key.token}

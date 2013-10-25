@@ -29,6 +29,16 @@ describe 'User API' do
   end
 
   # GET /api/v1/user
+  it 'should return error message when user invalid' do
+    api_key = @user.api_key
+    @user.delete
+    json = api_get 'user', {token: api_key.token}
+
+    response.status.should == 404
+    json["message"].should =~ /Resource not found/
+  end
+
+  # GET /api/v1/user
   it 'should return and confirm user when providing existing confirmation_token' do
     json = api_get 'user/confirm', {confirmation_token: @user.confirmation_token}
 

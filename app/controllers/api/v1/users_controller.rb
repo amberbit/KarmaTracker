@@ -27,7 +27,11 @@ module Api
       #                "token":"dcbb7b36acd4438d07abafb8e28605a4"}}
       #
       def show
-        render '_show'
+        if @api_key && @api_key.user
+          render '_show'
+        else
+          render json: {message: 'Resource not found'}, status: 404
+        end
       end
 
       ##
