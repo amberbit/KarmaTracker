@@ -34,7 +34,7 @@ class User < ActiveRecord::Base
 
   def generate_token(column)
     begin
-      self[column] = SecureRandom.hex
+      self[column] = SecureRandom.hex.to_s
     end while User.exists?(column => self[column])
   end
 

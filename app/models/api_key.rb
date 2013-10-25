@@ -10,7 +10,7 @@ class ApiKey < ActiveRecord::Base
 
   def generate_token
     begin
-      self.token = SecureRandom.hex
+      self.token = SecureRandom.hex.to_s
     end while self.class.exists?(token: token)
   end
 
