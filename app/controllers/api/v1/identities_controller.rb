@@ -42,12 +42,16 @@ module Api
       #   => {[{"pivotal_tracker":{"id":1, "api_key":"123456","service":"Pivotal Tracker"}}]}
       #
       def index
-        @identities = if params[:service]
-          @api_key.user.identities.by_service(params[:service])
+        if @api_key && @api_key.user
+          @identities = if params[:service]
+                          @api_key.user.identities.by_service(params[:service])
+                        else
+                          @api_key.user.identities
+                        end
+          render 'index'
         else
-          @api_key.user.identities
+          render json: {message: 'Resource not found'}, status: 404
         end
-        render 'index'
       end
 
       ##

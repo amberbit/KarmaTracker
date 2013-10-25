@@ -62,9 +62,9 @@ module Api
       #   => {"message": "Resource not found"}
       #
       def show
-        @project = Project.find(params[:id])
+        @project = Project.find_by_id(params[:id])
 
-        if @api_key.user.projects.include? @project
+        if @project.present? && @api_key.user.projects.include?(@project)
           render '_show'
         else
           render json: {message: 'Resource not found'}, status: 404
@@ -242,8 +242,8 @@ module Api
       #   => {"message": "Resource not found"}
       #
       def current_tasks
-        project = Project.find(params[:id])
-        if @api_key.user.projects.include?(project)
+        project = Project.find_by_id(params[:id])
+        if project.present? && @api_key.user.projects.include?(project)
           @items_per_page = AppConfig.items_per_page
           @tasks = project.tasks.current
           @tasks = @tasks.search_by_name params[:query] if params[:query].present?
@@ -429,8 +429,8 @@ module Api
       #   204 doesn't return a body
       #
       def also_working
-        ids = @api_key.user.projects.map(&:id)
-        if ids.present?
+        if @api_key.user && @api_key.user.projects.present?
+          ids = @api_key.user.projects.map(&:id)
           render json: also_working_hash(ids), status: 200
         else
           render json: nil, status: 204

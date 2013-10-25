@@ -56,7 +56,7 @@ class Project < ActiveRecord::Base
 
   def generate_web_hook_token
     begin
-      self.web_hook_token = SecureRandom.hex
+      self.web_hook_token = SecureRandom.hex.to_s
     end while self.class.exists?(web_hook_token: web_hook_token)
   end
 

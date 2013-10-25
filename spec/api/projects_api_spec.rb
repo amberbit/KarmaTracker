@@ -50,7 +50,19 @@ describe 'Projects API' do
   end
 
   # GET /projects/:id
-  it 'should return an error when trying to fetch other user\'s project' do
+  it 'should return an error message when trying to fetch non-existing project' do
+    user = FactoryGirl.create :user
+    expect {
+      api_get "projects/-1", {token: user.api_key.token}
+    }.not_to raise_error(ActiveRecord::RecordNotFound)
+    response.status.should == 404
+    resp = JSON.parse(response.body)
+    resp.should have_key("message")
+    resp["message"].should =~ /Resource not found/
+  end
+
+  # GET /projects/:id
+  it 'should return an error message when trying to fetch other user\'s project' do
     user = FactoryGirl.create :user
     api_get "projects/#{Project.last.id}", {token: user.api_key.token}
     response.status.should == 404
@@ -167,9 +179,21 @@ describe 'Projects API' do
   end
 
   # GET /projects/:id/current_tasks
-  it 'should return an error when trying to fetch tasks from other user\'s project' do
+  it 'should return an error message when trying to fetch tasks from other user\'s project' do
     user = FactoryGirl.create :user
     api_get "projects/#{Project.last.id}/current_tasks", {token: user.api_key.token}
+    response.status.should == 404
+    resp = JSON.parse(response.body)
+    resp.should have_key("message")
+    resp["message"].should =~ /Resource not found/
+  end
+
+  # GET /projects/:id/current_tasks
+  it 'should return an error message when trying to fetch tasks from non-existing project' do
+    user = FactoryGirl.create :user
+    expect {
+      api_get "projects/-1/current_tasks", {token: user.api_key.token}
+    }.not_to raise_error(ActiveRecord::RecordNotFound)
     response.status.should == 404
     resp = JSON.parse(response.body)
     resp.should have_key("message")
@@ -291,10 +315,21 @@ describe 'Projects API' do
 
 
   # GET /api/v1/projects/also_working
-  it 'should not find any projects' do
+  it 'should not find any projects when all are destroyed' do
     @identity = Identity.last
     @identity.projects.destroy_all
     api_get "projects/also_working", {token: @identity.user.api_key.token}
+    response.status.should == 204
+    response.body.should be_empty
+  end
+
+  # GET /api/v1/projects/also_working
+  it 'should not find any projects for invalid user' do
+    @identity = Identity.last
+    @identity.user.delete
+    expect {
+      api_get "projects/also_working", {token: @identity.user.api_key.token}
+    }.not_to raise_error
     response.status.should == 204
     response.body.should be_empty
   end

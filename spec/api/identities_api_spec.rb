@@ -5,7 +5,7 @@ require 'fakeweb'
 describe 'Identities API' do
   # GET /api/v1/identities/:id
   it 'should return identity details' do
-    FactoryGirl.create :identity
+    create :identity
     Identity.count.should == 1
 
     json = api_get "identities/#{Identity.last.id}", {token: Identity.last.user.api_key.token}
@@ -18,19 +18,33 @@ describe 'Identities API' do
 
   # GET /api/v1/identities
   it 'should return array of identities' do
-    3.times { FactoryGirl.create(:identity) }
+    3.times { create(:identity) }
     json = api_get 'identities', {token: Identity.last.user.api_key.token}
 
     response.status.should == 200
     json.count.should == 3
   end
 
+
+  # GET /api/v1/identities
+  it 'should return error message when user is invalid' do
+    user = create :user
+    identity = create(:identity, user: user)
+    user.delete
+
+    expect {
+      @json = api_get 'identities', {token: identity.user.api_key.token}
+    }.not_to raise_error
+    response.status.should == 404
+    @json['message'].should == "Resource not found"
+  end
+
   # GET /api/v1/identities
   it 'should not return other users\' identities' do
-    user1 = FactoryGirl.create :user
-    user2 = FactoryGirl.create :user
-    2.times { FactoryGirl.create(:identity, user: user1) }
-    3.times { FactoryGirl.create(:identity, user: user2) }
+    user1 = create :user
+    user2 = create :user
+    2.times { create(:identity, user: user1) }
+    3.times { create(:identity, user: user2) }
 
     json = api_get 'identities', {token: user1.api_key.token}
     response.status.should == 200
@@ -52,8 +66,8 @@ describe 'Identities API' do
 
   # GET /api/v1/identities?service=pivotal_tracker
   it 'should filter identities by service' do
-    2.times { FactoryGirl.create(:identity) }
-    3.times { FactoryGirl.create(:identity, type: "GitHubIdentity") }
+    2.times { create(:identity) }
+    3.times { create(:identity, type: "GitHubIdentity") }
 
     json = api_get "identities", {token: Identity.last.user.api_key.token, service: 'PivotalTracker'}
     json.select{ |i| i.has_key?('pivotal_tracker') }.count.should == 2
@@ -62,7 +76,7 @@ describe 'Identities API' do
 
   # POST /api/v1/identities/pivotal_tracker
   it "should be able to add PT identity for given user" do
-    user = FactoryGirl.create :user
+    user = create :user
     json = api_post "identities/pivotal_tracker", {token: ApiKey.last.token, identity:
           { email: 'correct_email@example.com', password: 'correct_password'}}
 
@@ -77,7 +91,7 @@ describe 'Identities API' do
 
   # POST /api/v1/identities/pivotal_tracker
   it "should be able to add PT identity for given user with provided token" do
-    user = FactoryGirl.create :user
+    user = create :user
     json = api_post "identities/pivotal_tracker", {token: ApiKey.last.token, identity:
           { api_key: 'correct_token'}}
     response.status.should == 200
@@ -92,7 +106,7 @@ describe 'Identities API' do
 
   # POST /api/v1/identities/pivotal_tracker
   it 'should add error messages to response when adding PT identity fails' do
-    FactoryGirl.create :user
+    create :user
     json = api_post "identities/pivotal_tracker", {token: ApiKey.last.token, identity: {email: 'wrong_email', password: 'wrong_password'}}
 
     response.status.should == 422
@@ -103,7 +117,7 @@ describe 'Identities API' do
 
   # POST /api/v1/identities/git_hub
   it "should be able to add GH identity for given user" do
-    user = FactoryGirl.create :user
+    user = create :user
     json = api_post "identities/git_hub", {token: ApiKey.last.token, identity:
           { username: 'correct_username@example.com', password: 'correct_password'}}
 
@@ -118,7 +132,7 @@ describe 'Identities API' do
 
   # POST /api/v1/identities/git_hub
   it "should be able to add GH identity for given user with provided token" do
-    user = FactoryGirl.create :user
+    user = create :user
     json = api_post "identities/git_hub", {token: ApiKey.last.token, identity:
           { api_key: 'correct_token'}}
 
@@ -134,7 +148,7 @@ describe 'Identities API' do
 
   # POST /api/v1/identities/git_hub
   it 'should add error messages to response when adding GH identity fails' do
-    FactoryGirl.create :user
+    create :user
     json = api_post "identities/git_hub", {token: ApiKey.last.token, identity: {username: 'wrong_username', password: 'wrong_password'}}
 
     response.status.should == 422
@@ -145,7 +159,7 @@ describe 'Identities API' do
 
   # DELETE /api/v1/identities/:id
   it "should be able to remove the identity and return it" do
-    FactoryGirl.create :identity
+    create :identity
     Identity.count.should == 1
 
     -> {
@@ -159,8 +173,8 @@ describe 'Identities API' do
 
   # DELETE /api/v1/identities/:id
   it 'should return an error when trying to remove other usere\'s identity' do
-    my_identity = FactoryGirl.create :identity, user: FactoryGirl.create(:user)
-    other_identity = FactoryGirl.create :identity, user: FactoryGirl.create(:user)
+    my_identity = create :identity, user: create(:user)
+    other_identity = create :identity, user: create(:user)
 
     Identity.count.should == 2
 
@@ -175,7 +189,7 @@ describe 'Identities API' do
 
   # DELETE /api/v1/identities/:id
   it 'should return an error when trying to remove not existing identity', rescue_errors: true do
-    user = FactoryGirl.create :user
+    user = create :user
 
     json = api_delete "identities/1", {token: user.api_key.token}
 

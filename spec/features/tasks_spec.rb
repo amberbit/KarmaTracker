@@ -48,7 +48,7 @@ as a user I can', js: true  do
     page.should_not have_content task2.name
     page.should_not have_content task3.name
   end
-  
+
   scenario 'stay on current page after refresh', driver: :selenium do
     within '.view' do
       find('span', text: project1.name).click
@@ -60,7 +60,9 @@ as a user I can', js: true  do
   end
 
   scenario 'toggle current tasks' do
-    find('span', text: project1.name).click
+    within '.view' do
+      find('span', text: project1.name).click
+    end
     page.should_not have_content task3.name
     uncheck 'Show only current'
     page.should have_content task3.name

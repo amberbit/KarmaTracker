@@ -60,10 +60,10 @@ feature 'Timesheet page,
     fill_in 'From', with: @time + 2.hours
     click_on 'search_submit'
     within '.timesheet-entries' do
-      wait_until(10) { page.has_content? "There are no tracked tasks" }
+      wait_until(30) { page.has_content? "There are no tracked tasks" }
     end
     within '.timesheet-total' do
-      wait_until(10) { first('td').text.should == '00:00 hours' }
+      wait_until(20) { first('td').text.should == '00:00 hours' }
     end
   end
 
@@ -74,7 +74,7 @@ feature 'Timesheet page,
     within '.timesheet-entries' do
       page.should have_content @project1.name
       page.should have_content @task1.name
-      wait_until(10) { page.has_no_content? @project2.name }
+      wait_until(20) { page.has_no_content? @project2.name }
       page.should_not have_content @task2.name
     end
   end
@@ -87,7 +87,7 @@ feature 'Timesheet page,
       page.should_not have_content @task1.name
       page.should have_content @project2.name
       page.should have_content @task2.name
-      wait_until(10) { all('tbody').count == 2 }
+      wait_until(20) { all('tbody').count == 2 }
     end
     fill_in 'To', with: @time_log_entry2.started_at.localtime + 1.hour
     click_on 'search_submit'
@@ -96,7 +96,7 @@ feature 'Timesheet page,
       page.should_not have_content @task1.name
       page.should have_content @project2.name
       page.should have_content @task2.name
-      wait_until(10) { all('tbody').count == 1 }
+      wait_until(20) { all('tbody').count == 1 }
     end
   end
 
