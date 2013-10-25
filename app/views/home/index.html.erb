@@ -1,8 +1,8 @@
 <div id="firstTip" class="show-for-medium-up">
   <span class="joyride-nub"></span>
   <div class="joyride-content-wrapper" ng-show="firstTipVisible">
-    <p>Get started adding Pivotal Tracker or GitHub Identities in Profile / Identities panel</p>
-    <a href="" ng-click="go('/identities'); hideFirstTip()") class="small button joyride-next-tip">Ok</a>
+    <p>Get started adding Pivotal Tracker or GitHub Integrations in Profile / Integrations panel</p>
+    <a href="" ng-click="go('/integrations'); hideFirstTip()") class="small button joyride-next-tip">Ok</a>
     <a href="" ng-click="hideFirstTip()" class="joyride-close-tip">&times;</a>
   </div>
 </div>
@@ -31,7 +31,7 @@
           <li class="divider toogle-topbar"></li>
           <li ng-click="go('/account')"><a class="secondary-menu" ng-class="highlightCurrentPage('account')" href="#/account" ng-click="expandMenu()">Account</a></li>
           <li class="divider"></li>
-          <li ng-click="go('/identities')"><a class="secondary-menu" id="identities" ng-class="highlightCurrentPage('identities')" href="#/identities" ng-click="expandMenu()">Identities</a></li>
+          <li ng-click="go('/integrations')"><a class="secondary-menu" id="integrations" ng-class="highlightCurrentPage('integrations')" href="#/integrations" ng-click="expandMenu()">Integrations</a></li>
         </ul>
         <li class="divider"></li>
         <li ng-click="go('/logout')"><a ng-class="highlightCurrentPage('logout')" href="#/logout" ng-click="expandMenu()">Log out</a></li>
