@@ -30,7 +30,7 @@ class Project < ActiveRecord::Base
   def users
     User.joins('INNER JOIN integrations i ON i.user_id = users.id
                 INNER JOIN participations p ON i.id = p.integration_id').
-      where('p.identity_id IN(?)', integrations.map(&:id)).uniq
+      where('p.integration_id IN(?)', integrations.map(&:id)).uniq
   end
 
   def self.recent(user = nil)
@@ -49,8 +49,8 @@ class Project < ActiveRecord::Base
   def destroy_web_hook
     if source_name == 'GitHub' && web_hook
       repo_owner = name.split('/').first
-      repo_owner_identity = Identity.by_service('GitHub').where(source_id: repo_owner).first
-      GitHubWebHooksManager.new({project: self}).destroy_hook(repo_owner_identity) if repo_owner_identity
+      repo_owner_integration = Integration.by_service('GitHub').where(source_id: repo_owner).first
+      GitHubWebHooksManager.new({project: self}).destroy_hook(repo_owner_integration) if repo_owner_integration
     end
   end
 
