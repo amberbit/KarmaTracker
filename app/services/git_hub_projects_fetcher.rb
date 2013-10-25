@@ -1,12 +1,12 @@
 class GitHubProjectsFetcher
   include ApplicationHelper
 
-  def fetch_projects(identity)
-    Rails.logger.info "Fetching projects for GH identity #{identity.api_key}"
+  def fetch_projects(integration)
+    Rails.logger.info "Fetching projects for GH integration #{integration.api_key}"
     uri = "https://api.github.com/user/subscriptions"
 
     begin
-      response = perform_request('get', uri, {}, {'Authorization' => "token #{identity.api_key}"})
+      response = perform_request('get', uri, {}, {'Authorization' => "token #{integration.api_key}"})
       uri = extract_next_link(response)
       repos = JSON.parse(response.body)
       if repos.instance_of?(Array)
@@ -21,54 +21,54 @@ class GitHubProjectsFetcher
             first_or_initialize(source_name: 'GitHub', source_identifier: source_identifier)
           project.name = name
           project.save
-          fetch_identities project, identity, repo_name, owner_name
-          GitHubWebHooksManager.new({project: project}).create_hook(identity) unless project.web_hook
+          fetch_integrations project, integration, repo_name, owner_name
+          GitHubWebHooksManager.new({project: project}).create_hook(integration) unless project.web_hook
         end
       else
         if repos.instance_of?(Hash) && repos['message'] == 'Bad credentials'
-          UserMailer.invalid_api_key(identity).deliver
+          UserMailer.invalid_api_key(integration).deliver
         end
         break
       end
     end while uri
 
-    Rails.logger.info "Successfully updated list of projects for GH identity #{identity.api_key}"
+    Rails.logger.info "Successfully updated list of projects for GH integration #{integration.api_key}"
   end
 
-  def fetch_identities(project, identity, repo_name, repo_owner)
-    Rails.logger.info "Fetching identities for GH project #{project.source_identifier}"
-    identities = []
+  def fetch_integrations(project, integration, repo_name, repo_owner)
+    Rails.logger.info "Fetching integrations for GH project #{project.source_identifier}"
+    integrations = []
     uri = "https://api.github.com/repos/#{repo_owner}/#{repo_name}/collaborators"
 
     begin
-      response = perform_request('get', uri, {}, {'Authorization' => "token #{identity.api_key}"})
+      response = perform_request('get', uri, {}, {'Authorization' => "token #{integration.api_key}"})
       uri = extract_next_link(response)
       collaborators = JSON.parse(response.body)
       break unless collaborators.instance_of?(Array)
 
       collaborators.each do |collaborator|
         next unless collaborator['login']
-        gh_identity = GitHubIdentity.find_by_source_id(collaborator['login'])
-        identities << gh_identity if gh_identity.present?
+        gh_integration = GitHubIntegration.find_by_source_id(collaborator['login'])
+        integrations << gh_integration if gh_integration.present?
       end
     end while uri
 
-    identities.each do |id|
-      project.identities << id unless project.identities.include?(id)
+    integrations.each do |id|
+      project.integrations << id unless project.integrations.include?(id)
     end
 
-    project.identities.each do |id|
-      project.identities.delete(id) unless identities.include?(id)
+    project.integrations.each do |id|
+      project.integrations.delete(id) unless integrations.include?(id)
     end
-    Rails.logger.info "Successfully updated list of identities for GH project #{project.source_identifier}"
+    Rails.logger.info "Successfully updated list of integrations for GH project #{project.source_identifier}"
   end
 
-  def fetch_tasks(project, identity, repo_name, repo_owner, state)
+  def fetch_tasks(project, integration, repo_name, repo_owner, state)
     Rails.logger.info "Fetching tasks for GH project #{project.source_identifier}"
     uri = "https://api.github.com/repos/#{repo_owner}/#{repo_name}/issues?state=#{state}"
 
     begin
-      response = perform_request('get', uri, {}, {'Authorization' => "token #{identity.api_key}"})
+      response = perform_request('get', uri, {}, {'Authorization' => "token #{integration.api_key}"})
       uri = extract_next_link(response)
       issues = JSON.parse(response.body)
       break unless issues.instance_of?(Array)
@@ -95,27 +95,27 @@ class GitHubProjectsFetcher
     Rails.logger.error "Couldn't fetch issues for GitHub repositry #{repo_owner}/#{repo_name} (#{project.source_identifier})"
   end
   
-  def fetch_tasks_for_project(project, identity)
+  def fetch_tasks_for_project(project, integration)
     Rails.logger.info "Fetching project data for GH project #{project.source_identifier}"
     uri = "https://api.github.com/user/subscriptions"
 
     begin
-      response = perform_request('get', uri, {}, {'Authorization' => "token #{identity.api_key}"})
+      response = perform_request('get', uri, {}, {'Authorization' => "token #{integration.api_key}"})
       uri = extract_next_link(response)
       repos = JSON.parse(response.body)
       if repos.instance_of?(Array)
         repo = repos.find { |repo| repo['id'].to_s == project.source_identifier }
-        fetch_tasks(project, identity, repo['name'], repo['owner']['login'], 'open')
-        fetch_tasks(project, identity, repo['name'], repo['owner']['login'], 'closed')
+        fetch_tasks(project, integration, repo['name'], repo['owner']['login'], 'open')
+        fetch_tasks(project, integration, repo['name'], repo['owner']['login'], 'closed')
       else
         if repos.instance_of?(Hash) && repos['message'] == 'Bad credentials'
-          UserMailer.invalid_api_key(identity).deliver
+          UserMailer.invalid_api_key(integration).deliver
         end
         break
       end
     end while uri
 
-    Rails.logger.info "Successfully fetched project data for GH identity #{identity.api_key} and project #{project.source_identifier}"
+    Rails.logger.info "Successfully fetched project data for GH integration #{integration.api_key} and project #{project.source_identifier}"
   end
 
   private
