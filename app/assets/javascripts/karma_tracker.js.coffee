@@ -4,9 +4,9 @@
 #= require projects
 #= require refresh
 #= require register
-#= require identities
-#= require pivotal_tracker_identities
-#= require git_hub_identities
+#= require integrations
+#= require pivotal_tracker_integrations
+#= require git_hub_integrations
 #= require account
 #= require timesheet
 #= require tasks
@@ -204,9 +204,9 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
       $location.path '/projects'
 
 
-  $scope.checkIdentities = ->
+  $scope.checkIntegrations = ->
     $http.get(
-      "/api/v1/identities?token=#{$cookieStore.get $scope.tokenName}"
+      "/api/v1/integrations?token=#{$cookieStore.get $scope.tokenName}"
     ).success((data, status, headers, config) ->
       if data.length == 0
         $scope.firstTipVisible = true
@@ -280,7 +280,7 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
 
   if $cookieStore.get($scope.tokenName)?
     $scope.getRunningTask()
-    $scope.checkIdentities()
+    $scope.checkIntegrations()
     $rootScope.checkRefreshingProjects()
 
   $scope.$on "$locationChangeSuccess", (event, currentLocation) ->
