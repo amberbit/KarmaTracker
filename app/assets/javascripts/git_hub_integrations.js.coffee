@@ -1,25 +1,25 @@
-KarmaTracker.controller "GitHubIdentitiesController", ($scope, $http, $cookieStore, $location) ->
-  $scope.identities = []
-  $scope.newIdentity = { username: null, password: null }
+KarmaTracker.controller "GitHubIntegrationsController", ($scope, $http, $cookieStore, $location) ->
+  $scope.integrations = []
+  $scope.newIntegration = { username: null, password: null }
   $scope.addFormShown = false
   $scope.errors = {}
   $scope.tokenName = 'token'
 
-  $scope.updateIdentities = () ->
+  $scope.updateIntegrations = () ->
     $http.get(
-      '/api/v1/identities?token='+$cookieStore.get($scope.tokenName)+'&service=git_hub'
+      '/api/v1/integrations?token='+$cookieStore.get($scope.tokenName)+'&service=git_hub'
     ).success((data, status, headers, config) ->
-      $scope.identities = data
+      $scope.integrations = data
     ).error((data, status, headers, config) ->
     )
 
   $scope.remove = (id) ->
-    answer = confirm("Are you sure to remove GitHub Identity?")
+    answer = confirm("Are you sure to remove GitHub Integration?")
     if answer
       $http.delete(
-        '/api/v1/identities/'+id+'?token='+$cookieStore.get($scope.tokenName)
+        '/api/v1/integrations/'+id+'?token='+$cookieStore.get($scope.tokenName)
       ).success((data, status, headers, config) ->
-        $scope.updateIdentities()
+        $scope.updateIntegrations()
       ).error((data, status, headers, config) ->
       )
 
@@ -27,22 +27,22 @@ KarmaTracker.controller "GitHubIdentitiesController", ($scope, $http, $cookieSto
     valid = true
     $scope.errors = {}
 
-    unless $scope.newIdentity.api_key? and $scope.newIdentity.api_key != ''
+    unless $scope.newIntegration.api_key? and $scope.newIntegration.api_key != ''
       for field in ["username", "password"]
-        unless $scope.newIdentity[field]? and $scope.newIdentity[field] != ''
+        unless $scope.newIntegration[field]? and $scope.newIntegration[field] != ''
           $scope.errors[field] = "can't be blank"
           valid = false
     valid
 
   $scope.add = () ->
     if $scope.formLooksValid()
-      if $scope.newIdentity.api_key? and $scope.newIdentity.api_key != ''
+      if $scope.newIntegration.api_key? and $scope.newIntegration.api_key != ''
         $http.post(
-          '/api/v1/identities/git_hub?token='+$cookieStore.get($scope.tokenName)+'&identity[username]='+$scope.newIdentity.username_token+'&identity[api_key]='+$scope.newIdentity.api_key
+          '/api/v1/integrations/git_hub?token='+$cookieStore.get($scope.tokenName)+'&integration[username]='+$scope.newIntegration.username_token+'&integration[api_key]='+$scope.newIntegration.api_key
         ).success((data, status, headers, config) ->
           $scope.cleanForm()
           $scope.openAddForm()
-          $scope.updateIdentities()
+          $scope.updateIntegrations()
         ).error((data, status, headers, config) ->
           console.debug data
           if data.git_hub.errors.api_key?
@@ -53,15 +53,15 @@ KarmaTracker.controller "GitHubIdentitiesController", ($scope, $http, $cookieSto
         )
       else
         $http.post(
-          '/api/v1/identities/git_hub?token='+$cookieStore.get($scope.tokenName)+'&identity[username]='+$scope.newIdentity.username+'&identity[password]='+$scope.newIdentity.password
+          '/api/v1/integrations/git_hub?token='+$cookieStore.get($scope.tokenName)+'&integration[username]='+$scope.newIntegration.username+'&integration[password]='+$scope.newIntegration.password
         ).success((data, status, headers, config) ->
           $scope.cleanForm()
           $scope.openAddForm()
-          $scope.updateIdentities()
+          $scope.updateIntegrations()
         ).error((data, status, headers, config) ->
           console.debug data
-          $scope.newIdentity.username = ''
-          $scope.newIdentity.password = ''
+          $scope.newIntegration.username = ''
+          $scope.newIntegration.password = ''
           if data.git_hub.errors.api_key?
             $scope.errors.password = data.git_hub.errors.api_key[0]
           else
@@ -73,11 +73,11 @@ KarmaTracker.controller "GitHubIdentitiesController", ($scope, $http, $cookieSto
     $scope.cleanForm()
 
   $scope.cleanForm = () ->
-    $scope.newIdentity.username = ''
-    $scope.newIdentity.password = ''
-    $scope.newIdentity.api_key = ''
-    $scope.newIdentity.username_token = ''
+    $scope.newIntegration.username = ''
+    $scope.newIntegration.password = ''
+    $scope.newIntegration.api_key = ''
+    $scope.newIntegration.username_token = ''
     $scope.errors = {}
 
 
-  $scope.updateIdentities()
+  $scope.updateIntegrations()

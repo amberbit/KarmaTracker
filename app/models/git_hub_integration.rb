@@ -2,7 +2,7 @@ require 'net/http'
 require 'net/https'
 require 'uri'
 
-class GitHubIdentity < Identity
+class GitHubIntegration < Integration
   attr_accessible :username, :password
   attr_accessor :username, :password
 
@@ -40,7 +40,7 @@ class GitHubIdentity < Identity
       errors.add(:api_key, 'provided token is invalid')
     end
   rescue StandardError => e
-    Rails.logger.warn "Exception when validating Github identity: #{e.class}: #{e.message}"
+    Rails.logger.warn "Exception when validating Github integration: #{e.class}: #{e.message}"
 
     errors.add(:api_key, 'provided token is invalid')
   end
@@ -62,7 +62,7 @@ class GitHubIdentity < Identity
       errors.add(:password, 'provided username/password combination is invalid')
     end
   rescue StandardError => e
-    Rails.logger.warn "Exception when validating Github identity: #{e.class}: #{e.message}"
+    Rails.logger.warn "Exception when validating Github integration: #{e.class}: #{e.message}"
 
     errors.add(:password, 'provided username/password combination is invalid')
   end

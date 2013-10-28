@@ -51,20 +51,20 @@ describe UserMailer do
 
     let(:key) { 123 }
     let(:user) { stub_model User, email: 'email@amberbit.com' }
-    let(:identity) { stub_model Identity, type: 'PivotalTrackerIdentity',
+    let(:integration) { stub_model Integration, type: 'PivotalTrackerIntegration',
                      api_key: key, user: user }
 
     before(:each) do
-      @email = UserMailer.invalid_api_key identity
+      @email = UserMailer.invalid_api_key integration
     end
 
-    it "be delivered to the user from identity" do
+    it "be delivered to the user from integration" do
       @email.should deliver_to user.email
     end
 
     it "contain invalid api key info" do
-      @email.should have_body_text(/Importing content for #{ identity.type } failed/)
-      @email.should have_body_text(/Please check if API key: #{ identity.api_key } is valid./)
+      @email.should have_body_text(/Importing content for #{ integration.type } failed/)
+      @email.should have_body_text(/Please check if API key: #{ integration.api_key } is valid./)
     end
 
     it "should have the correct subject" do

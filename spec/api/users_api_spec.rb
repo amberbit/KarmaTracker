@@ -121,17 +121,17 @@ describe 'User API' do
   end
 
   # DELETE /api/v1/user
-  it 'should completely remove user and all his identities/keys' do
-    FactoryGirl.create :identity
+  it 'should completely remove user and all his integrations/keys' do
+    FactoryGirl.create :integration
     User.count.should == 1
-    Identity.count.should == 1
+    Integration.count.should == 1
     ApiKey.count.should == 1
 
     json = api_delete 'user', {token: @user.api_key.token}
 
     response.status.should == 200
     User.count.should == 0
-    Identity.count.should == 0
+    Integration.count.should == 0
     ApiKey.count.should == 0
   end
 

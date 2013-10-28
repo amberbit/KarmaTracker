@@ -2,6 +2,6 @@ FactoryGirl.define do
 
   factory :participation do
     project
-    identity
+    integration
   end
 end

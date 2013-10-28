@@ -6,9 +6,9 @@ describe 'TimeLogEntry API' do
 
   before :each do
     project = FactoryGirl.create :project
-    identity = FactoryGirl.create :identity
-    project.identities << identity
-    @user = identity.user
+    integration = FactoryGirl.create :integration
+    project.integrations << integration
+    @user = integration.user
     @task = FactoryGirl.create :task, project: project
   end
 
@@ -116,7 +116,7 @@ describe 'TimeLogEntry API' do
   it 'should filter list of time log entries by project_id' do
     FactoryGirl.create :time_log_entry, user: @user, started_at: 10.hours.ago, stopped_at: 9.hours.ago
     other_project = FactoryGirl.create :project
-    other_project.identities << @user.identities.first
+    other_project.integrations << @user.integrations.first
     other_task = FactoryGirl.create :task, project: other_project
     FactoryGirl.create :time_log_entry, user: @user, task: other_task
 

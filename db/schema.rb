@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131015120301) do
+ActiveRecord::Schema.define(:version => 20131025133404) do
 
   create_table "api_keys", :force => true do |t|
     t.string   "token",      :null => false
@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(:version => 20131015120301) do
     t.integer  "user_id"
   end
 
-  create_table "identities", :force => true do |t|
+  create_table "integrations", :force => true do |t|
     t.string   "type"
     t.string   "api_key"
     t.integer  "user_id"
@@ -30,13 +30,13 @@ ActiveRecord::Schema.define(:version => 20131015120301) do
     t.datetime "last_projects_refresh_at"
   end
 
-  add_index "identities", ["api_key", "type"], :name => "index_identities_on_api_key_and_type", :unique => true
+  add_index "integrations", ["api_key", "type"], :name => "index_identities_on_api_key_and_type", :unique => true
 
   create_table "participations", :force => true do |t|
-    t.integer  "identity_id", :null => false
-    t.integer  "project_id",  :null => false
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.integer  "integration_id", :null => false
+    t.integer  "project_id",     :null => false
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
   end
 
   create_table "projects", :force => true do |t|

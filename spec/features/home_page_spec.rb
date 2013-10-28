@@ -5,9 +5,9 @@ as a user I can', js: true do
   
   let(:user) { create :confirmed_user }
   let(:project1) { create(:project, name: "ZZ KarmaTracker") }
-  let!(:identity) do
-    identity = create(:identity, user: user)
-    create(:participation, project: project1, identity: identity)
+  let!(:integration) do
+    integration = create(:integration, user: user)
+    create(:participation, project: project1, integration: integration)
   end
   
   background do

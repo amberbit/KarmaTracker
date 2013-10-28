@@ -1,18 +1,18 @@
 module Api
   module V1
-    class IdentitiesController < ApplicationController
+    class IntegrationsController < ApplicationController
       before_filter :restrict_access
       respond_to :json
 
       ##
-      # Returns list of user's identities, optionally filtered by service
+      # Returns list of user's integrations, optionally filtered by service
       #
-      # GET /api/v1/identities
+      # GET /api/v1/integrations
       #
       # params:
       #   token - KarmaTracker API token
       #   optional:
-      #     service - name of the service for which identities should be returned;
+      #     service - name of the service for which integrations should be returned;
       #               both CamelCase and snake_case notations are supported.
       #               Valid values:
       #                 - PivotalTracker
@@ -22,7 +22,7 @@ module Api
       #
       # = Examples
       #
-      #   resp = conn.get("/api/v1/identities", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
+      #   resp = conn.get("/api/v1/integrations", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
       #
       #   resp.status
       #   => 200
@@ -31,7 +31,7 @@ module Api
       #   => {[{"pivotal_tracker": {"id": 1, "api_key": "123456", "service": "Pivotal Tracker"}},
       #       {"git_hub": {"id": 3, "api_key": "42", "service": "GitHub"}}]}
       #
-      #   resp = conn.get("/api/v1/identities",
+      #   resp = conn.get("/api/v1/integrations",
       #                   "token" => "dcbb7b36acd4438d07abafb8e28605a4",
       #                   "service" => "pivotal_tracker")
       #
@@ -43,10 +43,10 @@ module Api
       #
       def index
         if @api_key && @api_key.user
-          @identities = if params[:service]
-                          @api_key.user.identities.by_service(params[:service])
+          @integrations = if params[:service]
+                          @api_key.user.integrations.by_service(params[:service])
                         else
-                          @api_key.user.identities
+                          @api_key.user.integrations
                         end
           render 'index'
         else
@@ -55,16 +55,16 @@ module Api
       end
 
       ##
-      # Returns single identity
+      # Returns single integration
       #
-      # GET /api/v1/identities/:id
+      # GET /api/v1/integrations/:id
       #
       # params:
       #   token - KarmaTracker API token
       #
       # = Examples
       #
-      #   resp = conn.get("/api/v1/identities/1", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
+      #   resp = conn.get("/api/v1/integrations/1", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
       #
       #   resp.status
       #   => 200
@@ -82,8 +82,8 @@ module Api
       #   => {"message": "Resource not found"}
       #
       def show
-        @identity = Identity.find_by_id(params[:id])
-        if @identity && @identity.user.api_key == @api_key
+        @integration = Integration.find_by_id(params[:id])
+        if @integration && @integration.user.api_key == @api_key
           render '_show'
         else
           render json: {message: 'Resource not found'}, status: 404
@@ -91,22 +91,22 @@ module Api
       end
 
       ##
-      # creates new Pivotal Tracker identity
+      # creates new Pivotal Tracker integration
       #
-      # POST /api/v1/identities/pivotal_tracker
+      # POST /api/v1/integrations/pivotal_tracker
       #
       # params:
       #   token - KarmaTracker API token
-      #   identity[api_key] - Pivotal Tracker API token
-      #   identity[email] - email assigned to PT account
-      #   identity[password] - password assigned to PT account
+      #   integration[api_key] - Pivotal Tracker API token
+      #   integration[email] - email assigned to PT account
+      #   integration[password] - password assigned to PT account
       # Either api_key or email and password need to be provided.
       #
       # = Examples
       #
-      #   resp = conn.post("/api/v1/identities/pivotal_tracker",
+      #   resp = conn.post("/api/v1/integrations/pivotal_tracker",
       #                    "token" => "dcbb7b36acd4438d07abafb8e28605a4",
-      #                    "identity[api_key]" => "sdgs24386tr8732gfsiur32")
+      #                    "integration[api_key]" => "sdgs24386tr8732gfsiur32")
       #
       #   resp.status
       #   => 200
@@ -114,9 +114,9 @@ module Api
       #   resp.body
       #   => {"pivotal_tracker": {"id": 8, "api_key": "sdasdf32rfefs32", "service": "Pivotal Tracker"}}
       #
-      #   resp = conn.post("/api/v1/identities/pivotal_tracker",
+      #   resp = conn.post("/api/v1/integrations/pivotal_tracker",
       #                    "token" => "dcbb7b36acd4438d07abafb8e28605a4",
-      #                    "identity[api_key]" => "wrong token")
+      #                    "integration[api_key]" => "wrong token")
       #
       #   resp.status
       #   => 422
@@ -124,10 +124,10 @@ module Api
       #   resp.body
       #   => {"pivotal_tracker": {"api_key": "wrong token", "errors": { "api_key": ["Is invalid"] }}}
       #
-      #   resp = conn.post("/api/v1/identities/pivotal_tracker",
+      #   resp = conn.post("/api/v1/integrations/pivotal_tracker",
       #                    "token" => "dcbb7b36acd4438d07abafb8e28605a4",
-      #                    "identity[email]" => "mail@example.com"
-      #                    "identity[password]" => "wrong_password")
+      #                    "integration[email]" => "mail@example.com"
+      #                    "integration[password]" => "wrong_password")
       #
       #   resp.status
       #   => 422
@@ -137,9 +137,9 @@ module Api
       #                           "errors": { "password": ["does not match email"] }}}
       #
       def pivotal_tracker
-        options = (params[:identity] || {}).merge({user_id: @current_user.id})
-        @identity = IdentitiesFactory.new(PivotalTrackerIdentity.new, options).create
-        if @identity.save
+        options = (params[:integration] || {}).merge({user_id: @current_user.id})
+        @integration = IntegrationsFactory.new(PivotalTrackerIntegration.new, options).create
+        if @integration.save
           render '_show'
         else
           render '_show', status: 422
@@ -147,22 +147,22 @@ module Api
       end
 
       ##
-      # creates new GitHub identity
+      # creates new GitHub integration
       #
-      # POST /api/v1/identities/git_hub
+      # POST /api/v1/integrations/git_hub
       #
       # params:
       #   token - KarmaTracker API token
-      #   identity[api_key] - GitHub API token
-      #   identity[username] - username assigned to GH account
-      #   identity[password] - password assigned to GH account
+      #   integration[api_key] - GitHub API token
+      #   integration[username] - username assigned to GH account
+      #   integration[password] - password assigned to GH account
       #
       # = Examples
       #
-      #   resp = conn.post("/api/v1/identities/git_hub",
+      #   resp = conn.post("/api/v1/integrations/git_hub",
       #                    "token" => "dcbb7b36acd4438d07abafb8e28605a4",
-      #                    "identity[username]" => "R2D2"
-      #                    "identity[password]" => "fdsjfsho7h23orfesk")
+      #                    "integration[username]" => "R2D2"
+      #                    "integration[password]" => "fdsjfsho7h23orfesk")
       #
       #   resp.status
       #   => 200
@@ -170,10 +170,10 @@ module Api
       #   resp.body
       #   => {"git_hub": {"id": 9, "api_key": "sdasdf32rfefs32", "service": "GitHub"}}
       #
-      #   resp = conn.post("/api/v1/identities/git_hub",
+      #   resp = conn.post("/api/v1/integrations/git_hub",
       #                    "token" => "dcbb7b36acd4438d07abafb8e28605a4",
-      #                    "identity[username]" => "R2D2"
-      #                    "identity[api_key]" => "osdf659234sdffd3sjfsh234o7h23orfe3sk")
+      #                    "integration[username]" => "R2D2"
+      #                    "integration[api_key]" => "osdf659234sdffd3sjfsh234o7h23orfe3sk")
       #
       #   resp.status
       #   => 200
@@ -181,10 +181,10 @@ module Api
       #   resp.body
       #   => {"git_hub": {"id": 10, "api_key": "osdf659234sdffd3sjfsh234o7h23orfe3sk", "service": "GitHub"}}
       #
-      #   resp = conn.post("/api/v1/identities/pivotal_tracker",
+      #   resp = conn.post("/api/v1/integrations/pivotal_tracker",
       #                    "token" => "dcbb7b36acd4438d07abafb8e28605a4",
-      #                    "identity[username]" => "R2D2"
-      #                    "identity[password]" => "wrongpassword")
+      #                    "integration[username]" => "R2D2"
+      #                    "integration[password]" => "wrongpassword")
       #
       #   resp.status
       #   => 422
@@ -193,9 +193,9 @@ module Api
       #   => {"git_hub": {"api_key": "wrong token", "errors": { "api_key": ["Is invalid"] }}}
       #
       def git_hub
-        options = (params[:identity] || {}).merge({user_id: @current_user.id})
-        @identity = IdentitiesFactory.new(GitHubIdentity.new, options).create
-        if @identity.save
+        options = (params[:integration] || {}).merge({user_id: @current_user.id})
+        @integration = IntegrationsFactory.new(GitHubIntegration.new, options).create
+        if @integration.save
           render '_show'
         else
           render '_show', status: 422
@@ -203,9 +203,9 @@ module Api
       end
 
       ##
-      # Deletes identity
+      # Deletes integration
       #
-      # DELETE /api/v1/identities/:id
+      # DELETE /api/v1/integrations/:id
       #
       # params:
       #   token - KarmaTracker API token
@@ -213,7 +213,7 @@ module Api
       #
       # = Examples
       #
-      #   resp = conn.delete("/api/v1/identities/1", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
+      #   resp = conn.delete("/api/v1/integrations/1", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
       #
       #   resp.status
       #   => 200
@@ -221,7 +221,7 @@ module Api
       #   resp.body
       #   => {"pivotal_tracker": {"id": 1, "api_key": "123456", "service": "Pivotal Tracker"}}
       #
-      #   resp = conn.delete("/api/v1/identities/123", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
+      #   resp = conn.delete("/api/v1/integrations/123", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
       #
       #   resp.status
       #   => 404
@@ -230,9 +230,9 @@ module Api
       #   => {"message": "Resource not found"}
       #
       def destroy
-        @identity = Identity.find_by_id(params[:id])
-        if @identity && @identity.user.api_key == @api_key
-          @identity.delete
+        @integration = Integration.find_by_id(params[:id])
+        if @integration && @integration.user.api_key == @api_key
+          @integration.delete
           render '_show'
         else
           render json: {message: 'Resource not found'}, status: 404

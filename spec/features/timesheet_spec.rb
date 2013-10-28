@@ -21,9 +21,9 @@ feature 'Timesheet page,
                                   started_at: @date2, stopped_at: @date2 + 1.hour + 1.second)
     @time_log_entry3 = create(:time_log_entry, task: @task2, user: @user,
                                   started_at: @date3, stopped_at: @date3 + 1.hour + 1.second)
-    @identity = create(:identity)
-    create(:participation, project: @project1, identity: @identity)
-    create(:participation, project: @project2, identity: @identity)
+    @integration = create(:integration)
+    create(:participation, project: @project1, integration: @integration)
+    create(:participation, project: @project2, integration: @integration)
     FakeWeb.allow_net_connect = true
     Capybara.reset_session!
     login @user

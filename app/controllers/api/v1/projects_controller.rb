@@ -109,7 +109,7 @@ module Api
       end
 
       ##
-      # Triggers projects list refresh for all identities of the user.
+      # Triggers projects list refresh for all integrations of the user.
       # Refreshing runs in background, so the response is sent without waiting for it to finish.
       #
       # GET /api/v1/projects/refresh
@@ -161,11 +161,11 @@ module Api
       #
       def refresh_for_project
         project = Project.find(params[:id])
-        identity = @api_key.user.identities.joins(:participations).
+        integration = @api_key.user.integrations.joins(:participations).
           where('participations.project_id = ?', project.id).
           all(readonly: false).first
-        if project && identity &&  @api_key.user.projects.include?(project)
-          ProjectsFetcher.new.background.fetch_for_project(project, identity)
+        if project && integration &&  @api_key.user.projects.include?(project)
+          ProjectsFetcher.new.background.fetch_for_project(project, integration)
           render json: {message: 'Project list refresh started'}, status: 200
         else
           render json: {message: 'Resource not found'}, status: 404

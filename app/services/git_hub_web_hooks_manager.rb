@@ -29,7 +29,7 @@ class GitHubWebHooksManager
     Rails.logger.error "Failed processing GitHub issues feed: #{request.body}"
   end
 
-  def create_hook identity
+  def create_hook integration
     Rails.logger.info "Creating hook for GitHub repositry #{@repo_owner}/#{@repo_name}"
     uri = "https://api.github.com/repos/#{@repo_owner}/#{@repo_name}/hooks"
     hook_url = "#{AppConfig.web_hooks.git_hub}?token=#{@project.web_hook_token}"
@@ -39,7 +39,7 @@ class GitHubWebHooksManager
       config: {content_type: 'json', url: hook_url},
       events: ['issues']
     }
-    response = perform_request('post', uri, params, {'Authorization' => "token #{identity.api_key}"})
+    response = perform_request('post', uri, params, {'Authorization' => "token #{integration.api_key}"})
     hook = JSON.parse(response.body)
 
     if response.code =~ /2../
@@ -49,10 +49,10 @@ class GitHubWebHooksManager
     Rails.logger.error "Couldn't create hook for GitHub repositry #{@repo_owner}/#{@repo_name} (#{@project.source_identifier})"
   end
 
-  def destroy_hook identity
+  def destroy_hook integration
     Rails.logger.info "Removing hook for GitHub repositry #{@repo_owner}/#{@repo_name}"
     uri = "https://api.github.com/repos/#{@repo_owner}/#{@repo_name}/hooks/#{@project.hook}"
-    response = perform_request('delete', uri, {}, {'Authorization' => "token #{identity.api_key}"})
+    response = perform_request('delete', uri, {}, {'Authorization' => "token #{integration.api_key}"})
 
     if response.code =~ /2../
       @project.update_attributes web_hook: nil

@@ -15,12 +15,12 @@ feature 'Projects management,
   let(:project3) { create(:project) }
   let(:project4) { create :project }
 
-  let!(:identity) do
-    identity = create(:identity, user: user)
-    create(:participation, project: project1, identity: identity)
-    create(:participation, project: project2, identity: identity)
-    create(:participation, project: project4, identity: identity)
-    identity
+  let!(:integration) do
+    integration = create(:integration, user: user)
+    create(:participation, project: project1, integration: integration)
+    create(:participation, project: project2, integration: integration)
+    create(:participation, project: project4, integration: integration)
+    integration
   end
 
   background do
@@ -99,9 +99,9 @@ feature 'Projects management,
 
     user3 = create :confirmed_user
     project3 = create :project
-    identity3 = create(:identity, user: user3)
-    create(:participation, project: project3, identity: identity3)
-    create(:participation, project: project3, identity: identity)
+    integration3 = create(:integration, user: user3)
+    create(:participation, project: project3, integration: integration3)
+    create(:participation, project: project3, integration: integration)
     task3 = create :task, project: project3
     user3_running_entry = create :time_log_entry, user: user3, task: task3,
       stopped_at: nil, running: true

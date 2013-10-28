@@ -2,7 +2,7 @@ require 'net/http'
 require 'net/https'
 require 'open-uri'
 
-class PivotalTrackerIdentity < Identity
+class PivotalTrackerIntegration < Integration
   attr_accessible :email, :password
   attr_accessor :email, :password
 

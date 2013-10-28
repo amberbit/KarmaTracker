@@ -9,65 +9,65 @@ should' do
   end
 
   before :each do
-    @identity = FactoryGirl.create :identity, source_id: 1006
-    @identity2 = FactoryGirl.create :identity, source_id: 1007
+    @integration = FactoryGirl.create :integration, source_id: 1006
+    @integration2 = FactoryGirl.create :integration, source_id: 1007
   end
 
-  it 'should fetch projects for an identity' do
-    @fetcher.fetch_projects(@identity)
+  it 'should fetch projects for an integration' do
+    @fetcher.fetch_projects(@integration)
     Project.count.should == 2
   end
 
   it 'not fetch a project twice' do
-    @fetcher.fetch_projects(@identity)
-    @fetcher.fetch_projects(@identity2)
+    @fetcher.fetch_projects(@integration)
+    @fetcher.fetch_projects(@integration2)
     Project.count.should == 2
   end
 
-  it 'should create associations between project and its members\' identities' do
-    @fetcher.fetch_projects(@identity)
-    @identity.projects.count.should == 1
-    Project.first.identities.count.should == 1
+  it 'should create associations between project and its members\' integrations' do
+    @fetcher.fetch_projects(@integration)
+    @integration.projects.count.should == 1
+    Project.first.integrations.count.should == 1
   end
 
-  it 'remove identities that are no longer participants in a project' do
+  it 'remove integrations that are no longer participants in a project' do
     FakeWeb.register_uri(:get, 'https://www.pivotaltracker.com/services/v4/projects',
       :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'projects2.xml')),
       :status => ['200', 'OK'])
 
-    @fetcher.fetch_projects(@identity)
-    Identity.count.should == 2
-    @identity.projects.count.should == 1
-    @identity2.projects.count.should == 1
+    @fetcher.fetch_projects(@integration)
+    Integration.count.should == 2
+    @integration.projects.count.should == 1
+    @integration2.projects.count.should == 1
     project = Project.first
-    wait_until(20) { project.identities.count == 2 }
+    wait_until(20) { project.integrations.count == 2 }
 
     reset_fakeweb_urls
 
-    @fetcher.fetch_projects(@identity)
-    Identity.count.should == 2
-    @identity.projects.count.should == 1
-    @identity2.projects.count.should == 0
-    project.identities.reload.count.should == 1
+    @fetcher.fetch_projects(@integration)
+    Integration.count.should == 2
+    @integration.projects.count.should == 1
+    @integration2.projects.count.should == 0
+    project.integrations.reload.count.should == 1
   end
 
   it 'fetch tasks for project' do
-    @fetcher.fetch_projects(@identity)
-    @fetcher.fetch_tasks(@identity.projects.first, @identity)
+    @fetcher.fetch_projects(@integration)
+    @fetcher.fetch_tasks(@integration.projects.first, @integration)
     Task.count.should == 2
     wait_until(20) { Project.first.tasks.count == 2 }
   end
 
   it 'mark current tasks appropriately' do
-    @fetcher.fetch_projects(@identity)
-    @fetcher.fetch_tasks(@identity.projects.last, @identity)
+    @fetcher.fetch_projects(@integration)
+    @fetcher.fetch_tasks(@integration.projects.last, @integration)
     Task.count.should == 2
     Task.current.count.should == 1
   end
 
   it 'update current flag for tasks' do
-    @fetcher.fetch_projects(@identity)
-    @fetcher.fetch_tasks(@identity.projects.last, @identity)
+    @fetcher.fetch_projects(@integration)
+    @fetcher.fetch_tasks(@integration.projects.last, @integration)
     Task.find_by_source_identifier('1').current_task.should be_true
     Task.find_by_source_identifier('4').current_task.should be_false
 
@@ -75,8 +75,8 @@ should' do
       :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'current_iteration2.xml')),
       :status => ['200', 'OK'])
 
-    @fetcher.fetch_projects(@identity)
-    @fetcher.fetch_tasks(@identity.projects.last, @identity)
+    @fetcher.fetch_projects(@integration)
+    @fetcher.fetch_tasks(@integration.projects.last, @integration)
     Task.find_by_source_identifier('1').current_task.should be_false
     Task.find_by_source_identifier('4').current_task.should be_true
 
@@ -85,7 +85,7 @@ should' do
   it 'not crash import when api key is invalid' do
     FakeWeb.register_uri(:get, "https://www.pivotaltracker.com/services/v4/projects", :status => ['401', 'Unauthorized'])
     expect {
-      @fetcher.fetch_projects(@identity)
+      @fetcher.fetch_projects(@integration)
     }.not_to raise_error(OpenURI::HTTPError)
   end
 end
