@@ -9,10 +9,10 @@ gem 'activerecord-jdbc-adapter'
 gem 'activerecord-jdbcpostgresql-adapter'
 gem 'pg_search'
 
-gem 'torquebox', '2.3.1'
-gem 'torquebox-server', '2.3.1', require: false
-gem 'torquebox-stomp', '2.3.1', require: false
-gem 'torquebox-messaging', '2.3.1'
+gem 'torquebox', '2.3.0'
+gem 'torquebox-server', '2.3.0', require: false
+gem 'torquebox-stomp', '2.3.0', require: false
+gem 'torquebox-messaging', '2.3.0'
 
 gem 'nokogiri'
 gem 'nori'
@@ -44,7 +44,7 @@ group :test do
   gem 'nullobject', require: false
   gem 'factory_girl_rails'
   gem 'fakeweb', require: false
-  gem 'torquebox-no-op', '2.3.1', require: false
+  gem 'torquebox-no-op', '2.3.0', require: false
   gem 'timecop', require: false
   gem 'capybara'
   gem 'selenium-webdriver'
@@ -66,4 +66,3 @@ group :development do
   gem "letter_opener"
   gem 'letter_opener_web', '~> 1.1.0'
 end
-
