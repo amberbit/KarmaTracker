@@ -16,21 +16,33 @@
         <br/>
         <input id="password" type="password" placeholder="password" ng-model="$parent.session.password" focus="{{focus_password}}"/>
         <div class='pass-row'>
-          <div class='remember-me left'>
-            <input id='remember_me' type='checkbox' ng-model="session.remember_me"/>
-            <label for='remember_me'>Remember me</label>
+          <div class="login-widget columns small-12 large-6">
+            <div class='remember-me left'>
+              <input id='remember_me' type='checkbox' ng-model="session.remember_me"/>
+              <label for='remember_me'>Remember me</label>
+            </div>
           </div>
-          <a class='right forgotten-password' href="#/password_reset" class="right">Forgotten password?</a>
-      </div>
-      <br/>
+          <div class="login-widget columns small-12 large-6">
+            <a class='right-left forgotten-password' href="#/password_reset" class="right">Forgotten password?</a>
+          </div>
+        </div>
+        <br/>
         <div class="clearfix"></div>
-        <button class="button left">Sign in!</button>
-        <a href="#/register" ng-show="registrationEnabled" class="switch-link right">Register</a>
+        <div class="login-widget columns small-12 large-6">
+          <button class="button left">Sign in!</button>
+        </div>
+        <div class="login-widget columns small-12 large-6">
+          <a href="#/register" ng-show="registrationEnabled" class="switch-link right-left">Register</a>
+        </div>
       </form>
       <br/>
       <div class="clearfix"></div>
-      <a class='left btn-auth btn-google' href="/auth/google">Google login</a>
-      <a class='right btn-auth btn-github' href="/auth/github">GitHub login</a>
+      <div class="login-widget columns small-12 large-6">
+        <a class='btn-auth btn-google' href="/auth/google">Google login</a>
+      </div>
+      <div class="login-widget columns small-12 large-6">
+        <a class='btn-auth btn-github right-left' href="/auth/github">GitHub login</a>
+      </div>
     </div>
   </div>
 </div>
