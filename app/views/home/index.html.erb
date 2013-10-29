@@ -8,7 +8,7 @@
 </div>
 
 
-<div class="row page-header">
+<div class="row page-header" ng-show="signed_in">
   <nav id="top-bar" class="top-bar" ng-show="signed_in">
     <ul class="title-area">
       <li class="name">
@@ -40,7 +40,7 @@
   </nav>
 </div>
 
-<div id='top-bar-spacer'></div>
+<div id='top-bar-spacer' ng-show="signed_in"></div>
 
 
 <div id="flash" class="row" ng-class="{'signin-width': !signed_in}" ng-controller="FlashesController">
@@ -164,7 +164,7 @@
       </div>
     </div>
   </div>
-
+</div>
 
 <div class="row" ng-class="{'signin-width': !signed_in}">
   <div class="small-12 columns footer">
