@@ -9,6 +9,7 @@ KarmaTracker::Application.routes.draw do
       resources :session, only: [:create] do
         collection do
           post :oauth_verify
+          get :github_identity_endpoint
         end
       end
 
@@ -53,6 +54,7 @@ KarmaTracker::Application.routes.draw do
 
   match '/404' => 'errors#not_found'
   match '/500' => 'errors#exception'
+  match '/auth/github/callback/identity' => 'api/v1/session#github_identity_endpoint', via: :get
   match '/auth/:provider/callback' => 'api/v1/session#oauth', via: :get
   match '/auth/failure' => 'api/v1/session#failure', via: :get
 

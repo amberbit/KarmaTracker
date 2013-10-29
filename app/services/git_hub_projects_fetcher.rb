@@ -94,7 +94,7 @@ class GitHubProjectsFetcher
   rescue
     Rails.logger.error "Couldn't fetch issues for GitHub repositry #{repo_owner}/#{repo_name} (#{project.source_identifier})"
   end
-  
+
   def fetch_tasks_for_project(project, identity)
     Rails.logger.info "Fetching project data for GH project #{project.source_identifier}"
     uri = "https://api.github.com/user/subscriptions"
