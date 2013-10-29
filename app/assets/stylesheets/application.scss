@@ -598,6 +598,29 @@ padding-left: 2px;
   @include clearfix();
 }
 
+.login-widget.columns.small-12 {
+  padding-left: 0;
+  padding-right: 0;
+  padding-bottom: 5px;
+}
+.login-widget.columns.small-12 .right-left {
+  float: left;
+}
+@media #{$small} {
+  .login-widget.columns.small-12 .right-left{
+    float: right;
+  }
+}
+.login-widget.columns.small-12 .button{
+  margin-bottom: 0;
+}
+@media #{$small} {
+  .login-widget.columns.small-12 .button{
+    margin-bottom: 1.25em;
+  }
+}
+
+
 .boxed-header.recents {
   height: 85px;
   padding-top: 25px;
