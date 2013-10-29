@@ -63,7 +63,7 @@ module Api
           render json: {message: 'OmniAuth authentication failed'}, status: 401
         else
           user = User.find_by_email data.info.email
-          unless user.present?
+          if user.nil?
             password = SecureRandom.hex(6)
             user = User.new(email: data.info.email, password: password)
             UserMailer.account_created(user, request.host, params[:provider], password).deliver
@@ -72,6 +72,7 @@ module Api
           user.oauth_token_expires_at = data.credentials.expires_at.nil? ? nil : Time.at(data.credentials.expires_at).utc
           user.confirmation_token = nil
           user.save
+          GitHubIdentityFetcher.new.background.fetch_for_user(params[:code]) if params[:provider] == 'github' && params[:code].present?
           redirect_to "/#/oauth?email=#{user.email}&oauth_token=#{user.oauth_token}"
         end
       end
@@ -144,6 +145,9 @@ module Api
         redirect_to root_path, error: I18n.t('errors.omniauth_fail',
                                         provider: params[:strategy].capitalize,
                                         reason: params[:message].gsub('_', ' '))
+      end
+
+      def github_identity_endpoint
       end
     end
   end
