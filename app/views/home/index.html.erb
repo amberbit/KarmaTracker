@@ -135,7 +135,7 @@
       <div ng-show="alsoWorking" class="also-working large-12 columns panel sidepanel recents">
         <h4 class="subheader">Currently also working</h4>
         <div class="large-12 columns">
-          <div ng-show="location && location == 'projects'">
+          <!--<div ng-show="location && location == 'projects'">-->
             <div ng-repeat="(project_name, project_data) in alsoWorking" class='row'>
               <div ng-click="go('/projects/'+project_data[0]+'/tasks')" class="large-12 colums panel recent-task clickable" id="project_{{project_data[0]}}">
                 <div class="small-12 large-12 columns">
@@ -148,9 +148,9 @@
                 </div>
               </div>
             </div>
-          </div>
+          <!--</div>-->
 
-          <div ng-show="location && location != 'projects'">
+          <!--<div ng-show="location && location != 'projects'">
             <div ng-repeat="(task_name, task_data) in alsoWorking" class='row'>
               <div class="small-12 large-12 columns" id="task_{{task_data[0]}}">
                 <span ng-repeat="user in task_data[1]" class='left' id="user_{{user.id}}">
@@ -159,7 +159,7 @@
                 <span class="tiny-task project-name">{{task_name}}</span>
               </div>
             </div>
-          </div>
+          </div>-->
         </div>
       </div>
     </div>
