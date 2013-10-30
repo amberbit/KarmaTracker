@@ -4,3 +4,7 @@ rvm:
 install: jruby -J-Xms2048m -J-Xmx2048m -w -S bundle install
 # uncomment this line if your project needs to run something other than `rake`:
 # script: bundle exec rspec spec
+before_script:
+  - cp config/database.travis.yml config/database.yml
+  - psql -c 'create database karmatracker_test' -U postgres
+
