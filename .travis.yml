@@ -2,6 +2,10 @@ language: ruby
 rvm:
   - jruby-19mode # JRuby in 1.9 mode
 install: jruby -J-Xms2048m -J-Xmx2048m -w -S bundle install
+script:
+  - RAILS_ENV=test bundle exec rake db:migrate --trace
+  - bundle exec rake db:test:prepare
+  - bundle exec rake
 # uncomment this line if your project needs to run something other than `rake`:
 # script: bundle exec rspec spec
 before_script:
