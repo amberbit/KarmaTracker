@@ -3,7 +3,7 @@
 Flex::Configuration.configure do |config|
 
   # you must add your indexed model names here
-  config.flex_models = %w[  ]
+  config.flex_models = %w[ Project ]
 
   # you must add your active model names here
   config.flex_active_models = %w[  ]

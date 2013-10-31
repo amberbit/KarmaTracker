@@ -1,10 +1,30 @@
 class Project < ActiveRecord::Base
 
+  include Flex::ModelIndexer
+  flex.sync self
+
+  def flex_source
+    { id: id,
+      name: name,
+      source_name: source_name,
+      source_identifier: source_identifier,
+      task_count: tasks.count }
+  end
+
+  module Flex
+    include ::Flex::Scopes
+    flex.context = Project
+    scope :search_by_id_and_name do |names, ids|
+      filters(prefix: { name: names }).filters(ids: { values: ids } )
+    end
+  end
+
   attr_accessible :name, :source_name, :source_identifier, :web_hook, :web_hook_token
 
   has_many :participations, dependent: :destroy
   has_many :integrations, :through => :participations, :uniq  => true
   has_many :tasks, dependent: :destroy
+
 
   validates_uniqueness_of :source_identifier, :scope => :source_name
 
