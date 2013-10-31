@@ -42,6 +42,10 @@ class Project < ActiveRecord::Base
       where('p.integration_id IN(?)', integrations.map(&:id)).uniq
   end
 
+  def task_count
+    tasks.count
+  end
+
   def self.recent(user = nil)
     query = select("projects.*, MAX(time_log_entries.started_at) max_started_at").
             joins("inner join tasks on projects.id = tasks.project_id").
