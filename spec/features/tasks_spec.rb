@@ -43,7 +43,9 @@ as a user I can', js: true  do
 
 
   scenario 'see a list of project\'s current tasks' do
-    find('span', text: project1.name).click
+    within '.view' do
+      find('span', text: project1.name).click
+    end
     page.should have_content task1.name
     page.should_not have_content task2.name
     page.should_not have_content task3.name
@@ -71,7 +73,9 @@ as a user I can', js: true  do
   end
 
   scenario 'filter tasks by name' do
-    find('span', text: project1.name).click
+    within '.view' do
+      find('span', text: project1.name).click
+    end
     page.should have_content task1.name
     page.should have_content task4.name
     fill_in 'searchfield', with: "laundry"
@@ -80,7 +84,9 @@ as a user I can', js: true  do
   end
 
   scenario 'start/stop working on task' do
-    find('span', text: project1.name).click
+    within '.view' do
+      find('span', text: project1.name).click
+    end
     within '.view' do
       div = find "#time-log-entry-#{task1.id}"
       div[:class].should_not include 'running'
@@ -186,7 +192,9 @@ as a user I can', js: true  do
     end
     within '#pagination' do
       find('.dropdown-toggle').click
-      all('.dropdown-menu a')[1].click
+      #wait_until(20) { find('.dropdown-menu a', text: '2/2') }
+      #all('.dropdown-menu a')[1].click
+      find('.dropdown-menu a', text: '2/2').click
     end
     within '.view' do
       page.should have_content task1.name
