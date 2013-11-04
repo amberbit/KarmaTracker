@@ -10,6 +10,7 @@ Requirements
 
 * JRuby - version 1.7.4
 * PostgreSQL - version >= 9.2
+* ElasticSearch - version 
 * PhantomJS - version >= 1.9 (for running tests only)
 
 Setup

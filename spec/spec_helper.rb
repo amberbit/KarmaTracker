@@ -117,4 +117,7 @@ def reset_fakeweb_urls
 
 end
 
-
+#TODO use this method isstead of allowing all connections
+def allow_local_connect
+  FakeWeb.allow_net_connect = %r[^https?://localhost:\d+]
+end

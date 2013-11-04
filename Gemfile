@@ -22,6 +22,10 @@ gem 'coffee-rails'
 gem 'sass-rails',   '~> 3.2.3'
 gem 'uglifier', '>= 1.0.3'
 
+#elasticsearch
+gem 'rest-client'
+gem 'flex-rails'
+
 gem 'bcrypt-ruby', '~> 3.0.0', require: 'bcrypt'
 gem 'amberbit-config'
 gem 'jruby-openssl'
