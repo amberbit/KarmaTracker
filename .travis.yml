@@ -27,6 +27,7 @@ before_script:
   - mkdir tmp
 script:
   - RAILS_ENV=test bundle exec rake db:schema:load --trace
+  - bundle exec rake flex:import
   - bundle exec rake db:test:prepare
   - bundle exec rspec spec
   - bundle exec brakeman
