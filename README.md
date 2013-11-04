@@ -1,6 +1,8 @@
 KarmaTracker
 ============
 
+[![Build Status](https://travis-ci.org/amberbit/KarmaTracker.png)](https://travis-ci.org/amberbit/KarmaTracker)
+
 KarmaTracker is a time tracking and reporting tool for teams and individuals who use Pivotal Tracker
 
 Requirements

@@ -1,0 +1,7 @@
+test:
+  adapter: jdbcpostgresql
+  encoding: unicode
+  database: karmatracker_test
+  pool: 5
+  username: postgres
+  password:
