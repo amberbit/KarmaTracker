@@ -20,6 +20,7 @@ class GitHubProjectsFetcher
           project = Project.where("source_name = 'GitHub' AND source_identifier = ?", source_identifier).
             first_or_initialize(source_name: 'GitHub', source_identifier: source_identifier)
           project.name = name
+          allow_local_connect if Rails.env.test?
           project.save
           fetch_integrations project, integration, repo_name, owner_name
           GitHubWebHooksManager.new({project: project}).create_hook(integration) unless project.web_hook
