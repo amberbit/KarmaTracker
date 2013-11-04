@@ -37,7 +37,7 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
   $scope.runningStartedAt = ""
   $scope.runningTime = ""
   $scope.alsoWorking = []
-  $scope.location = null
+  #$scope.location = null
 
 
   if $cookieStore.get($scope.tokenName)?
@@ -261,22 +261,22 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
       "/api/v1/projects/also_working?token=#{$cookieStore.get($scope.tokenName)}"
     ).success((data, status, headers, config) ->
       $scope.alsoWorking = if data == '' || Object.keys(data).length == 0 then [] else data
-      setLocation()
+#      setLocation()
     ).error((data, status, headers, config) ->
       console.debug "Error fetching who is also working ATM."
     )
 
-  setLocation = ->
-    if $location.path().match /projects\/\d*\/tasks$/
-      $scope.location = $location.path().match(/projects\/(\d*)\/tasks$/)[1]
-      for project, data of $scope.alsoWorking
-        if $scope.location == data[0].toString()
-          $scope.alsoWorking = data[1]
-          break
-    else if $location.path().match /projects$/
-      $scope.location = 'projects'
-    else
-      $scope.location = null
+#  setLocation = ->
+#   if $location.path().match /projects\/\d*\/tasks$/
+#      $scope.location = $location.path().match(/projects\/(\d*)\/tasks$/)[1]
+#      for project, data of $scope.alsoWorking
+#        if $scope.location == data[0].toString()
+#          $scope.alsoWorking = data[1]
+#          break
+#    else if $location.path().match /projects$/
+#      $scope.location = 'projects'
+#    else
+#      $scope.location = null
 
   if $cookieStore.get($scope.tokenName)?
     $scope.getRunningTask()
