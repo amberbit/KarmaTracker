@@ -29,7 +29,7 @@ describe 'Projects API' do
   it 'should return searched project' do
     integration = Integration.last
     p = create :project, name: "The next Google", integrations: [integration]
-    wait_until(10) { Project.count == 6}
+    wait_until(10) { Flex.last['_source']['name'] == 'The next Google' }
     api_get 'projects?query=google', {token: integration.user.api_key.token}
     response.status.should == 200
     resp = JSON.parse(response.body)
