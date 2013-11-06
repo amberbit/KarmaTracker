@@ -1,12 +1,12 @@
 source 'https://rubygems.org'
 source 'http://torquebox.org/rubygems/'
 
-gem 'rails', '3.2.14'
+gem 'rails', '3.2.15'
 gem 'rails-api'
 gem 'jbuilder', '~> 1.5.0'
 
-gem 'activerecord-jdbc-adapter'
-gem 'activerecord-jdbcpostgresql-adapter'
+gem 'activerecord-jdbc-adapter', '~> 1.3.2'
+gem 'activerecord-jdbcpostgresql-adapter', '~> 1.3.2'
 gem 'pg_search'
 
 gem 'torquebox', '2.3.0'
