@@ -9,6 +9,7 @@ as a user I can', js: true  do
   let(:user) { user = create :confirmed_user }
 
   let!(:project1) do
+    FakeWeb.allow_net_connect = true
     proj = create(:project, name: "KarmaTracker")
     proj
   end
