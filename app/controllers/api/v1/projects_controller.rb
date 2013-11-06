@@ -206,7 +206,7 @@ module Api
         if project && @api_key.user.projects.include?(project)
           @items_per_page = AppConfig.items_per_page
           @tasks = project.tasks
-          @tasks = @tasks.search_by_name params[:query] if params[:query].present?
+          @tasks = ElasticSearcher.search_tasks(params[:query], @tasks.map(&:id)) if params[:query].present?
           @tasks = @tasks.paginate(page: params[:page], per_page: @items_per_page )
           render 'tasks'
         else
@@ -246,7 +246,7 @@ module Api
         if project.present? && @api_key.user.projects.include?(project)
           @items_per_page = AppConfig.items_per_page
           @tasks = project.tasks.current
-          @tasks = @tasks.search_by_name params[:query] if params[:query].present?
+          @tasks = ElasticSearcher.search_tasks(params[:query], @tasks.map(&:id)) if params[:query].present?
           @tasks = @tasks.paginate(page: params[:page], per_page: @items_per_page )
           render 'tasks'
         else
