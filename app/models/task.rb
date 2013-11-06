@@ -1,5 +1,22 @@
 class Task < ActiveRecord::Base
-  include PgSearch
+  include Flex::ModelIndexer
+  flex.sync self
+
+  def flex_source
+    { id: id,
+      name: name,
+      source_name: source_name,
+      source_identifier: source_identifier
+    }
+  end
+
+  module Flex
+    include ::Flex::Scopes
+    flex.context = Task
+    scope :search_by_id_and_name do |names, ids|
+      filters(prefix: { name: names }).filters(ids: { values: ids } )
+    end
+  end
 
   attr_accessible :project, :project_id, :source_name, :source_identifier,
                   :current_state, :story_type, :name, :current_task
