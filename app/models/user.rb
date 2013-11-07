@@ -29,7 +29,7 @@ class User < ActiveRecord::Base
 
   def projects
     Project.joins('INNER JOIN participations p ON projects.id = p.project_id').
-      where('p.integration_id IN(?)', integrations.map(&:id)).uniq
+      where('p.integration_id IN(?) AND p.active', integrations.map(&:id)).uniq
   end
 
   def generate_token(column)
