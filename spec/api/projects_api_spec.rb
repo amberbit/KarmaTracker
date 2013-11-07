@@ -128,13 +128,16 @@ describe 'Projects API' do
     task["story_type"] = t.story_type
     task["name"] = t.name
     task["current_task"] = t.current_task
-    task["running"] = t.running?(@integration.user.id)
+    task["running"] = Task.running?(t.id, @integration.user.id)
     AppConfig.unstub(:items_per_page)
   end
 
   it 'should return tasks for a given project with search param' do
     project = Project.last
     t = FactoryGirl.create(:task, name: "Do 100 pushups", project: project)
+    wait_until(10) do
+      Task::Flex.search_by_id_and_name('pushups', [t.id]).count == 1
+    end
     api_get "projects/#{project.id}/tasks?query=push", {token: Integration.last.user.api_key.token}
     resp = JSON.parse(response.body)
     resp['tasks'].count.should == 1
@@ -177,7 +180,7 @@ describe 'Projects API' do
     task["story_type"] = t.story_type
     task["name"] = t.name
     task["current_task"] = t.current_task
-    task["running"] = t.running?(Integration.last.user.id)
+    task["running"] = Task.running?(t.id, Integration.last.user.id)
     resp['tasks'].count.should == 1
   end
 
@@ -231,6 +234,16 @@ describe 'Projects API' do
   it 'should return an error when trying to get PT web hook url from other user\'s project' do
     user = FactoryGirl.create :user
     api_get "projects/#{Project.last.id}/pivotal_tracker_activity_web_hook_url", {token: user.api_key.token}
+    response.status.should == 404
+    resp = JSON.parse(response.body)
+    resp.should have_key("message")
+    resp["message"].should =~ /Resource not found/
+  end
+
+  # GET /api/v1/projects/:id/pivotal_tracker_activity_web_hook_url
+  it 'should return an error when trying to get PT from non-existing project' do
+    user = create :user
+    api_get "projects/#{'non-existing'}/pivotal_tracker_activity_web_hook_url", {token: user.api_key.token}
     response.status.should == 404
     resp = JSON.parse(response.body)
     resp.should have_key("message")
