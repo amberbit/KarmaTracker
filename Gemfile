@@ -41,7 +41,7 @@ group :test do
   gem 'database_cleaner', require: false
   gem 'facon', require: false
   gem 'nullobject', require: false
-  gem 'factory_girl_rails'
+  gem 'factory_girl_rails', '~> 4.3.0'
   gem 'fakeweb', require: false
   gem 'torquebox-no-op', '2.3.0', require: false
   gem 'timecop', require: false
