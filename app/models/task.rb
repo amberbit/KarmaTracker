@@ -51,7 +51,8 @@ class Task < ActiveRecord::Base
   end
 
   def self.running? task_id, user_id
-    Task.find_by_id(task_id).time_log_entries.where({user_id: user_id, running: true}).present?
+    task = Task.find_by_id(task_id)
+    task.present? ? task.time_log_entries.where({user_id: user_id, running: true}).present? : nil
   end
 
 end
