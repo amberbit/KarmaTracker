@@ -81,7 +81,7 @@ feature 'Timesheet page,
   end
 
   scenario 'filter entries by date' do
-    fill_in 'From', with: @time_log_entry1.started_at.localtime + 2.hour
+    fill_in 'From', with: (@time_log_entry1.started_at.localtime + 2.hour).strftime("%m/%d/%Y %H:%M %p")
     click_on 'search_submit'
     within '.timesheet-entries' do
       page.should_not have_content @project1.name
@@ -90,7 +90,7 @@ feature 'Timesheet page,
       page.should have_content @task2.name
       wait_until(20) { all('tbody', visible: true).count == 2 }
     end
-    fill_in 'To', with: @time_log_entry2.started_at.localtime + 1.hour
+    fill_in 'To', with: (@time_log_entry2.started_at.localtime + 1.hour).strftime("%m/%d/%Y %H:%M %p")
     click_on 'search_submit'
     within '.timesheet-entries' do
       page.should_not have_content @project1.name
