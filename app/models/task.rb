@@ -4,9 +4,13 @@ class Task < ActiveRecord::Base
 
   def flex_source
     { id: id,
-      name: name,
+      project_id: project_id,
       source_name: source_name,
-      source_identifier: source_identifier
+      source_identifier: source_identifier,
+      current_state: current_state,
+      story_type: story_type,
+      current_task: current_task,
+      name: name
     }
   end
 
@@ -46,8 +50,8 @@ class Task < ActiveRecord::Base
     query.limit(5)
   end
 
-  def running? user_id
-    time_log_entries.where({user_id: user_id, running: true}).present?
+  def self.running? task_id, user_id
+    Task.find_by_id(task_id).time_log_entries.where({user_id: user_id, running: true}).present?
   end
 
 end
