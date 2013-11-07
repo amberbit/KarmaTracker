@@ -1,0 +1,49 @@
+<div class="small-12 large-12 columns show-for-touch" id="hook">
+  <div class="small-11 small-centered columns">
+    <div id="pulled-loader" class="small-2 columns show-for-small"></div>
+    <div id="pulled-alert" class="small-10 columns">Refreshing projects...</div>
+  </div>
+</div>
+
+<div ng-controller="ArchiveController" class="row pullgrip">
+  <div class="boxed-header">
+    <div class="small-12 large-8 columns">
+
+      <h4 class="left"><a ng-href="/#/archive">Projects Archive</a></h4>
+      <h4><a href="" class="refresh hide-for-touch" ng-click="refresh()">(Refresh)</a></h4>
+
+    </div>
+    <div class='small-12 large-4 columns tasks-search'>
+      <input type="text" id="searchfield" placeholder="Search..." ng-model='query.string' />
+    </div>
+  </div>
+  
+  <div class="small-12 large-12 columns">
+    <div class="row" ng-repeat="project in projects">
+      <div class="box-container">
+        
+      </div>
+    </div>
+     <div id="pagination" class="small-9 small-offset-1 large-6 large-offset-1" ng-show="totalCount > pageSize">
+      <div class="right">
+        <button class="button small" ng-disabled="currentPage == 0" ng-click="reloadProjects(currentPage-1)">
+            Previous
+        </button>
+        <div class="dropdown">
+          <a class="dropdown-toggle">
+          {{currentPage+1}} / {{numberOfPages()}}
+          </a>
+          <ul class="dropdown-menu">
+            <li ng-repeat="choice in items">
+            <a ng-click="reloadProjects(choice.value)">{{choice.text}}</a>
+            </li>
+          </ul>
+        </div>
+        <button class="button small" ng-disabled="currentPage+1 >= numberOfPages()" ng-click="reloadProjects(currentPage+1)">
+            Next
+        </button>
+      </div>
+    </div>
+    <div class="small-12 large-12 none-visible" ng-show="query.string && projects.none_visible">There are no projects to show.</div>
+  </div>
+</div>

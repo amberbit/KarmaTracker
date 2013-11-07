@@ -2,6 +2,7 @@
 #= require routes
 #= require sessions
 #= require projects
+#= require archive
 #= require refresh
 #= require register
 #= require integrations

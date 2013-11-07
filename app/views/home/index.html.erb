@@ -23,6 +23,8 @@
         <li class="divider"></li>
         <li ng-click="go('/projects')"><a href="#/projects" ng-class="highlightCurrentPage('projects')" ng-click="expandMenu()">Projects</a></li>
         <li class="divider"></li>
+        <li ng-click="go('/archive')"><a href="#/archive" ng-class="highlightCurrentPage('archive')" ng-click="expandMenu()">Archive</a></li>
+        <li class="divider"></li>
         <li ng-click="go('/timesheet')"><a ng-class="highlightCurrentPage('timesheet')" href="#/timesheet" ng-click="expandMenu()">Timesheet</a></li>
         <li class="divider"></li>
         <li id="profile" ng-click="moveMenu()" class="has-dropdown"><a href=""><img id="gravatar" ng-src="{{gravatar_url}}?s=35&d=mm" /> {{username}}</a>

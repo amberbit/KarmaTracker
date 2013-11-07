@@ -15,6 +15,8 @@ KarmaTracker.config ($routeProvider, $locationProvider) ->
     templateUrl: '/projects.html'
   ).when("/projects/:project_id/tasks",
     templateUrl: '/tasks.html'
+  ).when('/archive',
+    templateUrl: '/archive.html'
   ).when('/refresh',
     templateUrl: '/refresh.html'
   ).when('/integrations',
