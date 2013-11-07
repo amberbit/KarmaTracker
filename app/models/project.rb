@@ -45,6 +45,14 @@ class Project < ActiveRecord::Base
   def task_count
     tasks.count
   end
+  
+  def active_for_user?(user = nil)
+    if user
+      participations.where('integration_id IN (?)',user.integrations.map(&:id)).first.active
+    else
+      false
+    end
+  end
 
   def self.recent(user = nil)
     query = select("projects.*, MAX(time_log_entries.started_at) max_started_at").

@@ -21,7 +21,11 @@
   <div class="small-12 large-12 columns">
     <div class="row" ng-repeat="project in projects">
       <div class="box-container">
-        
+        <div class="columns panel project clickable">
+          <span class="project-text">
+            {{project.name}}
+          </span>
+        </div>
       </div>
     </div>
      <div id="pagination" class="small-9 small-offset-1 large-6 large-offset-1" ng-show="totalCount > pageSize">
