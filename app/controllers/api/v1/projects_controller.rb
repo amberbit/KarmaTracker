@@ -390,8 +390,8 @@ module Api
       #   => {"message": "Resource not found"}
       #
       def pivotal_tracker_activity_web_hook_url
-        project = Project.find(params[:id])
-        if project.users.include?(@api_key.user) && project.source_name == 'Pivotal Tracker'
+        project = Project.find_by_id(params[:id])
+        if project.present? && project.users.include?(@api_key.user) && project.source_name == 'Pivotal Tracker'
           render json: {url: "#{pivotal_tracker_activity_web_hook_api_v1_project_url(project)}?token=#{project.web_hook_token}"}, status: 200
         else
           render json: {message: 'Resource not found'}, status: 404

@@ -240,6 +240,16 @@ describe 'Projects API' do
     resp["message"].should =~ /Resource not found/
   end
 
+  # GET /api/v1/projects/:id/pivotal_tracker_activity_web_hook_url
+  it 'should return an error when trying to get PT from non-existing project' do
+    user = create :user
+    api_get "projects/#{'non-existing'}/pivotal_tracker_activity_web_hook_url", {token: user.api_key.token}
+    response.status.should == 404
+    resp = JSON.parse(response.body)
+    resp.should have_key("message")
+    resp["message"].should =~ /Resource not found/
+  end
+
   # POST /api/v1/projects/:id/pivotal_tracker_activity_web_hook
   it 'should return 401 if no token was provided' do
     api_post "projects/#{Project.last.id}/pivotal_tracker_activity_web_hook", File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_create.xml'))
