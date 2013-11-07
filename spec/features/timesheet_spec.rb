@@ -5,6 +5,8 @@ feature 'Timesheet page,
   as a user I can', js: true  do
 
   background do
+    FakeWeb.allow_net_connect = true
+    Capybara.reset_session!
     @time = Time.local(2013, 8, 2, 15, 0, 0)
     Timecop.travel(@time)
     @date1 =  12.hours.ago 
@@ -25,7 +27,6 @@ feature 'Timesheet page,
     create(:participation, project: @project1, integration: @integration)
     create(:participation, project: @project2, integration: @integration)
     FakeWeb.allow_net_connect = true
-    Capybara.reset_session!
     login @user
     sleep 1
     wait_for_loading
@@ -56,14 +57,14 @@ feature 'Timesheet page,
     end
   end
 
-  scenario 'see a message if there is no time log entries'  do
-    fill_in 'From', with: @time + 2.hours
+  scenario 'see a message if there is no time log entries' do
+    fill_in 'From', with: (@time + 2.hours).strftime("%m/%d/%Y %H:%M %p")
     click_on 'search_submit'
     within '.timesheet-entries' do
-      wait_until(30) { page.has_content? "There are no tracked tasks" }
+      wait_until(10) { page.has_content? "There are no tracked tasks" }
     end
     within '.timesheet-total' do
-      wait_until(20) { first('td').text.should == '00:00 hours' }
+      wait_until(10) { first('td').text.should == '00:00 hours' }
     end
   end
 
