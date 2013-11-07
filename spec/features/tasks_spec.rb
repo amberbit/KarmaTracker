@@ -52,6 +52,7 @@ as a user I can', js: true  do
     page.should_not have_content task3.name
   end
 
+  #TODO: use location.reload(true) and use poltergeist
   scenario 'stay on current page after refresh', driver: :selenium do
     within '.view' do
       find('span', text: project1.name).click
