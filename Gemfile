@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 source 'http://torquebox.org/rubygems/'
 
-gem 'rails', git: "git@github.com:BartlomiejSkwira/rails.git", branch: "3-2-stable"
+gem 'rails', git: "git://github.com/BartlomiejSkwira/rails.git", branch: "3-2-stable"
 gem 'rails-api'
 gem 'jbuilder', '~> 1.5.0'
 
