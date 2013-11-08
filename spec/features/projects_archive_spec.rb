@@ -21,7 +21,7 @@ as a user I can', js: true  do
     end
   end
   
-  scenario 'see a list of all my projects' do
+  scenario 'see a list of all my projects on archive page' do
     page.should have_content project1.name
     page.should have_content project2.name
     page.should_not have_content project3.name
@@ -44,7 +44,8 @@ as a user I can', js: true  do
     participation1.reload.should be_active
   end
   
-  scenario 'see all active projects on projects page' do
+  scenario 'see change on projects page after changing project\'s active state' do
+    participation2.should_not be_active
     within '.view' do
       find('span', text: project2.name).click
       wait_until(20) { find("#project-#{project2.id}").checked? == true }
@@ -52,19 +53,7 @@ as a user I can', js: true  do
     sleep 1
     participation2.reload.should be_active
     visit root_path
-    page.should have_content project1.name
     page.should have_content project2.name
   end
-  
-  scenario 'not see any archived projects on projects page' do
-    within '.view' do
-      find('span', text: project1.name).click
-      wait_until(20) { find("#project-#{project1.id}").checked? == false }
-    end
-    sleep 1
-    participation1.reload.should_not be_active
-    visit root_path
-    page.should_not have_content project1.name
-    page.should_not have_content project2.name
-  end
+
 end

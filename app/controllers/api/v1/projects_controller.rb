@@ -442,6 +442,28 @@ module Api
       # 
       # PUT /api/v1/projects/:id/toggle_active
       #
+      # params:
+      #   token - KarmaTracker API token
+      #
+      # = Examples
+      #
+      #   resp = conn.get("/api/v1/projects/1/toggle_active", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
+      #
+      #   resp.status
+      #   => 200
+      #
+      #   resp.body
+      #   => {"project": {"id":1, "name": "Sample project", "source_name": "Pivotal Tracker", "source_identifier": "123456", "task_count": "3", "active": true}}
+      #
+      #
+      #   resp = conn.get("/api/v1/projects/7/toggle_active", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
+      #
+      #   resp.status
+      #   => 404
+      #
+      #   resp.body
+      #   => {"message": "Resource not found"}
+      #
       def toggle_active
         @project = Project.find_by_id(params[:id])
         if @project && @api_key.user.projects.include?(@project)

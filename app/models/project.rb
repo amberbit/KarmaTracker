@@ -48,7 +48,12 @@ class Project < ActiveRecord::Base
   
   def active_for_user?(user = nil)
     if user
-      participations.where('integration_id IN (?)',user.integrations.map(&:id)).first.active
+      p = participations.where('integration_id IN (?)',user.integrations.map(&:id)).first
+      if p
+        p.active
+      else
+        false
+      end
     else
       false
     end
