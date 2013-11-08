@@ -17,7 +17,7 @@ as a user I can', js: true  do
       click_link 'Archive'
     end
     within '.view' do
-      wait_until(20) { page.has_content? 'Projects Archive' }
+      wait_until(20) { page.has_content? 'Archive' }
     end
   end
   
@@ -29,21 +29,28 @@ as a user I can', js: true  do
   
   scenario 'mark a project as archived/active' do
     participation1.should be_active
+    page.has_checked_field? "#project-#{project1.id}"
     within '.view' do
       find('span', text: project1.name).click
+      wait_until(20) { find("#project-#{project1.id}").checked? == false }
     end
-    participation1.should_not be_active
+    sleep 1
+    participation1.reload.should_not be_active
     within '.view' do
       find('span', text: project1.name).click
+      wait_until(20) { find("#project-#{project1.id}").checked? == true }
     end
-    participation1.should be_active
+    sleep 1
+    participation1.reload.should be_active
   end
   
   scenario 'see all active projects on projects page' do
     within '.view' do
       find('span', text: project2.name).click
+      wait_until(20) { find("#project-#{project2.id}").checked? == true }
     end
-    participation2.should be_active
+    sleep 1
+    participation2.reload.should be_active
     visit root_path
     page.should have_content project1.name
     page.should have_content project2.name
@@ -52,8 +59,10 @@ as a user I can', js: true  do
   scenario 'not see any archived projects on projects page' do
     within '.view' do
       find('span', text: project1.name).click
+      wait_until(20) { find("#project-#{project1.id}").checked? == false }
     end
-    participation1.should_not be_active
+    sleep 1
+    participation1.reload.should_not be_active
     visit root_path
     page.should_not have_content project1.name
     page.should_not have_content project2.name

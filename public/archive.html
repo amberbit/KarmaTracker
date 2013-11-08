@@ -21,10 +21,17 @@
   <div class="small-12 large-12 columns">
     <div class="row" ng-repeat="project in projects">
       <div class="box-container">
-        <div class="columns panel project clickable">
-          <span class="project-text">
-            {{project.name}}
-          </span>
+        <div class="columns panel project clickable" title="Project is {{project.active ? 'active' : 'archived'}}" ng-click="toggleActive(project)">
+          <div class="row">
+            <div class="columns small-11">
+              <span class="project-text">
+                {{project.name}}
+              </span>
+            </div>
+            <div class="columns small-1">
+              <input id="project-{{project.id}}" class="right" type="checkbox" ng-model="project.active" />
+            </div>
+          </div>
         </div>
       </div>
     </div>

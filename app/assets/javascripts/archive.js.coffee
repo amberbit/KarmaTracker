@@ -15,7 +15,7 @@ KarmaTracker.controller "ArchiveController", ($rootScope, $scope, $http, $cookie
   $scope.reloadProjects = (pageNr = 0) ->
     $rootScope.loading = true
     $http.get(
-      "/api/v1/projects?token=#{$cookieStore.get($scope.tokenName)}&archive=true#{if $scope.query.string.length > 0 then '&query=' + $scope.query.string else ''}&page=#{pageNr+1}"
+      "/api/v1/projects?token=#{$cookieStore.get($scope.tokenName)}#{if $scope.query.string.length > 0 then '&query=' + $scope.query.string else ''}&page=#{pageNr+1}"
     ).success((data, status, headers, config) ->
       $scope.totalCount = parseInt data['total_count']
       $scope.currentPage = pageNr
@@ -26,11 +26,15 @@ KarmaTracker.controller "ArchiveController", ($rootScope, $scope, $http, $cookie
       $scope.initItems()
     ).error((data, status, headers, config) ->
       console.debug "Error fetching projects. Status: #{status}"
-      if $scope.recent
-        $scope.recent = false
       $rootScope.loading = false
     )
 
+  $scope.toggleActive = (project) ->
+    $http.put("/api/v1/projects/#{project.id}/toggle_active?token=#{$cookieStore.get($scope.tokenName)}"
+    ).success((data, status, headers, config) ->
+      project.active = data.project.active
+    ).error((data, status, headers, config) ->
+    )
   
   $scope.queryChanged = ->
     query = $scope.query.string
@@ -46,6 +50,5 @@ KarmaTracker.controller "ArchiveController", ($rootScope, $scope, $http, $cookie
     for i in [0..(numberOfPages-1)]
       $scope.items.push { text: "#{i+1}/#{numberOfPages}", value: i }
 
-
-  $scope.$watch("recent", $scope.reloadProjects)
+  $scope.reloadProjects()
   $scope.$watch("query.string", $scope.queryChanged)

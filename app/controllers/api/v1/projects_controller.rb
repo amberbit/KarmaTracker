@@ -436,6 +436,21 @@ module Api
           render json: nil, status: 204
         end
       end
+      
+      ##
+      # Toggle project's active status for current user (through participation)
+      # 
+      # PUT /api/v1/projects/:id/toggle_active
+      #
+      def toggle_active
+        @project = Project.find_by_id(params[:id])
+        if @project && @api_key.user.projects.include?(@project)
+          @project.toggle_active_for_user(@api_key.user)
+          render '_show'
+        else
+          render json: {message: 'Resource not found'}, status: 404
+        end
+      end
     end
   end
 end
