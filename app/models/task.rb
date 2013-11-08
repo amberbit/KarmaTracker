@@ -1,5 +1,26 @@
 class Task < ActiveRecord::Base
-  include PgSearch
+  include Flex::ModelIndexer
+  flex.sync self
+
+  def flex_source
+    { id: id,
+      project_id: project_id,
+      source_name: source_name,
+      source_identifier: source_identifier,
+      current_state: current_state,
+      story_type: story_type,
+      current_task: current_task,
+      name: name
+    }
+  end
+
+  module Flex
+    include ::Flex::Scopes
+    flex.context = Task
+    scope :search_by_id_and_name do |names, ids|
+      filters(prefix: { name: names }).filters(ids: { values: ids } )
+    end
+  end
 
   attr_accessible :project, :project_id, :source_name, :source_identifier,
                   :current_state, :story_type, :name, :current_task
@@ -12,18 +33,7 @@ class Task < ActiveRecord::Base
                         :current_state, :story_type
   validates_uniqueness_of :source_identifier, :scope => :source_name
 
-  after_save :update_tsvector
-
   default_scope order('updated_at DESC')
-
-  pg_search_scope :search_by_name, :against => :name,
-    using: {
-      tsearch: {
-        dictionary: 'english',
-        tsvector_column: 'tsvector_name_tsearch',
-        prefix: true
-      }
-    }
 
   def self.current
     where(current_task: true)
@@ -40,13 +50,9 @@ class Task < ActiveRecord::Base
     query.limit(5)
   end
 
-  def running? user_id
-    time_log_entries.where({user_id: user_id, running: true}).present?
+  def self.running? task_id, user_id
+    task = Task.find_by_id(task_id)
+    task.present? ? task.time_log_entries.where({user_id: user_id, running: true}).present? : nil
   end
 
-  private 
-    def update_tsvector
-      query = "UPDATE tasks SET tsvector_name_tsearch = TO_TSVECTOR('english', '#{self.name.gsub("'", "''")}') WHERE id = #{self.id};"
-      ActiveRecord::Base.connection.execute query
-    end
 end

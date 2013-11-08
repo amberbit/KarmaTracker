@@ -1,13 +1,12 @@
 source 'https://rubygems.org'
 source 'http://torquebox.org/rubygems/'
 
-gem 'rails', '3.2.14'
+gem 'rails', git: "git@github.com:BartlomiejSkwira/rails.git", branch: "3-2-stable"
 gem 'rails-api'
 gem 'jbuilder', '~> 1.5.0'
 
-gem 'activerecord-jdbc-adapter'
-gem 'activerecord-jdbcpostgresql-adapter'
-gem 'pg_search'
+gem 'activerecord-jdbc-adapter', '~> 1.3.2'
+gem 'activerecord-jdbcpostgresql-adapter', '~> 1.3.2'
 
 gem 'torquebox', '2.3.0'
 gem 'torquebox-server', '2.3.0', require: false
@@ -42,7 +41,7 @@ group :test do
   gem 'database_cleaner', require: false
   gem 'facon', require: false
   gem 'nullobject', require: false
-  gem 'factory_girl_rails'
+  gem 'factory_girl_rails', '~> 4.3.0'
   gem 'fakeweb', require: false
   gem 'torquebox-no-op', '2.3.0', require: false
   gem 'timecop', require: false

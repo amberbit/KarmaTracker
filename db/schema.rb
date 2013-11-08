@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131030081559) do
+ActiveRecord::Schema.define(:version => 20131107084644) do
 
   create_table "api_keys", :force => true do |t|
     t.string   "token",      :null => false
@@ -26,8 +26,8 @@ ActiveRecord::Schema.define(:version => 20131030081559) do
     t.integer  "user_id"
     t.datetime "created_at",               :null => false
     t.datetime "updated_at",               :null => false
-    t.string   "source_id",                :null => false
     t.datetime "last_projects_refresh_at"
+    t.string   "source_id",                :null => false
   end
 
   add_index "integrations", ["api_key", "type"], :name => "index_identities_on_api_key_and_type", :unique => true
@@ -52,16 +52,15 @@ ActiveRecord::Schema.define(:version => 20131030081559) do
   add_index "projects", ["source_name", "source_identifier"], :name => "index_projects_on_source_name_and_source_identifier", :unique => true
 
   create_table "tasks", :force => true do |t|
-    t.datetime "created_at",                               :null => false
-    t.datetime "updated_at",                               :null => false
-    t.integer  "project_id",                               :null => false
-    t.text     "name",                                     :null => false
-    t.string   "source_name",                              :null => false
-    t.string   "source_identifier",                        :null => false
-    t.string   "current_state",                            :null => false
-    t.string   "story_type",                               :null => false
-    t.boolean  "current_task",          :default => false
-    t.tsvector "tsvector_name_tsearch"
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
+    t.integer  "project_id",                           :null => false
+    t.text     "name",                                 :null => false
+    t.string   "source_name",                          :null => false
+    t.string   "source_identifier",                    :null => false
+    t.string   "current_state",                        :null => false
+    t.string   "story_type",                           :null => false
+    t.boolean  "current_task",      :default => false
   end
 
   add_index "tasks", ["source_name", "source_identifier"], :name => "index_tasks_on_source_name_and_source_identifier", :unique => true

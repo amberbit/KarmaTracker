@@ -9,6 +9,7 @@ as a user I can', js: true  do
   let(:user) { user = create :confirmed_user }
 
   let!(:project1) do
+    FakeWeb.allow_net_connect = true
     proj = create(:project, name: "KarmaTracker")
     proj
   end
@@ -51,6 +52,7 @@ as a user I can', js: true  do
     page.should_not have_content task3.name
   end
 
+  #TODO: use location.reload(true) and use poltergeist
   scenario 'stay on current page after refresh', driver: :selenium do
     within '.view' do
       find('span', text: project1.name).click
@@ -138,9 +140,9 @@ as a user I can', js: true  do
     end
   end
 
-
   scenario "see spining wheel when loading tasks list" do
-    100.times { create(:task, project: project1) }
+
+    AppConfig.items_per_page = 1
     within '.view' do
       find('span', text: project1.name).click
     end
@@ -149,6 +151,7 @@ as a user I can', js: true  do
     within '.loading' do 
       page.should have_content 'Loading'
     end
+    AppConfig.items_per_page = 20
   end
 
   scenario 'paginate tasks with prev/next' do
