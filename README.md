@@ -8,9 +8,9 @@ KarmaTracker is a time tracking and reporting tool for teams and individuals who
 Requirements
 ============
 
-* JRuby - version 1.7.4
+* JRuby - version 1.7.6
 * PostgreSQL - version >= 9.2
-* ElasticSearch - version 
+* ElasticSearch - version 0.90.5
 * PhantomJS - version >= 1.9 (for running tests only)
 
 Setup
