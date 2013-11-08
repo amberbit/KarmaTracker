@@ -1,4 +1,38 @@
 class TimeLogEntry < ActiveRecord::Base
+  include Flex::ModelIndexer
+  flex.sync self
+
+  def flex_source
+    { id: id,
+      started_at: started_at,
+      stopped_at: stopped_at,
+      user_id: user_id
+    }
+  end
+
+  module Flex
+    include ::Flex::Scopes
+    flex.context = TimeLogEntry
+
+    #scope :by_id, ->(ids) { filters(ids: { values: ids } ) }
+    scope :by_user, ->(users_id) { term(user_id: users_id) }
+    scope :after_timestamp, ->(started_at_timestamp) { range(started_at: { from: started_at_timestamp }) }
+    scope :before_timestamp, ->(stopped_at_timestamp) { range(stopped_at: { to: stopped_at_timestamp }) }
+    scope :search_time_log_entries do |user_id, started_at, stopped_at|
+      result = by_user(user_id)
+      result = result.after_timestamp(started_at) if started_at.present?
+      result = result.before_timestamp(stopped_at) if stopped_at.present?
+      result
+    end
+  end
+
+  #scope :after_timestamp, lambda { |str_timestamp|
+    #where("stopped_at > ?", Time.zone.parse(str_timestamp))
+  #}
+
+  #scope :before_timestamp, lambda { |str_timestamp|
+    #where("started_at <= ?", Time.zone.parse(str_timestamp))
+  #}
 
   attr_accessible :task, :task_id, :user, :user_id, :running, :started_at, :stopped_at, :seconds
 
@@ -23,13 +57,6 @@ class TimeLogEntry < ActiveRecord::Base
     where("(started_at, stopped_at) OVERLAPS (timestamp :start, timestamp :stop)", start: start, stop: stop)
   }
 
-  scope :after_timestamp, lambda { |str_timestamp|
-    where("stopped_at > ?", Time.zone.parse(str_timestamp))
-  }
-
-  scope :before_timestamp, lambda { |str_timestamp|
-    where("started_at <= ?", Time.zone.parse(str_timestamp))
-  }
 
   scope :from_project, lambda { |project_id|
     joins(:task).where('tasks.project_id = ?', project_id)
