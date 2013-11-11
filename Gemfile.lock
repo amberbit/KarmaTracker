@@ -1,5 +1,5 @@
 GIT
-  remote: git@github.com:BartlomiejSkwira/rails.git
+  remote: git://github.com/BartlomiejSkwira/rails.git
   revision: 13a027f370af48c00b482f326b3929f0e4cbfc10
   branch: 3-2-stable
   specs:

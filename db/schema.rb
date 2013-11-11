@@ -26,8 +26,8 @@ ActiveRecord::Schema.define(:version => 20131107084644) do
     t.integer  "user_id"
     t.datetime "created_at",               :null => false
     t.datetime "updated_at",               :null => false
-    t.datetime "last_projects_refresh_at"
     t.string   "source_id",                :null => false
+    t.datetime "last_projects_refresh_at"
   end
 
   add_index "integrations", ["api_key", "type"], :name => "index_identities_on_api_key_and_type", :unique => true
@@ -85,9 +85,9 @@ ActiveRecord::Schema.define(:version => 20131107084644) do
     t.string   "password_reset_token"
     t.datetime "password_reset_sent_at"
     t.string   "auth_token"
+    t.string   "refreshing"
     t.string   "oauth_token"
     t.datetime "oauth_token_expires_at"
-    t.string   "refreshing"
   end
 
   add_index "users", ["confirmation_token"], :name => "index_users_on_confirmation_token", :unique => true

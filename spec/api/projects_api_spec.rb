@@ -24,6 +24,16 @@ describe 'Projects API' do
     AppConfig.unstub(:items_per_page)
   end
 
+# GET /projects
+  it 'should return error message when user invalid' do
+    AppConfig.stub(:items_per_page).and_return(2)
+    api_get 'projects?page=2', {token: Integration.last.user.api_key.token}
+    response.status.should == 200
+    resp = JSON.parse(response.body)
+    resp['total_count'].to_i.should == 3
+    resp['projects'].count.should == 1
+    AppConfig.unstub(:items_per_page)
+  end
 
   # GET /projects?query=search_term
   it 'should return searched project' do

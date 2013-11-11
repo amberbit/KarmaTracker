@@ -6,7 +6,10 @@ feature 'Webhook Infobox,
   I can', js: true  do
 
   let(:user) { create :confirmed_user }
-  let!(:project1) { create(:project, name: "Random project") }
+  let!(:project1) do
+    FakeWeb.allow_net_connect = true
+    create(:project, name: "Random project")
+  end
   let!(:task) { create(:task, project: project1, current_task: true) }
   let!(:time_log_entry) { create(:time_log_entry, task: task, user: user) }
   let!(:integration) { create(:integration) }

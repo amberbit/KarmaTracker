@@ -200,7 +200,7 @@ as a user I can', js: true  do
       find('.dropdown-menu a', text: '2/2').click
     end
     within '.view' do
-      page.should have_content task1.name
+      wait_until(10) { page.has_content? task1.name }
       page.should_not have_content task4.name
     end
     AppConfig.unstub(:items_per_page)
