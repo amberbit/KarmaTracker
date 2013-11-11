@@ -14,12 +14,14 @@ feature 'Projects management,
   end
   let(:project3) { create(:project) }
   let(:project4) { create :project }
+  let(:project5) { create :project }
 
   let!(:integration) do
     integration = create(:integration, user: user)
     create(:participation, project: project1, integration: integration)
     create(:participation, project: project2, integration: integration)
     create(:participation, project: project4, integration: integration)
+    create(:participation, project: project5, integration: integration, active: false)
     integration
   end
 
@@ -29,12 +31,13 @@ feature 'Projects management,
   end
 
 
-  scenario 'see a list of all my projects' do
+  scenario 'see a list of all my active projects' do
     page.should have_content 'Projects'
     page.should have_content project1.name
     page.should have_content project2.name
     page.should_not have_content project3.name
     page.should have_content project4.name
+    page.should_not have_content project5.name
   end
 
 

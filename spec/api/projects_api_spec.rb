@@ -359,4 +359,16 @@ describe 'Projects API' do
     response.status.should == 204
     response.body.should be_empty
   end
+  
+  # PUT /api/v1/projects/:id/toggle_active
+  it 'should toggle project\'s active state for current user' do
+    project = Project.last
+    project.should be_active_for_user(Integration.last.user)
+    api_put "projects/#{project.id}/toggle_active", {token: Integration.last.user.api_key.token}
+    response.status.should == 200
+    resp = JSON.parse(response.body)
+    resp['project'].should have_key("active")
+    resp['project']['active'].should == false
+    project.reload.should_not be_active_for_user(Integration.last.user)
+  end 
 end

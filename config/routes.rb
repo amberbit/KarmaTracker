@@ -40,6 +40,7 @@ KarmaTracker::Application.routes.draw do
           get :current_tasks
           get :pivotal_tracker_activity_web_hook_url
           post :pivotal_tracker_activity_web_hook
+          put :toggle_active
         end
       end
       resources :tasks, only: [:index, :show] do
