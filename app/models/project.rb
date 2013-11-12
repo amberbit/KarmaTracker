@@ -45,7 +45,7 @@ class Project < ActiveRecord::Base
   def task_count
     tasks.count
   end
-  
+
   def active_for_user?(user = nil)
     if user
       p = participations.where('integration_id IN (?)',user.integrations.map(&:id)).first
@@ -58,7 +58,7 @@ class Project < ActiveRecord::Base
       false
     end
   end
-  
+
   def toggle_active_for_user(user = nil)
     if user
       p = participations.where('integration_id IN (?)',user.integrations.map(&:id)).first

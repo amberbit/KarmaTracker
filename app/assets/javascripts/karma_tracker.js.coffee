@@ -211,7 +211,6 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
     ).success((data, status, headers, config) ->
       if data.length == 0
         $scope.firstTipVisible = true
-
     ).error((data, status, headers, config) ->
     )
 
@@ -281,8 +280,9 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
 
   if $cookieStore.get($scope.tokenName)?
     $scope.getRunningTask()
-    $scope.checkIntegrations()
     $rootScope.checkRefreshingProjects()
+    unless $scope.refreshing
+      $scope.checkIntegrations()
 
   $scope.$on "$locationChangeSuccess", (event, currentLocation) ->
     if currentLocation.match(/projects$/) or currentLocation.match(/projects\/\d*\/tasks$/)
