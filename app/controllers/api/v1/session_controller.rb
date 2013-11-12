@@ -72,7 +72,7 @@ module Api
           user.oauth_token_expires_at = data.credentials.expires_at.nil? ? nil : Time.at(data.credentials.expires_at).utc
           user.confirmation_token = nil
           user.save
-          GitHubIdentityCreator.background.create_identity(user.oauth_token, user.id) if params[:provider] == 'github' && params[:code].present?
+          GitHubIdentityCreator.background.create_identity(user.oauth_token, user.id) if params[:provider] == 'github' && user.integrations.git_hub.count == 0
           redirect_to "/#/oauth?email=#{user.email}&oauth_token=#{user.oauth_token}"
         end
       end

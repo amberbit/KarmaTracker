@@ -80,9 +80,11 @@ describe 'Session API (signing into the system)' do
     get '/' #init request object
     request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:github]
     expect {
-      get "auth/github/callback", provider: 'github', code: '123abc'
-    }.to change{ Identity.count }.by(1)
-    @user.identities.last.type.should == 'GitHub'
+      get "auth/github/callback", provider: 'github'
+    }.to change{ Integration.count }.by(1)
+    user = User.find_by_email OmniAuth.config.mock_auth[:github].info.email
+    user.integrations.count.should == 1
+    user.integrations.last.type.should == 'GitHubIntegration'
   end
 
   # GET /auth/:provider/callback
