@@ -17,7 +17,6 @@ Capybara.javascript_driver = :poltergeist
 Capybara.default_wait_time = 30
 
 
-
 Dir[File.join(File.dirname(__FILE__), 'support', '**', '*.rb')].each {|f| require f}
 
 RSpec.configure do |config|
@@ -46,20 +45,21 @@ RSpec.configure do |config|
     reset_fakeweb_urls
   end
 
-  config.before(:each, omniauth: true) do
+  config.before(:each, omniauth_google: true) do
     OmniAuth.config.test_mode = true
-    omniauth_hash = { 'provider' => 'google',
-                      'uid' => '12345',
-                      'info' => {
-                        'email' => 'test@example.com',
-                      },
-                      'credentials' => { 'token' => 'abc1234',
-                                         'expires_at' => 2.hours.from_now.to_i }
-    }
-    OmniAuth.config.add_mock(:google, omniauth_hash)
+    OmniAuthMocks.new.mock_google
   end
 
-  config.after(:each, omniauth: true) do
+  config.before(:each, omniauth_github: true) do
+    OmniAuth.config.test_mode = true
+    OmniAuthMocks.new.mock_github
+  end
+
+  config.after(:each, omniauth_google: true) do
+    OmniAuth.config.test_mode = false
+  end
+
+  config.after(:each, omniauth_github: true) do
     OmniAuth.config.test_mode = false
   end
 end

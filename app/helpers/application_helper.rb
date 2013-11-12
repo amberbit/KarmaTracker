@@ -1,3 +1,7 @@
+require 'net/https'
+require 'net/http'
+require 'open-uri'
+
 module ApplicationHelper
 
   def perform_request type, url, params, headers

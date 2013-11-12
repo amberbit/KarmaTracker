@@ -53,7 +53,7 @@ describe 'Session API (signing into the system)' do
   end
 
   # GET /auth/:provider/callback
-  it "should find existing user and redirect", omniauth: true do
+  it "should find existing user and redirect", omniauth_google: true do
     user = create :user, email: 'test@example.com', oauth_token: 'abc1234'
     expect {
       get "auth/google/callback", provider: 'google'
@@ -64,7 +64,7 @@ describe 'Session API (signing into the system)' do
   end
 
   # GET /auth/:provider/callback
-  it "should create new user and redirect", omniauth: true do
+  it "should create new user and redirect", omniauth_google: true do
     get '/' #init request object
     request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:google]
     expect {
@@ -76,7 +76,19 @@ describe 'Session API (signing into the system)' do
   end
 
   # GET /auth/:provider/callback
-  it "should redirect to failure action", omniauth: true do
+  it "should import GitHub identity/access token", omniauth_github: true do
+    get '/' #init request object
+    request.env["omniauth.auth"] = OmniAuth.config.mock_auth[:github]
+    expect {
+      get "auth/github/callback", provider: 'github'
+    }.to change{ Integration.count }.by(1)
+    user = User.find_by_email OmniAuth.config.mock_auth[:github].info.email
+    user.integrations.count.should == 1
+    user.integrations.last.type.should == 'GitHubIntegration'
+  end
+
+  # GET /auth/:provider/callback
+  it "should redirect to failure action", omniauth_google: true do
     OmniAuth.config.mock_auth[:google] = :invalid_credentials
     get "auth/google/callback", provider: 'google'
     json = JSON.parse(response.body) rescue {}

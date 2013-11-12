@@ -8,7 +8,7 @@ Rails.application.config.middleware.use OmniAuth::Builder do
     access_type: 'online'
   }
 
-  provider :github, AppConfig.github_api.client_id, AppConfig.github_api.secret, scope: "user:email"
+  provider :github, AppConfig.github_api.client_id, AppConfig.github_api.secret, scope: "user,repo"
 end
 
 OmniAuth.config.on_failure = Proc.new { |env|

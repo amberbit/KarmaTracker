@@ -63,7 +63,7 @@ module Api
           render json: {message: 'OmniAuth authentication failed'}, status: 401
         else
           user = User.find_by_email data.info.email
-          unless user.present?
+          if user.nil?
             password = SecureRandom.hex(6)
             user = User.new(email: data.info.email, password: password)
             UserMailer.account_created(user, request.host, params[:provider], password).deliver
@@ -72,6 +72,7 @@ module Api
           user.oauth_token_expires_at = data.credentials.expires_at.nil? ? nil : Time.at(data.credentials.expires_at).utc
           user.confirmation_token = nil
           user.save
+          GitHubIdentityCreator.background.create_identity(user.oauth_token, user.id) if params[:provider] == 'github' && user.integrations.git_hub.count == 0
           redirect_to "/#/oauth?email=#{user.email}&oauth_token=#{user.oauth_token}"
         end
       end
@@ -145,6 +146,7 @@ module Api
                                         provider: params[:strategy].capitalize,
                                         reason: params[:message].gsub('_', ' '))
       end
+
     end
   end
 end
