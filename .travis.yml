@@ -1,12 +1,14 @@
 language: ruby
 rvm:
-  - jruby-head
+  - jruby-19mode
 services:
   - elasticsearch
 before_install:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
-install: jruby -J-Xms2048m -J-Xmx2048m -w -S bundle install
+  - "rvm use jruby-1.7.6 --install --binary --fuzzy --verify-downloads 1"
+  - "ruby --version"
+install: travis_retry jruby -J-Xms2048m -J-Xmx2048m -w -S bundle install
 before_script:
   - sudo /etc/init.d/postgresql stop
   - sudo cp /etc/postgresql/9.1/main/pg_hba.conf ./
