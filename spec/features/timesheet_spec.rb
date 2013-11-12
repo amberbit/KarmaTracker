@@ -7,7 +7,8 @@ feature 'Timesheet page,
   background do
     FakeWeb.allow_net_connect = true
     Capybara.reset_session!
-    @time = Time.local(2013, 8, 2, 15, 0, 0)
+    today = Time.now
+    @time = Time.local(today.year, today.month, today.day, 15, 0, 0)
     Timecop.travel(@time)
     @date1 =  12.hours.ago 
     @date2 = 8.hours.ago
