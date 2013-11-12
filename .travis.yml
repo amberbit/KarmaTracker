@@ -1,6 +1,6 @@
 language: ruby
 rvm:
-  - jruby-head
+  - jruby-19mode
 services:
   - elasticsearch
 before_install:
