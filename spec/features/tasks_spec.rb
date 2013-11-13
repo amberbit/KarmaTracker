@@ -168,6 +168,7 @@ as a user I can', js: true  do
     within '#pagination' do
       click_on 'Next'
     end
+    sleep 1
     within '.view' do
       page.should have_content task1.name
       page.should_not have_content task4.name
@@ -175,6 +176,7 @@ as a user I can', js: true  do
     within '#pagination' do
       click_on 'Previous'
     end
+    sleep 1
     within '.view' do
       page.should have_content task4.name
       page.should_not have_content task1.name
