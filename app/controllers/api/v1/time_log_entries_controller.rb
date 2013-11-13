@@ -42,11 +42,13 @@ module Api
       #             "stopped_at"=>nil, "seconds"=>0}}]}
       #
       def index
-        #scope = @current_user.time_log_entries
-        scope = TimeLogEntry::Flex.search_time_log_entries(@current_user.id, params[:started_at], params[:stopped_at])
+        begin
+          scope = TimeLogEntry::Flex.search_time_log_entries(@current_user.id, params[:started_at].sub(' ', 'T'), params[:stopped_at].sub(' ', 'T')).count
+        rescue Exception => e
+          puts e.backtrace
+        end
 
         #scope = scope.from_project(params[:project_id]) if params[:project_id].present?
-        
        # scope = scope.after_timestamp(params[:started_at]) if params[:started_at].present?
        # scope = scope.before_timestamp(params[:stopped_at]) if params[:stopped_at].present?
         #TimeLogEntry::Flex.after_timestamp(params[:started_at]) if params[:started_at].present?
