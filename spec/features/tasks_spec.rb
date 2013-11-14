@@ -52,15 +52,14 @@ as a user I can', js: true  do
     page.should_not have_content task3.name
   end
 
-  #TODO: use location.reload(true) and use poltergeist
-  scenario 'stay on current page after refresh', driver: :selenium do
+  scenario 'stay on current page after refresh' do
     within '.view' do
       find('span', text: project1.name).click
     end
     page.should have_content task1.name
-    page.driver.browser.navigate.refresh
+    page.execute_script("location.reload(true);")
+    sleep 1
     page.should have_content task1.name
-    page.driver.browser.close
   end
 
   scenario 'toggle current tasks' do
@@ -93,6 +92,7 @@ as a user I can', js: true  do
       div = find "#time-log-entry-#{task1.id}"
       div[:class].should_not include 'running'
       div.click
+      sleep 1
       wait_until(20) { div[:class].include?('running') }
     end
     within '.recents.recent-tasks' do
@@ -168,6 +168,8 @@ as a user I can', js: true  do
     within '#pagination' do
       click_on 'Next'
     end
+    sleep 1
+    wait_until(10) { page.has_content? "2 / 2"}
     within '.view' do
       page.should have_content task1.name
       page.should_not have_content task4.name
@@ -175,6 +177,7 @@ as a user I can', js: true  do
     within '#pagination' do
       click_on 'Previous'
     end
+    sleep 1
     within '.view' do
       page.should have_content task4.name
       page.should_not have_content task1.name
