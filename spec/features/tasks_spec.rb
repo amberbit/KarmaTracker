@@ -52,15 +52,14 @@ as a user I can', js: true  do
     page.should_not have_content task3.name
   end
 
-  #TODO: use location.reload(true) and use poltergeist
-  scenario 'stay on current page after refresh', driver: :selenium do
+  scenario 'stay on current page after refresh' do
     within '.view' do
       find('span', text: project1.name).click
     end
     page.should have_content task1.name
-    page.driver.browser.navigate.refresh
+    page.execute_script("location.reload(true);")
+    sleep 1
     page.should have_content task1.name
-    page.driver.browser.close
   end
 
   scenario 'toggle current tasks' do
