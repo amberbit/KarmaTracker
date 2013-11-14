@@ -22,7 +22,8 @@ feature 'Webhook Infobox,
     wait_for_loading
     within '.view' do
       wait_until(10) { page.has_content? project1.name }
-      first('span', text: project1.name).click
+      #first('span', text: project1.name).click
+      find('span', text: project1.name).click
     end
     wait_until(10) { page.has_content? 'WebHook Integration' }
     find_field('webhook_url')['value'] =~ /api\/v1\/projects\/#{project1.id}\/pivotal_tracker_activity_web_hook/

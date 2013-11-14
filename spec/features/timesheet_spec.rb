@@ -163,7 +163,8 @@ feature 'Timesheet page,
       fill_in 'Stopped at', with: Time.now
       fill_in 'Started at', with: Time.now + 1.second
       click_on 'Save'
-      page.should have_content 'must be after start time'
+      wait_until(10) { page.has_content? 'must be after start time' }
+      #page.should have_content 'must be after start time'
       page.should have_field 'Started at'
     end
   end

@@ -93,6 +93,7 @@ as a user I can', js: true  do
       div = find "#time-log-entry-#{task1.id}"
       div[:class].should_not include 'running'
       div.click
+      sleep 1
       wait_until(20) { div[:class].include?('running') }
     end
     within '.recents.recent-tasks' do
@@ -169,6 +170,7 @@ as a user I can', js: true  do
       click_on 'Next'
     end
     sleep 1
+    wait_until(10) { page.has_content? "2 / 2"}
     within '.view' do
       page.should have_content task1.name
       page.should_not have_content task4.name

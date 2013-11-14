@@ -51,8 +51,8 @@ as a user I can', js: true  do
     within '.view' do
       find('span', text: project2.name).click
       sleep 1
-      #wait_until(20) { find("#project-#{project2.id}").checked? == true }
-      expect(find("#project-#{project2.id}").checked?).to be_true
+      wait_until(20) { find("#project-#{project2.id}").checked? == true }
+      #expect(find("#project-#{project2.id}").checked?).to be_true
     end
     participation2.reload.should be_active
     visit root_path
