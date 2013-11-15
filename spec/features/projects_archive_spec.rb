@@ -13,9 +13,12 @@ as a user I can', js: true  do
   background do
     FakeWeb.allow_net_connect = true
     login user
+    sleep 1
+    wait_for_loading
     within '.top-bar-section' do
       click_link 'Archive'
     end
+    sleep 1
     within '.view' do
       wait_until(20) { page.has_content? 'Projects Archive' }
     end
@@ -48,11 +51,13 @@ as a user I can', js: true  do
   
   scenario 'see change on projects page after changing project\'s active state' do
     participation2.should_not be_active
+    expect(find("#project-#{project2.id}").checked?).not_to be_true
     within '.view' do
       find('span', text: project2.name).click
+      #check("project-#{project2.id}")
       sleep 1
-      wait_until(20) { find("#project-#{project2.id}").checked? == true }
-      #expect(find("#project-#{project2.id}").checked?).to be_true
+      #wait_until(20) { find("#project-#{project2.id}").checked? == true }
+      expect(find("#project-#{project2.id}").checked?).to be_true
     end
     participation2.reload.should be_active
     visit root_path

@@ -202,6 +202,7 @@ as a user I can', js: true  do
       #all('.dropdown-menu a')[1].click
       find('.dropdown-menu a', text: '2/2').click
     end
+    sleep 1
     within '.view' do
       wait_until(10) { page.has_content? task1.name }
       page.should_not have_content task4.name
