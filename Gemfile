@@ -23,7 +23,7 @@ gem 'uglifier', '>= 1.0.3'
 
 #elasticsearch
 gem 'rest-client'
-gem 'flex-rails'
+gem 'flex-rails', git: 'git://github.com/ddnexus/flex.git', branch: 'refactoring/self_context'
 
 gem 'bcrypt-ruby', '~> 3.0.0', require: 'bcrypt'
 gem 'amberbit-config'

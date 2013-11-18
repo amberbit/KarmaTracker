@@ -5,7 +5,7 @@ KarmaTracker.controller "PivotalTrackerIntegrationsController", ($scope, $http, 
   $scope.errors = {}
   $scope.tokenName = 'token'
 
-  $scope.updateIntegrations = () ->
+  $scope.updateIntegrations = ->
     $http.get(
       '/api/v1/integrations?token='+$cookieStore.get($scope.tokenName)+'&service=pivotal_tracker'
     ).success((data, status, headers, config) ->

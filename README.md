@@ -49,6 +49,10 @@ To run project on Torquebox server first we must deploy it:
     torquebox deploy .
     torquebox run
 
+
+To get the latest model diagram (located at /doc):
+    bundle exec rake erd  filename='karmatracker_model_diagram' title='KarmaTracket model diagram' polymorphism=true inheritance=true
+
 License
 =======
 

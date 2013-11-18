@@ -139,7 +139,7 @@ feature 'Timesheet page,
       click_on 'Edit'
     end
     wait_until(10) { page.has_field? 'Started at' }
-    fill_in 'Started at', with: (@time_log_entry1.started_at + 1.second).localtime.localtime.to_s
+    fill_in 'Started at', with: (@time_log_entry1.started_at + 1.minute).localtime.to_s
     click_on 'Save'
     page.should have_content 'should not overlap other time log entries'
     page.should have_field 'Started at'

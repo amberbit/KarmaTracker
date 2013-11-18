@@ -19,6 +19,8 @@ RSpec.configure do |config|
 
   config.before(:each) do
     DatabaseCleaner.start
+    FakeWeb.allow_net_connect = true
+    Flex.flush_index :index => "karma_tracker_test"
   end
 
   config.after(:each) do

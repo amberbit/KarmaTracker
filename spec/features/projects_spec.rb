@@ -92,11 +92,12 @@ feature 'Projects management,
   end
 
   scenario 'see who else is working on my projects' do
+    TimeLogEntry.destroy_all
     user2 = create :confirmed_user
     shared_task = Task.last
-    TimeLogEntry.delete_all
     user2_running_entry = create :time_log_entry, user: user2, task: shared_task,
       stopped_at: nil, running: true
+    wait_until(10) { TimeLogEntry::Flex.by_user(user.id).count == 0 }
     my_running_entry = create :time_log_entry, user: user, task: shared_task,
       stopped_at: nil, running: true
 

@@ -1,4 +1,36 @@
 class TimeLogEntry < ActiveRecord::Base
+  include Flex::ModelIndexer
+  flex.sync self
+
+  def flex_source
+    { id: id,
+      task_id: task.id,
+      user_id: user_id,
+      running: running,
+      started_at: started_at,
+      stopped_at: stopped_at,
+      seconds: seconds,
+      project_id: task.project.id
+    }
+  end
+
+  module Flex
+    include ::Flex::Scopes
+    flex.context = TimeLogEntry
+
+    scope :by_user, ->(users_id) { term(user_id: users_id) }
+    scope :before_started_at, ->(timestamp) { filters(range: {started_at: {lte: timestamp} } ) }
+    scope :after_started_at, ->(timestamp) { filters(range: {started_at: {gte: timestamp} } ) }
+    scope :before_stopped_at, ->(timestamp) { filters(range: {stopped_at: {lte: timestamp} } ) }
+    scope :after_stopped_at, ->(timestamp) { filters(range: {stopped_at: {gte: timestamp} } ) }
+
+    scope :by_project, ->(projects_id) { term(project_id: projects_id) }
+    scope :except_id, ->(ids) { filters(:not => { ids: {values: ids}} ) }
+    scope :running, -> { term(running: true) }
+
+    #get time_log_entries which are overlapped by timestamp (overlapping parameter)
+    #scope :overlapped_by_timestamp, ->(t) { }
+  end
 
   attr_accessible :task, :task_id, :user, :user_id, :running, :started_at, :stopped_at, :seconds
 
@@ -14,26 +46,6 @@ class TimeLogEntry < ActiveRecord::Base
   validate :time_in_future
 
   before_save :calculate_logged_time
-
-  scope :from_timestamp, lambda { |timestamp|
-    where("timestamp :stamp BETWEEN started_at AND stopped_at", stamp: timestamp)
-  }
-
-  scope :within_timerange, lambda { |start,stop|
-    where("(started_at, stopped_at) OVERLAPS (timestamp :start, timestamp :stop)", start: start, stop: stop)
-  }
-
-  scope :after_timestamp, lambda { |str_timestamp|
-    where("stopped_at > ?", Time.zone.parse(str_timestamp))
-  }
-
-  scope :before_timestamp, lambda { |str_timestamp|
-    where("started_at <= ?", Time.zone.parse(str_timestamp))
-  }
-
-  scope :from_project, lambda { |project_id|
-    joins(:task).where('tasks.project_id = ?', project_id)
-  }
 
   scope :running, where(running: true)
 
@@ -66,22 +78,25 @@ class TimeLogEntry < ActiveRecord::Base
   end
 
   def time_overlapping
-    scope = TimeLogEntry.where(user_id: user_id)
-    scope = scope.where("id <> ?", id) if self.persisted?
+    scope = Flex.by_user(user_id)
+    scope = scope.except_id([id]) if self.persisted?
 
-    if started_at.present? && scope.from_timestamp(started_at).present?
-      errors.add :started_at, 'should not overlap other time log entries', { id: scope.from_timestamp(started_at).first.id }
-      errors.add :started_at, "id:#{ scope.from_timestamp(started_at).first.id }"
+    if started_at.present? && (start_overlapped = scope.before_started_at(started_at).after_stopped_at(started_at)).any?
+      id = start_overlapped.first['_source']['id']
+      errors.add :started_at, 'should not overlap other time log entries', { id: id }
+      errors.add :started_at, "id:#{id}"
     end
 
-    if stopped_at.present? && scope.from_timestamp(stopped_at).present?
-      errors.add :stopped_at, 'should not overlap other time log entries', { id: scope.from_timestamp(stopped_at).first.id }
-      errors.add :stopped_at, "id:#{ scope.from_timestamp(stopped_at).first.id }"
+    if stopped_at.present? && (stop_overlapped = scope.before_started_at(stopped_at).after_stopped_at(stopped_at)).any?
+      id = stop_overlapped.first['_source']['id']
+      errors.add :stopped_at, 'should not overlap other time log entries', { id: id }
+      errors.add :stopped_at, "id:#{id}"
     end
 
-    if started_at.present? && stopped_at.present? && scope.within_timerange(started_at, stopped_at).present?
-      errors.add :stopped_at, 'should not overlap other time log entries', { id: scope.within_timerange(started_at, stopped_at).first.id }
-      errors.add :stopped_at, "id:#{ scope.within_timerange(started_at, stopped_at).first.id }"
+    if started_at.present? && stopped_at.present? && (overlapped = scope.after_started_at(started_at).before_stopped_at(stopped_at)).any?
+      id = overlapped.first['_source']['id']
+      errors.add :stopped_at, 'whole entry should not contain other time log entries', { id: overlapped.first['id'] }
+      errors.add :stopped_at, "id:#{id}"
     end
   end
 
