@@ -5,8 +5,8 @@ gem 'rails', git: "git://github.com/BartlomiejSkwira/rails.git", branch: "3-2-st
 gem 'rails-api'
 gem 'jbuilder', '~> 1.5.0'
 
-gem 'activerecord-jdbc-adapter', '~> 1.3.2'
-gem 'activerecord-jdbcpostgresql-adapter', '~> 1.3.2'
+gem 'activerecord-jdbc-adapter', '~> 1.2.9.1'
+gem 'activerecord-jdbcpostgresql-adapter'
 
 gem 'torquebox', '2.3.0'
 gem 'torquebox-server', '2.3.0', require: false
@@ -23,7 +23,7 @@ gem 'uglifier', '>= 1.0.3'
 
 #elasticsearch
 gem 'rest-client'
-gem 'flex-rails', git: 'git://github.com/ddnexus/flex.git', branch: 'refactoring/self_context'
+gem 'flex-rails'
 
 gem 'bcrypt-ruby', '~> 3.0.0', require: 'bcrypt'
 gem 'amberbit-config'

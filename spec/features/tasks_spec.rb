@@ -35,7 +35,6 @@ as a user I can', js: true  do
     integration
   end
 
-
   background do
     FakeWeb.allow_net_connect = true
     Capybara.reset_session!
@@ -58,7 +57,6 @@ as a user I can', js: true  do
     end
     page.should have_content task1.name
     page.execute_script("location.reload(true);")
-    sleep 1
     page.should have_content task1.name
   end
 
@@ -88,30 +86,28 @@ as a user I can', js: true  do
     within '.view' do
       find('span', text: project1.name).click
     end
+
     within '.view' do
       div = find "#time-log-entry-#{task1.id}"
-      div[:class].should_not include 'running'
       div.click
-      sleep 1
-      wait_until(20) { div[:class].include?('running') }
     end
-    within '.recents.recent-tasks' do
-      div = find "#recent-time-log-entry-#{task1.id}"
-      wait_until(20) { div[:class].include?('running') }
-    end
-    sleep 1
-    task1.time_log_entries.count.should == 1
+
+    page.should have_selector("#time-log-entry-#{task1.id}.running")
+    page.should have_selector(".recents.recent-tasks #recent-time-log-entry-#{task1.id}")
+
+    task1.reload.time_log_entries.count.should == 1
     task1.time_log_entries.first.running.should be_true
+
+    # System won't allow us to save 0s time log entries (intentionally). here we *have* to sleep
+    sleep 2
+
     within '.view' do
       div = find "#time-log-entry-#{task1.id}"
       div.click
-      wait_until(20) { !div[:class].include?('running') }
     end
-    within '.recents.recent-tasks' do
-      div = find "#recent-time-log-entry-#{task1.id}"
-      wait_until(20) { !div[:class].include? 'running' }
-    end
-    task1.time_log_entries.first.running.should be_false
+
+    page.should have_no_selector("#time-log-entry-#{task1.id}.running")
+    page.should have_selector(".recents.recent-tasks #recent-time-log-entry-#{task1.id}")
   end
 
   scenario 'see recent tasks in right order' do
@@ -157,10 +153,11 @@ as a user I can', js: true  do
   scenario 'paginate tasks with prev/next' do
     AppConfig.stub(:items_per_page).and_return(1)
     visit current_path
+
     within '.view' do
       find('span', text: project1.name).click
     end
-    sleep 1
+
     within '.view' do
       page.should have_content task4.name
       page.should_not have_content task1.name
@@ -168,7 +165,6 @@ as a user I can', js: true  do
     within '#pagination' do
       click_on 'Next'
     end
-    sleep 1
     wait_until(10) { page.has_content? "2 / 2"}
     within '.view' do
       page.should have_content task1.name
@@ -177,7 +173,6 @@ as a user I can', js: true  do
     within '#pagination' do
       click_on 'Previous'
     end
-    sleep 1
     within '.view' do
       page.should have_content task4.name
       page.should_not have_content task1.name
@@ -191,18 +186,14 @@ as a user I can', js: true  do
     within '.view' do
       find('span', text: project1.name).click
     end
-    sleep 1
     within '.view' do
       page.should have_content task4.name
       page.should_not have_content task1.name
     end
     within '#pagination' do
       find('.dropdown-toggle').click
-      #wait_until(20) { find('.dropdown-menu a', text: '2/2') }
-      #all('.dropdown-menu a')[1].click
       find('.dropdown-menu a', text: '2/2').click
     end
-    sleep 1
     within '.view' do
       wait_until(10) { page.has_content? task1.name }
       page.should_not have_content task4.name
