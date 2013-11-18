@@ -59,7 +59,7 @@ feature 'Timesheet page,
   end
 
   scenario 'see a message if there is no time log entries' do
-    fill_in 'From', with: (@time + 2.hours).strftime("%m/%d/%Y %H:%M %p")
+    fill_in 'From', with: (@time + 2.hours).strftime("%Y-%m-%dT%H:%M:%S")
     click_on 'search_submit'
     within '.timesheet-entries' do
       wait_until(10) { page.has_content? "There are no tracked tasks" }

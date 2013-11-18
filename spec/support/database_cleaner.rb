@@ -15,12 +15,13 @@ RSpec.configure do |config|
   config.before(:suite) do
     DatabaseCleaner.strategy = :deletion
     DatabaseCleaner.clean_with(:deletion)
+    FakeWeb.allow_net_connect = true
+    Flex.delete_index :index => "karma_tracker_test"
+    Flex.create_index :index => "karma_tracker_test"
   end
 
   config.before(:each) do
     DatabaseCleaner.start
-    FakeWeb.allow_net_connect = true
-    Flex.flush_index :index => "karma_tracker_test"
   end
 
   config.after(:each) do

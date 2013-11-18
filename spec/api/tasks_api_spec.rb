@@ -86,7 +86,7 @@ describe 'Tasks API' do
     project['current_task'].should == task.current_task
     project['name'].should == task.name
   end
-  
+
   # GET /tasks/running
   it 'should return an error when user invalid' do
     api_post "time_log_entries/", {token: @user.api_key.token, time_log_entry: {task_id: @task.id} }
@@ -104,12 +104,14 @@ describe 'Tasks API' do
     TimeLogEntry.destroy_all
     Task.destroy_all
 
-    @tasks = []
-    10.times { @tasks << create(:task) }
 
-    10.times do |i|
+    @tasks = []
+    6.times { @tasks << create(:task) }
+
+    wait_until(10) { TimeLogEntry::Flex.count == 0 }
+    6.times do |i|
       Timecop.travel((i).days.ago) do
-        create :time_log_entry, task: @tasks[9-i]
+        create :time_log_entry, task: @tasks[5-i]
       end
     end
 
@@ -117,7 +119,7 @@ describe 'Tasks API' do
     response.status.should == 200
 
     tasks = JSON.parse(response.body)['tasks']
-    tasks.map {|t| t["task"]["id"]}.should == @tasks.map{|t| t.id}[5..9].reverse
+    tasks.map {|t| t["task"]["id"]}.should == @tasks.map{|t| t.id}[1..5].reverse
   end
 end
 
