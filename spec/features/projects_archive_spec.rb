@@ -17,9 +17,8 @@ as a user I can', js: true  do
     within '.top-bar-section' do
       click_link 'Archive'
     end
-    within '.view' do
-      wait_until(20) { page.has_content? 'Projects Archive' }
-    end
+
+    page.should have_content("Projects Archive")
   end
 
   scenario 'see a list of all my projects on archive page' do
