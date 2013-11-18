@@ -13,11 +13,14 @@ as a user I can', js: true  do
   background do
     FakeWeb.allow_net_connect = true
     login user
+    sleep 1
+    wait_for_loading
     within '.top-bar-section' do
       click_link 'Archive'
     end
+    sleep 1
     within '.view' do
-      wait_until(20) { page.has_content? 'Archive' }
+      wait_until(20) { page.has_content? 'Projects Archive' }
     end
   end
   
@@ -32,25 +35,30 @@ as a user I can', js: true  do
     page.has_checked_field? "#project-#{project1.id}"
     within '.view' do
       find('span', text: project1.name).click
-      wait_until(20) { find("#project-#{project1.id}").checked? == false }
+      sleep 1
+      #wait_until(20) { find("#project-#{project1.id}").checked? == false }
+      expect(find("#project-#{project1.id}").checked?).not_to be_true
     end
-    sleep 1
     participation1.reload.should_not be_active
     within '.view' do
       find('span', text: project1.name).click
-      wait_until(20) { find("#project-#{project1.id}").checked? == true }
+      sleep 1
+      #wait_until(20) { find("#project-#{project1.id}").checked? == true }
+      expect(find("#project-#{project1.id}").checked?).to be_true
     end
-    sleep 1
     participation1.reload.should be_active
   end
   
   scenario 'see change on projects page after changing project\'s active state' do
     participation2.should_not be_active
+    expect(find("#project-#{project2.id}").checked?).not_to be_true
     within '.view' do
       find('span', text: project2.name).click
-      wait_until(20) { find("#project-#{project2.id}").checked? == true }
+      #check("project-#{project2.id}")
+      sleep 1
+      #wait_until(20) { find("#project-#{project2.id}").checked? == true }
+      expect(find("#project-#{project2.id}").checked?).to be_true
     end
-    sleep 1
     participation2.reload.should be_active
     visit root_path
     page.should have_content project2.name

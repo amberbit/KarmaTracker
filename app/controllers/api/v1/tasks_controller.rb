@@ -70,12 +70,16 @@ module Api
       #   => {"message": "Resource not found"}
       #
       def running
-        @log_entry  = @current_user.time_log_entries.where(running: true).first
+        if @current_user.present?
+          @log_entry  = @current_user.time_log_entries.where(running: true).first
 
-        if @log_entry && @task = @log_entry.task
-          render '_show'
+          if @log_entry && @task = @log_entry.task
+            render '_show'
+          else
+            render json: {message: '"Running" resource not found'}, status: 404
+          end
         else
-          render json: {message: '"Running" resource not found'}, status: 404
+          render json: {message: 'Resource not found'}, status: 404
         end
       end
 

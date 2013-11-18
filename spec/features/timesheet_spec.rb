@@ -89,7 +89,8 @@ feature 'Timesheet page,
       page.should_not have_content @task1.name
       page.should have_content @project2.name
       page.should have_content @task2.name
-      wait_until(20) { all('tbody', visible: true).count == 2 }
+      #wait_until(30) { all('tbody', visible: true).count == 2 }
+      page.should have_css "#timesheet_entry_#{@time_log_entry3.id}"
     end
     fill_in 'To', with: (@time_log_entry2.started_at.localtime + 1.hour).strftime("%m/%d/%Y %H:%M %p")
     click_on 'search_submit'
@@ -98,7 +99,8 @@ feature 'Timesheet page,
       page.should_not have_content @task1.name
       page.should have_content @project2.name
       page.should have_content @task2.name
-      wait_until(20) { all('tbody', visible: true).count == 1 }
+      #wait_until(30) { all('tbody', visible: true).count == 1 }
+      page.should_not have_css "#timesheet_entry_#{@time_log_entry3.id}"
     end
   end
 
@@ -161,7 +163,8 @@ feature 'Timesheet page,
       fill_in 'Stopped at', with: Time.now
       fill_in 'Started at', with: Time.now + 1.second
       click_on 'Save'
-      page.should have_content 'must be after start time'
+      wait_until(10) { page.has_content? 'must be after start time' }
+      #page.should have_content 'must be after start time'
       page.should have_field 'Started at'
     end
   end

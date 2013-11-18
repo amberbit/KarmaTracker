@@ -86,6 +86,18 @@ describe 'Tasks API' do
     project['current_task'].should == task.current_task
     project['name'].should == task.name
   end
+  
+  # GET /tasks/running
+  it 'should return an error when user invalid' do
+    api_post "time_log_entries/", {token: @user.api_key.token, time_log_entry: {task_id: @task.id} }
+    token = Integration.last.user.api_key.token
+    Integration.last.user.api_key.update_attribute(:user, nil)
+    api_get "tasks/running", {token: token}
+    response.status.should == 404
+    resp = JSON.parse(response.body)
+    resp.should have_key("message")
+    resp["message"].should =~ /Resource not found/
+  end
 
 
   it 'should return a list of 5 most recently worked on tasks' do
