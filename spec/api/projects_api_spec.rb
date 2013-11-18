@@ -56,7 +56,6 @@ describe 'Projects API' do
   it 'should return a single project' do
     api_get "projects/#{Project.last.id}", {token: Integration.last.user.api_key.token}
     response.status.should == 200
-
     project = JSON.parse(response.body)['project']
     project['id'].should == Project.last.id
     project['name'].should == Project.last.name
