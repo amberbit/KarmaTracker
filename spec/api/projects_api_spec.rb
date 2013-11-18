@@ -41,9 +41,7 @@ describe 'Projects API' do
   it 'should return searched project' do
     integration = Integration.last
     p = create :project, name: "The next Google", integrations: [integration]
-    wait_until(10) do
-      Project::Flex.search_by_id_and_name('google', [p.id]).count == 1
-    end
+    Flex.refresh_index index: "karma_tracker_test"
     api_get 'projects?query=google', {token: integration.user.api_key.token}
     response.status.should == 200
     resp = JSON.parse(response.body)
@@ -146,9 +144,7 @@ describe 'Projects API' do
   it 'should return tasks for a given project with search param' do
     project = Project.last
     t = FactoryGirl.create(:task, name: "Do 100 pushups", project: project)
-    wait_until(10) do
-      Task::Flex.search_by_id_and_name('pushups', [t.id]).count == 1
-    end
+    Flex.refresh_index index: "karma_tracker_test"
     api_get "projects/#{project.id}/tasks?query=push", {token: Integration.last.user.api_key.token}
     resp = JSON.parse(response.body)
     resp['tasks'].count.should == 1

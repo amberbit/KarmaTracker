@@ -103,6 +103,8 @@ describe 'Tasks API' do
   it 'should return a list of 5 most recently worked on tasks' do
     TimeLogEntry.destroy_all
     Task.destroy_all
+    Flex.delete_index :index => "karma_tracker_test"
+    Flex.create_index :index => "karma_tracker_test"
 
 
     @tasks = []
