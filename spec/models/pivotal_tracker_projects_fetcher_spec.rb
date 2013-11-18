@@ -40,7 +40,7 @@ should' do
     @integration.projects.count.should == 1
     @integration2.projects.count.should == 1
     project = Project.first
-    wait_until(20) { project.integrations.count == 2 }
+    project.integrations.count.should == 2
 
     reset_fakeweb_urls
 
@@ -55,7 +55,7 @@ should' do
     @fetcher.fetch_projects(@integration)
     @fetcher.fetch_tasks(@integration.projects.first, @integration)
     Task.count.should == 2
-    wait_until(20) { Project.first.tasks.count == 2 }
+    Project.first.tasks.count.should == 2
   end
 
   it 'mark current tasks appropriately' do

@@ -5,8 +5,8 @@ gem 'rails', git: "git://github.com/BartlomiejSkwira/rails.git", branch: "3-2-st
 gem 'rails-api'
 gem 'jbuilder', '~> 1.5.0'
 
-gem 'activerecord-jdbc-adapter', '~> 1.3.2'
-gem 'activerecord-jdbcpostgresql-adapter', '~> 1.3.2'
+gem 'activerecord-jdbc-adapter', '~> 1.2.9.1'
+gem 'activerecord-jdbcpostgresql-adapter'
 
 gem 'torquebox', '2.3.0'
 gem 'torquebox-server', '2.3.0', require: false

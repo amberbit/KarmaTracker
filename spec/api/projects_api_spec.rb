@@ -24,7 +24,7 @@ describe 'Projects API' do
     AppConfig.unstub(:items_per_page)
   end
 
-# GET /projects
+  # GET /projects
   it 'should return error message when user invalid' do
     AppConfig.stub(:items_per_page).and_return(2)
     api_get 'projects?page=2', {token: Integration.last.user.api_key.token}

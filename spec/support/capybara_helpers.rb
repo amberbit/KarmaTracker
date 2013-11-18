@@ -26,3 +26,4 @@ end
 def wait_for_loading(timeout = 20)
   wait_until(timeout) { find('.loading', visible: false).present? }
 end
+
