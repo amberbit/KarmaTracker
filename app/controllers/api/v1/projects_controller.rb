@@ -22,8 +22,8 @@ module Api
       #   => 200
       #
       #   resp.body
-      #   => [{"project": {"id":1, "name": "Sample project", "source_name": "Pivotal Tracker", "source_identifier": "123456", "task_count": "2"}},
-      #       {"project": {"id":3, "name": "Some random name "source_name": "GitHub", "source_identifier": "42", "task_count": "0"}}]
+      #   => [{"project": {"id":1, "name": "Sample project", "source_name": "Pivotal Tracker", "source_identifier": "123456", "task_count": "2", "active": true}},
+      #       {"project": {"id":3, "name": "Some random name "source_name": "GitHub", "source_identifier": "42", "task_count": "0", "active": true}}]
       #
       def index
         @items_per_page = AppConfig.items_per_page
@@ -54,7 +54,7 @@ module Api
       #   => 200
       #
       #   resp.body
-      #   => {"project": {"id":1, "name": "Sample project", "source_name": "Pivotal Tracker", "source_identifier": "123456", "task_count": "3"}}
+      #   => {"project": {"id":1, "name": "Sample project", "source_name": "Pivotal Tracker", "source_identifier": "123456", "task_count": "3", "active": true}}
       #
       #
       #   resp = conn.get("/api/v1/projects/7", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
@@ -91,8 +91,8 @@ module Api
       #   => 200
       #
       #   resp.body
-      #   => [{"project": {"id":1, "name": "Sample project", "source_name": "Pivotal Tracker", "source_identifier": "123456", "task_count": "2"}},
-      #       {"project": {"id":3, "name": "Some random name "source_name": "GitHub", "source_identifier": "42", "task_count": "0"}}]
+      #   => [{"project": {"id":1, "name": "Sample project", "source_name": "Pivotal Tracker", "source_identifier": "123456", "task_count": "2", "active": true}},
+      #       {"project": {"id":3, "name": "Some random name "source_name": "GitHub", "source_identifier": "42", "task_count": "0", "active": true}}]
       #
       #   resp = conn.get("/api/v1/projects/recent", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
       #

@@ -23,13 +23,16 @@
       <div class="box-container">
         <div class="columns panel project clickable" title="Project is {{project.active ? 'active' : 'archived'}}" ng-click="toggleActive(project)">
           <div class="row">
-            <div class="columns small-11">
+            <div class="columns small-8 large-10">
               <span class="project-text">
                 {{project.name}}
               </span>
             </div>
-            <div class="columns small-1">
-              <input id="project-{{project.id}}" class="right" type="checkbox" ng-model="project.active" />
+            <div class="columns small-4 large-2">
+              <span class="project-text toggle-active-field">
+                {{project.active ? 'Active' : 'Archived'}}
+              </span>
+              <input id="project-{{project.id}}" type="checkbox" ng-model="project.active" class="right" />
             </div>
           </div>
         </div>

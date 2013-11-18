@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-feature 'Projects archive management,
+feature 'Archiving projects,
 as a user I can', js: true  do
   let(:user) { create :confirmed_user }
   let(:project1) { create(:project, name: "ZZ KarmaTracker") }
