@@ -198,8 +198,6 @@ as a user I can', js: true  do
     end
     within '#pagination' do
       find('.dropdown-toggle').click
-      #wait_until(20) { find('.dropdown-menu a', text: '2/2') }
-      #all('.dropdown-menu a')[1].click
       find('.dropdown-menu a', text: '2/2').click
     end
     sleep 1

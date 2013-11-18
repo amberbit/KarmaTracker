@@ -76,7 +76,7 @@ feature 'Timesheet page,
     within '.timesheet-entries' do
       page.should have_content @project1.name
       page.should have_content @task1.name
-      wait_until(20) { page.has_no_content? @project2.name }
+      page.should_not have_content @project2.name
       page.should_not have_content @task2.name
     end
   end
@@ -89,7 +89,6 @@ feature 'Timesheet page,
       page.should_not have_content @task1.name
       page.should have_content @project2.name
       page.should have_content @task2.name
-      #wait_until(30) { all('tbody', visible: true).count == 2 }
       page.should have_css "#timesheet_entry_#{@time_log_entry3.id}"
     end
     fill_in 'To', with: (@time_log_entry2.started_at.localtime + 1.hour).strftime("%m/%d/%Y %H:%M %p")
@@ -99,7 +98,6 @@ feature 'Timesheet page,
       page.should_not have_content @task1.name
       page.should have_content @project2.name
       page.should have_content @task2.name
-      #wait_until(30) { all('tbody', visible: true).count == 1 }
       page.should_not have_css "#timesheet_entry_#{@time_log_entry3.id}"
     end
   end
@@ -114,6 +112,7 @@ feature 'Timesheet page,
     end
     sleep 1
     within "#timesheet_entry_#{@time_log_entry1.id}" do
+      wait_until(20) { page.has_no_field? 'Started at' }
       table_date = DateTime.parse(all('td')[2].find('div').text)
       expected = (@date1 - 30.minutes).localtime.to_datetime.strftime('%Y-%m-%dT%H:%M:%S')
       table_date.strftime('%Y-%m-%dT%H:%M:%S').should == expected
@@ -143,7 +142,7 @@ feature 'Timesheet page,
     wait_until(10) { page.has_field? 'Started at' }
     fill_in 'Started at', with: (@time_log_entry1.started_at + 1.second).localtime.localtime.to_s
     click_on 'Save'
-    page.should have_content 'should not overlap other time log entries'
+    wait_until(10) { page.has_content? 'should not overlap other time log entries' }
     page.should have_field 'Started at'
     page.should have_css 'tr.error-row'
     within "#timesheet_entry_#{@time_log_entry2.id}" do
@@ -151,7 +150,7 @@ feature 'Timesheet page,
       fill_in 'Stopped at', with: (@time_log_entry3.started_at + 2.seconds).localtime
       click_on 'Save'
     end
-    page.should have_content 'should not overlap other time log entries'
+    wait_until(10) { page.has_content? 'should not overlap other time log entries' }
     page.should have_field 'Started at'
     page.should have_css 'tr.error-row'
   end
@@ -164,7 +163,6 @@ feature 'Timesheet page,
       fill_in 'Started at', with: Time.now + 1.second
       click_on 'Save'
       wait_until(10) { page.has_content? 'must be after start time' }
-      #page.should have_content 'must be after start time'
       page.should have_field 'Started at'
     end
   end
