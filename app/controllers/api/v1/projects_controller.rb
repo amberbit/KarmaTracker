@@ -31,7 +31,7 @@ module Api
           active = params[:archive] ? false : true
           @projects = @api_key.user.projects
           @projects = @projects.active(@api_key.user) if active
-          @projects = ElasticSearcher.search_projects(params[:query], @projects.map(&:id)) if params[:query].present?
+          @projects = ElasticSearcher.projects(params[:query], @projects.map(&:id)) if params[:query].present?
           @projects = @projects.sort!{ |a,b| a['name'].downcase <=> b['name'].downcase }.
             paginate(page: params[:page], per_page: @items_per_page )
           render 'index'
@@ -212,7 +212,7 @@ module Api
         if project && @api_key.user.projects.include?(project)
           @items_per_page = AppConfig.items_per_page
           @tasks = project.tasks
-          @tasks = ElasticSearcher.search_tasks(params[:query], @tasks.map(&:id)) if params[:query].present?
+          @tasks = ElasticSearcher.tasks(params[:query], @tasks.map(&:id)) if params[:query].present?
           @tasks = @tasks.paginate(page: params[:page], per_page: @items_per_page )
           render 'tasks'
         else
@@ -252,7 +252,7 @@ module Api
         if project.present? && @api_key.user.projects.include?(project)
           @items_per_page = AppConfig.items_per_page
           @tasks = project.tasks.current
-          @tasks = ElasticSearcher.search_tasks(params[:query], @tasks.map(&:id)) if params[:query].present?
+          @tasks = ElasticSearcher.tasks(params[:query], @tasks.map(&:id)) if params[:query].present?
           @tasks = @tasks.paginate(page: params[:page], per_page: @items_per_page )
           render 'tasks'
         else

@@ -23,6 +23,7 @@ module ApplicationHelper
 
   #TODO: use inject instead of each?
   #TODO: move to view!
+  #TODO: rework to elastic search
   def also_working_hash(ids)
     projects = {}
     Project.also_working(ids).each do |project|

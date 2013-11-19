@@ -1,9 +1,10 @@
 # see the detailed Configuration documentation at http://ddnexus.github.io/flex/doc/1-Global-Doc/3-Configuration.html
 
+
 Flex::Configuration.configure do |config|
 
   # you must add your indexed model names here
-  config.flex_models = %w[ Project Task ]
+  config.flex_models = %w[ Project Task TimeLogEntry ]
 
   # you must add your active model names here
   config.flex_active_models = %w[  ]
@@ -31,7 +32,7 @@ Flex::Configuration.configure do |config|
   # config.logger.debug_variables = false
   # config.logger.debug_request   = false
   # config.logger.debug_result    = false
-  # config.logger.curl_format     = false
+  config.logger.curl_format     = true
 
   # Custom config file path
   # config.config_file = '/custom/path/to/flex.yml',

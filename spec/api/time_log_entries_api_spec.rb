@@ -5,6 +5,7 @@ require 'timecop'
 describe 'TimeLogEntry API' do
 
   before :each do
+    FakeWeb.allow_net_connect = true
     project = FactoryGirl.create :project
     integration = FactoryGirl.create :integration
     project.integrations << integration
@@ -105,6 +106,9 @@ describe 'TimeLogEntry API' do
       FactoryGirl.create :time_log_entry, user: @user, started_at: i.hours.ago, stopped_at: (i.hours.ago + 1.minute)
     end
     TimeLogEntry.new(user: @user, task: @task).start.save!
+    wait_until(10) do
+      TimeLogEntry::Flex.by_user(@user.id).count == 4
+    end
 
     json = api_get "time_log_entries/", {token: @user.api_key.token }
     response.status.should == 200
@@ -123,6 +127,9 @@ describe 'TimeLogEntry API' do
     @user.projects.count.should == 2
     @user.time_log_entries.count.should == 2
 
+    wait_until(10) do
+      TimeLogEntry::Flex.by_user(@user.id).count == 2
+    end
     json = api_get "time_log_entries/", { token: @user.api_key.token, project_id: other_project.id }
     response.status.should == 200
     json.count.should == 1
@@ -135,6 +142,9 @@ describe 'TimeLogEntry API' do
       FactoryGirl.create :time_log_entry, user: @user, started_at: i.days.ago, stopped_at: (i.days.ago + 1.hour)
     end
     @user.time_log_entries.count.should == 5
+    wait_until(10) do
+      TimeLogEntry::Flex.by_user(@user.id).count == 5
+    end
 
     Timecop.travel(1.minute.from_now) do
       json = api_get "time_log_entries/", { token: @user.api_key.token, started_at: 10.days.ago.iso8601, stopped_at: 3.days.ago.iso8601 }

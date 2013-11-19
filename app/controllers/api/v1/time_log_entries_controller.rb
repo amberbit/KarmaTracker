@@ -42,13 +42,9 @@ module Api
       #             "stopped_at"=>nil, "seconds"=>0}}]}
       #
       def index
-        scope = @current_user.time_log_entries
-        scope = scope.from_project(params[:project_id]) if params[:project_id].present?
-        scope = scope.after_timestamp(params[:started_at]) if params[:started_at].present?
-        scope = scope.before_timestamp(params[:stopped_at]) if params[:stopped_at].present?
-        scope.sort! { |a,b| a.started_at <=> b.started_at }
-
-        @time_log_entries = scope
+        Flex.refresh_index index: "karma_tracker_#{Rails.env}"
+        scope = ElasticSearcher.time_log_entries @current_user.id, params[:started_at], params[:stopped_at], params[:project_id]
+        @time_log_entries = scope.sort! { |a,b| a['started_at'] <=> b['started_at'] }
         render 'index'
       end
 

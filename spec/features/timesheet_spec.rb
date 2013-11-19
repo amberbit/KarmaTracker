@@ -59,7 +59,7 @@ feature 'Timesheet page,
   end
 
   scenario 'see a message if there is no time log entries' do
-    fill_in 'From', with: (@time + 2.hours).strftime("%m/%d/%Y %H:%M %p")
+    fill_in 'From', with: (@time + 2.hours).strftime("%Y-%m-%dT%H:%M:%S")
     click_on 'search_submit'
     within '.timesheet-entries' do
       wait_until(10) { page.has_content? "There are no tracked tasks" }
@@ -72,7 +72,6 @@ feature 'Timesheet page,
   scenario 'filter entries by project' do
     select @project1.name, from: 'Project'
     click_on 'search_submit'
-    sleep 1
     within '.timesheet-entries' do
       page.should have_content @project1.name
       page.should have_content @task1.name
@@ -102,25 +101,25 @@ feature 'Timesheet page,
     end
   end
 
-  scenario 'edit entry' do
+  scenario 'edit entry', driver: :selenium do
     within "#timesheet_entry_#{@time_log_entry1.id}" do
       click_on 'Edit'
-      wait_until(10) { page.has_field? 'Started at' }
-      fill_in 'Started at', with: (@date1 - 30.minutes).localtime
-      fill_in 'Stopped at', with: (@date1 + 1.hour).localtime
+      page.should have_field 'Started at', with: @time_log_entry1.started_at.localtime.strftime('%Y-%m-%dT%H:%M:%S')
+      fill_in 'Started at', with: (@date1 - 30.minutes).localtime.strftime('%Y-%m-%dT%H:%M:%S')
+      fill_in 'Stopped at', with: (@date1 + 1.hour).localtime.strftime('%Y-%m-%dT%H:%M:%S')
       click_on 'Save'
     end
-    sleep 1
+    page.should have_no_field 'Started at'
     within "#timesheet_entry_#{@time_log_entry1.id}" do
-      wait_until(20) { page.has_no_field? 'Started at' }
+      page.should have_content "02:30:00"
       table_date = DateTime.parse(all('td')[2].find('div').text)
-      expected = (@date1 - 30.minutes).localtime.to_datetime.strftime('%Y-%m-%dT%H:%M:%S')
+      expected = (@date1 - 30.minutes).localtime.strftime('%Y-%m-%dT%H:%M:%S')
       table_date.strftime('%Y-%m-%dT%H:%M:%S').should == expected
       table_time = all('td')[3].find('div').text
       table_time.should == '01:30 hours'
     end
     @time_log_entry1.reload.started_at.strftime('%Y-%m-%dT%H:%M:%S').should == (@date1 - 30.minutes).strftime('%Y-%m-%dT%H:%M:%S')
-    @time_log_entry1.reload.stopped_at.strftime('%Y-%m-%dT%H:%M:%S').should == (@date1 + 1.hour).strftime('%Y-%m-%dT%H:%M:%S')
+    @time_log_entry1.stopped_at.strftime('%Y-%m-%dT%H:%M:%S').should == (@date1 + 1.hour).strftime('%Y-%m-%dT%H:%M:%S')
   end
 
   scenario 'delete entry' do
@@ -140,7 +139,7 @@ feature 'Timesheet page,
       click_on 'Edit'
     end
     wait_until(10) { page.has_field? 'Started at' }
-    fill_in 'Started at', with: (@time_log_entry1.started_at + 1.second).localtime.localtime.to_s
+    fill_in 'Started at', with: (@time_log_entry1.started_at + 1.minute).localtime.to_s
     click_on 'Save'
     wait_until(10) { page.has_content? 'should not overlap other time log entries' }
     page.should have_field 'Started at'

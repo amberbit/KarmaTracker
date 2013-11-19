@@ -39,14 +39,16 @@ describe 'Projects API' do
   end
 
   # GET /projects
-  it 'should return error message when user invalid' do
-    AppConfig.stub(:items_per_page).and_return(2)
-    api_get 'projects?page=2', {token: Integration.last.user.api_key.token}
-    response.status.should == 200
+  it 'should return error message when user is invalid' do
+    token = Integration.last.user.api_key.token
+    Integration.last.user.delete
+    expect {
+      api_get 'projects?page=2', {token: token}
+    }.not_to raise_error
+    response.status.should == 404
     resp = JSON.parse(response.body)
-    resp['total_count'].to_i.should == 3
-    resp['projects'].count.should == 1
-    AppConfig.unstub(:items_per_page)
+    resp.should have_key("message")
+    resp["message"].should =~ /Resource not found/
   end
 
   # GET /projects?query=search_term
@@ -66,7 +68,6 @@ describe 'Projects API' do
   it 'should return a single project' do
     api_get "projects/#{Project.last.id}", {token: Integration.last.user.api_key.token}
     response.status.should == 200
-
     project = JSON.parse(response.body)['project']
     project['id'].should == Project.last.id
     project['name'].should == Project.last.name

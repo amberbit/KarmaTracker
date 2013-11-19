@@ -26,8 +26,8 @@ ActiveRecord::Schema.define(:version => 20131119084721) do
     t.integer  "user_id"
     t.datetime "created_at",               :null => false
     t.datetime "updated_at",               :null => false
-    t.string   "source_id",                :null => false
     t.datetime "last_projects_refresh_at"
+    t.string   "source_id",                :null => false
   end
 
   add_index "integrations", ["api_key", "type"], :name => "index_identities_on_api_key_and_type", :unique => true
