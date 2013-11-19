@@ -25,7 +25,7 @@ KarmaTracker.controller "ProjectsController", ($rootScope, $scope, $http, $cooki
       $scope.currentPage = pageNr
       $scope.projects = []
       for project in data['projects']
-        $scope.projects.push project.project if project.project.active
+        $scope.projects.push project.project
       $rootScope.loading = false
       $scope.initItems()
     ).error((data, status, headers, config) ->

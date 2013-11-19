@@ -36,6 +36,10 @@ class Project < ActiveRecord::Base
                             joins('INNER JOIN users ON users.id = time_log_entries.user_id').
                             where('time_log_entries.running = ? AND projects.id IN (?)', true, ids).
                             includes( tasks: [time_log_entries: :user]).uniq }
+
+  scope :active,  ->(user) { joins('INNER JOIN participations p ON projects.id = p.project_id').
+      where('p.integration_id IN(?) AND active', user.integrations.map(&:id)).uniq }
+      
   def users
     User.joins('INNER JOIN integrations i ON i.user_id = users.id
                 INNER JOIN participations p ON i.id = p.integration_id').
