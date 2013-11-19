@@ -101,7 +101,7 @@ feature 'Timesheet page,
     end
   end
 
-  scenario 'edit entry', driver: :selenium do
+  scenario 'edit entry' do
     within "#timesheet_entry_#{@time_log_entry1.id}" do
       click_on 'Edit'
       page.should have_field 'Started at', with: @time_log_entry1.started_at.localtime.strftime('%Y-%m-%dT%H:%M:%S')
