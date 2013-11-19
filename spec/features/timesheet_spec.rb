@@ -101,20 +101,19 @@ feature 'Timesheet page,
     end
   end
 
-  scenario 'edit entry' do
+  scenario 'edit entry', driver: :selenium do
     within "#timesheet_entry_#{@time_log_entry1.id}" do
       click_on 'Edit'
-      page.should have_field 'Started at'
+      page.should have_field 'Started at', with: @time_log_entry1.started_at.localtime.strftime('%Y-%m-%dT%H:%M:%S')
       fill_in 'Started at', with: (@date1 - 30.minutes).localtime.strftime('%Y-%m-%dT%H:%M:%S')
       fill_in 'Stopped at', with: (@date1 + 1.hour).localtime.strftime('%Y-%m-%dT%H:%M:%S')
-      binding.pry
       click_on 'Save'
     end
+    page.should have_no_field 'Started at'
     within "#timesheet_entry_#{@time_log_entry1.id}" do
-      page.should have_no_field 'Started at'
+      page.should have_content "02:30:00"
       table_date = DateTime.parse(all('td')[2].find('div').text)
       expected = (@date1 - 30.minutes).localtime.strftime('%Y-%m-%dT%H:%M:%S')
-      binding.pry
       table_date.strftime('%Y-%m-%dT%H:%M:%S').should == expected
       table_time = all('td')[3].find('div').text
       table_time.should == '01:30 hours'
