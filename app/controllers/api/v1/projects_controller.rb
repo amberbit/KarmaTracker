@@ -28,7 +28,9 @@ module Api
       def index
         @items_per_page = AppConfig.items_per_page
         if @api_key.user.present?
+          active = params[:archive] ? false : true
           @projects = @api_key.user.projects
+          @projects = @projects.active(@api_key.user) if active
           @projects = ElasticSearcher.projects(params[:query], @projects.map(&:id)) if params[:query].present?
           @projects = @projects.sort!{ |a,b| a['name'].downcase <=> b['name'].downcase }.
             paginate(page: params[:page], per_page: @items_per_page )

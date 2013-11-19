@@ -11,16 +11,30 @@ describe 'Projects API' do
       FactoryGirl.create :project
       Project.last.integrations << @integration
     end
+    FactoryGirl.create :project
+    Project.last.integrations << @integration
+    Project.last.toggle_active_for_user(Integration.last.user)
   end
 
   # GET /projects
-  it 'should return paginated array of user projects' do
+  it 'should return paginated array of user\'s active projects' do
     AppConfig.stub(:items_per_page).and_return(2)
     api_get 'projects?page=2', {token: Integration.last.user.api_key.token}
     response.status.should == 200
     resp = JSON.parse(response.body)
     resp['total_count'].to_i.should == 3
     resp['projects'].count.should == 1
+    AppConfig.unstub(:items_per_page)
+  end
+  
+  # GET /projects
+  it 'should return paginated array of all user\'s projects' do
+    AppConfig.stub(:items_per_page).and_return(2)
+    api_get 'projects?page=2&archive=true', {token: Integration.last.user.api_key.token}
+    response.status.should == 200
+    resp = JSON.parse(response.body)
+    resp['total_count'].to_i.should == 4
+    resp['projects'].count.should == 2
     AppConfig.unstub(:items_per_page)
   end
 
@@ -85,7 +99,7 @@ describe 'Projects API' do
 
   # GET /projects/refresh
   it 'should begin refreshing user\'s projects list' do
-    Project.count.should == 5
+    Project.count.should == 6
 
     FakeWeb.register_uri(:get, 'https://www.pivotaltracker.com/services/v4/projects',
       :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'projects2.xml')),
@@ -93,7 +107,7 @@ describe 'Projects API' do
     api_get "projects/refresh", {token: ApiKey.last.token}
     response.status.should == 200
 
-    Project.count.should == 6
+    Project.count.should == 7
 
     reset_fakeweb_urls
   end
@@ -360,12 +374,12 @@ describe 'Projects API' do
   # PUT /api/v1/projects/:id/toggle_active
   it 'should toggle project\'s active state for current user' do
     project = Project.last
-    project.should be_active_for_user(Integration.last.user)
+    project.should_not be_active_for_user(Integration.last.user)
     api_put "projects/#{project.id}/toggle_active", {token: Integration.last.user.api_key.token}
     response.status.should == 200
     resp = JSON.parse(response.body)
     resp['project'].should have_key("active")
-    resp['project']['active'].should == false
-    project.reload.should_not be_active_for_user(Integration.last.user)
+    resp['project']['active'].should == true
+    project.reload.should be_active_for_user(Integration.last.user)
   end 
 end
