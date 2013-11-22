@@ -11,25 +11,25 @@ class PivotalTrackerProjectsFetcher
       if repos.instance_of?(Array)
         repos.each do |data|
           name = data["name"]
-          source_identifier = data["id"]
+          source_identifier = data["id"].to_s
            project = Project.where("source_name = 'Pivotal Tracker' AND source_identifier = ?", source_identifier).
             first_or_initialize(source_name: 'Pivotal Tracker', source_identifier: source_identifier)
           project.name = name
           allow_local_connect if Rails.env.test?
           project.save
 
-          fetch_integrations project, data
+          fetch_integrations project, data, integration
         end
       end
-      Rails.logger.info "Successfully updated list of projects for PT integration #{integration.api_key}"
-    end while uri
+
+    Rails.logger.info "Successfully updated list of projects for PT integration #{integration.api_key}"
     rescue OpenURI::HTTPError => e
       UserMailer.invalid_api_key(integration).deliver
       Rails.logger.error "Error fetching projects from PT - #{e.message}. Check API key correctness."
-
+    end while uri
   end
 
-  def fetch_integrations(project, data)
+  def fetch_integrations(project, data, integration)
     Rails.logger.info "Fetching integrations for PT project #{project.source_identifier}"
     uri = "https://www.pivotaltracker.com/services/v5/projects/#{project.source_identifier}/memberships"
     integrations = []
@@ -39,7 +39,7 @@ class PivotalTrackerProjectsFetcher
       repos = JSON.parse(response.body)
       if repos.instance_of?(Array)
         repos.each do |membership|
-          pt_id = membership["person"]["id"]
+          pt_id = membership["person"]["id"].to_s
           integration = PivotalTrackerIntegration.find_by_source_id(pt_id)
           integrations << integration if integration.present?
         end
@@ -66,7 +66,7 @@ class PivotalTrackerProjectsFetcher
       if repos.instance_of?(Array)
         repos.each do |data|
         name = data["name"]
-        source_identifier = data["id"]
+        source_identifier = data["id"].to_s
         story_type = data["story_type"]
         current_state = data["current_state"]
 
