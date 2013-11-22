@@ -28,10 +28,10 @@ class PivotalTrackerIntegration < Integration
   end
 
   def validate_credentials_with_token
-    https = Net::HTTP.new(authentication_uri)
+    https = Net::HTTP.new(authentication_uri.host, authentication_uri.port)
     https.use_ssl = true
     https.verify_mode = OpenSSL::SSL::VERIFY_NONE
-    req = Net::HTTP::Get.new(authentication_token_uri.path)
+    req = Net::HTTP::Get.new(authentication_uri.path)
     req["X-TrackerToken"] = api_key
     req["Content-Type"]="application/json"
     res = https.request(req)
@@ -50,12 +50,12 @@ class PivotalTrackerIntegration < Integration
   end
 
   def validate_credentials_with_email_and_password
-    https = Net::HTTP.new(authentication_uri)
+    https = Net::HTTP.new(authentication_uri.host, authentication_uri.port)
     https.use_ssl = true
     https.verify_mode = OpenSSL::SSL::VERIFY_NONE
     req = Net::HTTP::Get.new(authentication_uri.path)
     req["Content-Type"]="application/json"
-    req.basic_auth username, password
+    req.basic_auth email, password
     res = https.request(req)
     json = JSON.parse(res.body)
     token = json["api_token"]

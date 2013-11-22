@@ -31,7 +31,7 @@ should' do
   end
 
   it 'remove integrations that are no longer participants in a project' do
-    FakeWeb.register_uri(:get, 'https://www.pivotaltracker.com/services/v4/projects',
+    FakeWeb.register_uri(:get, 'https://www.pivotaltracker.com/services/v5/projects',
       :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'projects2.xml')),
       :status => ['200', 'OK'])
 
@@ -71,7 +71,7 @@ should' do
     Task.find_by_source_identifier('1').current_task.should be_true
     Task.find_by_source_identifier('4').current_task.should be_false
 
-    FakeWeb.register_uri(:get, /https:\/\/www\.pivotaltracker\.com\/services\/v4\/projects\/[0-9]+\/iterations\/current/,
+    FakeWeb.register_uri(:get, /https:\/\/www\.pivotaltracker\.com\/services\/v5\/projects\/[0-9]+\/iterations\/current/,
       :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'current_iteration2.xml')),
       :status => ['200', 'OK'])
 
@@ -83,7 +83,7 @@ should' do
   end
 
   it 'not crash import when api key is invalid' do
-    FakeWeb.register_uri(:get, "https://www.pivotaltracker.com/services/v4/projects", :status => ['401', 'Unauthorized'])
+    FakeWeb.register_uri(:get, "https://www.pivotaltracker.com/services/v5/projects", :status => ['401', 'Unauthorized'])
     expect {
       @fetcher.fetch_projects(@integration)
     }.not_to raise_error(OpenURI::HTTPError)
