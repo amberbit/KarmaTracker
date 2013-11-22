@@ -58,6 +58,7 @@ class PivotalTrackerProjectsFetcher
 
   def fetch_tasks(project, integration)
     Rails.logger.info "Fetching tasks for PT project #{project.source_identifier}"
+
     uri = "https://www.pivotaltracker.com/services/v5/projects/#{project.source_identifier}/stories"
     begin
       response = perform_request('get', uri, {}, {'X-TrackerToken' => integration.api_key})

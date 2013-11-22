@@ -32,7 +32,7 @@ should' do
 
   it 'remove integrations that are no longer participants in a project' do
     FakeWeb.register_uri(:get, 'https://www.pivotaltracker.com/services/v5/projects',
-      :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'projects2.xml')),
+      :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'projects2.json')),
       :status => ['200', 'OK'])
 
     @fetcher.fetch_projects(@integration)
@@ -72,7 +72,7 @@ should' do
     Task.find_by_source_identifier('4').current_task.should be_false
 
     FakeWeb.register_uri(:get, /https:\/\/www\.pivotaltracker\.com\/services\/v5\/projects\/[0-9]+\/iterations\/current/,
-      :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'current_iteration2.xml')),
+      :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'current_iteration2.json')),
       :status => ['200', 'OK'])
 
     @fetcher.fetch_projects(@integration)
