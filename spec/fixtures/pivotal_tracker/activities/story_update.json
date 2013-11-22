@@ -1,0 +1,15 @@
+{
+   "kind": "story",
+   "description": "Darth Vader added Building Death Star",
+   "created_at": "2013/04/19 08:31:27 UTC",
+   "id": 1231231,
+   "labels":
+   [
+   ],
+   "project_id": 16,
+   "current_state": "started",
+   "url": "http://www.pivotaltracker.com/services/v5/projects/16/stories/1231231",
+   "story_type": "feature",
+   "updated_at": "2013/04/19 08:31:27 UTC",
+   "owner": "Darth Vader"
+}
