@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1068629,
+    "name": "John Dow",
+    "username": "JDoe",
+    "kind": "me",
+    "projects": [
+      {
+        "id": 1,
+        "kind": "membership_summary",
+        "project_id": 1,
+        "role": "member",
+        "project_name": "Project_1",
+        "last_viewed_at": "2013-01-01T08:02:06Z"
+      },
+      {
+        "id": 2,
+        "kind": "membership_summary",
+        "project_id": 2,
+        "role": "member",
+        "project_name": "Project_2"
+      },
+      {
+        "id": 3,
+        "kind": "membership_summary",
+        "project_id": 3,
+        "role": "member",
+        "project_name": "Project_3",
+        "last_viewed_at": "2013-11-11T14:14:16Z"
+      }
+    ],
+    "email": "john.doe@example.com",
+    "has_google_identity": false,
+    "initials": "JD",
+    "time_zone": {
+      "offset": "-08:00",
+      "kind": "time_zone",
+      "olson_name": "America/Los_Angeles"
+    },
+    "api_token": "377ec0d3698e5f80c4e108fb26d7a105"
+  }
+]
