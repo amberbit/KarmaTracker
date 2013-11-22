@@ -28,28 +28,50 @@ class PivotalTrackerIntegration < Integration
   end
 
   def validate_credentials_with_token
-    doc = Nokogiri::XML(open(authentication_uri, 'X-TrackerToken' => api_key))
-    key = doc.xpath('//token/guid').first
-    if key.present?
-      self.api_key = key.content
-      self.source_id = doc.xpath('//id').first.content
+    https = Net::HTTP.new(authentication_uri)
+    https.use_ssl = true
+    https.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    req = Net::HTTP::Get.new(authentication_token_uri.path)
+    req["X-TrackerToken"] = api_key
+    req["Content-Type"]="application/json"
+    res = https.request(req)
+    json = JSON.parse(res.body)
+    token = json["api_token"]
+    if token.present?
+      self.api_key = token
+      self.source_id = json["id"]
     else
-      errors.add(:api_key, 'provided API token is invalid')
+      errors.add(:api_key, 'provided token is invalid')
     end
+  rescue StandardError => e
+    Rails.logger.warn "Exception when validating Github integration: #{e.class}: #{e.message}"
+
+    errors.add(:api_key, 'provided token is invalid')
   end
 
   def validate_credentials_with_email_and_password
-    doc = Nokogiri::XML(open(authentication_uri, :http_basic_authentication => [email, password]))
-    key = doc.xpath('//token/guid').first
-    if key.present?
-      self.api_key = key.content
-      self.source_id = doc.xpath('//id').first.content
+    https = Net::HTTP.new(authentication_uri)
+    https.use_ssl = true
+    https.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    req = Net::HTTP::Get.new(authentication_uri.path)
+    req["Content-Type"]="application/json"
+    req.basic_auth username, password
+    res = https.request(req)
+    json = JSON.parse(res.body)
+    token = json["api_token"]
+    if token.present?
+      self.api_key = token
+      self.source_id = json["id"]
     else
-      errors.add(:password, 'provided email/password combination is invalid')
+      errors.add(:password, 'provided username/password combination is invalid')
     end
+  rescue StandardError => e
+    Rails.logger.warn "Exception when validating Github integration: #{e.class}: #{e.message}"
+
+    errors.add(:password, 'provided username/password combination is invalid')
   end
 
   def authentication_uri
-    URI('https://www.pivotaltracker.com/services/v4/me')
+    URI('https://www.pivotaltracker.com/services/v5/me')
   end
 end

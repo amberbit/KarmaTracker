@@ -89,10 +89,10 @@ describe 'Integrations API' do
     user.integrations.should include(integration)
   end
 
-  # POST /api/v1/integrations/pivotal_tracker
+  # GET /api/v1/integrations/pivotal_tracker
   it "should be able to add PT integration for given user with provided token" do
     user = create :user
-    json = api_post "integrations/pivotal_tracker", {token: ApiKey.last.token, integration:
+    json = api_get "integrations/pivotal_tracker", {token: ApiKey.last.token, integration:
           { api_key: 'correct_token'}}
     response.status.should == 200
     json.has_key?('pivotal_tracker').should be_true
@@ -104,10 +104,10 @@ describe 'Integrations API' do
   end
 
 
-  # POST /api/v1/integrations/pivotal_tracker
+  # GET /api/v1/integrations/pivotal_tracker
   it 'should add error messages to response when adding PT integration fails' do
     create :user
-    json = api_post "integrations/pivotal_tracker", {token: ApiKey.last.token, integration: {email: 'wrong_email', password: 'wrong_password'}}
+    json = api_get "integrations/pivotal_tracker", {token: ApiKey.last.token, integration: {email: 'wrong_email', password: 'wrong_password'}}
 
     response.status.should == 422
     Integration.count.should == 0
