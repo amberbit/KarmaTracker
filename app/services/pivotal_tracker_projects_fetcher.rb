@@ -95,7 +95,7 @@ class PivotalTrackerProjectsFetcher
         current_tasks_ids = []
         repos.each do |data|
           data["stories"].each do |story|
-            story_id = story["id"]
+            story_id = story["id"].to_s
             current_tasks_ids << story_id
           end
         end

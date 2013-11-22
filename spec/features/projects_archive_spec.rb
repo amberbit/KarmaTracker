@@ -60,4 +60,3 @@ as a user I can', js: true  do
     page.should have_content project2.name
   end
 end
-

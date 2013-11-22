@@ -91,7 +91,7 @@ def reset_fakeweb_urls
     :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'stories.json')),
     :status => ['200', 'OK'])
 
-  FakeWeb.register_uri(:get, /https:\/\/www\.pivotaltracker\.com\/services\/v5\/projects\/[0-9]+\/iterations?scope=current/,
+  FakeWeb.register_uri(:get, /https:\/\/www\.pivotaltracker\.com\/services\/v5\/projects\/[0-9]+\/iterations\?scope\=current/,
     :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'current_iteration.json')),
     :status => ['200', 'OK'])
 

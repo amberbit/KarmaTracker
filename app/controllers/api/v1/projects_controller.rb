@@ -440,10 +440,10 @@ module Api
           render json: nil, status: 204
         end
       end
-      
+
       ##
       # Toggle project's active status for current user (through participation)
-      # 
+      #
       # PUT /api/v1/projects/:id/toggle_active
       #
       # params:

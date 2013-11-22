@@ -44,7 +44,7 @@ class PivotalTrackerIntegration < Integration
       errors.add(:api_key, 'provided token is invalid')
     end
   rescue StandardError => e
-    Rails.logger.warn "Exception when validating Github integration: #{e.class}: #{e.message}"
+    Rails.logger.warn "Exception when validating PT integration: #{e.class}: #{e.message}"
 
     errors.add(:api_key, 'provided token is invalid')
   end
@@ -66,7 +66,7 @@ class PivotalTrackerIntegration < Integration
       errors.add(:password, 'provided username/password combination is invalid')
     end
   rescue StandardError => e
-    Rails.logger.warn "Exception when validating Github integration: #{e.class}: #{e.message}"
+    Rails.logger.warn "Exception when validating PT integration: #{e.class}: #{e.message}"
 
     errors.add(:password, 'provided username/password combination is invalid')
   end
