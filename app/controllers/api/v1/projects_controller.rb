@@ -360,7 +360,7 @@ module Api
         project = Project.find(params[:id])
         if params[:token].blank? || params[:token] != project.web_hook_token
           render json: {message: 'Invalid token'}, status: 401
-        elsif project && PivotalTrackerActivityWebHook.new(project).process_request(request.body)
+        elsif project && PivotalTrackerActivityWebHook.new(project).process_request(request)
           render json: {message: 'Activity processed'}, status: 200
         else
           render json: {message: 'Resource not found'}, status: 404
