@@ -1,21 +1,19 @@
-{
+
+  {
     "highlight": "story_create",
     "changes": [
       {
         "new_values": {
           "created_at": "2013-11-25T13:52:07Z",
           "follower_ids": [
-
           ],
           "requested_by_id": 1068629,
           "labels": [
-
           ],
           "name": "New Test Story",
           "current_state": "unscheduled",
           "story_type": "feature",
           "label_ids": [
-
           ],
           "updated_at": "2013-11-25T13:52:07Z",
           "id": 1231231,

@@ -258,7 +258,8 @@ describe 'Projects API' do
 
   # POST /api/v1/projects/:id/pivotal_tracker_activity_web_hook
   it 'should return 401 if no token was provided' do
-    api_post "projects/#{Project.last.id}/pivotal_tracker_activity_web_hook", File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_create.json'))
+    api_post "projects/#{Project.last.id}/pivotal_tracker_activity_web_hook",
+    :body => File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_create.json'))
     response.status.should == 401
     resp = JSON.parse(response.body)
     resp.should have_key("message")
@@ -269,7 +270,9 @@ describe 'Projects API' do
   it 'should return 401 if wrong token was provided' do
     project = FactoryGirl.create :project
     project2 = FactoryGirl.create :project
-    api_post "projects/#{project.id}/pivotal_tracker_activity_web_hook?token=#{project2.web_hook_token}", File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_create.json'))
+
+    api_post "projects/#{project.id}/pivotal_tracker_activity_web_hook?token=#{project2.web_hook_token}",
+    :body => File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_create.json'))
     response.status.should == 401
     resp = JSON.parse(response.body)
     resp.should have_key("message")
@@ -279,7 +282,9 @@ describe 'Projects API' do
   # POST /api/v1/projects/:id/pivotal_tracker_activity_web_hook
   it 'should return 404 in case of project_id and activity data mismatch' do
     project = FactoryGirl.create :project, source_identifier: 42
-    api_post "projects/#{project.id}/pivotal_tracker_activity_web_hook?token=#{project.reload.web_hook_token}", File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_create.json'))
+
+    api_post "projects/#{project.id}/pivotal_tracker_activity_web_hook?token=#{project.reload.web_hook_token}", (File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_create.json')))
+
     response.status.should == 404
     resp = JSON.parse(response.body)
     resp.should have_key("message")

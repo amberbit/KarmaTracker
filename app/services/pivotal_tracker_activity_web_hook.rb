@@ -5,9 +5,11 @@ class PivotalTrackerActivityWebHook
 
   def process_request request
     Rails.logger.info "Processing web activit hook request for PT project #{@project.source_identifier}"
-
-    json = JSON.parse request
-
+    if (request.kind_of?(StringIO))
+      json = JSON.parse request.read
+    else
+      json = JSON.parse request
+    end
     event_type = json["highlight"]
     story = json["changes"].first
     project_id = story["new_values"]["project_id"]
