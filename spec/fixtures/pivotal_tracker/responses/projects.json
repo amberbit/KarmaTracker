@@ -54,9 +54,8 @@
       "olson_name": "Europe/Warsaw"
     },
     "week_start_day": "Monday",
-    "account_id": 1006,
     "created_at": "2013-08-25T13:27:05Z",
-    "point_scale": "0,1,2,3,4,5",
+    "point_scale": "0,1,2,3",
     "version": 1877,
     "enable_following": true,
     "velocity_averaged_over": 3,

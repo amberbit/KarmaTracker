@@ -76,9 +76,9 @@ describe 'Integrations API' do
 
   # POST /api/v1/integrations/pivotal_tracker
   it "should be able to add PT integration for given user" do
+
     user = create :user
-    json = api_post "integrations/pivotal_tracker", {token: ApiKey.last.token, integration:
-          { email: 'correct_email@example.com', password: 'correct_password'}}
+    json = api_post "integrations/pivotal_tracker", {token: ApiKey.last.token, integration:{ email: 'correct_email@example.com', password: 'correct_password'}}
 
     response.status.should == 200
     json.has_key?('pivotal_tracker').should be_true
@@ -89,11 +89,10 @@ describe 'Integrations API' do
     user.integrations.should include(integration)
   end
 
-  # GET /api/v1/integrations/pivotal_tracker
+  # POST /api/v1/integrations/pivotal_tracker
   it "should be able to add PT integration for given user with provided token" do
     user = create :user
-    json = api_get "integrations/pivotal_tracker", {token: ApiKey.last.token, integration:
-          { api_key: 'correct_token'}}
+    json = api_post "integrations/pivotal_tracker", {token: ApiKey.last.token, integration:{ api_key: 'correct_token'}}
     response.status.should == 200
     json.has_key?('pivotal_tracker').should be_true
 
@@ -104,15 +103,15 @@ describe 'Integrations API' do
   end
 
 
-  # GET /api/v1/integrations/pivotal_tracker
+  # POST /api/v1/integrations/pivotal_tracker
   it 'should add error messages to response when adding PT integration fails' do
     create :user
-    json = api_get "integrations/pivotal_tracker", {token: ApiKey.last.token, integration: {email: 'wrong_email', password: 'wrong_password'}}
+    json = api_post "integrations/pivotal_tracker", {token: ApiKey.last.token, integration: {email: 'wrong_email', password: 'wrong_password'}}
 
     response.status.should == 422
     Integration.count.should == 0
     json['pivotal_tracker'].has_key?('errors').should be_true
-    json['pivotal_tracker']['errors']['api_key'].should_not be_blank
+    json['pivotal_tracker']['errors']['password'].should_not be_blank
   end
 
   # POST /api/v1/integrations/git_hub

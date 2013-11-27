@@ -2,7 +2,7 @@
   {
     "kind": "project_membership",
     "last_viewed_at": "2013-11-19T08:28:55Z",
-    "id": 1,
+    "id": 100600,
     "project_id": 1,
     "wants_comment_notification_emails": true,
     "role": "owner",
@@ -11,24 +11,8 @@
       "kind": "person",
       "username": "DarthVader",
       "id": 1006,
-      "email": "DarthVade@example.com",
+      "email": "DarthVader@example.com",
       "initials": "DV"
-    }
-  },
-  {
-    "kind": "project_membership",
-    "last_viewed_at": "2013-09-03T13:44:34Z",
-    "id": 2,
-    "project_id": 1,
-    "wants_comment_notification_emails": true,
-    "role": "member",
-    "person": {
-      "name": "Luke Skywalker",
-      "kind": "person",
-      "username": "LukeSkywalker",
-      "id": 1007,
-      "email": "LukeSkywalker@example.com",
-      "initials": "LS"
     }
   }
 ]

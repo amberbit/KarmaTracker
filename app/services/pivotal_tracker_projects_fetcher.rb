@@ -37,6 +37,7 @@ class PivotalTrackerProjectsFetcher
       response = perform_request('get', uri, {}, {'X-TrackerToken' => integration.api_key})
       uri = extract_next_link(response)
       repos = JSON.parse(response.body)
+
       if repos.instance_of?(Array)
         repos.each do |membership|
           pt_id = membership["person"]["id"].to_s
@@ -44,6 +45,7 @@ class PivotalTrackerProjectsFetcher
           integrations << integration if integration.present?
         end
       end
+
     end while uri
 
     integrations.each do |integration|

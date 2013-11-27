@@ -25,14 +25,33 @@ should' do
   end
 
   it 'should create associations between project and its members\' integrations' do
+
+      FakeWeb.register_uri(:get, 'https://www.pivotaltracker.com/services/v5/projects/2/memberships',
+      :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'membership3.json')),
+      :status => ['200', 'OK'])
+
     @fetcher.fetch_projects(@integration)
     @integration.projects.count.should == 1
     Project.first.integrations.count.should == 1
+
+    reset_fakeweb_urls
   end
 
   it 'remove integrations that are no longer participants in a project' do
     FakeWeb.register_uri(:get, 'https://www.pivotaltracker.com/services/v5/projects',
       :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'projects2.json')),
+      :status => ['200', 'OK'])
+
+    FakeWeb.register_uri(:get, 'https://www.pivotaltracker.com/services/v5/projects/1/memberships',
+      :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'membership2.json')),
+      :status => ['200', 'OK'])
+
+    FakeWeb.register_uri(:get, 'https://www.pivotaltracker.com/services/v5/projects/2/memberships',
+      :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'membership3.json')),
+      :status => ['200', 'OK'])
+
+    FakeWeb.register_uri(:get, 'https://www.pivotaltracker.com/services/v5/projects/3/memberships',
+      :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'membership3.json')),
       :status => ['200', 'OK'])
 
     @fetcher.fetch_projects(@integration)
@@ -49,6 +68,9 @@ should' do
     @integration.projects.count.should == 1
     @integration2.projects.count.should == 0
     project.integrations.reload.count.should == 1
+
+    reset_fakeweb_urls
+
   end
 
   it 'fetch tasks for project' do

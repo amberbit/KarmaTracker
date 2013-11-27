@@ -33,6 +33,6 @@ describe PivotalTrackerIntegration do
     pi.email = 'correct_email'
     pi.password = 'correct_password'
     pi.save.should be_false
-    pi.errors[:api_key].should be_present
+    pi.errors[:password].should be_present
   end
 end
