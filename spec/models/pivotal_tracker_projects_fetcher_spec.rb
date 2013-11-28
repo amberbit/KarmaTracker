@@ -88,12 +88,14 @@ should' do
   end
 
   it 'update current flag for tasks' do
+    reset_fakeweb_urls
+
     @fetcher.fetch_projects(@integration)
     @fetcher.fetch_tasks(@integration.projects.last, @integration)
     Task.find_by_source_identifier('1').current_task.should be_true
     Task.find_by_source_identifier('4').current_task.should be_false
 
-    FakeWeb.register_uri(:get, /https:\/\/www\.pivotaltracker\.com\/services\/v5\/projects\/[0-9]+\/iterations\/current/,
+    FakeWeb.register_uri(:get, /https:\/\/www\.pivotaltracker\.com\/services\/v5\/projects\/[0-9]+\/iterations\?scope\=current/,
       :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'current_iteration2.json')),
       :status => ['200', 'OK'])
 
