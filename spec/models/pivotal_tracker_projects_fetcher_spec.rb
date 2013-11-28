@@ -61,8 +61,6 @@ should' do
     project = Project.first
     project.integrations.count.should == 2
 
-#    reset_fakeweb_urls
-
     FakeWeb.register_uri(:get, 'https://www.pivotaltracker.com/services/v5/projects',
       :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'projects.json')),
       :status => ['200', 'OK'])
