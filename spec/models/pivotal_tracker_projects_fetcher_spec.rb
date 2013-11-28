@@ -61,7 +61,19 @@ should' do
     project = Project.first
     project.integrations.count.should == 2
 
-    reset_fakeweb_urls
+#    reset_fakeweb_urls
+
+    FakeWeb.register_uri(:get, 'https://www.pivotaltracker.com/services/v5/projects',
+      :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'projects.json')),
+      :status => ['200', 'OK'])
+
+    FakeWeb.register_uri(:get, 'https://www.pivotaltracker.com/services/v5/projects/1/memberships',
+      :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'membership.json')),
+      :status => ['200', 'OK'])
+
+    FakeWeb.register_uri(:get, 'https://www.pivotaltracker.com/services/v5/projects/2/memberships',
+      :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'membership3.json')),
+      :status => ['200', 'OK'])
 
     @fetcher.fetch_projects(@integration)
     Integration.count.should == 2
