@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'Project' do
 
   before :each do
-
+    reset_fakeweb_urls
     FactoryGirl.create :integration
 
     @project = FactoryGirl.create :project

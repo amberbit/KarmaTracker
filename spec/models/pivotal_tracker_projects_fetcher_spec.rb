@@ -62,6 +62,7 @@ should' do
     project.integrations.count.should == 2
 
     reset_fakeweb_urls
+    reset_fakeweb_urls
 
     @fetcher.fetch_projects(@integration)
     Integration.count.should == 2
