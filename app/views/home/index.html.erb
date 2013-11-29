@@ -17,7 +17,7 @@
       </a>
       </li>
       <li id="toggle-menu"  ng-click="expandMenu()" class="toggle-topbar menu-icon"><a href=""><span></span></a></li>
-    </ul> 
+    </ul>
     <section id="top-bar-section" class="top-bar-section">
       <ul class="right">
         <li class="divider"></li>
@@ -71,7 +71,7 @@
   <div id="view-container" class="small-12 columns" ng-class="{'large-12': !signed_in, 'large-8': signed_in}" >
     <div class="small-12 large-12 columns show-for-touch" pull-to-refresh></div>
     <div class='view small-12 columns'
-      ng-view 
+      ng-view
       ng-animate="{enter: 'view-enter', leave: 'view-leave'}">
     </div>
   </div>
@@ -113,7 +113,9 @@
           </div>
         </div>
       </div>
+    </div>
 
+    <div class="hide-for-small large-4 columns right" ng-controller="WebHookIntegrationsController">
       <div ng-show="webhookProjectURL">
         <div class="small-12 large-12 columns">
           <h4><a ng-href="">WebHook Integration</a></h4>
@@ -128,12 +130,19 @@
             </div>
             <div class="info" ng-click="webhook_tip = !webhook_tip" ng-mouseover="webhook_tip = true" ng-mouseleave="webhook_tip = false"></div>
           </div><input id="webhook_url" type="text" value="{{webhookProjectURL}}" readonly="readonly" autocomplete="off" />
+          <div class="lWebHarge-12 columns">
+            <div class="row">
+              <div ng-click="createPTWebHookIntegration()" class="large-12 colums panel recent-task clickable">
+                <div class="small-12 large-12 columns">
+                  <span class="tiny-task"> Create on-click WebHook Integration</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-    </div>
     <div class="hide-for-small large-4 columns right" ng-controller="HomeController">
-
       <div ng-show="alsoWorking" class="also-working large-12 columns panel sidepanel recents">
         <h4 class="subheader">Currently also working</h4>
         <div class="large-12 columns">
@@ -186,7 +195,3 @@ window.KarmaTrackerConfig.registration_enabled = <%= AppConfig.users.allow_regis
 window.KarmaTrackerConfig.registration_destroy = <%= AppConfig.users.allow_destroy %>;
 window.KarmaTrackerConfig.items_per_page = <%= AppConfig.items_per_page %>;
 </script>
-
-
-
-

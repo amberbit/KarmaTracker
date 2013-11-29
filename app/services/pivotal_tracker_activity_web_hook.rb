@@ -1,6 +1,21 @@
 class PivotalTrackerActivityWebHook
+  include ApplicationHelper
+
   def initialize project
     @project = project
+  end
+
+  def create_web_hook_request integration
+
+    Rails.logger.info "Creating web hook for PT project #{@project.source_identifier}"
+    uri ="https://www.pivotaltracker.com/services/v5/projects/#{@project.source_identifier}/webhooks"
+    response = perform_request('post', uri, {"webhook_version"=>"v5","webhook_url"=>"http://localhost:8080/api/v1/projects/#{@project.id}/pivotal_tracker_activity_web_hook?token=#{@project.web_hook_token}"}, {'X-TrackerToken' => "#{integration.api_key}", 'Content-Type'=> 'application/json'})
+
+    if response.code == '200'
+      Rails.logger.info "Creating web hook request for PT project #{@project.source_identifier} finished successfully"
+    else
+      Rails.logger.error "Creating web hook request for PT project #{@project.source_identifier} failed"
+    end
   end
 
   def process_request request

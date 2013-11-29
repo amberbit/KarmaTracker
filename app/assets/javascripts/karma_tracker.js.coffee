@@ -13,6 +13,7 @@
 #= require tasks
 #= require flashes
 #= require recents
+#= requrie web_hook_integrations
 #= require password_resets
 #= require cookieStore_override
 
@@ -304,7 +305,7 @@ KarmaTracker.directive "pullToRefresh", ($rootScope) ->
 KarmaTracker.filter 'startFrom', ->
   (input, start) ->
     start = +start
-    input.slice start 
+    input.slice start
 
 
 # This controller just has to redirect user to proper place
@@ -330,3 +331,14 @@ KarmaTracker.factory 'broadcastService', ($rootScope) ->
     $rootScope.$broadcast('handleBroadcast')
 
   broadcastService
+
+
+KarmaTracker.controller "WebHookIntegrationsController", ($rootScope, $scope, $http, $cookieStore, $location, $routeParams) ->
+  $scope.createPTWebHookIntegration = ->
+    $http.get(
+      "/api/v1/projects/#{$routeParams.project_id}/pivotal_tracker_create_web_hook_integration?token=#{$cookieStore.get($scope.tokenName)}"
+    ).success((data, status, headers, config) ->
+      alert "success"
+    ).error((data, status, headers, config) ->
+      alert "Error"
+    )
