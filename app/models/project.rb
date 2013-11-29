@@ -19,7 +19,7 @@ class Project < ActiveRecord::Base
     end
   end
 
-  attr_accessible :name, :source_name, :source_identifier, :web_hook, :web_hook_token
+  attr_accessible :name, :source_name, :source_identifier, :web_hook, :web_hook_token, :web_hook_time, :web_hook_exists
 
   has_many :participations, dependent: :destroy
   has_many :integrations, :through => :participations, :uniq  => true
