@@ -6,22 +6,31 @@ class PivotalTrackerActivityWebHook
   end
 
   def get_web_hook_integration integration
-    Rails.logger.info "Getting web hook for PT project #{@project.source_identifier}"
-    web_hook_url = "#{AppConfig.protocol}#{AppConfig.host}/api/v1/projects/#{@project.id}/pivotal_tracker_activity_web_hook?token=#{@project.web_hook_token}"
-    uri ="https://www.pivotaltracker.com/services/v5/projects/#{@project.source_identifier}/webhooks"
 
-    response = perform_request('get', uri, {}, {'X-TrackerToken' => "#{integration.api_key}", 'Content-Type'=> 'application/json'})
-    json = JSON.parse response.body
+    if @project.web_hook_time > Time.now - 6
 
-    if response.code == '200'
-      Rails.logger.info "Creating web hook request for PT project #{@project.source_identifier} finished successfully"
+      Rails.logger.info "Getting web hook for PT project #{@project.source_identifier}"
+      @project.update_attributes(:web_hook_time => Time.now)
 
-      return json.any? { |web_hook| web_hook["webhook_url"] == web_hook_url }
+      web_hook_url = "#{AppConfig.protocol}#{AppConfig.host}/api/v1/projects/#{@project.id}/pivotal_tracker_activity_web_hook?token=#{@project.web_hook_token}"
+      uri ="https://www.pivotaltracker.com/services/v5/projects/#{@project.source_identifier}/webhooks"
+
+      response = perform_request('get', uri, {}, {'X-TrackerToken' => "#{integration.api_key}", 'Content-Type'=> 'application/json'})
+      json = JSON.parse response.body
+
+      if response.code == '200'
+        Rails.logger.info "Creating web hook request for PT project #{@project.source_identifier} finished successfully"
+
+        return json.any? { |web_hook| web_hook["webhook_url"] == web_hook_url }
+      else
+        Rails.logger.error "Creating web hook request for PT project #{@project.source_identifier} failed"
+        return false
+      end
+    elsif @project.web_hook_exists
+      return true
     else
-      Rails.logger.error "Creating web hook request for PT project #{@project.source_identifier} failed"
       return false
     end
-
   end
 
   def create_web_hook_request integration
@@ -30,9 +39,12 @@ class PivotalTrackerActivityWebHook
     response = perform_request('post', uri, {"webhook_version"=>"v5","webhook_url"=>"#{AppConfig.protocol}#{AppConfig.host}/api/v1/projects/#{@project.id}/pivotal_tracker_activity_web_hook?token=#{@project.web_hook_token}"}, {'X-TrackerToken' => "#{integration.api_key}", 'Content-Type'=> 'application/json'})
 
     if response.code == '200'
+      json = JSON.parse response.body
+      @project.update_attributes(:web_hook_time => Time.now, :web_hook_exists => true)
       Rails.logger.info "Creating web hook request for PT project #{@project.source_identifier} finished successfully"
     else
       Rails.logger.error "Creating web hook request for PT project #{@project.source_identifier} failed"
+      @project.update_attributes(:web_hook_time => Time.now)
     end
   end
 
