@@ -1,5 +1,7 @@
 ---
 default:
+  protocol: "http://"
+  host: "karma.amberbit.com"
   projects_refresh_period: 12
   items_per_page: 20
   users:
@@ -7,20 +9,20 @@ default:
     allow_destroy: true
     password_min_chars: 6
   web_hooks:
-    git_hub: 
+    git_hub:
 
   google_api:
-    client_id: 
-    secret: 
-    callback_url: 
+    client_id:
+    secret:
+    callback_url:
 
   github_api:
-    client_id: 
-    secret: 
-
-
+    client_id:
+    secret:
 
 development:
+  protocol: "http://"
+  host: "localhost:8080"
   users:
     allow_register: true
 
