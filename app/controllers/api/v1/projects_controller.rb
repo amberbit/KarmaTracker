@@ -402,7 +402,18 @@ module Api
         end
       end
 
-
+      def pivotal_tracker_create_web_hook_integration
+        project = Project.find_by_id(params[:id])
+        integration = @api_key.user.integrations.joins(:participations).
+          where('participations.project_id = ?', project.id).
+          all(readonly: false).first
+        if project && integration &&  @api_key.user.projects.include?(project)
+          PivotalTrackerActivityWebHook.new(project).create_web_hook_request(integration)
+          render json: {message: 'Creating web hook started'}, status: 200
+        else
+          render json: {message: 'Resource not found'}, status: 404
+        end
+      end
       ##
       # Returns user's other project names on which other users are currently also working.
       #
