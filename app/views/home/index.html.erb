@@ -123,14 +123,18 @@
         <div id="webhook-panel" class="large-12 columns panel sidepanel">
           <p>The activity web hook allows your application to listen for activity in your project, as HTTP POST requests.</p>
 
-          <div>
+          <div >
             <div class="arrow_box panel mainshadow" ng-show="webhook_tip">
               <strong>Information</strong><br/><br/>
               To use it with this project please copy this URL, go to Pivotal Tracker and paste it into Project - Edit Settings - Integrations - Web Hook URL.
             </div>
             <div class="info" ng-click="webhook_tip = !webhook_tip" ng-mouseover="webhook_tip = true" ng-mouseleave="webhook_tip = false"></div>
-          </div><input id="webhook_url" type="text" value="{{webhookProjectURL}}" readonly="readonly" autocomplete="off" />
-          <div class="lWebHarge-12 columns">
+          </div>
+          <input id="webhook_url" type="text" value="{{webhookProjectURL}}" readonly="readonly" autocomplete="off" />
+          <div ng-show="webhookPTIntegration">
+            <p>Web Hook Integration for this project already exists</p>
+          </div>
+          <div class="lWebHarge-12 columns" ng-show="!webhookPTIntegration">
             <div class="row">
               <div ng-click="createPTWebHookIntegration()" class="large-12 colums panel recent-task clickable">
                 <div class="small-12 large-12 columns">
