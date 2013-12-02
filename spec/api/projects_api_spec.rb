@@ -334,7 +334,7 @@ describe 'Projects API' do
     integration = create :git_hub_integration
     project = create :gh_project, integrations: [integration]
     api_get "projects/#{project.id}/pivotal_tracker_activity_web_hook_url", {token: project.users.last.api_key.token}
-    response.status.should == 200
+    response.status.should == 404
     resp = JSON.parse(response.body)
     resp.should have_key("message")
     resp["message"].should =~ /Resource not found/
