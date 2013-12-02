@@ -331,26 +331,3 @@ KarmaTracker.factory 'broadcastService', ($rootScope) ->
     $rootScope.$broadcast('handleBroadcast')
 
   broadcastService
-
-
-KarmaTracker.controller "WebHookIntegrationsController", ($rootScope, $scope, $http, $cookieStore, $location, $routeParams) ->
-  $scope.checkWebHookPTIntegration = ->
-    $http.get(
-      "/api/v1/projects/#{$location.url().split('/')[2]}/pivotal_tracker_get_web_hook_integration?token=#{$cookieStore.get($scope.tokenName)}"
-    ).success((data, status, headers, config) ->
-      $rootScope.webhookPTIntegration = true if data['web_hook_exists']
-    ).error((data, status, headers, config) ->
-      $rootScope.webhookPTIntegration = false
-    )
-
-  $scope.createPTWebHookIntegration = ->
-    $http.get(
-      "/api/v1/projects/#{$routeParams.project_id}/pivotal_tracker_create_web_hook_integration?token=#{$cookieStore.get($scope.tokenName)}"
-    ).success((data, status, headers, config) ->
-      $rootScope.webhookPTIntegration = true
-    ).error((data, status, headers, config) ->
-      $rootScope.webhookPTIntegration = false
-    )
-
-  if $cookieStore.get($scope.tokenName)?
-    $scope.checkWebHookPTIntegration()

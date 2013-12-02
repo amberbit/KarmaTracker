@@ -402,6 +402,23 @@ module Api
         end
       end
 
+      ##
+      # Adds Pivotal Tracker one click web hook to project
+      #
+      # GET /api/v1/projects/:id/tasks/pivotal_tracker_create_web_hook_integration
+      #
+      # params:
+      #   token - KarmaTracker API token
+      #
+      # = Examples
+      #
+      #   resp = conn.get("/api/v1/projects/:id/tasks/pivotal_tracker_create_web_hook_integration", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
+      #
+      #   resp.status
+      #   => 200
+      #
+      #   resp.body
+      #   => {"webhook_version": "v5","kind": "webhook","created_at": "2013-11-12T12:00:00Z","updated_at": "2013-11-12T12:00:00Z", "webhook_url": "http:/some.web.hook.url.com","project_id": 99, "id": 28}
       def pivotal_tracker_create_web_hook_integration
         project = Project.find_by_id(params[:id])
         integration = @api_key.user.integrations.joins(:participations).
@@ -415,6 +432,24 @@ module Api
         end
       end
 
+      ##
+      # Returns all Pivotal Tracker web hooks of this project
+      #
+      # GET /api/v1/projects/:id/tasks/pivotal_tracker_get_web_hook_integration
+      #
+      # params:
+      #   token - KarmaTracker API token
+      #
+      # = Examples
+      #
+      #   resp = conn.get("/api/v1/projects/:id/tasks/pivotal_tracker_get_web_hook_integration", "token" => "dcbb7b36acd4438d07abafb8e28605a4")
+      #
+      #   resp.status
+      #   => 200
+      #
+      #   resp.body
+      #   => [{"webhook_version": "v5","kind": "webhook","created_at": "2013-11-12T12:00:00Z","updated_at": "2013-11-12T12:00:00Z", "webhook_url": "http:/some.web.hook.url.com","project_id": 99, "id": 28},
+      #{"webhook_version": "v5","kind": "webhook","created_at": "2013-09-13T12:00:00Z","updated_at": "2013-09-13T12:00:00Z", "webhook_url": "http:/some.web.hook.url.com","project_id": 99, "id": 27}]
       def pivotal_tracker_get_web_hook_integration
         project = Project.find_by_id(params[:id])
 
@@ -427,8 +462,6 @@ module Api
           render json: {message: 'Resource not found'}, status: 404
         end
       end
-
-
 
       ##
       # Returns user's other project names on which other users are currently also working.

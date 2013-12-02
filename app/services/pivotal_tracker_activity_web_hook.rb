@@ -6,8 +6,9 @@ class PivotalTrackerActivityWebHook
   end
 
   def get_web_hook_integration integration
-
-    if @project.web_hook_time > Time.now - 6
+    if @project.web_hook_exists
+      return true
+    elsif @project.web_hook_time.nil? || @project.web_hook_time < Time.now - 6
 
       Rails.logger.info "Getting web hook for PT project #{@project.source_identifier}"
       @project.update_attributes(:web_hook_time => Time.now)
@@ -17,7 +18,6 @@ class PivotalTrackerActivityWebHook
 
       response = perform_request('get', uri, {}, {'X-TrackerToken' => "#{integration.api_key}", 'Content-Type'=> 'application/json'})
       json = JSON.parse response.body
-
       if response.code == '200'
         Rails.logger.info "Creating web hook request for PT project #{@project.source_identifier} finished successfully"
 
@@ -26,8 +26,6 @@ class PivotalTrackerActivityWebHook
         Rails.logger.error "Creating web hook request for PT project #{@project.source_identifier} failed"
         return false
       end
-    elsif @project.web_hook_exists
-      return true
     else
       return false
     end
