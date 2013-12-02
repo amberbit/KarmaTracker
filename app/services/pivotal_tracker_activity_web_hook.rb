@@ -7,8 +7,7 @@ class PivotalTrackerActivityWebHook
 
   def get_web_hook_integration integration
 
-    if @project.web_hook_time > Time.now - 6
-
+    if @project.web_hook_time.nil? || @project.web_hook_time < Time.now - 6
       Rails.logger.info "Getting web hook for PT project #{@project.source_identifier}"
       @project.update_attributes(:web_hook_time => Time.now)
 
@@ -20,16 +19,18 @@ class PivotalTrackerActivityWebHook
 
       if response.code == '200'
         Rails.logger.info "Creating web hook request for PT project #{@project.source_identifier} finished successfully"
-
-        return json.any? { |web_hook| web_hook["webhook_url"] == web_hook_url }
+        if json.any? { |web_hook| web_hook["webhook_url"] == web_hook_url }
+          @project.update_attributes(:web_hook_exists => true)
+          return true
+        else
+          return false
+        end
       else
-        Rails.logger.error "Creating web hook request for PT project #{@project.source_identifier} failed"
+        Rails.logger.error "Confirm existing for PT project #{@project.source_identifier} failed"
         return false
       end
-    elsif @project.web_hook_exists
-      return true
     else
-      return false
+      return @project.web_hook_exists
     end
   end
 
@@ -42,9 +43,11 @@ class PivotalTrackerActivityWebHook
       json = JSON.parse response.body
       @project.update_attributes(:web_hook_time => Time.now, :web_hook_exists => true)
       Rails.logger.info "Creating web hook request for PT project #{@project.source_identifier} finished successfully"
+      return true
     else
       Rails.logger.error "Creating web hook request for PT project #{@project.source_identifier} failed"
       @project.update_attributes(:web_hook_time => Time.now)
+      return false
     end
   end
 

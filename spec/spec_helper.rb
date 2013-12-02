@@ -95,6 +95,14 @@ def reset_fakeweb_urls
     :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'current_iteration.json')),
     :status => ['200', 'OK'])
 
+  FakeWeb.register_uri(:post, /https:\/\/www\.pivotaltracker\.com\/services\/v5\/projects\/[0-9]+\/webhooks/,
+    :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'web_hook.json')),
+    :status => ['200', 'OK'])
+
+  FakeWeb.register_uri(:get, /https:\/\/www\.pivotaltracker\.com\/services\/v5\/projects\/[0-9]+\/webhooks/,
+    :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'web_hook.json')),
+
+    :status => ['200', 'OK'])
   # GitHub URIs
   FakeWeb.register_uri(:post, 'https://wrong_username:wrong_password@api.github.com/authorizations',
     :body => 'Access Denied', :status => ['401', 'Unauthorized'])

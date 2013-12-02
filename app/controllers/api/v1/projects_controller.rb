@@ -407,8 +407,7 @@ module Api
         integration = @api_key.user.integrations.joins(:participations).
           where('participations.project_id = ?', project.id).
           all(readonly: false).first
-        if project && integration &&  @api_key.user.projects.include?(project)
-          PivotalTrackerActivityWebHook.new(project).create_web_hook_request(integration)
+        if project && integration && @api_key.user.projects.include?(project) && PivotalTrackerActivityWebHook.new(project).create_web_hook_request(integration)
           render json: {message: 'Creating web hook started'}, status: 200
         else
           render json: {message: 'Resource not found'}, status: 404
@@ -417,11 +416,9 @@ module Api
 
       def pivotal_tracker_get_web_hook_integration
         project = Project.find_by_id(params[:id])
-
         integration = @api_key.user.integrations.joins(:participations).where('participations.project_id = ?', project.id).all(readonly: false).first
 
-        if project && integration &&  @api_key.user.projects.include?(project)
-          data = PivotalTrackerActivityWebHook.new(project).get_web_hook_integration(integration)
+        if project && integration && @api_key.user.projects.include?(project) && data = PivotalTrackerActivityWebHook.new(project).get_web_hook_integration(integration)
           render json: {message: 'Getting web hook started', web_hook_exists: data}, status: 200
         else
           render json: {message: 'Resource not found'}, status: 404

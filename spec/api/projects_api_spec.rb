@@ -334,12 +334,32 @@ describe 'Projects API' do
     integration = create :git_hub_integration
     project = create :gh_project, integrations: [integration]
     api_get "projects/#{project.id}/pivotal_tracker_activity_web_hook_url", {token: project.users.last.api_key.token}
-    response.status.should == 404
+    response.status.should == 200
     resp = JSON.parse(response.body)
     resp.should have_key("message")
     resp["message"].should =~ /Resource not found/
   end
 
+  # GET /api/v1/projects/:id/pivotal_tracker_create_web_hook_integration
+  it 'should add pivotal tracker project webhook' do
+    integration = create :integration
+    project = FactoryGirl.create :project, source_identifier: 8, integrations: [integration]
+    api_get "projects/#{project.id}/pivotal_tracker_create_web_hook_integration", {token: project.users.last.api_key.token}
+    response.status.should == 200
+    project.reload.web_hook_exists.should == true
+  end
+
+  # GET /api/v1/projects/:id/pivotal_tracker_get_web_hook_integration
+  it 'should return 200 if web_hook already exists' do
+    integration = create :integration
+    project = FactoryGirl.create :project, id:8, integrations: [integration]
+    project.web_hook_token = '1234567890token'
+    project.save
+
+    api_get "projects/#{project.id}/pivotal_tracker_get_web_hook_integration", {token: project.users.last.api_key.token}
+    response.status.should == 200
+    project.reload.web_hook_exists.should == true
+  end
 
   # GET /api/v1/projects/also_working
   it 'should not find any projects when all are destroyed' do
