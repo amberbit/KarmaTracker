@@ -16,7 +16,7 @@ as a user I can', js: true  do
   let!(:task1) { create(:task, project: project1, current_task: true) }
   let!(:task3) { create(:task, project: project1) }
   let!(:task4) do
-    task = create(:task, project: project1, current_task: true, name: 'Do laundry') 
+    task = create(:task, project: project1, current_task: true, name: 'Do laundry')
     create(:time_log_entry, task: task, user: user)
     task
   end
@@ -144,7 +144,7 @@ as a user I can', js: true  do
     end
     wait_until(10) { page.has_content? "→ #{project1.name}" }
     uncheck 'Show only current'
-    within '.loading' do 
+    within '.loading' do
       page.should have_content 'Loading'
     end
     AppConfig.items_per_page = 20
@@ -201,6 +201,13 @@ as a user I can', js: true  do
     AppConfig.unstub(:items_per_page)
   end
 
+  scenario "can see button for creating webhook integration if project doesn't have it" do
+    within '.view' do
+      find('span', text: project1.name).click
+    end
+    project1.web_hook_exists == false
+    find('.tiny-webhook').should have_content('Create one-click WebHook Integration')
+  end
 
 #  scenario 'see who else is working on other tasks' do
 #    user2 = create :confirmed_user
