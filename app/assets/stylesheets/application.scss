@@ -147,7 +147,7 @@ h5.subtitle{
   background-size: 100%;
   background-position: center;
   width: 2em;
-  margin-left: 2px;  
+  margin-left: 2px;
   margin-top: -1px;
 
 
@@ -276,7 +276,7 @@ padding-left: 2px;
     background-image: url(image_path('start-tracking.png'));
     background-position: center;
     background-repeat: no-repeat;
-  }  
+  }
   &.start.project {
     margin-top: -2px;
   }
@@ -329,7 +329,7 @@ padding-left: 2px;
   width: 4em !important;
   z-index: 98 !important;
   box-shadow: 0 100px 100px -120px #969696 inset !important;
-  padding-bottom:100% !important; 
+  padding-bottom:100% !important;
   margin-bottom:-100% !important;
   border-left: solid 1px #969696 !important;
 }
@@ -347,7 +347,7 @@ padding-left: 2px;
 
 .panel.callout.running {
   box-shadow: 0 -100px 50px -100px #f4cf20 inset !important;
-  color: white; 
+  color: white;
   padding-left: 15px;
   .label {
     background-color: transparent;
@@ -552,7 +552,7 @@ padding-left: 2px;
   left: 1px;
   //box-shadow: 0 146px 107px -125px #f47a10 inset !important;
   background-color: #444;
-  
+
 }
 
 #pulled-alert {
@@ -644,7 +644,7 @@ padding-left: 2px;
   background-repeat: no-repeat;
   height: 2em;
   width: 2em;
-  
+
 }
 
 .loading {
@@ -657,7 +657,7 @@ padding-left: 2px;
   height:150px;
   background-color:#111;
   opacity:0.8;
-  
+
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
   -khtml-border-radius: 10px;
@@ -688,6 +688,13 @@ padding-left: 2px;
 
 #webhook-panel{
   font-size: 0.9em;
+}
+
+.tiny-webhook{
+  padding: 0.12em;
+  img {
+    float: right
+  }
 }
 
 .arrow_box {
@@ -842,7 +849,7 @@ h4 a.refresh{
   box-shadow: 0 100px 100px -120px #969696 inset !important;
 }
 
-#ghform .tab-content, 
+#ghform .tab-content,
 #ptform .tab-content {
   border-style: solid;
   border-width: 1px;

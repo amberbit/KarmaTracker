@@ -20,13 +20,19 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
     )
 
   $scope.createPTWebHookIntegration = ->
+    $rootScope.webhookSpinner = true;
     $http.get(
       "/api/v1/projects/#{$routeParams.project_id}/pivotal_tracker_create_web_hook_integration?token=#{$cookieStore.get($scope.tokenName)}"
     ).success((data, status, headers, config) ->
       $rootScope.webhookPTIntegration = true
+      $rootScope.webhookSpinner = false;
+      $scope.notice "Pivotal Tracker WebHook Integration was added successfully"
     ).error((data, status, headers, config) ->
       $rootScope.webhookPTIntegration = false
+      $rootScope.webhookSpinner = false;
+      $scope.notice "Pivotal Tracker WebHook Integration failed"
     )
+
 
   $scope.numberOfPages = ->
     return Math.ceil($scope.totalCount/$scope.pageSize)
