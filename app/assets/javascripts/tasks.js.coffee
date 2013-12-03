@@ -33,7 +33,8 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
 
   $scope.reloadTasks = (pageNr) ->
     $rootScope.loading = true
-    $scope.checkWebHookPTIntegration()
+    if $routeParams.project_id?
+      $scope.checkWebHookPTIntegration()
     if !pageNr? || isNaN(pageNr) || typeof(pageNr) == 'boolean'
       pageNr = 0
 
