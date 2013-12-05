@@ -6,11 +6,11 @@ class PivotalTrackerActivityWebHook
   end
 
   def get_web_hook_integration integration
-    if @project.web_hook_exists && @project.web_hook_time > Time.now - AppConfig.webhook_check_time
+    if @project.web_hook_exists && @project.web_hook_time > DateTime.now - AppConfig.webhook_check_time
       return true
-    elsif @project.web_hook_time.nil? || @project.web_hook_time < Time.now - AppConfig.webhook_check_time
+    elsif @project.web_hook_time.nil? || @project.web_hook_time < DateTime.now - AppConfig.webhook_check_time
       Rails.logger.info "Getting web hook for PT project #{@project.source_identifier}"
-      @project.update_attributes(:web_hook_time => Time.now)
+      @project.update_attributes(:web_hook_time => DateTime.now)
 
       web_hook_url = "#{AppConfig.protocol}#{AppConfig.host}/api/v1/projects/#{@project.id}/pivotal_tracker_activity_web_hook?token=#{@project.web_hook_token}"
       uri ="https://www.pivotaltracker.com/services/v5/projects/#{@project.source_identifier}/webhooks"
@@ -37,12 +37,12 @@ class PivotalTrackerActivityWebHook
 
     if response.code == '200'
       json = JSON.parse response.body
-      @project.update_attributes(:web_hook_time => Time.now, :web_hook_exists => true)
+      @project.update_attributes(:web_hook_time => DateTime.now, :web_hook_exists => true)
       Rails.logger.info "Creating web hook request for PT project #{@project.source_identifier} finished successfully"
       return true
     else
       Rails.logger.error "Creating web hook request for PT project #{@project.source_identifier} failed"
-      @project.update_attributes(:web_hook_time => Time.now)
+      @project.update_attributes(:web_hook_time => DateTime.now)
       return false
     end
   end
