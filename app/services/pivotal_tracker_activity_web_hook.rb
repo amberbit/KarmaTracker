@@ -70,8 +70,14 @@ class PivotalTrackerActivityWebHook
 
     after_task = story_changes["new_values"]["after_id"]
     before_task = story_changes["new_values"]["before_id"]
-    task.insert_at((@project.tasks.find_by_source_identifier(after_task).position)+1) if after_task
-    task.move_to_top if before_task && !after_task
+
+    if after_task
+      after_task_position = @project.tasks.find_by_source_identifier(after_task.to_s).position
+      task.insert_at(after_task_position+1) if task.position > after_task_position
+      task.insert_at(after_task_position) if task.position < after_task_position
+    elsif before_task && !after_task
+      task.move_to_top
+    end
 
     task.name = name if name
     task.story_type = story_type if story_type
