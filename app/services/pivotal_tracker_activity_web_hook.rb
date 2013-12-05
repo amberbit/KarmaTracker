@@ -56,18 +56,24 @@ class PivotalTrackerActivityWebHook
       json = JSON.parse request.read
     end
     event_type = json["highlight"]
-    story = json["changes"].first
+    story_changes = json["changes"].first
     project_id = json["project"]["id"]
 
-    source_identifier = story["id"].to_s
+    source_identifier = story_changes["id"].to_s
     task = Task.where("source_name = 'Pivotal Tracker' AND source_identifier = ?", source_identifier).first_or_initialize(source_name: 'Pivotal Tracker', source_identifier: source_identifier)
     if (task.persisted? && task.project != @project) || project_id.to_s != @project.source_identifier.to_s
       Rails.logger.error "Processing web activit hook request for PT project #{@project.source_identifier} failed"
       return false
     end
-    name = story["name"]
-    story_type = story["story_type"]
-    current_state = story["new_values"]["current_state"]
+    name = story_changes["name"]
+    story_type = story_changes["story_type"]
+    current_state = story_changes["new_values"]["current_state"]
+
+    after_task = story_changes["new_values"]["after_id"]
+    before_task = story_changes["new_values"]["before_id"]
+    task.insert_at((@project.tasks.find_by_source_identifier(after_task).position)+1) if after_task
+    task.move_to_top if before_task && !after_task
+
     task.name = name if name
     task.story_type = story_type if story_type
     if current_state

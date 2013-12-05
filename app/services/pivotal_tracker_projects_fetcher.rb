@@ -60,26 +60,26 @@ class PivotalTrackerProjectsFetcher
 
   def fetch_tasks(project, integration)
     Rails.logger.info "Fetching tasks for PT project #{project.source_identifier}"
-
-    uri = "https://www.pivotaltracker.com/services/v5/projects/#{project.source_identifier}/stories"
+    uri = "https://www.pivotaltracker.com/services/v5/projects/#{project.source_identifier}/stories?limit=1000000"
     begin
       response = perform_request('get', uri, {}, {'X-TrackerToken' => integration.api_key})
       uri = extract_next_link(response)
       repos = JSON.parse(response.body)
       if repos.instance_of?(Array)
-        repos.each do |data|
-        name = data["name"]
-        source_identifier = data["id"].to_s
-        story_type = data["story_type"]
-        current_state = data["current_state"]
+        repos.each_with_index do |data, index|
+          name = data["name"]
+          source_identifier = data["id"].to_s
+          story_type = data["story_type"]
+          current_state = data["current_state"]
 
-        task = Task.where("source_name = 'Pivotal Tracker' AND source_identifier = ?", source_identifier).
-          first_or_initialize(source_name: 'Pivotal Tracker', source_identifier: source_identifier)
-        task.name = name
-        task.story_type = story_type
-        task.current_state = current_state
-        task.project = project
-        task.save
+          task = Task.where("source_name = 'Pivotal Tracker' AND source_identifier = ?", source_identifier).
+            first_or_initialize(source_name: 'Pivotal Tracker', source_identifier: source_identifier)
+          task.name = name
+          task.story_type = story_type
+          task.current_state = current_state
+          task.project = project
+          task.position = (index+1)
+          task.save
         end
       end
     fetch_current_tasks project, integration
