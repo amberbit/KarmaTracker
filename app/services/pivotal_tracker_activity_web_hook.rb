@@ -67,17 +67,8 @@ class PivotalTrackerActivityWebHook
     name = story_changes["name"]
     story_type = story_changes["story_type"]
     current_state = story_changes["new_values"]["current_state"]
-
     after_task = story_changes["new_values"]["after_id"]
     before_task = story_changes["new_values"]["before_id"]
-
-    if after_task
-      after_task_position = @project.tasks.find_by_source_identifier(after_task.to_s).position
-      task.insert_at(after_task_position+1) if task.position > after_task_position
-      task.insert_at(after_task_position) if task.position < after_task_position
-    elsif before_task && !after_task
-      task.move_to_top
-    end
 
     task.name = name if name
     task.story_type = story_type if story_type
@@ -86,6 +77,14 @@ class PivotalTrackerActivityWebHook
       task.current_task = current_state == 'started' || current_state == 'unstarted' ? true : false
     end
     task.project = @project
+
+    if after_task
+      after_task_position = @project.tasks.find_by_source_identifier(after_task.to_s).position
+      task.insert_at(after_task_position+1) if task.position.nil? || task.position > after_task_position
+      task.insert_at(after_task_position) if task.position.present? && task.position < after_task_position
+    elsif before_task && !after_task
+      task.move_to_top
+    end
 
 
     if task.save
