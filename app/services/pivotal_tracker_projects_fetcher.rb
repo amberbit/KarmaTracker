@@ -58,12 +58,14 @@ class PivotalTrackerProjectsFetcher
     Rails.logger.info "Successfully updated list of integrations for PT project #{project.source_identifier}"
   end
 
-  def fetch_tasks(project, integration)
+   def fetch_tasks(project, integration)
     Rails.logger.info "Fetching tasks for PT project #{project.source_identifier}"
-    uri = "https://www.pivotaltracker.com/services/v5/projects/#{project.source_identifier}/stories?limit=1000000"
+    limit = 100
+    offset = 0
     begin
+      uri = "https://www.pivotaltracker.com/services/v5/projects/#{project.source_identifier}/stories?limit=#{limit}&offset=#{offset}&filter=-state:accepted"
       response = perform_request('get', uri, {}, {'X-TrackerToken' => integration.api_key})
-      uri = extract_next_link(response)
+#      uri = extract_next_link(response)
       repos = JSON.parse(response.body)
       if repos.instance_of?(Array)
         repos.each_with_index do |data, index|
@@ -78,12 +80,14 @@ class PivotalTrackerProjectsFetcher
           task.story_type = story_type
           task.current_state = current_state
           task.project = project
-          task.position = (index+1)
+          task.position = (index+offset+1)
           task.save
         end
       end
+      offset = offset+limit
+    end while repos.count == limit
     fetch_current_tasks project, integration
-    end while uri
+
     Rails.logger.info "Successfully updated list of tasks for PT project #{project.source_identifier}"
   end
 
