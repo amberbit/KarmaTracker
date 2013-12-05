@@ -28,12 +28,13 @@ class Task < ActiveRecord::Base
   has_many :time_log_entries, dependent: :nullify
 
   belongs_to :project
+  acts_as_list scope: :project
 
   validates_presence_of :project_id, :source_name, :source_identifier,
                         :current_state, :story_type
   validates_uniqueness_of :source_identifier, :scope => :source_name
 
-  default_scope order('updated_at DESC')
+  default_scope order('position ASC')
 
   def self.current
     where(current_task: true)
