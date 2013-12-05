@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131129131248) do
+ActiveRecord::Schema.define(:version => 20131203134837) do
 
   create_table "api_keys", :force => true do |t|
     t.string   "token",      :null => false
@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(:version => 20131129131248) do
     t.string   "current_state",                        :null => false
     t.string   "story_type",                           :null => false
     t.boolean  "current_task",      :default => false
+    t.integer  "position"
   end
 
   add_index "tasks", ["source_name", "source_identifier"], :name => "index_tasks_on_source_name_and_source_identifier", :unique => true
