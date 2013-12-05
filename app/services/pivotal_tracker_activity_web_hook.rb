@@ -84,8 +84,9 @@ class PivotalTrackerActivityWebHook
       task.insert_at(after_task_position) if task.position.present? && task.position < after_task_position
     elsif before_task && !after_task
       task.move_to_top
+    else
+      task.insert_at(1)
     end
-
 
     if task.save
       Rails.logger.info "Processing web activit hook request for PT project #{@project.source_identifier} finished successfully"

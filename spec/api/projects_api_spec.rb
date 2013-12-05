@@ -306,7 +306,7 @@ describe 'Projects API' do
   it 'should process correct request' do
     project = FactoryGirl.create :project, source_identifier: 16
     project.tasks.count.should == 0
-    api_post "projects/#{project.id}/pivotal_tracker_activity_web_hook?token=#{project.reload.web_hook_token}", File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_create.json'))
+    api_post "projects/#{project.id}/pivotal_tracker_activity_web_hook?token=#{project.reload.web_hook_token}", File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_create2.json'))
     response.status.should == 200
     resp = JSON.parse(response.body)
     resp.should have_key("message")

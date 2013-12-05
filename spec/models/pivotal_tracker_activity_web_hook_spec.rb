@@ -10,7 +10,7 @@ describe PivotalTrackerActivityWebHook do
 
   it 'should create new task' do
     @project.tasks.count.should == 0
-    @hook.process_request File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_create.json'))
+    @hook.process_request File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_create2.json'))
 
     @project.tasks.count.should == 1
     @project.tasks.last.name.should == "Build Death Star"
@@ -22,12 +22,12 @@ describe PivotalTrackerActivityWebHook do
   end
 
   it 'should update existing task' do
-    @hook.process_request File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_create.json'))
+    @hook.process_request File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_create2.json'))
     @project.tasks.count.should == 1
     @project.tasks.last.current_state.should == "unscheduled"
     @project.tasks.last.current_task.should == false
 
-    @hook.process_request File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_update.json'))
+    @hook.process_request File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_update2.json'))
     @project.tasks.count.should == 1
     @project.tasks.last.current_state.should == "started"
     @project.tasks.last.current_task.should == true
