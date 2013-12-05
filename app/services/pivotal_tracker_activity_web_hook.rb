@@ -6,10 +6,9 @@ class PivotalTrackerActivityWebHook
   end
 
   def get_web_hook_integration integration
-
-    if @project.web_hook_exists
+    if @project.web_hook_exists && @project.web_hook_time > Time.now - AppConfig.webhook_check_time
       return true
-    elsif @project.web_hook_time.nil? || @project.web_hook_time < Time.now - 6
+    elsif @project.web_hook_time.nil? || @project.web_hook_time < Time.now - AppConfig.webhook_check_time
       Rails.logger.info "Getting web hook for PT project #{@project.source_identifier}"
       @project.update_attributes(:web_hook_time => Time.now)
 
