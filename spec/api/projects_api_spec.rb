@@ -105,6 +105,17 @@ describe 'Projects API' do
     }.to change{project.tasks.count}.by(2)
   end
 
+  it "should fetch project's with their position" do
+    project = Project.last
+    api_get "projects/#{project.id}/refresh_for_project", {token: ApiKey.last.token}
+    response.status.should == 200
+
+    project.tasks.first.position.should_not be nil
+    project.tasks.first.position.should == 1
+    project.tasks.last.position.should_not == 1
+    project.tasks.last.position.should == 2
+  end
+
   it "should not fetch tasks from not my project" do
     project = Project.last
     expect {
@@ -303,6 +314,22 @@ describe 'Projects API' do
     project.reload.tasks.count.should == 1
   end
 
+  # POST /api/v1/projects/:id/pivotal_tracker_activity_web_hook
+  it 'should process correct request with right task positioning' do
+    project = FactoryGirl.create :project, source_identifier: 16
+    task1 = FactoryGirl.create(:task, project: project, position: 1, source_identifier: 1)
+    task2 = FactoryGirl.create(:task, project: project, position: 2, source_identifier: 2)
+
+    project.tasks.count.should == 2
+    task1.position.should == 1
+    task2.position.should == 2
+
+    api_post "projects/#{project.id}/pivotal_tracker_activity_web_hook?token=#{project.reload.web_hook_token}", File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_update.json'))
+    response.status.should == 200
+
+    task1.reload.position.should == 2
+    task2.reload.position.should == 1
+  end
 
   it 'should return a list of 5 most recently worked on projects' do
     Project.destroy_all

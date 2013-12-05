@@ -18,15 +18,15 @@
 
           ],
           "updated_at": "2013-11-25T13:52:07Z",
-          "id": 1231231,
+          "id": 1,
           "project_id": 16,
-          "after_id": 61314482
+          "after_id": 2
         },
         "story_type": "feature",
         "name": "Build Death Star",
         "kind": "story",
         "change_type": "create",
-        "id": 1231231
+        "id": 1
       }
     ],
     "project": {
