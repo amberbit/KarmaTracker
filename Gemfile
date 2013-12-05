@@ -30,6 +30,9 @@ gem 'amberbit-config'
 gem 'jruby-openssl'
 gem 'will_paginate', '~> 3.0.5'
 
+#Acts as List for db task positioning
+gem 'acts_as_list'
+
 #OmniAuth: Google, GitHub
 gem 'omniauth', '~> 1.1.0'
 gem 'omniauth-google-oauth2'
