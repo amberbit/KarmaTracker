@@ -44,7 +44,7 @@ as a user I can', js: true  do
 
   scenario 'see a list of project\'s current tasks' do
     within '.view' do
-      find('span', text: project1.name).click
+     find('span', text: project1.name).click
     end
     page.should have_content task1.name
     page.should_not have_content task2.name
@@ -152,26 +152,27 @@ as a user I can', js: true  do
 
   scenario 'paginate tasks with prev/next' do
     AppConfig.stub(:items_per_page).and_return(1)
-    visit current_path
+    wait_until(10) { visit current_path }
 
     within '.view' do
       find('span', text: project1.name).click
     end
 
     within '.view' do
-      page.should have_content task4.name
-      page.should_not have_content task1.name
-    end
-    within '#pagination' do
-      click_on 'Next'
-    end
-    wait_until(10) { page.has_content? "2 / 2"}
-    within '.view' do
-      page.should have_content task1.name
       page.should_not have_content task4.name
+      page.should have_content task1.name
     end
     within '#pagination' do
-      click_on 'Previous'
+      5.times do
+        click_button 'Next'
+      end
+    end
+    within '.view' do
+      page.should_not have_content task1.name
+      page.should have_content task4.name
+    end
+    within '#pagination' do
+        click_button 'Previous'
     end
     within '.view' do
       page.should have_content task4.name
@@ -187,8 +188,8 @@ as a user I can', js: true  do
       find('span', text: project1.name).click
     end
     within '.view' do
-      page.should have_content task4.name
-      page.should_not have_content task1.name
+      page.should_not have_content task4.name
+      page.should have_content task1.name
     end
     within '#pagination' do
       find('.dropdown-toggle').click
