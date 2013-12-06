@@ -1,4 +1,4 @@
-KarmaTracker.controller "SessionController", ($scope, $http, $cookieStore, $location, $routeParams, $rootScope) ->
+KarmaTracker.controller "SessionController", ($scope, $http, $cookieStore, $location, $routeParams, $rootScope, $timeout) ->
   $rootScope.pullAllowed = false
 
   $scope.session = { email: null, password: null, remember_me: false }
@@ -52,17 +52,22 @@ KarmaTracker.controller "SessionController", ($scope, $http, $cookieStore, $loca
     )
 
   if $location.path().endsWith('/oauth') && $routeParams.email? && $routeParams.oauth_token?
-    $http.post(
-      '/api/v1/session/oauth_verify',
-      {
-        email: $routeParams.email
-        token: $routeParams.oauth_token
-      }
-    ).success((data, status, headers, config) ->
-      $scope.signInSuccess data.user.token
-    ).error((data, status, headers, config) ->
-      $scope.signInFailure data.message
-    )
+    $rootScope.loading = true
+    $timeout (->
+      $http.post(
+        '/api/v1/session/oauth_verify',
+        {
+          email: $routeParams.email
+          token: $routeParams.oauth_token
+        }
+      ).success((data, status, headers, config) ->
+        $rootScope.loading = false
+        $scope.signInSuccess data.user.token
+      ).error((data, status, headers, config) ->
+        $rootScope.loading = false
+        $scope.signInFailure data.message
+      )
+    ), 2000
 
 
 KarmaTracker.controller "LogoutController", ($scope, $location, $cookieStore) ->
