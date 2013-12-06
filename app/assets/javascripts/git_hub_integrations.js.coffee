@@ -44,7 +44,6 @@ KarmaTracker.controller "GitHubIntegrationsController", ($scope, $http, $cookieS
           $scope.openAddForm()
           $scope.updateIntegrations()
         ).error((data, status, headers, config) ->
-          console.debug data
           if data.git_hub.errors.api_key?
             $scope.errors.api_key = data.git_hub.errors.api_key[0]
           else
@@ -59,7 +58,6 @@ KarmaTracker.controller "GitHubIntegrationsController", ($scope, $http, $cookieS
           $scope.openAddForm()
           $scope.updateIntegrations()
         ).error((data, status, headers, config) ->
-          console.debug data
           $scope.newIntegration.username = ''
           $scope.newIntegration.password = ''
           if data.git_hub.errors.api_key?

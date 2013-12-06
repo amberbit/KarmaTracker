@@ -209,8 +209,10 @@ module Api
         project = Project.find_by_id(params[:id])
         if project && @api_key.user.projects.include?(project)
           @items_per_page = AppConfig.items_per_page
-          @tasks = project.tasks
-          @tasks = ElasticSearcher.search_tasks(params[:query], @tasks.map(&:id)) if params[:query].present?
+
+          @tasks = project.tasks.order("position ASC")
+          @tasks = ElasticSearcher.search_tasks(params[:query], @tasks.map(&:id)) if params[:query]
+
           @tasks = @tasks.paginate(page: params[:page], per_page: @items_per_page )
           render 'tasks'
         else

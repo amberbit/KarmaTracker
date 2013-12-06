@@ -10,37 +10,11 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
   $scope.totalCount = 0
   $scope.items = []
 
-  $scope.checkWebHookPTIntegration = ->
-    $http.get(
-      "/api/v1/projects/#{$location.url().split('/')[2]}/pivotal_tracker_get_web_hook_integration?token=#{$cookieStore.get($scope.tokenName)}"
-    ).success((data, status, headers, config) ->
-      $rootScope.webhookPTIntegration = true if data['web_hook_exists']
-    ).error((data, status, headers, config) ->
-      $rootScope.webhookPTIntegration = false
-    )
-
-  $scope.createPTWebHookIntegration = ->
-    $rootScope.webhookSpinner = true;
-    $http.get(
-      "/api/v1/projects/#{$routeParams.project_id}/pivotal_tracker_create_web_hook_integration?token=#{$cookieStore.get($scope.tokenName)}"
-    ).success((data, status, headers, config) ->
-      $rootScope.webhookPTIntegration = true
-      $rootScope.webhookSpinner = false;
-      $scope.notice "Pivotal Tracker WebHook Integration was added successfully"
-    ).error((data, status, headers, config) ->
-      $rootScope.webhookPTIntegration = false
-      $rootScope.webhookSpinner = false;
-      $scope.notice "Pivotal Tracker WebHook Integration failed"
-    )
-
-
   $scope.numberOfPages = ->
     return Math.ceil($scope.totalCount/$scope.pageSize)
 
   $scope.reloadTasks = (pageNr) ->
     $rootScope.loading = true
-    if $routeParams.project_id?
-      $scope.checkWebHookPTIntegration()
     if !pageNr? || isNaN(pageNr) || typeof(pageNr) == 'boolean'
       pageNr = 0
 
@@ -56,7 +30,6 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
        $scope.initItems()
        $rootScope.loading = false
     ).error((data, status, headers, config) ->
-      console.debug("Error fetching tasks. Status: #{status}")
       $rootScope.loading = false
     )
 
@@ -71,7 +44,6 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
 
         broadcastService.prepForBroadcast "refreshRecent"
       ).error((data, status, headers, config) ->
-        console.debug('Error when stopping time log entries')
       )
     else
       $http.post(
@@ -82,7 +54,6 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
         $scope.$watch("$scope.runningTask", $scope.getRunningTask())
         broadcastService.prepForBroadcast "refreshRecent"
       ).error((data, status, headers, config) ->
-        console.debug('Error when starting tracking time on tasks')
       )
 
   $scope.queryChanged = () ->
@@ -104,7 +75,6 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
   ).success((data, status, headers, config) ->
     $scope.project = data.project
   ).error((data, status, headers, config) ->
-    console.debug('Error fetching project')
   )
 
   $scope.initItems = ->
@@ -112,3 +82,5 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
     numberOfPages = $scope.numberOfPages()
     for i in [0..(numberOfPages-1)]
       $scope.items.push { text: "#{i+1}/#{numberOfPages}", value: i }
+
+  broadcastService.prepForBroadcast "TasksControllerStarted"

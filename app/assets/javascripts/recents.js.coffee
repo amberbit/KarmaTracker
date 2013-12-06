@@ -21,7 +21,6 @@ KarmaTracker.controller "RecentsController", ($scope, $http, $cookieStore, $loca
         $scope.getRecentProjects()
         broadcastService.prepForBroadcast('recentClicked')
       ).error((data, status, headers, config) ->
-        console.debug('Error when stopping time log entries')
       )
     else
       $http.post(
@@ -32,7 +31,6 @@ KarmaTracker.controller "RecentsController", ($scope, $http, $cookieStore, $loca
         $scope.getRecentProjects()
         broadcastService.prepForBroadcast('recentClicked')
       ).error((data, status, headers, config) ->
-        console.debug('Error when starting tracking time on tasks')
       )
 
   $scope.getRecentTasks = ->
