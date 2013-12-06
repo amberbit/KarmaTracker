@@ -13,6 +13,7 @@
 #= require tasks
 #= require flashes
 #= require recents
+#= requrie web_hook_integrations
 #= require password_resets
 #= require cookieStore_override
 
@@ -304,7 +305,7 @@ KarmaTracker.directive "pullToRefresh", ($rootScope) ->
 KarmaTracker.filter 'startFrom', ->
   (input, start) ->
     start = +start
-    input.slice start 
+    input.slice start
 
 
 # This controller just has to redirect user to proper place

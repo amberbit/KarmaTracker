@@ -16,7 +16,7 @@ as a user I can', js: true  do
   let!(:task1) { create(:task, project: project1, current_task: true) }
   let!(:task3) { create(:task, project: project1) }
   let!(:task4) do
-    task = create(:task, project: project1, current_task: true, name: 'Do laundry') 
+    task = create(:task, project: project1, current_task: true, name: 'Do laundry')
     create(:time_log_entry, task: task, user: user)
     task
   end
@@ -44,7 +44,7 @@ as a user I can', js: true  do
 
   scenario 'see a list of project\'s current tasks' do
     within '.view' do
-      find('span', text: project1.name).click
+     find('span', text: project1.name).click
     end
     page.should have_content task1.name
     page.should_not have_content task2.name
@@ -144,7 +144,7 @@ as a user I can', js: true  do
     end
     wait_until(10) { page.has_content? "→ #{project1.name}" }
     uncheck 'Show only current'
-    within '.loading' do 
+    within '.loading' do
       page.should have_content 'Loading'
     end
     AppConfig.items_per_page = 20
@@ -152,26 +152,27 @@ as a user I can', js: true  do
 
   scenario 'paginate tasks with prev/next' do
     AppConfig.stub(:items_per_page).and_return(1)
-    visit current_path
+    wait_until(10) { visit current_path }
 
     within '.view' do
       find('span', text: project1.name).click
     end
 
     within '.view' do
-      page.should have_content task4.name
-      page.should_not have_content task1.name
-    end
-    within '#pagination' do
-      click_on 'Next'
-    end
-    wait_until(10) { page.has_content? "2 / 2"}
-    within '.view' do
-      page.should have_content task1.name
       page.should_not have_content task4.name
+      page.should have_content task1.name
     end
     within '#pagination' do
-      click_on 'Previous'
+      5.times do
+        click_button 'Next'
+      end
+    end
+    within '.view' do
+      page.should_not have_content task1.name
+      page.should have_content task4.name
+    end
+    within '#pagination' do
+        click_button 'Previous'
     end
     within '.view' do
       page.should have_content task4.name
@@ -187,8 +188,8 @@ as a user I can', js: true  do
       find('span', text: project1.name).click
     end
     within '.view' do
-      page.should have_content task4.name
-      page.should_not have_content task1.name
+      page.should_not have_content task4.name
+      page.should have_content task1.name
     end
     within '#pagination' do
       find('.dropdown-toggle').click
@@ -201,6 +202,13 @@ as a user I can', js: true  do
     AppConfig.unstub(:items_per_page)
   end
 
+  scenario "can see button for creating webhook integration if project doesn't have it" do
+    within '.view' do
+      find('span', text: project1.name).click
+    end
+    project1.web_hook_exists == false
+    find('.tiny-webhook').should have_content('Create one-click WebHook Integration')
+  end
 
 #  scenario 'see who else is working on other tasks' do
 #    user2 = create :confirmed_user

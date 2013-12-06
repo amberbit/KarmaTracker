@@ -1,0 +1,46 @@
+[
+  {
+    "labels": [
+
+    ],
+    "name": "More power to shields",
+    "accepted_at": "2008/12/10 00:00:00 UTC",
+    "id": 1,
+    "kind": "story",
+    "project_id": 1,
+    "owned_by_id": 1,
+    "story_type": "chore",
+    "updated_at": "2013-04-12T16:00:48Z",
+    "current_state": "accepted",
+    "requested_by_id": 2,
+    "url": "https://www.pivotaltracker.com/story/show/1",
+    "created_at": "2008/12/10 00:00:00 UTC",
+    "estimate": 1
+  },
+  {
+    "labels": [
+      {
+        "name": "api",
+        "id": 1,
+        "kind": "label",
+        "updated_at": "2013-04-05T13:52:16Z",
+        "project_id": 2,
+        "created_at": "2008/12/10 00:00:00 UTC"
+      }
+    ],
+    "description": "I can add an identity ...",
+    "name": "Abc",
+    "accepted_at": "2008/12/10 00:00:00 UTC",
+    "id": 4,
+    "kind": "story",
+    "project_id": 1,
+    "owned_by_id": 2,
+    "story_type": "feature",
+    "updated_at": "2008/12/10 00:00:00 UTC",
+    "current_state": "accepted",
+    "requested_by_id": 2,
+    "url": "https://www.pivotaltracker.com/story/show/2",
+    "created_at": "2008/12/10 00:00:00 UTC",
+    "estimate": 1
+  }
+]

@@ -3,13 +3,14 @@ require 'spec_helper'
 describe PivotalTrackerActivityWebHook do
 
   before :each do
+    allow_local_connect if Rails.env.test?
     @project = FactoryGirl.create :project, source_identifier: 16
     @hook = PivotalTrackerActivityWebHook.new(@project)
   end
 
   it 'should create new task' do
     @project.tasks.count.should == 0
-    @hook.process_request File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_create.xml'))
+    @hook.process_request File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_create2.json'))
 
     @project.tasks.count.should == 1
     @project.tasks.last.name.should == "Build Death Star"
@@ -21,12 +22,12 @@ describe PivotalTrackerActivityWebHook do
   end
 
   it 'should update existing task' do
-    @hook.process_request File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_create.xml'))
+    @hook.process_request File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_create2.json'))
     @project.tasks.count.should == 1
     @project.tasks.last.current_state.should == "unscheduled"
     @project.tasks.last.current_task.should == false
 
-    @hook.process_request File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_update.xml'))
+    @hook.process_request File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_update2.json'))
     @project.tasks.count.should == 1
     @project.tasks.last.current_state.should == "started"
     @project.tasks.last.current_task.should == true

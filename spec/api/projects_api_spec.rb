@@ -101,8 +101,8 @@ describe 'Projects API' do
   it 'should begin refreshing user\'s projects list' do
     Project.count.should == 6
 
-    FakeWeb.register_uri(:get, 'https://www.pivotaltracker.com/services/v4/projects',
-      :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'projects2.xml')),
+    FakeWeb.register_uri(:get, 'https://www.pivotaltracker.com/services/v5/projects',
+      :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'projects2.json')),
       :status => ['200', 'OK'])
     api_get "projects/refresh", {token: ApiKey.last.token}
     response.status.should == 200
@@ -118,6 +118,17 @@ describe 'Projects API' do
       api_get "projects/#{project.id}/refresh_for_project", {token: ApiKey.last.token}
       response.status.should == 200
     }.to change{project.tasks.count}.by(2)
+  end
+
+  it "should fetch project's with their position" do
+    project = Project.last
+    api_get "projects/#{project.id}/refresh_for_project", {token: ApiKey.last.token}
+    response.status.should == 200
+
+    project.tasks.first.position.should_not be nil
+    project.tasks.first.position.should == 1
+    project.tasks.last.position.should_not == 1
+    project.tasks.last.position.should == 2
   end
 
   it "should not fetch tasks from not my project" do
@@ -273,7 +284,8 @@ describe 'Projects API' do
 
   # POST /api/v1/projects/:id/pivotal_tracker_activity_web_hook
   it 'should return 401 if no token was provided' do
-    api_post "projects/#{Project.last.id}/pivotal_tracker_activity_web_hook", File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_create.xml'))
+    api_post "projects/#{Project.last.id}/pivotal_tracker_activity_web_hook",
+    :body => File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_create.json'))
     response.status.should == 401
     resp = JSON.parse(response.body)
     resp.should have_key("message")
@@ -284,7 +296,9 @@ describe 'Projects API' do
   it 'should return 401 if wrong token was provided' do
     project = FactoryGirl.create :project
     project2 = FactoryGirl.create :project
-    api_post "projects/#{project.id}/pivotal_tracker_activity_web_hook?token=#{project2.web_hook_token}", File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_create.xml'))
+
+    api_post "projects/#{project.id}/pivotal_tracker_activity_web_hook?token=#{project2.web_hook_token}",
+    :body => File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_create.json'))
     response.status.should == 401
     resp = JSON.parse(response.body)
     resp.should have_key("message")
@@ -294,7 +308,9 @@ describe 'Projects API' do
   # POST /api/v1/projects/:id/pivotal_tracker_activity_web_hook
   it 'should return 404 in case of project_id and activity data mismatch' do
     project = FactoryGirl.create :project, source_identifier: 42
-    api_post "projects/#{project.id}/pivotal_tracker_activity_web_hook?token=#{project.reload.web_hook_token}", File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_create.xml'))
+
+    api_post "projects/#{project.id}/pivotal_tracker_activity_web_hook?token=#{project.reload.web_hook_token}", (File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_create.json')))
+
     response.status.should == 404
     resp = JSON.parse(response.body)
     resp.should have_key("message")
@@ -305,7 +321,7 @@ describe 'Projects API' do
   it 'should process correct request' do
     project = FactoryGirl.create :project, source_identifier: 16
     project.tasks.count.should == 0
-    api_post "projects/#{project.id}/pivotal_tracker_activity_web_hook?token=#{project.reload.web_hook_token}", File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_create.xml'))
+    api_post "projects/#{project.id}/pivotal_tracker_activity_web_hook?token=#{project.reload.web_hook_token}", File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_create2.json'))
     response.status.should == 200
     resp = JSON.parse(response.body)
     resp.should have_key("message")
@@ -313,6 +329,22 @@ describe 'Projects API' do
     project.reload.tasks.count.should == 1
   end
 
+  # POST /api/v1/projects/:id/pivotal_tracker_activity_web_hook
+  it 'should process correct request with right task positioning' do
+    project = FactoryGirl.create :project, source_identifier: 16
+    task1 = FactoryGirl.create(:task, project: project, position: 1, source_identifier: 1)
+    task2 = FactoryGirl.create(:task, project: project, position: 2, source_identifier: 2)
+
+    project.tasks.count.should == 2
+    task1.position.should == 1
+    task2.position.should == 2
+
+    api_post "projects/#{project.id}/pivotal_tracker_activity_web_hook?token=#{project.reload.web_hook_token}", File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_update.json'))
+    response.status.should == 200
+
+    task1.reload.position.should == 2
+    task2.reload.position.should == 1
+  end
 
   it 'should return a list of 5 most recently worked on projects' do
     Project.destroy_all
@@ -350,6 +382,26 @@ describe 'Projects API' do
     resp["message"].should =~ /Resource not found/
   end
 
+  # GET /api/v1/projects/:id/pivotal_tracker_create_web_hook_integration
+  it 'should add pivotal tracker project webhook' do
+    integration = create :integration
+    project = FactoryGirl.create :project, source_identifier: 8, integrations: [integration]
+    api_get "projects/#{project.id}/pivotal_tracker_create_web_hook_integration", {token: project.users.last.api_key.token}
+    response.status.should == 200
+    project.reload.web_hook_exists.should == true
+  end
+
+  # GET /api/v1/projects/:id/pivotal_tracker_get_web_hook_integration
+  it 'should return 200 if web_hook already exists' do
+    integration = create :integration
+    project = FactoryGirl.create :project, id:8, integrations: [integration]
+    project.web_hook_token = '1234567890token'
+    project.save
+
+    api_get "projects/#{project.id}/pivotal_tracker_get_web_hook_integration", {token: project.users.last.api_key.token}
+    response.status.should == 200
+    project.reload.web_hook_exists.should == true
+  end
 
   # GET /api/v1/projects/also_working
   it 'should not find any projects when all are destroyed' do
@@ -370,7 +422,7 @@ describe 'Projects API' do
     response.status.should == 204
     response.body.should be_empty
   end
-  
+
   # PUT /api/v1/projects/:id/toggle_active
   it 'should toggle project\'s active state for current user' do
     project = Project.last

@@ -3,8 +3,11 @@ require 'spec_helper'
 describe 'Project' do
 
   before :each do
+    reset_fakeweb_urls
+    FactoryGirl.create :integration
+
     @project = FactoryGirl.create :project
-    @project.integrations << FactoryGirl.create(:integration)
+    @project.integrations << Integration.last
   end
 
   it 'should not allow one integration to be added to a project twice' do

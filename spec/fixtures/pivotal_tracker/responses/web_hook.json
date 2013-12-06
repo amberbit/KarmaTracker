@@ -1,0 +1,11 @@
+[
+   {
+       "webhook_version": "v5",
+       "kind": "webhook",
+       "created_at": "2013-11-12T12:00:00Z",
+       "updated_at": "2013-11-12T12:00:00Z",
+       "webhook_url": "http://karma.amberbit.com/api/v1/projects/8/pivotal_tracker_activity_web_hook?token=1234567890token",
+       "project_id": 8,
+       "id": 1
+   }
+]

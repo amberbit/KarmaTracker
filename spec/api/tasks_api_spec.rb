@@ -76,7 +76,7 @@ describe 'Tasks API' do
     response.status.should == 200
 
     project = JSON.parse(response.body)['task']
-    task = Task.first
+    task = Task.last
     project['id'].should == task.id
     project['project_id'].should == task.project_id
     project['source_name'].should == task.source_name
@@ -124,4 +124,3 @@ describe 'Tasks API' do
     tasks.map {|t| t["task"]["id"]}.should == @tasks.map{|t| t.id}[1..5].reverse
   end
 end
-
