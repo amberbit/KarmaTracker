@@ -96,6 +96,8 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
       ).success((data, status, headers, config) ->
         $scope.refreshing = 'tasks'
         $rootScope.loading = false
+        $scope.locate = window.location.href
+        setTimeout(checkFetchingProjects,2000)
       ).error((data, status, headers, config) ->
         $scope.refreshing = false
         $rootScope.loading = false
@@ -107,10 +109,25 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
       ).success((data, status, headers, config) ->
         $scope.refreshing = 'projects'
         $rootScope.loading = false
+        $scope.locate = window.location.href
+        setTimeout(checkFetchingProjects,2000)
       ).error((data, status, headers, config) ->
         $scope.refreshing = false
         $rootScope.loading = false
       )
+
+  checkFetchingProjects = ->
+    $http.get(
+      "/api/v1/user?token=#{$cookieStore.get $scope.tokenName}"
+    ).success((data, status, headers, config) ->
+      $scope.refreshing = if data.user.refreshing? then data.user.refreshing else null
+      if ($scope.refreshing)
+        setTimeout(checkFetchingProjects, 2000)
+      else if $scope.locate == window.location.href
+        window.location.reload(true)
+    ).error((data, status, headers, config) ->
+      setTimeout(checkFetchingProjects, 2000)
+    )
 
   refreshWithPull = ->
     if $location.path().indexOf('tasks') != -1
