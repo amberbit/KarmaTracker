@@ -25,7 +25,6 @@ KarmaTracker.controller "ArchiveController", ($rootScope, $scope, $http, $cookie
       $rootScope.loading = false
       $scope.initItems()
     ).error((data, status, headers, config) ->
-      console.debug "Error fetching projects. Status: #{status}"
       $rootScope.loading = false
     )
 

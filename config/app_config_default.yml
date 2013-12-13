@@ -4,7 +4,7 @@ default:
   host: "karma.amberbit.com"
   projects_refresh_period: 12
   items_per_page: 20
-  webhook_check_time: 6
+  webhook_check_time: 0.0006944444444444445
   users:
     allow_register: false
     allow_destroy: true
@@ -32,3 +32,4 @@ test:
 staging:
 
 production:
+  webhook_check_time: 0.25

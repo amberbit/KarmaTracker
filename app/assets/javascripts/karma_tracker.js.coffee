@@ -1,5 +1,4 @@
 #= require_self
-#= require routes
 #= require sessions
 #= require projects
 #= require archive
@@ -13,12 +12,12 @@
 #= require tasks
 #= require flashes
 #= require recents
-#= requrie web_hook_integrations
+#= require webhooks
 #= require password_resets
 #= require cookieStore_override
+#= require routes
 
 window.KarmaTracker = angular.module('KarmaTracker', ['ngCookies', 'ngMobile', 'ngRoute', 'ui.bootstrap'])
-
 
 # Flashe message passed from other controllers to FlashesController
 KarmaTracker.factory "FlashMessage", ->
@@ -98,7 +97,6 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
         $scope.refreshing = 'tasks'
         $rootScope.loading = false
       ).error((data, status, headers, config) ->
-        console.debug("Error refreshing project #{$location.path().split('/')[2]}")
         $scope.refreshing = false
         $rootScope.loading = false
       )
@@ -110,7 +108,6 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
         $scope.refreshing = 'projects'
         $rootScope.loading = false
       ).error((data, status, headers, config) ->
-        console.debug('Error refreshing projects')
         $scope.refreshing = false
         $rootScope.loading = false
       )
@@ -125,7 +122,6 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
       ).error((data, status, headers, config) ->
         $scope.refreshing = false
         window.location.reload(true)
-        console.debug("Error refreshing project #{$location.path().split('/')[2]}")
       )
     else
       $http.get(
@@ -136,7 +132,6 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
       ).error((data, status, headers, config) ->
         $scope.refreshing = false
         window.location.reload(true)
-        console.debug('Error refreshing projects')
       )
     $scope.$apply();
 
@@ -234,6 +229,8 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
   $scope.$on "handleBroadcast", () ->
     if broadcastService.message == 'recentClicked'
       $scope.getRunningTask()
+    else if broadcastService.message == 'TasksControllerStarted'
+      $scope.initWebhookBox()
 
   $rootScope.pull = (value, element) ->
     if value && !$scope.menuIsDroppedDown
@@ -245,17 +242,22 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
     else
       $(element).hook("destroy")
 
-  $scope.$on '$routeChangeStart', ->
+  $scope.initWebhookBox = ->
     if $location.path().indexOf('tasks') != -1
       $http.get(
         "api/v1/projects/#{$location.path().split('/')[2]}/pivotal_tracker_activity_web_hook_url?token=#{$cookieStore.get $scope.tokenName}"
       ).success((data, status, headers, config) ->
         $scope.webhookProjectURL = data.url
+        $rootScope.$broadcast("webhookProjectURLupdated")
       ).error((data, status, headers, config) ->
         $scope.webhookProjectURL = null
+        $rootScope.$broadcast("webhookProjectURLupdated")
       )
     else
       $scope.webhookProjectURL = null
+      $rootScope.$broadcast("webhookProjectURLupdated")
+
+  $scope.$on '$routeChangeStart', $scope.initWebhookBox
 
   $scope.setAlsoWorking = ->
     $http.get(
@@ -264,7 +266,6 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
       $scope.alsoWorking = if data == '' || Object.keys(data).length == 0 then [] else data
 #      setLocation()
     ).error((data, status, headers, config) ->
-      console.debug "Error fetching who is also working ATM."
     )
 
 #  setLocation = ->

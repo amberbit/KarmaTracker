@@ -29,7 +29,6 @@ KarmaTracker.controller "ProjectsController", ($rootScope, $scope, $http, $cooki
       $rootScope.loading = false
       $scope.initItems()
     ).error((data, status, headers, config) ->
-      console.debug "Error fetching projects. Status: #{status}"
       if $scope.recent
         $scope.recent = false
       $rootScope.loading = false
