@@ -70,9 +70,9 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
     ), 1000
 
   $scope.reloadTasks()
-  $scope.$watch("current", $scope.reloadTasks())
-  $scope.$watch("runningTask", $scope.reloadTasks())
-  $scope.$watch("query.string", $scope.queryChanged())
+  $scope.$watch("current", $scope.reloadTasks)
+  $scope.$watch("runningTask", $scope.reloadTasks)
+  $scope.$watch("query.string", $scope.queryChanged)
 
 
   $http.get(
