@@ -16,6 +16,10 @@ KarmaTracker.controller "ProjectsController", ($rootScope, $scope, $http, $cooki
   $scope.loadTasks = (project) ->
     $location.path "/projects/#{project.id}/tasks"
 
+  $scope.$on("reloadTasksOrProjects", ->
+    $scope.reloadProjects()
+  )
+
   $scope.reloadProjects = (pageNr = 0) ->
     $rootScope.loading = true
     $http.get(
@@ -51,5 +55,3 @@ KarmaTracker.controller "ProjectsController", ($rootScope, $scope, $http, $cooki
 
   $scope.$watch("recent", $scope.reloadProjects)
   $scope.$watch("query.string", $scope.queryChanged)
-
-
