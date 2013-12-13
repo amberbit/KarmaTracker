@@ -125,7 +125,7 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
       if ($scope.refreshing)
         setTimeout(checkFetchingProjects, 2000)
       else if $scope.locate == window.location.href
-        window.location.reload(true)
+        $scope.$broadcast("reloadTasksOrProjects")
     ).error((data, status, headers, config) ->
       setTimeout(checkFetchingProjects, 2000)
     )

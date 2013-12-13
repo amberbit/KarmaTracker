@@ -37,6 +37,10 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
   $scope.numberOfPages = ->
     return Math.ceil($scope.totalCount/$scope.pageSize)
 
+  $scope.$on("reloadTasksOrProjects", ->
+    $scope.reloadTasks()
+  )
+
   $scope.reloadTasks = (pageNr) ->
     $rootScope.loading = true
     if $routeParams.project_id?
@@ -92,9 +96,9 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
     ), 1000
 
   $scope.reloadTasks()
-  $scope.$watch("current", $scope.reloadTasks)
-  $scope.$watch("runningTask", $scope.reloadTasks)
-  $scope.$watch("query.string", $scope.queryChanged)
+  $scope.$watch("current", $scope.reloadTasks())
+  $scope.$watch("runningTask", $scope.reloadTasks())
+  $scope.$watch("query.string", $scope.queryChanged())
 
 
   $http.get(
