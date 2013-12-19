@@ -26,7 +26,7 @@ set :default_environment, {
   'rvmsudo_secure_path' => 1
 }
 
-set :rvm_ruby_string, -> { "jruby-1.7.4" }     # use the same ruby as used locally for deployment
+set :rvm_ruby_string, -> { "jruby-1.7.9" }     # use the same ruby as used locally for deployment
 
 before 'deploy', 'rvm:install_rvm'  # update RVM
 before 'deploy', 'rvm:install_ruby' # install Ruby and create gemset (both if missing)
@@ -56,4 +56,3 @@ namespace :deploy do
     run "cd #{current_path} && RAILS_ENV=production bundle exec torquebox deploy"
   end
 end
-

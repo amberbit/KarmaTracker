@@ -8,10 +8,12 @@ gem 'jbuilder', '~> 1.5.0'
 gem 'activerecord-jdbc-adapter', '~> 1.2.9.1'
 gem 'activerecord-jdbcpostgresql-adapter'
 
-gem 'torquebox', '2.3.0'
-gem 'torquebox-server', '2.3.0', require: false
-gem 'torquebox-stomp', '2.3.0', require: false
-gem 'torquebox-messaging', '2.3.0'
+gem 'torquebox', '3.0.1'
+gem 'torquebox', '3.0.1'
+gem 'torquebox', '3.0.1'
+gem 'torquebox-server', '3.0.1', require: false
+gem 'torquebox-stomp', '3.0.1', require: false
+gem 'torquebox-messaging', '3.0.1'
 
 gem 'nokogiri'
 gem 'nori'
@@ -43,10 +45,11 @@ group :test do
   gem 'rspec-rails', git: 'https://github.com/rspec/rspec-rails.git', ref: 'ee3f224c61cac7d4de919a23945418fd07ada7c6'
   gem 'database_cleaner', require: false
   gem 'facon', require: false
+  gem 'facon', require: false
   gem 'nullobject', require: false
   gem 'factory_girl_rails', '~> 4.3.0'
   gem 'fakeweb', require: false
-  gem 'torquebox-no-op', '2.3.0', require: false
+  gem 'torquebox-no-op', '3.0.1', require: false
   gem 'timecop', require: false
   gem 'capybara'
   gem 'selenium-webdriver'
