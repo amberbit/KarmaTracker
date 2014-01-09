@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 source 'http://torquebox.org/rubygems/'
 
-gem 'rails', git: "git://github.com/BartlomiejSkwira/rails.git", branch: "3-2-stable"
+gem 'rails', '3.2.16'
 gem 'rails-api'
 gem 'jbuilder', '~> 1.5.0'
 
@@ -18,7 +18,7 @@ gem 'nori'
 
 gem 'zurb-foundation', '~> 4.0.0'
 gem 'coffee-rails'
-gem 'sass-rails',   '~> 3.2.3'
+gem 'sass-rails',   '~> 3.2.6'
 gem 'uglifier', '>= 1.0.3'
 
 #elasticsearch
