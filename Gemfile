@@ -1,15 +1,13 @@
 source 'https://rubygems.org'
 source 'http://torquebox.org/rubygems/'
 
-gem 'rails', git: "git://github.com/BartlomiejSkwira/rails.git", branch: "3-2-stable"
+gem 'rails', '3.2.16'
 gem 'rails-api'
 gem 'jbuilder', '~> 1.5.0'
 
 gem 'activerecord-jdbc-adapter', '~> 1.2.9.1'
 gem 'activerecord-jdbcpostgresql-adapter'
 
-gem 'torquebox', '3.0.1'
-gem 'torquebox', '3.0.1'
 gem 'torquebox', '3.0.1'
 gem 'torquebox-server', '3.0.1', require: false
 gem 'torquebox-stomp', '3.0.1', require: false
@@ -20,7 +18,7 @@ gem 'nori'
 
 gem 'zurb-foundation', '~> 4.0.0'
 gem 'coffee-rails'
-gem 'sass-rails',   '~> 3.2.3'
+gem 'sass-rails',   '~> 3.2.6'
 gem 'uglifier', '>= 1.0.3'
 
 #elasticsearch
@@ -44,7 +42,6 @@ gem 'omniauth-github', '~> 1.1.1'
 group :test do
   gem 'rspec-rails', git: 'https://github.com/rspec/rspec-rails.git', ref: 'ee3f224c61cac7d4de919a23945418fd07ada7c6'
   gem 'database_cleaner', require: false
-  gem 'facon', require: false
   gem 'facon', require: false
   gem 'nullobject', require: false
   gem 'factory_girl_rails', '~> 4.3.0'
