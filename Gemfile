@@ -57,10 +57,11 @@ end
 
 group :development, :test do
   gem 'pry'
-  gem 'capistrano', require: false
+  gem 'capistrano', '~> 2.15.5', require: false
   gem 'capistrano-ext', require: false
   gem 'rvm', require: false
-  gem 'rvm-capistrano', require: false
+  gem 'torquebox-capistrano-support', require: false
+  gem 'capistrano-rvm', require: false
 end
 
 group :development do
