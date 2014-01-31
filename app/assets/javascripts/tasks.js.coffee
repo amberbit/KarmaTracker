@@ -13,13 +13,17 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
   $scope.numberOfPages = ->
     return Math.ceil($scope.totalCount/$scope.pageSize)
 
+  $scope.$on("reloadTasksOrProjects", ->
+    $scope.reloadTasks()
+  )
+
   $scope.reloadTasks = (pageNr) ->
     $rootScope.loading = true
     if !pageNr? || isNaN(pageNr) || typeof(pageNr) == 'boolean'
       pageNr = 0
 
     $http.get(
-      "/api/v1/projects/#{$routeParams.project_id}/#{if $scope.current then "current_" else "" }tasks?token=#{$cookieStore.get($scope.tokenName)}#{if $scope.query.string.length > 0 then '&query=' + $scope.query.string else ''}&page=#{pageNr+1}"
+      "/api/v1/projects/#{$location.path().split('/')[2]}/#{if $scope.current then "current_" else "" }tasks?token=#{$cookieStore.get($scope.tokenName)}#{if $scope.query.string.length > 0 then '&query=' + $scope.query.string else ''}&page=#{pageNr+1}"
     ).success((data, status, headers, config) ->
       $scope.totalCount = parseInt(data['total_count'])
       $scope.currentPage = pageNr
@@ -39,9 +43,9 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
       $http.post(
         "/api/v1/time_log_entries/stop?token=#{$cookieStore.get($scope.tokenName)}"
       ).success((data, status, headers, config) ->
+        $scope.notice "You stopped tracking #{task.name}."
         $scope.runningTask = null
         $scope.$watch("$scope.runningTask", $scope.getRunningTask())
-
         broadcastService.prepForBroadcast "refreshRecent"
       ).error((data, status, headers, config) ->
       )
@@ -50,6 +54,7 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
         "/api/v1/time_log_entries/?token=#{$cookieStore.get($scope.tokenName)}",
         { time_log_entry: {task_id: task.id} }
       ).success((data, status, headers, config) ->
+        $scope.notice "You started tracking #{task.name}."
         $scope.runningTask = task
         $scope.$watch("$scope.runningTask", $scope.getRunningTask())
         broadcastService.prepForBroadcast "refreshRecent"
@@ -71,7 +76,7 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
 
 
   $http.get(
-    "/api/v1/projects/#{$routeParams.project_id}/?token=#{$cookieStore.get($scope.tokenName)}"
+    "/api/v1/projects/#{$location.path().split('/')[2]}/?token=#{$cookieStore.get($scope.tokenName)}"
   ).success((data, status, headers, config) ->
     $scope.project = data.project
   ).error((data, status, headers, config) ->

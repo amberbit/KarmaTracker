@@ -83,10 +83,11 @@
       </div>
 
       <div class="large-12 columns panel recents recent-tasks sidepanel">
-        <div class="large-12 columns">
-          <div ng-show="noTasks">There are no recent tasks.</div>
-          <div class="row" ng-repeat="task in lastTasks">
         <h4 class="subheader">Tasks</h4>
+          <div class="large-12 columns">
+            <div ng-show="noTasks">There are no recent tasks.</div>
+            <div class="row" ng-repeat="task in lastTasks">
+
             <div class="small-12 large-12 columns panel recent-task clickable"
               id="recent-time-log-entry-{{task.id}}"
               ng-class="{callout: task.id == runningTask.id, running: task.id == runningTask.id }"
