@@ -1,0 +1,51 @@
+#= depend_on_asset "session.html"
+#= depend_on_asset "home.html"
+#= depend_on_asset "oauth.html"
+#= depend_on_asset "projects.html"
+#= depend_on_asset "tasks.html"
+#= depend_on_asset "archive.html"
+#= depend_on_asset "refresh.html"
+#= depend_on_asset "integrations.html"
+#= depend_on_asset "timesheet.html"
+#= depend_on_asset "password_reset.html"
+#= depend_on_asset "edit_password_reset.html"
+#= depend_on_asset "register.html"
+
+KarmaTracker.config ($routeProvider, $locationProvider) ->
+  $routeProvider.when('/',
+    templateUrl: '<%= asset_path("home.html") %>'
+  ).when("/login",
+    templateUrl: '<%= asset_path("session.html") %>'
+  ).when("/oauth",
+    controller: 'SessionController',
+    templateUrl: '<%= asset_path("oauth.html") %>'
+  ).when('/logout',
+    controller: 'LogoutController',
+    template: '<div class="row">
+                 <div class="small-12 columns"><h5>Logging out...</h5></div>
+               <div>'
+  ).when("/projects",
+    templateUrl: '<%= asset_path("projects.html") %>'
+  ).when("/projects/:project_id/tasks",
+    templateUrl: '<%= asset_path("tasks.html") %>'
+  ).when('/archive',
+    templateUrl: '<%= asset_path("archive.html") %>'
+  ).when('/refresh',
+    templateUrl: '<%= asset_path("refresh.html") %>'
+  ).when('/integrations',
+    templateUrl: '<%= asset_path("integrations.html") %>'
+  ).when('/account',
+    templateUrl: '<%= asset_path("account.html") %>'
+  ).when('/timesheet',
+    templateUrl: '<%= asset_path("timesheet.html") %>'
+  ).when('/password_reset',
+    templateUrl: '<%= asset_path("password_reset.html") %>'
+  ).when('/edit_password_reset/:token',
+    templateUrl: '<%= asset_path("edit_password_reset.html") %>'
+  ).otherwise(
+    redirectTo: '/')
+
+  if KarmaTrackerConfig.registration_enabled
+    $routeProvider.when('/register',
+      templateUrl: '<%= asset_path("register.html") %>'
+    )
