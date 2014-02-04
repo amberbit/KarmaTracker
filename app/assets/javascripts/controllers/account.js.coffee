@@ -1,4 +1,4 @@
-KarmaTracker.controller "AccountController", ($scope, $http, $cookieStore, $location, $rootScope) ->
+KarmaTracker.controller "AccountController",['$scope', '$http', '$cookieStore', '$location', '$rootScope', '$resource', 'User', ($scope, $http, $cookieStore, $location, $rootScope, $resource, User) ->
   $rootScope.pullAllowed = false
   $scope.enabledDestroy = KarmaTrackerConfig.registration_destroy
   $scope.user = {}
@@ -8,14 +8,12 @@ KarmaTracker.controller "AccountController", ($scope, $http, $cookieStore, $loca
   $scope.confirmation = ""
   $scope.message = ''
   $scope.tokenName = 'token'
+  userService = new User
 
   $scope.getUserInfo = ->
-    $http.get(
-      '/api/v1/user?token='+$cookieStore.get $scope.tokenName
-    ).success((data, status, headers, config) ->
-      $scope.user = data.user
-    ).error((data, status, headers, config) ->
-    )
+    userService.get().$promise.then (result) ->
+      $scope.user = result
+
 
   $scope.remove = ->
     if confirm("Are you sure to delete your account?")
@@ -68,5 +66,5 @@ KarmaTracker.controller "AccountController", ($scope, $http, $cookieStore, $loca
       $scope.errors.password = "can't be blank"
 
 
-  if $cookieStore.get($scope.tokenName)?
-    $scope.getUserInfo()
+  $scope.getUserInfo()
+]
