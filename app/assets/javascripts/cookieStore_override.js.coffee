@@ -1,18 +1,14 @@
 #=require jquery.cookie
 
-KarmaTracker.provider '$cookieStore', ->
+KarmaTracker.factory '$cookieStore', ->
+  get: (name) ->
+    $.cookie name
 
-  this.$get = ->
-    return {
-      get: (name) ->
-        $.cookie name
+  set: (name, value, options) ->
+    if options? && options.expires?
+      $.cookie name, value, { expires: options.expires }
+    else
+      $.cookie name, value
 
-      set: (name, value, options) ->
-        if options? && options.expires?
-          $.cookie name, value, { expires: options.expires }
-        else
-          $.cookie name, value
-
-      remove: (name) ->
-        $.removeCookie name
-    }
+  remove: (name) ->
+    $.removeCookie name
