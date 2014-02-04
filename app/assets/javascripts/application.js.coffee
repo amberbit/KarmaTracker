@@ -1,5 +1,6 @@
 #= require js_extensions
 #= require angular
+#= require angular-resource
 #= require angular-cookies
 #= require angular-mobile
 #= require angular-route

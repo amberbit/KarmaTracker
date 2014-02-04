@@ -17,7 +17,7 @@
 #= require cookieStore_override
 #= require routes
 
-window.KarmaTracker = angular.module('KarmaTracker', ['ngCookies', 'ngMobile', 'ngRoute', 'ui.bootstrap'])
+window.KarmaTracker = angular.module('KarmaTracker', ['ngCookies', 'ngMobile', 'ngRoute', 'ui.bootstrap', 'ngResource'])
 
 # Flashe message passed from other controllers to FlashesController
 KarmaTracker.factory "FlashMessage", ->
