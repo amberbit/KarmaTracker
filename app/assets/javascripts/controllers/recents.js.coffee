@@ -1,4 +1,4 @@
-KarmaTracker.controller "RecentsController", ($scope, $http, $cookieStore, $location, broadcastService, $rootScope) ->
+KarmaTracker.controller "RecentsController", ($scope, $http, $cookieStore, $location, BroadcastService, $rootScope) ->
   $scope.lastTasks = []
   $scope.lastProjects = []
   $scope.noTasks = true
@@ -19,7 +19,7 @@ KarmaTracker.controller "RecentsController", ($scope, $http, $cookieStore, $loca
         $scope.notice "You stopped tracking #{task.name}."
         $scope.getRecentTasks()
         $scope.getRecentProjects()
-        broadcastService.prepForBroadcast('recentClicked')
+        BroadcastService.prepForBroadcast('recentClicked')
       ).error((data, status, headers, config) ->
       )
     else
@@ -30,7 +30,7 @@ KarmaTracker.controller "RecentsController", ($scope, $http, $cookieStore, $loca
         $scope.notice "You started tracking #{task.name}."
         $scope.getRecentTasks()
         $scope.getRecentProjects()
-        broadcastService.prepForBroadcast('recentClicked')
+        BroadcastService.prepForBroadcast('recentClicked')
       ).error((data, status, headers, config) ->
       )
 
@@ -61,7 +61,7 @@ KarmaTracker.controller "RecentsController", ($scope, $http, $cookieStore, $loca
     )
 
   $scope.$on "handleBroadcast", () ->
-    if broadcastService.message == 'refreshRecent'
+    if BroadcastService.message == 'refreshRecent'
       $scope.getRecentTasks()
       $scope.getRecentProjects()
 

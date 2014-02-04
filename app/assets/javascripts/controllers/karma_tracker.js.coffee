@@ -5,7 +5,7 @@ window.KarmaTracker = angular.module('KarmaTracker', ['ngCookies', 'ngMobile', '
 KarmaTracker.factory "FlashMessage", ->
   { string: "", type: null }
 
-KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStore, $routeParams, FlashMessage, broadcastService, $rootScope, $timeout) ->
+KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStore, $routeParams, FlashMessage, BroadcastService, $rootScope, $timeout) ->
   $rootScope.pullAllowed = true
   $scope.runningTask = {}
   $scope.runningVisible = false
@@ -226,9 +226,9 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
     $scope.firstTipVisible = false
 
   $scope.$on "handleBroadcast", () ->
-    if broadcastService.message == 'recentClicked'
+    if BroadcastService.message == 'recentClicked'
       $scope.getRunningTask()
-    else if broadcastService.message == 'TasksControllerStarted'
+    else if BroadcastService.message == 'TasksControllerStarted'
       $scope.initWebhookBox()
 
   $rootScope.pull = (value, element) ->
@@ -320,14 +320,4 @@ KarmaTracker.controller "HomeController", ($scope, $http, $location, $cookieStor
       /\/edit_password_reset(\/.*)?/.test $location.path()
     $location.path '/login'
 
-KarmaTracker.factory 'broadcastService', ($rootScope) ->
-  broadcastService = {message: ""}
 
-  broadcastService.prepForBroadcast = (msg) ->
-    @message = msg
-    @broadcastItem()
-
-  broadcastService.broadcastItem = ->
-    $rootScope.$broadcast('handleBroadcast')
-
-  broadcastService

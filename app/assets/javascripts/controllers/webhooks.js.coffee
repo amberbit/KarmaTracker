@@ -1,4 +1,4 @@
-KarmaTracker.controller "WebhooksController", ($scope, $http, $cookieStore, $location, broadcastService, $rootScope, $routeParams) ->
+KarmaTracker.controller "WebhooksController", ($scope, $http, $cookieStore, $location, $rootScope, $routeParams) ->
   $scope.checkWebHookPTIntegration = ->
     $http.get(
       "/api/v1/projects/#{$routeParams.project_id}/pivotal_tracker_get_web_hook_integration?token=#{$cookieStore.get($scope.tokenName)}"

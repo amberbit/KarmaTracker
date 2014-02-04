@@ -30,5 +30,6 @@
 #= require angular_overrides/cookieStore
 #= require javascript_overrides/js_extensions
 #= require directives/focus
+#= require services/broadcast_service
 #= require routes
 #= require_self

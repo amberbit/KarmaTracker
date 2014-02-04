@@ -1,4 +1,4 @@
-KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $location, $routeParams, broadcastService, $rootScope) ->
+KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $location, $routeParams, BroadcastService, $rootScope) ->
   $rootScope.pullAllowed = true
   $scope.tasks = []
   $scope.current = true
@@ -46,7 +46,7 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
         $scope.notice "You stopped tracking #{task.name}."
         $scope.runningTask = null
         $scope.$watch("$scope.runningTask", $scope.getRunningTask())
-        broadcastService.prepForBroadcast "refreshRecent"
+        BroadcastService.prepForBroadcast "refreshRecent"
       ).error((data, status, headers, config) ->
       )
     else
@@ -57,7 +57,7 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
         $scope.notice "You started tracking #{task.name}."
         $scope.runningTask = task
         $scope.$watch("$scope.runningTask", $scope.getRunningTask())
-        broadcastService.prepForBroadcast "refreshRecent"
+        BroadcastService.prepForBroadcast "refreshRecent"
       ).error((data, status, headers, config) ->
       )
 
@@ -88,4 +88,4 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
     for i in [0..(numberOfPages-1)]
       $scope.items.push { text: "#{i+1}/#{numberOfPages}", value: i }
 
-  broadcastService.prepForBroadcast "TasksControllerStarted"
+  BroadcastService.prepForBroadcast "TasksControllerStarted"
