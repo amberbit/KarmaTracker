@@ -1,6 +1,3 @@
-window.KarmaTracker = angular.module('KarmaTracker', ['ngCookies', 'ngMobile', 'ngRoute', 'ui.bootstrap', 'ngResource'])
-
-
 KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStore, $routeParams, FlashMessage, BroadcastService, $rootScope, $timeout) ->
   $rootScope.pullAllowed = true
   $scope.runningTask = {}
