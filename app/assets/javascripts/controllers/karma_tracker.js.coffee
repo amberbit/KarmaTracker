@@ -1,23 +1,5 @@
-#= require_self
-#= require sessions
-#= require projects
-#= require archive
-#= require refresh
-#= require register
-#= require integrations
-#= require pivotal_tracker_integrations
-#= require git_hub_integrations
-#= require account
-#= require timesheet
-#= require tasks
-#= require flashes
-#= require recents
-#= require webhooks
-#= require password_resets
-#= require cookieStore_override
-#= require routes
-
 window.KarmaTracker = angular.module('KarmaTracker', ['ngCookies', 'ngMobile', 'ngRoute', 'ui.bootstrap', 'ngResource'])
+
 
 # Flashe message passed from other controllers to FlashesController
 KarmaTracker.factory "FlashMessage", ->
