@@ -29,7 +29,6 @@ KarmaTracker.controller "SessionController", ($scope, $http, $cookieStore, $loca
       $scope.focus_email = Math.random()*100
 
   $scope.signIn = ->
-    $resource
     $http.post(
       '/api/v1/session',
       session: {
@@ -76,4 +75,13 @@ KarmaTracker.controller "LogoutController", ($scope, $location, $cookieStore) ->
   window.location = '/'
 
 
-
+KarmaTracker.directive "focus", ->
+  {
+    restrict: "A",
+    scope: { focus: "@"},
+    link: (scope, element, attrs) ->
+      scope.$watch("focus", (value) ->
+        if parseInt(value) > 0
+          element[0].focus()
+      )
+  }
