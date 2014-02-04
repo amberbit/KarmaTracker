@@ -12,6 +12,7 @@
 
 #our assets
 #= require controllers/karma_tracker
+#= require controllers/home
 #= require controllers/sessions
 #= require controllers/projects
 #= require controllers/archive
@@ -30,6 +31,9 @@
 #= require angular_overrides/cookieStore
 #= require javascript_overrides/js_extensions
 #= require directives/focus
+#= require directives/pull_to_refresh
 #= require services/broadcast_service
+#= require services/flash_message_factory
+#= require filters/start_from
 #= require routes
 #= require_self

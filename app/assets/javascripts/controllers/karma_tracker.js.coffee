@@ -1,10 +1,6 @@
 window.KarmaTracker = angular.module('KarmaTracker', ['ngCookies', 'ngMobile', 'ngRoute', 'ui.bootstrap', 'ngResource'])
 
 
-# Flashe message passed from other controllers to FlashesController
-KarmaTracker.factory "FlashMessage", ->
-  { string: "", type: null }
-
 KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStore, $routeParams, FlashMessage, BroadcastService, $rootScope, $timeout) ->
   $rootScope.pullAllowed = true
   $scope.runningTask = {}
@@ -20,8 +16,6 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
   $scope.runningStartedAt = ""
   $scope.runningTime = ""
   $scope.alsoWorking = []
-  #$scope.location = null
-
 
   if $cookieStore.get($scope.tokenName)?
     $http.get(
@@ -263,21 +257,8 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
       "/api/v1/projects/also_working?token=#{$cookieStore.get($scope.tokenName)}"
     ).success((data, status, headers, config) ->
       $scope.alsoWorking = if data == '' || Object.keys(data).length == 0 then [] else data
-#      setLocation()
     ).error((data, status, headers, config) ->
     )
-
-#  setLocation = ->
-#   if $location.path().match /projects\/\d*\/tasks$/
-#      $scope.location = $location.path().match(/projects\/(\d*)\/tasks$/)[1]
-#      for project, data of $scope.alsoWorking
-#        if $scope.location == data[0].toString()
-#          $scope.alsoWorking = data[1]
-#          break
-#    else if $location.path().match /projects$/
-#      $scope.location = 'projects'
-#    else
-#      $scope.location = null
 
   if $cookieStore.get($scope.tokenName)?
     $scope.getRunningTask()
@@ -290,34 +271,3 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
       $scope.setAlsoWorking()
     else
       $scope.alsoWorking = null
-
-
-KarmaTracker.directive "pullToRefresh", ($rootScope) ->
-  {
-    restrict: "A",
-    link: (scope, element, attrs) ->
-      $rootScope.$watch("pullAllowed", (value) ->
-        $rootScope.pull(value, element)
-      , true)
-  }
-
-
-KarmaTracker.filter 'startFrom', ->
-  (input, start) ->
-    start = +start
-    input.slice start
-
-
-# This controller just has to redirect user to proper place
-KarmaTracker.controller "HomeController", ($scope, $http, $location, $cookieStore, FlashMessage) ->
-  if $cookieStore.get($scope.tokenName)?
-    return if $location.path() != '/'
-    $location.path '/projects'
-  else
-    return if $location.path().match(/oauth/) ||
-      $location.path() == '/login' ||
-      $location.path() == '/password_reset' ||
-      /\/edit_password_reset(\/.*)?/.test $location.path()
-    $location.path '/login'
-
-
