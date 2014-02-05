@@ -12,31 +12,34 @@ KarmaTracker.controller "AccountController",['$scope', '$http', '$cookieStore', 
 
   $scope.getUserInfo = ->
     userService.get().$promise.then (result) ->
-      $scope.user = result
-
+      $scope.user = result.user
 
   $scope.remove = ->
     if confirm("Are you sure to delete your account?")
-      $http.delete(
-        '/api/v1/user?token='+$cookieStore.get $scope.tokenName
-      ).success((data, status, headers, config) ->
-        window.location = '#/logout'
-      ).error((data, status, headers, config) ->
-      )
+      userService.remove().$promise.then (result) ->
+        $scope.user = {}
+        $location.path 'logout'
 
   $scope.changeEmail = ->
     if !$scope.newEmail? or $scope.newEmail != ''
       $http.put(
         "/api/v1/user?token="+$cookieStore.get($scope.tokenName)+"&user[email]="+$scope.newEmail
       ).success((data, status, headers, config) ->
-        $scope.success("E-mail successfully changed")
-        $scope.getUserInfo()
-        $scope.newEmail = ""
       ).error((data, status, headers, config) ->
         $scope.errors.email = data.user.errors.email[0]
       )
     else
-      $scope.errors.email = "can't be blank"
+
+  $scope.updateUser = (user) ->
+    if !$scope.user.email? or $scope.user.email != ''
+      userService.update(user).$promise
+        .then (result) ->
+          $scope.success("User successfully updated")
+          $scope.getUserInfo()
+        .catch (reason) ->
+          console.log "a" + reason
+          $scope.errors.email = "can't be blank"
+
 
   $scope.changePassword = ->
     $scope.errors = {}

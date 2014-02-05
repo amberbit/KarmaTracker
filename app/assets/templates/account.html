@@ -15,11 +15,11 @@
         </div>
         <div class="small-10 large-10 columns">
           <label>E-mail:
-            <input type="email" id="email" name="email" placeholder="{{user.email}}" ng-model="newEmail" />
+            <input type="email" id="email" name="email" placeholder="{{user.email}}" ng-model="user.email" />
             <small ng-show="errors.email" class="error">{{errors.email}}</small>
           </label>
         </div>
-          <button ng-click="changeEmail()" class="button right small">Save changes</button>
+          <button ng-click="updateUser(user)" class="button right small">Save changes</button>
         </div>
         <div class="small-12 large-6 large-offset-1 columns panel secondary">
           <label>Set new password:
