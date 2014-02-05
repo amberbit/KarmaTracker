@@ -1,4 +1,4 @@
-user ||= @user
+user ||= @current_user
 
 json.user do
   json.id user.id
