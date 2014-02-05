@@ -128,7 +128,6 @@ module Api
       #
       def update
         @current_user = UsersFactory.new(@current_user, params[:user]).update
-
         if @current_user.save
           render '_show'
         else

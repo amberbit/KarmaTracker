@@ -15,8 +15,8 @@
         </div>
         <div class="small-10 large-10 columns">
           <label>E-mail:
-            <input type="email" id="email" name="email" placeholder="{{user.email}}" ng-model="user.email" />
-            <small ng-show="errors.email" class="error">{{errors.email}}</small>
+            <input type="email" id="email" name="email" placeholder="{{user.email}}" ng-model="newEmail" />
+            <small ng-show="errors.newEmail" class="error">{{errors.newEmail}}</small>
           </label>
         </div>
           <button ng-click="updateUser(user)" class="button right small">Save changes</button>
@@ -24,13 +24,13 @@
         <div class="small-12 large-6 large-offset-1 columns panel secondary">
           <label>Set new password:
             <input type="password" ng-model="newPassword" />
-            <small ng-show="errors.password" class="error">{{errors.password}}</small>
+            <small ng-show="errors.newPassword" class="error">{{errors.newPassword}}</small>
           </label>
           <label>Confirm new password:
-            <input type="password" ng-model="confirmation" />
-            <small ng-show="errors.confirmation" class="error">{{errors.confirmation}}</small>
+            <input type="password" ng-model="newPasswordConfirmation" />
+            <small ng-show="errors.newPasswordConfirmation" class="error">{{errors.newPasswordConfirmation}}</small>
           </label>
-          <button ng-click="changePassword()" class="button right small">Save changes</button>
+          <button ng-click="updateUser(user)" class="button right small">Save changes</button>
         </div>
         <div ng-show="enabledDestroy">
           <h4 class="subheader">Remove account</h4>
