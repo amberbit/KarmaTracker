@@ -12,15 +12,6 @@ KarmaTracker.controller "ArchiveController", ['$rootScope', '$scope', '$http', '
   $scope.numberOfPages = ->
     return Math.ceil($scope.totalCount/$scope.pageSize)
 
-#  $scope.reloadProjects = (pageNr = 0) ->
-    #$rootScope.loading = true
-    #$http.get(
-      #"/api/v1/projects?token=#{$cookieStore.get($scope.tokenName)}#{if $scope.query.string.length > 0 then '&query=' + $scope.query.string else ''}&archive=true&page=#{}"
-    #).success((data, status, headers, config) ->
-    #).error((data, status, headers, config) ->
-    #)
-
-
   $scope.reloadProjects = (pageNr = 0) ->
     $rootScope.loading = true
     projectService.query($scope.query.string, true, pageNr+1).$promise
@@ -31,10 +22,6 @@ KarmaTracker.controller "ArchiveController", ['$rootScope', '$scope', '$http', '
         initItems()
       .finally ->
         $rootScope.loading = false
-
-
-
-
 
 
   $scope.toggleActive = (project) ->
@@ -59,5 +46,4 @@ KarmaTracker.controller "ArchiveController", ['$rootScope', '$scope', '$http', '
       $scope.items.push { text: "#{i+1}/#{numberOfPages}", value: i }
 
   $scope.$watch("query.string", queryChanged)
-
 ]
