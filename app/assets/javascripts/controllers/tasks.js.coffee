@@ -78,7 +78,7 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
   $http.get(
     "/api/v1/projects/#{$location.path().split('/')[2]}/?token=#{$cookieStore.get($scope.tokenName)}"
   ).success((data, status, headers, config) ->
-    $scope.project = data.project
+    $scope.project = data
   ).error((data, status, headers, config) ->
   )
 

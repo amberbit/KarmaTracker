@@ -1,12 +1,15 @@
 KarmaTracker.factory 'Project', ['$resource', '$cookieStore', 'TOKEN_NAME', ($resource, $cookieStore, TOKEN_NAME) ->
   class Project
     constructor: ->
-      @service = $resource("/api/v1/projects", {}, {
+      @service = $resource("/api/v1/projects/:id", {id: '@id'}, {
         update:
           method: 'PUT'
         query:
           method: 'GET'
           isArray: false
+        toggleActive:
+          method: 'PUT'
+          url: "api/v1/projects/:id/toggle_active"
       })
       @token = $cookieStore.get TOKEN_NAME
 
@@ -14,16 +17,10 @@ KarmaTracker.factory 'Project', ['$resource', '$cookieStore', 'TOKEN_NAME', ($re
     query: (searchString, archive, pageNr) =>
       if @token
         @service.query(token: @token, archive: archive, page: pageNr)
-    get: =>
-      if @token
-        @service.get(token: @token)
 
-    remove: =>
+    toggleActive: (project_id) =>
       if @token
-        @service.remove(token: @token)
+        @service.toggleActive(id: project_id, token: @token)
 
-    update: (user) =>
-      if @token
-        @service.update(token: @token, user: user)
 
 ]

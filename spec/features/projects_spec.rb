@@ -49,8 +49,9 @@ feature 'Projects management,
     end
   end
 
-  scenario 'see recent projects' do
+  scenario 'see recent projects', driver: :selenium do
     within '.recents.recent-projects' do
+      binding.pry
       page.should_not have_content project1.name
       page.should have_content project2.name
     end
@@ -107,7 +108,7 @@ feature 'Projects management,
     create(:participation, project: project3, integration: integration3)
     create(:participation, project: project3, integration: integration)
     task3 = create :task, project: project3
-    user3_running_entry = create :time_log_entry, user: user3, task: task3,
+    create :time_log_entry, user: user3, task: task3,
       stopped_at: nil, running: true
 
     visit current_path

@@ -1,8 +1,7 @@
-KarmaTracker.controller "ArchiveController", ['$rootScope', '$scope', '$http', '$cookieStore', '$location', '$resource', 'Project', ($rootScope, $scope, $http, $cookieStore, $location, $resource, Project) ->
+KarmaTracker.controller "ArchiveController", ['$rootScope', '$scope', '$resource', 'Project', ($rootScope, $scope, $resource, Project) ->
   $rootScope.pullAllowed = true
   $scope.projects = []
   $scope.query.string = ""
-  $scope.tokenName = 'token'
   $scope.currentPage = 0
   $scope.totalCount = 0
   $scope.pageSize = KarmaTrackerConfig.items_per_page
@@ -23,13 +22,9 @@ KarmaTracker.controller "ArchiveController", ['$rootScope', '$scope', '$http', '
       .finally ->
         $rootScope.loading = false
 
-
   $scope.toggleActive = (project) ->
-    $http.put("/api/v1/projects/#{project.id}/toggle_active?token=#{$cookieStore.get($scope.tokenName)}"
-    ).success((data, status, headers, config) ->
-      project.active = data.active
-    ).error((data, status, headers, config) ->
-    )
+    projectService.toggleActive(project.id).$promise.then (result) ->
+      project.active = result.active
 
   queryChanged = ->
     query = $scope.query.string
