@@ -7,26 +7,16 @@ KarmaTracker.controller "GitHubIntegrationsController",['$scope', '$http', '$coo
   integrationService = new Integration
 
   $scope.updateIntegrations = ->
-    console.log 'github update'
-    integrationService.query('git_hub').$promise
-      .then (result) ->
-        $scope.integrations = result
+    integrationService.query('git_hub').$promise.then (result) ->
+      $scope.integrations = result
 
-  #$scope.remove = (id) ->
-    #answer = confirm("Are you sure to remove GitHub Integration?")
-    #if answer
-      #$http.delete(
-        #'/api/v1/integrations/'+id+'?token='+$cookieStore.get($scope.tokenName)
-      #).success((data, status, headers, config) ->
-        #$scope.updateIntegrations()
-      #).error((data, status, headers, config) ->
-  #    )
-
-  #$scope.remove = (id) ->
-    #confirm("are you sure to remove github integration?")
-      #integrationservice.remove(id).$promise.then(result) ->
-        #$scope.updateintegrations()
-
+  $scope.remove = (integration_id) ->
+    if confirm("are you sure to remove github integration?")
+      integrationService.remove(integration_id).$promise.then (result) ->
+        index = $scope.integrations.map((integration) ->
+          integration.git_hub.id
+        ).indexOf(integration_id)
+        $scope.integrations.splice(index, 1) if index > -1
 
 
   $scope.formLooksValid = () ->
