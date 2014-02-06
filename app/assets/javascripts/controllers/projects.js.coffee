@@ -25,11 +25,9 @@ KarmaTracker.controller "ProjectsController", ($rootScope, $scope, $http, $cooki
     $http.get(
       "/api/v1/projects#{if $scope.recent then "/recent" else "" }?token=#{$cookieStore.get($scope.tokenName)}#{if $scope.query.string.length > 0 then '&query=' + $scope.query.string else ''}&page=#{pageNr+1}"
     ).success((data, status, headers, config) ->
-      $scope.totalCount = parseInt data['total_count']
+      $scope.totalCount = parseInt data.total_count
       $scope.currentPage = pageNr
-      $scope.projects = []
-      for project in data['projects']
-        $scope.projects.push project.project
+      $scope.projects = data.projects
       $rootScope.loading = false
       $scope.initItems()
     ).error((data, status, headers, config) ->
