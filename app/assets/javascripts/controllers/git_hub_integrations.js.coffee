@@ -1,27 +1,33 @@
-KarmaTracker.controller "GitHubIntegrationsController", ($scope, $http, $cookieStore, $location) ->
+KarmaTracker.controller "GitHubIntegrationsController",['$scope', '$http', '$cookieStore', '$location', 'Integration', ($scope, $http, $cookieStore, $location, Integration) ->
   $scope.integrations = []
   $scope.newIntegration = { username: null, password: null }
   $scope.addFormShown = false
   $scope.errors = {}
   $scope.tokenName = 'token'
+  integrationService = new Integration
 
-  $scope.updateIntegrations = () ->
-    $http.get(
-      '/api/v1/integrations?token='+$cookieStore.get($scope.tokenName)+'&service=git_hub'
-    ).success((data, status, headers, config) ->
-      $scope.integrations = data
-    ).error((data, status, headers, config) ->
-    )
+  $scope.updateIntegrations = ->
+    console.log 'github update'
+    integrationService.query('git_hub').$promise
+      .then (result) ->
+        $scope.integrations = result
 
-  $scope.remove = (id) ->
-    answer = confirm("Are you sure to remove GitHub Integration?")
-    if answer
-      $http.delete(
-        '/api/v1/integrations/'+id+'?token='+$cookieStore.get($scope.tokenName)
-      ).success((data, status, headers, config) ->
-        $scope.updateIntegrations()
-      ).error((data, status, headers, config) ->
-      )
+  #$scope.remove = (id) ->
+    #answer = confirm("Are you sure to remove GitHub Integration?")
+    #if answer
+      #$http.delete(
+        #'/api/v1/integrations/'+id+'?token='+$cookieStore.get($scope.tokenName)
+      #).success((data, status, headers, config) ->
+        #$scope.updateIntegrations()
+      #).error((data, status, headers, config) ->
+  #    )
+
+  #$scope.remove = (id) ->
+    #confirm("are you sure to remove github integration?")
+      #integrationservice.remove(id).$promise.then(result) ->
+        #$scope.updateintegrations()
+
+
 
   $scope.formLooksValid = () ->
     valid = true
@@ -79,3 +85,5 @@ KarmaTracker.controller "GitHubIntegrationsController", ($scope, $http, $cookieS
 
 
   $scope.updateIntegrations()
+
+]
