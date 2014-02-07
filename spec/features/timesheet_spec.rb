@@ -178,11 +178,12 @@ feature 'Timesheet page,
     end
   end
 
-  scenario 'see only projects I worked on in Project selectlist',driver: :selenium do
+  scenario 'see only projects I worked on in Project selectlist' do
     not_worked_on_project = create(:project, name: 'not worked on this one')
     create(:participation, project: not_worked_on_project, integration: @integration, active: true)
-    visit current_path
+    visit root_path + '#/timesheet'
     binding.pry
+    page.should have_select('select_project', with_options: [@project1.name])
     page.should have_no_select('select_project', with_options: [not_worked_on_project.name])
   end
 end
