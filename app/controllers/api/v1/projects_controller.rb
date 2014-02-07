@@ -31,8 +31,8 @@ module Api
           @projects = @api_key.user.projects
           @projects = @projects.active(@api_key.user) unless params[:archive]
           @projects = ElasticSearcher.projects(params[:query], @projects.map(&:id)) if params[:query].present?
-          @projects = @projects.sort!{ |a,b| a['name'].downcase <=> b['name'].downcase }.
-            paginate(page: params[:page], per_page: @items_per_page )
+          @projects = @projects.sort!{ |a,b| a['name'].downcase <=> b['name'].downcase }
+          @projects = @projects.paginate(page: params[:page], per_page: @items_per_page ) if params[:page]
           render 'index'
         else
           render json: {message: 'Resource not found'}, status: 404
