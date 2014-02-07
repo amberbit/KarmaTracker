@@ -28,9 +28,26 @@ describe 'Projects API' do
   end
 
   # GET /projects
+  it 'should return only worked on user\'s active projects' do
+    user = Integration.last.user
+    project = Project.last
+    task = create(:task, project: project)
+    participation = project.participations.last
+    participation.update_attributes(active: true)
+    create(:time_log_entry, user: user, task: task)
+    AppConfig.stub(:items_per_page).and_return(2)
+    api_get 'projects?worked_on=true', {token: user.api_key.token}
+    response.status.should == 200
+    resp = JSON.parse(response.body)
+    resp['total_count'].to_i.should == 1
+    resp['projects'].count.should == 1
+    AppConfig.unstub(:items_per_page)
+  end
+
+  # GET /projects
   it 'should return array of all user\'s active projects when no page param' do
     AppConfig.stub(:items_per_page).and_return(2)
-    api_get 'projects?timesheet=true', {token: Integration.last.user.api_key.token}
+    api_get 'projects', {token: Integration.last.user.api_key.token}
     response.status.should == 200
     resp = JSON.parse(response.body)
     resp['total_count'].to_i.should == 3
