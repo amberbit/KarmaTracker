@@ -16,4 +16,9 @@ class IntegrationsFactory < Factory
     @object
   end
 
+  class << self
+    def construct_integration(type)
+      type == 'git_hub' || type == 'GitHub' ? GitHubIntegration.new : PivotalTrackerIntegration.new
+    end
+  end
 end
