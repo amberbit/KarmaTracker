@@ -32,6 +32,10 @@ class User < ActiveRecord::Base
       where('p.integration_id IN(?)', integrations.map(&:id)).uniq
   end
 
+  def projects_worked_on
+    Project.joins(tasks: :time_log_entries).where('time_log_entries.user_id = ?', id).uniq
+  end
+
   def generate_token(column)
     begin
       self[column] = SecureRandom.hex.to_s

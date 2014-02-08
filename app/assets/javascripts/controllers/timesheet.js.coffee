@@ -9,6 +9,7 @@ KarmaTracker.controller "TimesheetController", ($scope, $http, $cookieStore, $lo
   tomorrow.setDate(tomorrow.getDate()+1)
   tomorrow = moment($scope.date).add('days', 1).format('YYYY-MM-DDT00:00:00')
   offset = moment().zone()
+  $scope.showWorkedOnProjects = true
 
 
   $scope.selectedProject = ""
@@ -39,12 +40,11 @@ KarmaTracker.controller "TimesheetController", ($scope, $http, $cookieStore, $lo
 
   $scope.getProjects = ->
     $http.get(
-      '/api/v1/projects?token='+$cookieStore.get($scope.tokenName)
+      '/api/v1/projects?token='+$cookieStore.get($scope.tokenName)+"&worked_on=#{$scope.showWorkedOnProjects}"
     ).success((data, status, headers, config) ->
       $scope.projects = data['projects']
     ).error((data, status, headers, config) ->
     )
-
 
   pad = (number) ->
     str = '' + number
@@ -126,5 +126,8 @@ KarmaTracker.controller "TimesheetController", ($scope, $http, $cookieStore, $lo
   $scope.showLocalDate = (date) ->
     result = moment(date).add('minutes', -offset).format('YYYY-MM-DD HH:mm:ss')
 
+
+  $scope.$watch('showWorkedOnProjects', $scope.getProjects)
+
   $scope.getEntries()
-  $scope.getProjects()
+

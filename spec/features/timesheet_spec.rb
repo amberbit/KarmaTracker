@@ -24,7 +24,7 @@ feature 'Timesheet page,
                                   started_at: @date2, stopped_at: @date2 + 1.hour + 1.second)
     @time_log_entry3 = create(:time_log_entry, task: @task2, user: @user,
                                   started_at: @date3, stopped_at: @date3 + 1.hour + 1.second)
-    @integration = create(:integration)
+    @integration = create(:integration, user: @user)
     create(:participation, project: @project1, integration: @integration)
     create(:participation, project: @project2, integration: @integration)
     FakeWeb.allow_net_connect = true
@@ -177,4 +177,23 @@ feature 'Timesheet page,
       page.should have_field 'Started at'
     end
   end
+
+  scenario 'see only projects I worked on in Project selectlist' do
+    not_worked_on_project = create(:project, name: 'not worked on this one')
+    create(:participation, project: not_worked_on_project, integration: @integration, active: true)
+    visit root_path + '#/timesheet'
+    page.should have_select('select_project', with_options: [@project1.name])
+    page.should have_no_select('select_project', with_options: [not_worked_on_project.name])
+  end
+
+  scenario 'toggle all projects in Project selectlist' do
+    not_worked_on_project = create(:project, name: 'not worked on this one')
+    create(:participation, project: not_worked_on_project, integration: @integration, active: true)
+    visit root_path + '#/timesheet'
+    page.should have_select('select_project', with_options: [@project1.name])
+    page.should have_no_select('select_project', with_options: [not_worked_on_project.name])
+    uncheck 'Only projects you worked on'
+    page.should have_select('select_project', with_options: [not_worked_on_project.name])
+  end
+
 end

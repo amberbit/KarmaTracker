@@ -901,3 +901,16 @@ h4 a.refresh{
 span.toggle-active-field {
   display: inline-block;
 }
+
+.timesheet-top-row {
+  width: 22% !important;
+}
+
+.timesheet-show-all {
+  padding-left: 0px !important;
+  bottom: -34px !important;
+  * {
+    margin-top: 0 !important;
+    display: inline;
+  }
+}

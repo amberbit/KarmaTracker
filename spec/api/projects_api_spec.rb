@@ -26,7 +26,35 @@ describe 'Projects API' do
     resp['projects'].count.should == 1
     AppConfig.unstub(:items_per_page)
   end
-  
+
+  # GET /projects
+  it 'should return only worked on user\'s active projects' do
+    user = Integration.last.user
+    project = Project.last
+    task = create(:task, project: project)
+    participation = project.participations.last
+    participation.update_attributes(active: true)
+    create(:time_log_entry, user: user, task: task)
+    AppConfig.stub(:items_per_page).and_return(2)
+    api_get 'projects?worked_on=true', {token: user.api_key.token}
+    response.status.should == 200
+    resp = JSON.parse(response.body)
+    resp['total_count'].to_i.should == 1
+    resp['projects'].count.should == 1
+    AppConfig.unstub(:items_per_page)
+  end
+
+  # GET /projects
+  it 'should return array of all user\'s active projects when no page param' do
+    AppConfig.stub(:items_per_page).and_return(2)
+    api_get 'projects', {token: Integration.last.user.api_key.token}
+    response.status.should == 200
+    resp = JSON.parse(response.body)
+    resp['total_count'].to_i.should == 3
+    resp['projects'].count.should == 3
+    AppConfig.unstub(:items_per_page)
+  end
+
   # GET /projects
   it 'should return paginated array of all user\'s projects' do
     AppConfig.stub(:items_per_page).and_return(2)
@@ -102,8 +130,8 @@ describe 'Projects API' do
     Project.count.should == 6
 
     FakeWeb.register_uri(:get, 'https://www.pivotaltracker.com/services/v5/projects',
-      :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'projects2.json')),
-      :status => ['200', 'OK'])
+                         :body => File.read(File.join(Rails.root, 'spec', 'fixtures', 'pivotal_tracker', 'responses', 'projects2.json')),
+                         :status => ['200', 'OK'])
     api_get "projects/refresh", {token: ApiKey.last.token}
     response.status.should == 200
 
@@ -285,11 +313,11 @@ describe 'Projects API' do
   # POST /api/v1/projects/:id/pivotal_tracker_activity_web_hook
   it 'should return 401 if no token was provided' do
     api_post "projects/#{Project.last.id}/pivotal_tracker_activity_web_hook",
-    :body => File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_create.json'))
-    response.status.should == 401
-    resp = JSON.parse(response.body)
-    resp.should have_key("message")
-    resp["message"].should =~ /Invalid token/
+      :body => File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_create.json'))
+      response.status.should == 401
+      resp = JSON.parse(response.body)
+      resp.should have_key("message")
+      resp["message"].should =~ /Invalid token/
   end
 
   # POST /api/v1/projects/:id/pivotal_tracker_activity_web_hook
@@ -298,11 +326,11 @@ describe 'Projects API' do
     project2 = FactoryGirl.create :project
 
     api_post "projects/#{project.id}/pivotal_tracker_activity_web_hook?token=#{project2.web_hook_token}",
-    :body => File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_create.json'))
-    response.status.should == 401
-    resp = JSON.parse(response.body)
-    resp.should have_key("message")
-    resp["message"].should =~ /Invalid token/
+      :body => File.read(Rails.root.join('spec','fixtures','pivotal_tracker','activities','story_create.json'))
+      response.status.should == 401
+      resp = JSON.parse(response.body)
+      resp.should have_key("message")
+      resp["message"].should =~ /Invalid token/
   end
 
   # POST /api/v1/projects/:id/pivotal_tracker_activity_web_hook
