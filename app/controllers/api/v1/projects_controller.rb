@@ -28,7 +28,7 @@ module Api
       def index
         @items_per_page = AppConfig.items_per_page
         if @api_key.user.present?
-          @projects = params[:worked_on] ? @api_key.user.projects_worked_on : @api_key.user.projects
+          @projects = params[:worked_on] == 'true' ? @api_key.user.projects_worked_on : @api_key.user.projects
           @projects = @projects.active(@api_key.user) unless params[:archive]
           @projects = ElasticSearcher.projects(params[:query], @projects.map(&:id)) if params[:query].present?
           @projects = @projects.sort!{ |a,b| a['name'].downcase <=> b['name'].downcase }
