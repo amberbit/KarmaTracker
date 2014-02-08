@@ -8,16 +8,16 @@ KarmaTracker.factory 'Integration', ['$resource', '$cookieStore', 'TOKEN_NAME', 
       @token = $cookieStore.get TOKEN_NAME
 
 
-    query: (integration_name) =>
+    query: (type) =>
       if @token
-        @service.query(token: @token, service: integration_name)
+        @service.query(token: @token, type: type)
 
     remove: (id) =>
       if @token
         @service.remove(token: @token, id: id)
 
-    #update: (user) =>
-      #if @token
-        #@service.update(token: @token, user: user)
+    save: (integration) =>
+      if @token
+        @service.save(token: @token, integration: integration)
 
 ]
