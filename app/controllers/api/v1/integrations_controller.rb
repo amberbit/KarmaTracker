@@ -43,8 +43,8 @@ module Api
       #
       def index
         if @api_key && @api_key.user
-          @integrations = if params[:service]
-                          @api_key.user.integrations.by_service(params[:service])
+          @integrations = if params[:type]
+                          @api_key.user.integrations.by_service(params[:type])
                         else
                           @api_key.user.integrations
                         end
@@ -145,6 +145,18 @@ module Api
           render '_show', status: 422
         end
       end
+
+      def create
+        options = (params[:integration].reject{ |key, value| value.empty?} || {}).merge({user_id: @current_user.id})
+        @integration = IntegrationsFactory.new(IntegrationsFactory.construct_integration(options['type']), options).create
+        if @integration.save
+          render '_show'
+        else
+          render '_show', status: 422
+        end
+      end
+
+
 
       ##
       # creates new GitHub integration
