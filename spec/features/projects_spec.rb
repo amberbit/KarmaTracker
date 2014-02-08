@@ -51,7 +51,6 @@ feature 'Projects management,
 
   scenario 'see recent projects', driver: :selenium do
     within '.recents.recent-projects' do
-      binding.pry
       page.should_not have_content project1.name
       page.should have_content project2.name
     end

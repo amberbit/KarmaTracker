@@ -69,7 +69,7 @@ describe 'Integrations API' do
     2.times { create(:integration) }
     3.times { create(:integration, type: "GitHubIntegration") }
 
-    json = api_get "integrations", {token: Integration.last.user.api_key.token, service: 'PivotalTracker'}
+    json = api_get "integrations", {token: Integration.last.user.api_key.token, type: 'PivotalTracker'}
     json.select{ |i| i.has_key?('pivotal_tracker') }.count.should == 2
     json.select{ |i| i.has_key?('git_hub') }.count.should == 0
   end
