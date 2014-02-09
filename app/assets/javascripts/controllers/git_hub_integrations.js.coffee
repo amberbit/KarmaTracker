@@ -3,7 +3,6 @@ KarmaTracker.controller "GitHubIntegrationsController",['$scope', 'Integration',
   $scope.newIntegration = { username: null, password: null }
   $scope.addFormShown = false
   $scope.errors = {}
-  $scope.tokenName = 'token'
   integrationService = new Integration
 
   $scope.updateIntegrations = ->
@@ -11,7 +10,7 @@ KarmaTracker.controller "GitHubIntegrationsController",['$scope', 'Integration',
       $scope.integrations = result
 
   $scope.remove = (integration_id) ->
-    if confirm("are you sure to remove github integration?")
+    if confirm("Are you sure you want to remove Git Hub integration?")
       integrationService.remove(integration_id).$promise.then (result) ->
         index = $scope.integrations.map((integration) ->
           integration.git_hub.id

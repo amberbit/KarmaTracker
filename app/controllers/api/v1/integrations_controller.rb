@@ -136,15 +136,15 @@ module Api
       #   => {"pivotal_tracker": {"email": "mail@example.com", "password": "wrong_password",
       #                           "errors": { "password": ["does not match email"] }}}
       #
-      def pivotal_tracker
-        options = (params[:integration] || {}).merge({user_id: @current_user.id})
-        @integration = IntegrationsFactory.new(PivotalTrackerIntegration.new, options).create
-        if @integration.save
-          render '_show'
-        else
-          render '_show', status: 422
-        end
-      end
+#      def pivotal_tracker
+        #options = (params[:integration] || {}).merge({user_id: @current_user.id})
+        #@integration = IntegrationsFactory.new(PivotalTrackerIntegration.new, options).create
+        #if @integration.save
+          #render '_show'
+        #else
+          #render '_show', status: 422
+        #end
+      #end
 
       def create
         options = (params[:integration].reject{ |key, value| value.empty?} || {}).merge({user_id: @current_user.id})
