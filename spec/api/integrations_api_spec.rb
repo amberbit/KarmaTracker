@@ -114,11 +114,11 @@ describe 'Integrations API' do
     json['pivotal_tracker']['errors']['password'].should_not be_blank
   end
 
-  # POST /api/v1/integrations/git_hub
+  # POST /api/v1/integrations/
   it "should be able to add GH integration for given user" do
     user = create :user
-    json = api_post "integrations/git_hub", {token: ApiKey.last.token, integration:
-          { username: 'correct_username@example.com', password: 'correct_password'}}
+    json = api_post "integrations/", {token: ApiKey.last.token, integration:
+          { username: 'correct_username@example.com', password: 'correct_password', type: 'git_hub' }}
 
     response.status.should == 200
     json.has_key?('git_hub').should be_true
@@ -129,11 +129,26 @@ describe 'Integrations API' do
     user.integrations.should include(integration)
   end
 
+  # POST /api/v1/integrations/
+  it "should be able to add PT integration for given user" do
+    user = create :user
+    json = api_post "integrations/", {token: ApiKey.last.token, integration:
+          { username: 'correct_username@example.com', password: 'correct_password', type: 'pivotal_tracker' }}
+
+    response.status.should == 200
+    json.has_key?('pivotal_tracker').should be_true
+
+    Integration.count.should == 1
+    integration = Integration.last
+    integration.user.should == user
+    user.integrations.should include(integration)
+  end
+
   # POST /api/v1/integrations/git_hub
   it "should be able to add GH integration for given user with provided token" do
     user = create :user
-    json = api_post "integrations/git_hub", {token: ApiKey.last.token, integration:
-          { api_key: 'correct_token'}}
+    json = api_post "integrations/", {token: ApiKey.last.token, integration:
+          { api_key: 'correct_token', type: 'git_hub'}}
 
     response.status.should == 200
     json.has_key?('git_hub').should be_true
@@ -148,7 +163,7 @@ describe 'Integrations API' do
   # POST /api/v1/integrations/git_hub
   it 'should add error messages to response when adding GH integration fails' do
     create :user
-    json = api_post "integrations/git_hub", {token: ApiKey.last.token, integration: {username: 'wrong_username', password: 'wrong_password'}}
+    json = api_post "integrations/", {token: ApiKey.last.token, integration: {username: 'wrong_username', password: 'wrong_password', type: 'git_hub'}}
 
     response.status.should == 422
     Integration.count.should == 0

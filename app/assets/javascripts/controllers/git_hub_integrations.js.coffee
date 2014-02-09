@@ -41,8 +41,8 @@ KarmaTracker.controller "GitHubIntegrationsController",['$scope', 'Integration',
           if data.errors.api_key?
             $scope.errors.api_key = data.errors.api_key[0]
           else
-            $scope.errors.username_token = data.errors.username[0]
-            $scope.errors.api_key = data.errors.password[0]
+            $scope.errors.username_token = data.errors.username[0] if data.errors.username? 
+            $scope.errors.password = data.errors.password[0] if data.errors.password?
 
 
   $scope.openAddForm = ->

@@ -204,15 +204,15 @@ module Api
       #   resp.body
       #   => {"git_hub": {"api_key": "wrong token", "errors": { "api_key": ["Is invalid"] }}}
       #
-      def git_hub
-        options = (params[:integration] || {}).merge({user_id: @current_user.id})
-        @integration = IntegrationsFactory.new(GitHubIntegration.new, options).create
-        if @integration.save
-          render '_show'
-        else
-          render '_show', status: 422
-        end
-      end
+      #def git_hub
+        #options = (params[:integration] || {}).merge({user_id: @current_user.id})
+        #@integration = IntegrationsFactory.new(GitHubIntegration.new, options).create
+        #if @integration.save
+          #render '_show'
+        #else
+          #render '_show', status: 422
+        #end
+      #end
 
       ##
       # Deletes integration
