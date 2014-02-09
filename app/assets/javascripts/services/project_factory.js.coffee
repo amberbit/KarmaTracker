@@ -16,7 +16,7 @@ KarmaTracker.factory 'Project', ['$resource', '$cookieStore', 'TOKEN_NAME', ($re
 
     query: (searchString, archive, pageNr) =>
       if @token
-        @service.query(token: @token, archive: archive, page: pageNr)
+        @service.query(token: @token, query: searchString, archive: archive, page: pageNr)
 
     toggleActive: (project_id) =>
       if @token

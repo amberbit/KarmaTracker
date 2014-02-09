@@ -1,12 +1,8 @@
 KarmaTracker.factory 'Integration', ['$resource', '$cookieStore', 'TOKEN_NAME', ($resource, $cookieStore, TOKEN_NAME) ->
   class Integration
     constructor: ->
-      @service = $resource("/api/v1/integrations/:id", {}, {
-        #update:
-        #  method: 'PUT'
-      })
+      @service = $resource("/api/v1/integrations/:id", {}, { })
       @token = $cookieStore.get TOKEN_NAME
-
 
     query: (type) =>
       if @token
