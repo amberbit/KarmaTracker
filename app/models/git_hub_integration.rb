@@ -3,8 +3,6 @@ require 'net/https'
 require 'uri'
 
 class GitHubIntegration < Integration
-  attr_accessible :username, :password
-  attr_accessor :username, :password
 
   validate :credentials_correctness, on: :create
 

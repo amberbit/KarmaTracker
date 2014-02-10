@@ -24,3 +24,4 @@ config/app_config.yml
 config/deploy.rb
 *.kate-swp
 *~
+.DS_Store

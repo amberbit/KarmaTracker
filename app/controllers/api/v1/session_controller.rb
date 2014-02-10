@@ -33,12 +33,12 @@ module Api
       #   => {"message": "Invalid email or password"}
       #
       def create
-        if @user = User.authenticate(params[:session])
-          if @user.confirmation_token.nil?
-            @api_key = @user.api_key
+        if @current_user = User.authenticate(params[:session])
+          if @current_user.confirmation_token.nil?
+            @api_key = @current_user.api_key
             render 'api/v1/users/_show'
           else
-            UserMailer.confirmation_email(@user, request.host).deliver
+            UserMailer.confirmation_email(@current_user, request.host).deliver
             render json: {message: 'User email address is not confirmed, please check your inbox or spam folder.'}, status: 401
           end
         else
@@ -107,11 +107,11 @@ module Api
       #
       def oauth_verify
         if params[:email].present? && params[:token].present?
-          @user = User.find_by_email params[:email]
-          if @user.present? && @user.oauth_token.present? && @user.oauth_token == params[:token]
-            if @user.oauth_token_expires_at.nil? || @user.oauth_token_expires_at > Time.now
-              @user.update_column :oauth_token, nil
-              @api_key = @user.api_key
+          @current_user = User.find_by_email params[:email]
+          if @current_user.present? && @current_user.oauth_token.present? && @current_user.oauth_token == params[:token]
+            if @current_user.oauth_token_expires_at.nil? || @current_user.oauth_token_expires_at > Time.now
+              @current_user.update_column :oauth_token, nil
+              @api_key = @current_user.api_key
               render 'api/v1/users/_show'
             else
               render json: {message: 'OmniAuth token expired'}, status: 400

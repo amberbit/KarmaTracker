@@ -3,8 +3,6 @@ require 'net/https'
 require 'open-uri'
 
 class PivotalTrackerIntegration < Integration
-  attr_accessible :email, :password
-  attr_accessor :email, :password
 
   validate :credentials_correctness, on: :create
   validates_uniqueness_of :api_key
@@ -18,8 +16,8 @@ class PivotalTrackerIntegration < Integration
   def credentials_correctness
     if api_key.present?
       validate_credentials_with_token
-    elsif email.present? && password.present?
-      validate_credentials_with_email_and_password
+    elsif username.present? && password.present?
+      validate_credentials_with_username_and_password
     else
       errors.add(:api_key, 'you need to provide login credentials')
     end
@@ -49,13 +47,13 @@ class PivotalTrackerIntegration < Integration
     errors.add(:api_key, 'provided token is invalid')
   end
 
-  def validate_credentials_with_email_and_password
+  def validate_credentials_with_username_and_password
     https = Net::HTTP.new(authentication_uri.host, authentication_uri.port)
     https.use_ssl = true
     https.verify_mode = OpenSSL::SSL::VERIFY_NONE
     req = Net::HTTP::Get.new(authentication_uri.path)
     req["Content-Type"]="application/json"
-    req.basic_auth email, password
+    req.basic_auth username, password
     res = https.request(req)
     json = JSON.parse(res.body)
     token = json["api_token"]

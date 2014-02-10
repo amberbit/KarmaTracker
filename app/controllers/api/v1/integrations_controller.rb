@@ -43,8 +43,8 @@ module Api
       #
       def index
         if @api_key && @api_key.user
-          @integrations = if params[:service]
-                          @api_key.user.integrations.by_service(params[:service])
+          @integrations = if params[:type]
+                          @api_key.user.integrations.by_service(params[:type])
                         else
                           @api_key.user.integrations
                         end
@@ -91,9 +91,9 @@ module Api
       end
 
       ##
-      # creates new Pivotal Tracker integration
+      # creates new Pivotal Tracker or Git Hub integration
       #
-      # POST /api/v1/integrations/pivotal_tracker
+      # POST /api/v1/integrations
       #
       # params:
       #   token - KarmaTracker API token
@@ -101,12 +101,14 @@ module Api
       #   integration[email] - email assigned to PT account
       #   integration[password] - password assigned to PT account
       # Either api_key or email and password need to be provided.
+      #   integration[type] - integration type: 'git_hub'/'GitHub' or 'pivotal_tracker'/'PivotalTracker'
       #
       # = Examples
       #
       #   resp = conn.post("/api/v1/integrations/pivotal_tracker",
       #                    "token" => "dcbb7b36acd4438d07abafb8e28605a4",
-      #                    "integration[api_key]" => "sdgs24386tr8732gfsiur32")
+      #                    "integration[api_key]" => "sdgs24386tr8732gfsiur32",
+      #                    "integration[type] => 'pivotal_tracker')
       #
       #   resp.status
       #   => 200
@@ -116,7 +118,8 @@ module Api
       #
       #   resp = conn.post("/api/v1/integrations/pivotal_tracker",
       #                    "token" => "dcbb7b36acd4438d07abafb8e28605a4",
-      #                    "integration[api_key]" => "wrong token")
+      #                    "integration[api_key]" => "wrong token",
+      #                    "integration[type] => 'pivotal_tracker')
       #
       #   resp.status
       #   => 422
@@ -127,7 +130,8 @@ module Api
       #   resp = conn.post("/api/v1/integrations/pivotal_tracker",
       #                    "token" => "dcbb7b36acd4438d07abafb8e28605a4",
       #                    "integration[email]" => "mail@example.com"
-      #                    "integration[password]" => "wrong_password")
+      #                    "integration[password]" => "wrong_password",
+      #                    "integration[type] => 'pivotal_tracker')
       #
       #   resp.status
       #   => 422
@@ -135,10 +139,9 @@ module Api
       #   resp.body
       #   => {"pivotal_tracker": {"email": "mail@example.com", "password": "wrong_password",
       #                           "errors": { "password": ["does not match email"] }}}
-      #
-      def pivotal_tracker
-        options = (params[:integration] || {}).merge({user_id: @current_user.id})
-        @integration = IntegrationsFactory.new(PivotalTrackerIntegration.new, options).create
+      def create
+        options = (params[:integration].reject{ |key, value| value.empty?} || {}).merge({user_id: @current_user.id})
+        @integration = IntegrationsFactory.new(IntegrationsFactory.construct_integration(options['type']), options).create
         if @integration.save
           render '_show'
         else
@@ -146,61 +149,6 @@ module Api
         end
       end
 
-      ##
-      # creates new GitHub integration
-      #
-      # POST /api/v1/integrations/git_hub
-      #
-      # params:
-      #   token - KarmaTracker API token
-      #   integration[api_key] - GitHub API token
-      #   integration[username] - username assigned to GH account
-      #   integration[password] - password assigned to GH account
-      #
-      # = Examples
-      #
-      #   resp = conn.post("/api/v1/integrations/git_hub",
-      #                    "token" => "dcbb7b36acd4438d07abafb8e28605a4",
-      #                    "integration[username]" => "R2D2"
-      #                    "integration[password]" => "fdsjfsho7h23orfesk")
-      #
-      #   resp.status
-      #   => 200
-      #
-      #   resp.body
-      #   => {"git_hub": {"id": 9, "api_key": "sdasdf32rfefs32", "service": "GitHub"}}
-      #
-      #   resp = conn.post("/api/v1/integrations/git_hub",
-      #                    "token" => "dcbb7b36acd4438d07abafb8e28605a4",
-      #                    "integration[username]" => "R2D2"
-      #                    "integration[api_key]" => "osdf659234sdffd3sjfsh234o7h23orfe3sk")
-      #
-      #   resp.status
-      #   => 200
-      #
-      #   resp.body
-      #   => {"git_hub": {"id": 10, "api_key": "osdf659234sdffd3sjfsh234o7h23orfe3sk", "service": "GitHub"}}
-      #
-      #   resp = conn.post("/api/v1/integrations/pivotal_tracker",
-      #                    "token" => "dcbb7b36acd4438d07abafb8e28605a4",
-      #                    "integration[username]" => "R2D2"
-      #                    "integration[password]" => "wrongpassword")
-      #
-      #   resp.status
-      #   => 422
-      #
-      #   resp.body
-      #   => {"git_hub": {"api_key": "wrong token", "errors": { "api_key": ["Is invalid"] }}}
-      #
-      def git_hub
-        options = (params[:integration] || {}).merge({user_id: @current_user.id})
-        @integration = IntegrationsFactory.new(GitHubIntegration.new, options).create
-        if @integration.save
-          render '_show'
-        else
-          render '_show', status: 422
-        end
-      end
 
       ##
       # Deletes integration

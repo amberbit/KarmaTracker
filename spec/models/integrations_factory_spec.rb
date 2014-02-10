@@ -4,11 +4,12 @@ require 'fakeweb'
 describe 'IntegrationsFactory' do
 
   before :all do
-    @attrs = {email: 'correct_email', password: 'correct_password'}
+    @attrs = {username: 'correct_username', password: 'correct_password'}
   end
 
   it 'should return an integration when correct params were provided' do
-    factory = IntegrationsFactory.new(PivotalTrackerIntegration.new, @attrs)
+    options = @attrs.merge({ type: 'pivotal_tracker' })
+    factory = IntegrationsFactory.new(IntegrationsFactory.construct_integration(options), @attrs)
     integration = factory.create
     integration.type.should == "PivotalTrackerIntegration"
   end

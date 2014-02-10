@@ -4,7 +4,6 @@ module Api
     class UsersController < ApplicationController
       respond_to :json
       before_filter :restrict_access, except: [:create, :confirm]
-      before_filter :set_user
 
       ##
       # Returns KarmaTracker user based on provided API token.
@@ -76,10 +75,10 @@ module Api
       #
       def create
         if AppConfig.users.allow_register
-          @user = UsersFactory.new(User.new, params[:user]).create
+          @current_user = UsersFactory.new(User.new, params[:user]).create
 
-          if @user.save
-            UserMailer.confirmation_email(@user, request.host).deliver
+          if @current_user.save
+            UserMailer.confirmation_email(@current_user, request.host).deliver
             render '_show'
           else
             render '_show', status: 422
@@ -128,9 +127,8 @@ module Api
       #                "errors": {"email":["has already been taken"],"password":["is too short (minimum is 8 characters)"]}}}"
       #
       def update
-        @user = UsersFactory.new(@user, params[:user]).update
-
-        if @user.save
+        @current_user = UsersFactory.new(@current_user, params[:user]).update
+        if @current_user.save
           render '_show'
         else
           render '_show', status: 422
@@ -173,10 +171,10 @@ module Api
       #
 
       def confirm
-        @user = User.where(confirmation_token: params[:confirmation_token]).first
-        @user.confirmation_token = nil if @user
+        @current_user = User.where(confirmation_token: params[:confirmation_token]).first
+        @current_user.confirmation_token = nil if @current_user
 
-        if @user && @user.save
+        if @current_user && @current_user.save
           render '_show'
         else
           render json: {message: 'Resource not found'}, status: 404
@@ -213,17 +211,11 @@ module Api
       #
       def destroy
         if AppConfig.users.allow_destroy
-          @user.destroy
+          @current_user.destroy
           render '_show'
         else
           render json: {message: 'Forbidden'}, status: 403
         end
-      end
-
-      private
-
-      def set_user
-        @user = @current_user
       end
 
     end

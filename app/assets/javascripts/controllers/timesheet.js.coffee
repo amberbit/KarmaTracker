@@ -34,7 +34,7 @@ KarmaTracker.controller "TimesheetController", ($scope, $http, $cookieStore, $lo
     $http.get(
       "/api/v1/projects/#{entry.task.project_id}?token=#{$cookieStore.get($scope.tokenName)}"
     ).success((data, status, headers, config) ->
-      entry.project = data.project
+      entry.project = data
     ).error((data, status, headers, config) ->
     )
 
@@ -42,7 +42,7 @@ KarmaTracker.controller "TimesheetController", ($scope, $http, $cookieStore, $lo
     $http.get(
       '/api/v1/projects?token='+$cookieStore.get($scope.tokenName)+"&worked_on=#{$scope.showWorkedOnProjects}"
     ).success((data, status, headers, config) ->
-      $scope.projects = data['projects']
+      $scope.projects = data.projects
     ).error((data, status, headers, config) ->
     )
 

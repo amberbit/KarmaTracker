@@ -12,7 +12,7 @@ describe PivotalTrackerIntegration do
   it 'should not save integration when incorrect credentials were provided' do
     PivotalTrackerIntegration.count.should == 0
     pi = PivotalTrackerIntegration.new
-    pi.email = 'wrong_email'
+    pi.username = 'wrong_email'
     pi.password = 'wrong_password'
     pi.save
     PivotalTrackerIntegration.count.should == 0
@@ -22,7 +22,7 @@ describe PivotalTrackerIntegration do
     PivotalTrackerIntegration.count.should == 0
     pi = PivotalTrackerIntegration.new
     pi.user = FactoryGirl.create :user
-    pi.email = 'correct_email@example.com'
+    pi.username = 'correct_username@example.com'
     pi.password = 'correct_password'
     pi.save
     PivotalTrackerIntegration.count.should == 1
@@ -30,7 +30,7 @@ describe PivotalTrackerIntegration do
 
     pi = PivotalTrackerIntegration.new
     pi.user = FactoryGirl.create :user
-    pi.email = 'correct_email'
+    pi.username = 'correct_username'
     pi.password = 'correct_password'
     pi.save.should be_false
     pi.errors[:password].should be_present

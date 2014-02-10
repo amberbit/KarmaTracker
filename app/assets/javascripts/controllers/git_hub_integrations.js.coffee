@@ -1,29 +1,23 @@
-KarmaTracker.controller "GitHubIntegrationsController", ($scope, $http, $cookieStore, $location) ->
+KarmaTracker.controller "GitHubIntegrationsController",['$scope', 'Integration', ($scope, Integration) ->
   $scope.integrations = []
   $scope.newIntegration = { username: null, password: null }
   $scope.addFormShown = false
   $scope.errors = {}
-  $scope.tokenName = 'token'
+  integrationService = new Integration
 
-  $scope.updateIntegrations = () ->
-    $http.get(
-      '/api/v1/integrations?token='+$cookieStore.get($scope.tokenName)+'&service=git_hub'
-    ).success((data, status, headers, config) ->
-      $scope.integrations = data
-    ).error((data, status, headers, config) ->
-    )
+  $scope.updateIntegrations = ->
+    integrationService.query('git_hub').$promise.then (result) ->
+      $scope.integrations = result
 
-  $scope.remove = (id) ->
-    answer = confirm("Are you sure to remove GitHub Integration?")
-    if answer
-      $http.delete(
-        '/api/v1/integrations/'+id+'?token='+$cookieStore.get($scope.tokenName)
-      ).success((data, status, headers, config) ->
-        $scope.updateIntegrations()
-      ).error((data, status, headers, config) ->
-      )
+  $scope.remove = (integration_id) ->
+    if confirm("Are you sure you want to remove Git Hub integration?")
+      integrationService.remove(integration_id).$promise.then (result) ->
+        index = $scope.integrations.map((integration) ->
+          integration.git_hub.id
+        ).indexOf(integration_id)
+        $scope.integrations.splice(index, 1) if index > -1
 
-  $scope.formLooksValid = () ->
+  $scope.formLooksValid = ->
     valid = true
     $scope.errors = {}
 
@@ -34,43 +28,27 @@ KarmaTracker.controller "GitHubIntegrationsController", ($scope, $http, $cookieS
           valid = false
     valid
 
-  $scope.add = () ->
+  $scope.add = ->
     if $scope.formLooksValid()
-      if $scope.newIntegration.api_key? and $scope.newIntegration.api_key != ''
-        $http.post(
-          '/api/v1/integrations/git_hub?token='+$cookieStore.get($scope.tokenName)+'&integration[username]='+$scope.newIntegration.username_token+'&integration[api_key]='+$scope.newIntegration.api_key
-        ).success((data, status, headers, config) ->
-          $scope.cleanForm()
+      $scope.newIntegration['type'] = 'git_hub'
+      integrationService.save($scope.newIntegration).$promise
+        .then (result) ->
           $scope.openAddForm()
-          $scope.updateIntegrations()
-        ).error((data, status, headers, config) ->
-          if data.git_hub.errors.api_key?
-            $scope.errors.api_key = data.git_hub.errors.api_key[0]
+          $scope.integrations.push result
+        .catch (response) ->
+          data = response.data.git_hub
+          if data.errors.api_key?
+            $scope.errors.api_key = data.errors.api_key[0]
           else
-            $scope.errors.username_token = data.git_hub.errors.username[0]
-            $scope.errors.api_key = data.git_hub.errors.password[0]
-        )
-      else
-        $http.post(
-          '/api/v1/integrations/git_hub?token='+$cookieStore.get($scope.tokenName)+'&integration[username]='+$scope.newIntegration.username+'&integration[password]='+$scope.newIntegration.password
-        ).success((data, status, headers, config) ->
-          $scope.cleanForm()
-          $scope.openAddForm()
-          $scope.updateIntegrations()
-        ).error((data, status, headers, config) ->
-          $scope.newIntegration.username = ''
-          $scope.newIntegration.password = ''
-          if data.git_hub.errors.api_key?
-            $scope.errors.password = data.git_hub.errors.api_key[0]
-          else
-            $scope.errors.password = data.git_hub.errors.password[0]
-        )
+            $scope.errors.username_token = data.errors.username[0] if data.errors.username? 
+            $scope.errors.password = data.errors.password[0] if data.errors.password?
 
-  $scope.openAddForm = () ->
+
+  $scope.openAddForm = ->
     $scope.addFormShown = !$scope.addFormShown
     $scope.cleanForm()
 
-  $scope.cleanForm = () ->
+  $scope.cleanForm = ->
     $scope.newIntegration.username = ''
     $scope.newIntegration.password = ''
     $scope.newIntegration.api_key = ''
@@ -79,3 +57,5 @@ KarmaTracker.controller "GitHubIntegrationsController", ($scope, $http, $cookieS
 
 
   $scope.updateIntegrations()
+
+]

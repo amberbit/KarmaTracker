@@ -1,72 +1,54 @@
-KarmaTracker.controller "AccountController", ($scope, $http, $cookieStore, $location, $rootScope) ->
+KarmaTracker.controller "AccountController",['$scope', '$http', '$cookieStore', '$location', '$rootScope', '$resource', 'User', ($scope, $http, $cookieStore, $location, $rootScope, $resource, User) ->
   $rootScope.pullAllowed = false
   $scope.enabledDestroy = KarmaTrackerConfig.registration_destroy
   $scope.user = {}
-  $scope.errors = {}
-  $scope.newEmail = ""
-  $scope.newPassword = ""
-  $scope.confirmation = ""
   $scope.message = ''
   $scope.tokenName = 'token'
+  userService = new User
 
   $scope.getUserInfo = ->
-    $http.get(
-      '/api/v1/user?token='+$cookieStore.get $scope.tokenName
-    ).success((data, status, headers, config) ->
-      $scope.user = data.user
-    ).error((data, status, headers, config) ->
-    )
+    $scope.newEmail = $scope.newPassword = $scope.newPasswordConfirmation = null
+    $scope.errors = {}
+    userService.get().$promise.then (result) ->
+      $scope.user = result.user
 
   $scope.remove = ->
     if confirm("Are you sure to delete your account?")
-      $http.delete(
-        '/api/v1/user?token='+$cookieStore.get $scope.tokenName
-      ).success((data, status, headers, config) ->
-        window.location = '#/logout'
-      ).error((data, status, headers, config) ->
-      )
+      userService.remove().$promise.then (result) ->
+        $scope.user = {}
+        $location.path 'logout'
 
-  $scope.changeEmail = ->
-    if !$scope.newEmail? or $scope.newEmail != ''
-      $http.put(
-        "/api/v1/user?token="+$cookieStore.get($scope.tokenName)+"&user[email]="+$scope.newEmail
-      ).success((data, status, headers, config) ->
-        $scope.success("E-mail successfully changed")
-        $scope.getUserInfo()
-        $scope.newEmail = ""
-      ).error((data, status, headers, config) ->
-        $scope.errors.email = data.user.errors.email[0]
-      )
-    else
-      $scope.errors.email = "can't be blank"
+  #$scope.changePassword = ->
+    #$scope.errors = {}
+      #if $scope.user.password == $scope.password_confirmation
+        #$http.put(
+          #"/api/v1/user",
+          #token: $cookieStore.get $scope.tokenName,
+          #user: {
+            #password: $scope.newPassword
+          #}
+        #).success((data, status, headers, config) ->
+        #).error((data, status, headers, config) ->
+        #)
+      #else
+        #if !$scope.confirmation? or $scope.confirmation != ''
+        #else
+          #$scope.errors.confirmation = "passwords does not match"
 
-  $scope.changePassword = ->
-    $scope.errors = {}
-    if !$scope.newPassword? or $scope.newPassword != ''
-      if $scope.newPassword == $scope.confirmation
-        $http.put(
-          "/api/v1/user",
-          token: $cookieStore.get $scope.tokenName,
-          user: {
-            password: $scope.newPassword
-          }
-        ).success((data, status, headers, config) ->
-          $scope.success("Password successfully changed")
+
+  $scope.updateUser = (user) ->
+    if $scope.newEmail? or ($scope.newPassword? and $scope.newPassword? != '' and $scope.newPassword == $scope.newPasswordConfirmation)
+      user.email = $scope.newEmail if $scope.newEmail?
+      user.password = $scope.newPassowrd if $scope.newPassword?
+      userService.update(user).$promise
+        .then (result) ->
+          $scope.success("User successfully updated")
           $scope.getUserInfo()
-          $scope.newPassword = ""
-          $scope.confirmation = ""
-        ).error((data, status, headers, config) ->
-          $scope.errors.password = data.user.errors.password[0]
-        )
-      else
-        if !$scope.confirmation? or $scope.confirmation != ''
-          $scope.errors.confirmation = "can't be blank"
-        else
-          $scope.errors.confirmation = "passwords does not match"
-
-    else
-      $scope.errors.password = "can't be blank"
+        .catch (response) ->
+          $scope.errors.newEmail =  response.data.user.errors.email[0] if response.data.user.errors.email?
+    else if $scope.newPassword?
+      $scope.errors.newPasswordConfirmation = "Passwords don't match or password confirmation is blank"
 
 
-  if $cookieStore.get($scope.tokenName)?
-    $scope.getUserInfo()
+  $scope.getUserInfo()
+]

@@ -88,7 +88,7 @@ describe 'Projects API' do
     response.status.should == 200
     resp = JSON.parse(response.body)
     resp['projects'].count.should == 1
-    project = resp['projects'].last["project"]
+    project = resp['projects'].last
     project["id"] = p.id
   end
 
@@ -96,7 +96,7 @@ describe 'Projects API' do
   it 'should return a single project' do
     api_get "projects/#{Project.last.id}", {token: Integration.last.user.api_key.token}
     response.status.should == 200
-    project = JSON.parse(response.body)['project']
+    project = JSON.parse(response.body)
     project['id'].should == Project.last.id
     project['name'].should == Project.last.name
     project['source_name'].should == Project.last.source_name
@@ -397,7 +397,7 @@ describe 'Projects API' do
     response.status.should == 200
 
     projects = JSON.parse(response.body)['projects']
-    projects.map {|p| p["project"]["id"]}.should == @projects.map{|p| p.id}[5..9].reverse
+    projects.map {|p| p["id"]}.should == @projects.map{|p| p.id}[5..9].reverse
   end
 
   it 'should not get url of github project' do
@@ -458,8 +458,8 @@ describe 'Projects API' do
     api_put "projects/#{project.id}/toggle_active", {token: Integration.last.user.api_key.token}
     response.status.should == 200
     resp = JSON.parse(response.body)
-    resp['project'].should have_key("active")
-    resp['project']['active'].should == true
+    resp.should have_key("active")
+    resp['active'].should == true
     project.reload.should be_active_for_user(Integration.last.user)
-  end 
+  end
 end

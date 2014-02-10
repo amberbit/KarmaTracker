@@ -18,7 +18,7 @@ feature 'Integrations management', js: true do
   scenario 'adds and removes new Pivotal Tracker integration with credentials' do
     click_link 'add_new_pt'
     within 'div#ptform' do
-      fill_in 'email', :with => 'correct_email@example.com'
+      fill_in 'email', :with => 'correct_username@example.com'
       fill_in 'password', :with => 'correct_password'
       click_button "Add new integration"
     end

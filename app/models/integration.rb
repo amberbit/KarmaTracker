@@ -1,5 +1,6 @@
 class Integration < ActiveRecord::Base
-  attr_accessible :api_key, :user, :user_id, :source_id, :last_projects_refresh_at
+  attr_accessible :api_key, :user, :user_id, :source_id, :last_projects_refresh_at, :username, :password
+  attr_accessor :username, :password
 
   validates_uniqueness_of :api_key, :scope => :type
   validates_uniqueness_of :source_id, :scope => :type

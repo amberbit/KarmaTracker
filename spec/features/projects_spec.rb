@@ -3,7 +3,7 @@ require 'spec_helper'
 feature 'Projects management,
   as a user I can', js: true  do
 
-  let(:user) { user = create :confirmed_user }
+  let(:user) { create :confirmed_user }
 
   let(:project1) { create(:project, name: "ZZ KarmaTracker") }
   let(:project2)  do
@@ -95,10 +95,10 @@ feature 'Projects management,
     TimeLogEntry.destroy_all
     user2 = create :confirmed_user
     shared_task = Task.last
-    user2_running_entry = create :time_log_entry, user: user2, task: shared_task,
+    create :time_log_entry, user: user2, task: shared_task,
       stopped_at: nil, running: true
     wait_until(10) { TimeLogEntry::Flex.by_user(user.id).count == 0 }
-    my_running_entry = create :time_log_entry, user: user, task: shared_task,
+    create :time_log_entry, user: user, task: shared_task,
       stopped_at: nil, running: true
 
     user3 = create :confirmed_user
@@ -107,7 +107,7 @@ feature 'Projects management,
     create(:participation, project: project3, integration: integration3)
     create(:participation, project: project3, integration: integration)
     task3 = create :task, project: project3
-    user3_running_entry = create :time_log_entry, user: user3, task: task3,
+    create :time_log_entry, user: user3, task: task3,
       stopped_at: nil, running: true
 
     visit current_path

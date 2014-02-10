@@ -1,14 +1,14 @@
-KarmaTracker.controller "ProjectsController", ($rootScope, $scope, $http, $cookieStore, $location) ->
+KarmaTracker.controller "ProjectsController",['$rootScope', '$scope', '$resource', 'Project', '$location', ($rootScope, $scope, $resource, Project, $location) ->
   $rootScope.pullAllowed = true
   $scope.projects = []
   $scope.query.string = ""
-  $scope.tokenName = 'token'
   $scope.currentPage = 0
   $scope.totalCount = 0
   $scope.pageSize = KarmaTrackerConfig.items_per_page
   $scope.recent = true if document.documentElement.clientWidth <= 768
   $scope.timer = 0
-  $scope.items = []
+  projectService = new Project
+
 
   $scope.numberOfPages = ->
     return Math.ceil($scope.totalCount/$scope.pageSize)
@@ -21,24 +21,18 @@ KarmaTracker.controller "ProjectsController", ($rootScope, $scope, $http, $cooki
   )
 
   $scope.reloadProjects = (pageNr = 0) ->
+    archive = if $location.path() == '/archive' then true else null
     $rootScope.loading = true
-    $http.get(
-      "/api/v1/projects#{if $scope.recent then "/recent" else "" }?token=#{$cookieStore.get($scope.tokenName)}#{if $scope.query.string.length > 0 then '&query=' + $scope.query.string else ''}&page=#{pageNr+1}"
-    ).success((data, status, headers, config) ->
-      $scope.totalCount = parseInt data['total_count']
-      $scope.currentPage = pageNr
-      $scope.projects = []
-      for project in data['projects']
-        $scope.projects.push project.project
-      $rootScope.loading = false
-      $scope.initItems()
-    ).error((data, status, headers, config) ->
-      if $scope.recent
-        $scope.recent = false
-      $rootScope.loading = false
-    )
+    projectService.query($scope.query.string, archive, pageNr+1).$promise
+      .then (result) ->
+        $scope.totalCount = parseInt result.total_count
+        $scope.currentPage = pageNr
+        $scope.projects = result.projects
+        initItems()
+      .finally ->
+        $rootScope.loading = false
 
-  $scope.queryChanged = ->
+  queryChanged = ->
     query = $scope.query.string
     clearTimeout $scope.timer if $scope.timer != 0
     $scope.timer = setTimeout (->
@@ -46,12 +40,17 @@ KarmaTracker.controller "ProjectsController", ($rootScope, $scope, $http, $cooki
       $scope.$apply()
     ), 1000
 
-  $scope.initItems = ->
+   initItems = ->
     $scope.items = []
     numberOfPages = $scope.numberOfPages()
     for i in [0..(numberOfPages-1)]
       $scope.items.push { text: "#{i+1}/#{numberOfPages}", value: i }
 
+  $scope.toggleActive = (project) ->
+    projectService.toggleActive(project.id).$promise.then (result) ->
+      project.active = result.active
+
 
   $scope.$watch("recent", $scope.reloadProjects)
-  $scope.$watch("query.string", $scope.queryChanged)
+  $scope.$watch("query.string", queryChanged)
+]

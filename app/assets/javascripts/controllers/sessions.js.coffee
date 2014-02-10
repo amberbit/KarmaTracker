@@ -1,4 +1,4 @@
-KarmaTracker.controller "SessionController", ($scope, $http, $cookieStore, $location, $routeParams, $rootScope, $timeout, $resource) ->
+KarmaTracker.controller "SessionController", ($scope, $http, $cookieStore, $location, $routeParams, $rootScope, $timeout) ->
   $rootScope.pullAllowed = false
 
   $scope.session = { email: null, password: null, remember_me: false }
