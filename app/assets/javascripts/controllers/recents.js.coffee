@@ -1,4 +1,4 @@
-KarmaTracker.controller "RecentsController", ($scope, $http, $cookieStore, $location, BroadcastService, $rootScope) ->
+KarmaTracker.controller "RecentsController", ['$scope', '$http', '$cookieStore', '$location', 'BroadcastService', '$rootScope', 'TimeLogEntry', 'Task', ($scope, $http, $cookieStore, $location, BroadcastService, $rootScope, TimeLogEntry, Task) ->
   $scope.lastTasks = []
   $scope.lastProjects = []
   $scope.noTasks = true
@@ -6,6 +6,8 @@ KarmaTracker.controller "RecentsController", ($scope, $http, $cookieStore, $loca
   $scope.tokenName = 'token'
   $scope.alsoWorking = []
   $scope.location = null
+  timeLogEntryService = new TimeLogEntry
+  taskSertice = new Task
 
   $scope.showAllProjects = ->
     document.getElementById("projectspage").classList.remove("hide-for-small")
@@ -13,28 +15,22 @@ KarmaTracker.controller "RecentsController", ($scope, $http, $cookieStore, $loca
 
   $scope.startTracking = (task) ->
     if task.id == $scope.runningTask.id
-      $http.post(
-        "/api/v1/time_log_entries/stop?token=#{$cookieStore.get($scope.tokenName)}"
-      ).success((data, status, headers, config) ->
+      timeLogEntryService.stop().$promise.then ->
         $scope.notice "You stopped tracking #{task.name}."
         $scope.getRecentTasks()
         $scope.getRecentProjects()
         BroadcastService.prepForBroadcast('recentClicked')
-      ).error((data, status, headers, config) ->
-      )
     else
-      $http.post(
-        "/api/v1/time_log_entries/?token=#{$cookieStore.get($scope.tokenName)}",
-        { time_log_entry: {task_id: task.id} }
-      ).success((data, status, headers, config) ->
+      timeLogEntryService.save({task_id: task.id}).$promise.then ->
         $scope.notice "You started tracking #{task.name}."
         $scope.getRecentTasks()
         $scope.getRecentProjects()
         BroadcastService.prepForBroadcast('recentClicked')
-      ).error((data, status, headers, config) ->
-      )
 
   $scope.getRecentTasks = ->
+    #taskService.query().$promise
+    #  .then
+
     $http.get(
       '/api/v1/tasks/recent?token='+$cookieStore.get($scope.tokenName)
     ).success((data, status, headers, config) ->
@@ -67,3 +63,4 @@ KarmaTracker.controller "RecentsController", ($scope, $http, $cookieStore, $loca
   if $cookieStore.get($scope.tokenName)?
     $scope.getRecentTasks()
     $scope.getRecentProjects()
+]
