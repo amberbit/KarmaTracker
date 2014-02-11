@@ -18,7 +18,13 @@ class IntegrationsFactory < Factory
 
   class << self
     def construct_integration(type)
-      type == 'git_hub' || type == 'GitHub' ? GitHubIntegration.new : PivotalTrackerIntegration.new
+      if type == 'git_hub' || type == 'GitHub'
+        GitHubIntegration.new
+      elsif type == 'pivotal_tracker' || type == 'PivotalTracker'
+        PivotalTrackerIntegration.new
+      else
+        raise 'Unkown integration type. Supported are: GitHub/PivotalTracker'
+      end
     end
   end
 end
