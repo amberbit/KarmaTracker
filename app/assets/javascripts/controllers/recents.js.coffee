@@ -43,16 +43,6 @@ KarmaTracker.controller "RecentsController", ['$scope', '$cookieStore', 'Broadca
       .catch ->
         $rootScope.noRecentProjects = true
 
-    #$http.get(
-      #'/api/v1/projects/recent?token='+$cookieStore.get($scope.tokenName)
-    #).success((data, status, headers, config) ->
-      #$scope.lastProjects = data.projects
-      #$rootScope.noRecentProjects = false if $scope.lastProjects.length > 0
-    #).error((data, status, headers, config) ->
-      #$scope.lastProjects = []
-      #$rootScope.noRecentProjects = true
-    #)
-
   $scope.$on "handleBroadcast", ->
     if BroadcastService.message == 'refreshRecent'
       $scope.getRecentTasks()

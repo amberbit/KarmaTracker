@@ -1,4 +1,4 @@
-KarmaTracker.controller "AccountController",['$scope', '$http', '$cookieStore', '$location', '$rootScope', '$resource', 'User', ($scope, $http, $cookieStore, $location, $rootScope, $resource, User) ->
+KarmaTracker.controller "AccountController",['$scope', '$location', '$rootScope', 'User', ($scope, $location, $rootScope, User) ->
   $rootScope.pullAllowed = false
   $scope.enabledDestroy = KarmaTrackerConfig.registration_destroy
   $scope.user = {}

@@ -20,4 +20,6 @@ KarmaTracker.factory 'User', ['$resource', '$cookieStore', 'TOKEN_NAME', ($resou
       if @token
         @service.update(token: @token, user: user)
 
+    save: (user) =>
+      @service.save(token: @token, user: user)
 ]
