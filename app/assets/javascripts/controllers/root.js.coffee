@@ -29,9 +29,9 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
     $http.get(
         "/api/v1/tasks/running?token=#{$cookieStore.get $scope.tokenName}"
       ).success((data, status, headers, config) ->
-        $scope.runningStartedAt = data.task.started_at
+        $scope.runningStartedAt = data.started_at
         $scope.timeCounter()
-        $scope.runningTask = data.task
+        $scope.runningTask = data
         $scope.runningVisible = true
       ).error((data, status, headers, config) ->
         $scope.runningStartedAt = ""

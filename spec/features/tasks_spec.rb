@@ -152,6 +152,8 @@ as a user I can', js: true  do
 
   scenario 'paginate tasks with prev/next' do
     AppConfig.stub(:items_per_page).and_return(1)
+    task5 = create(:task, project: project1, current_task: true)
+    create(:task, project: project1, current_task: true)
     wait_until(10) { visit current_path }
 
     within '.view' do
@@ -163,16 +165,17 @@ as a user I can', js: true  do
       page.should have_content task1.name
     end
     within '#pagination' do
-      5.times do
-        click_button 'Next'
-      end
+      click_button 'Next'
+      page.should have_content '2 / 4'
+      click_button 'Next'
+      page.should have_content '3 / 4'
     end
     within '.view' do
       page.should_not have_content task1.name
-      page.should have_content task4.name
+      page.should have_content task5.name
     end
     within '#pagination' do
-        click_button 'Previous'
+      click_button 'Previous'
     end
     within '.view' do
       page.should have_content task4.name

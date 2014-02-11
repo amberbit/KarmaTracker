@@ -19,7 +19,7 @@
           <select ng-model="selectedProject" ng-options="project.id as project.name for project in projects">
             <option value="">-- choose project --</option>
           </select>
-      </label>
+        </label>
       </div>
       <div class="large-2 small-12 columns">
         <button id="search_submit" class="tiny button right" ng-click="getEntries()">Sumbit</button>
@@ -30,64 +30,63 @@
 
 
 
-    <table class="table small-12 colums timesheet-entries">
-      <thead>
-        <tr>
-          <th class="small-4 columns">Task</th>
-          <th class="small-4 columns">Project</th>
-          <th class="small-2 columns">Started at</th>
-          <th class="small-2 columns">Time spent</th>
-        </tr>
-      </thead>
-      <tbody ng-repeat="entry in entries" id="{{'timesheet_entry_' + entry.time_log_entry.id}}">
-        <tr ng-class="{ 'error-row': entry.time_log_entry.id == errors.id }">
-          <td class="small-4 columns">
-            <a href="" title="Go to task page" ng-click="openTask(entry.project.source_name, entry.project.name, entry.project.source_identifier, entry.task.source_identifier)">{{entry.task.name}}</a>
-          </td>
-          <td class="small-4 columns">
-              <a href="" title="Go to project page" ng-click="openProject(entry.project.source_name, entry.project.name, entry.project.source_identifier)">{{entry.project.name}} ({{entry.project.source_name}})</a>
-            </td>
-          <td class="small-2 columns">
-            <div ng-show="!entry.editing">{{showLocalDate(entry.time_log_entry.started_at.replace("T", " ").replace("Z", ""))}}</div>
-          </td>
-          <td class="small-2 columns">
-            <a ng-show="entry.editing" ng-click="close(entry)" href="" class="tiny button secondary right " >Cancel</a>
-            <a title="Edit this entry" ng-show="!entry.editing" ng-click="edit(entry)" href="" class="tiny button secondary right" >Edit</a>
-                        <div ng-show="!entry.editing">
-            {{getTime(entry.time_log_entry.seconds)}}
-            </div>
-          </td>
-        </tr>
-        <tr ng-show="entry.editing">
-          <td class="small-4 columns">
-            <label>Started at<input type="datetime-local" ng-model="entry.time_log_entry.newStartedAt" /></label>
-            <small ng-show="errors.started_at" class="error">{{errors.started_at}}</small>
-          </td>
-          <td class="small-4 columns">
-            <label>Stopped at<input type="datetime-local" ng-model="entry.time_log_entry.newStoppedAt" /></label>
-            <small ng-show="errors.stopped_at" class="error">{{errors.stopped_at}}</small>
-          </td>
-          <td class="small-2 columns">
-            <button ng-show="entry.editing" ng-click="deleteEntry(entry)" href="" class="small button secondary expand" >Delete entry</button>
-          </td>
-          <td class="small-2 columns">
-            <button ng-show="entry.editing" ng-click="updateEntry(entry)" href="" class="small button expand">Save</button>
-          </td>
-        </tr>
-      </tbody>
-      <tbody ng-show="entries.length == 0">
-        <tr>
-          <td class="small-12 columns">There are no tracked tasks within this time lapse, please check the selected time and project.</td>
-        </tr>
-      </thead>
-      
-    </table>
-     <table class="table small-4 small-offset-8 colums timesheet-total">
-        <tr>
-          <th class="small-6 columns">Total time</th>
-          <td class="small-6 columns">{{getTime(totalTime)}}</td>
-        </tr>
-      </table>
+  <table class="table small-12 colums timesheet-entries">
+    <thead>
+      <tr>
+        <th class="small-4 columns">Task</th>
+        <th class="small-4 columns">Project</th>
+        <th class="small-2 columns">Started at</th>
+        <th class="small-2 columns">Time spent</th>
+      </tr>
+    </thead>
+    <tbody ng-repeat="entry in entries" id="{{'timesheet_entry_' + entry.time_log_entry.id}}">
+    <tr ng-class="{ 'error-row': entry.time_log_entry.id == errors.id }">
+      <td class="small-4 columns">
+        <a href="" title="Go to task page" ng-click="openTask(entry.project.source_name, entry.project.name, entry.project.source_identifier, entry.task.source_identifier)">{{entry.task.name}}</a>
+      </td>
+      <td class="small-4 columns">
+        <a href="" title="Go to project page" ng-click="openProject(entry.project.source_name, entry.project.name, entry.project.source_identifier)">{{entry.project.name}} ({{entry.project.source_name}})</a>
+      </td>
+      <td class="small-2 columns">
+        <div ng-show="!entry.editing">{{showLocalDate(entry.time_log_entry.started_at.replace("T", " ").replace("Z", ""))}}</div>
+      </td>
+      <td class="small-2 columns">
+        <a ng-show="entry.editing" ng-click="close(entry)" href="" class="tiny button secondary right " >Cancel</a>
+        <a title="Edit this entry" ng-show="!entry.editing" ng-click="edit(entry)" href="" class="tiny button secondary right" >Edit</a>
+        <div ng-show="!entry.editing">
+          {{getTime(entry.time_log_entry.seconds)}}
+        </div>
+      </td>
+    </tr>
+    <tr ng-show="entry.editing">
+      <td class="small-4 columns">
+        <label>Started at<input type="datetime-local" ng-model="entry.time_log_entry.newStartedAt" /></label>
+        <small ng-show="errors.started_at" class="error">{{errors.started_at}}</small>
+      </td>
+      <td class="small-4 columns">
+        <label>Stopped at<input type="datetime-local" ng-model="entry.time_log_entry.newStoppedAt" /></label>
+        <small ng-show="errors.stopped_at" class="error">{{errors.stopped_at}}</small>
+      </td>
+      <td class="small-2 columns">
+        <button ng-show="entry.editing" ng-click="deleteEntry(entry)" href="" class="small button secondary expand" >Delete entry</button>
+      </td>
+      <td class="small-2 columns">
+        <button ng-show="entry.editing" ng-click="updateEntry(entry)" href="" class="small button expand">Save</button>
+      </td>
+    </tr>
+    </tbody>
+    <tbody ng-show="entries.length == 0">
+    <tr>
+      <td class="small-12 columns">There are no tracked tasks within this time lapse, please check the selected time and project.</td>
+    </tr>
+  </thead>
+</table>
+<table class="table small-4 small-offset-8 colums timesheet-total">
+  <tr>
+    <th class="small-6 columns">Total time</th>
+    <td class="small-6 columns">{{getTime(totalTime)}}</td>
+  </tr>
+</table>
 
   </div>
 </div>

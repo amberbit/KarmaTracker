@@ -153,7 +153,7 @@ describe 'Projects API' do
     resp = JSON.parse(response.body)
     resp['total_count'].should == 3
     resp['tasks'].count.should == 1
-    task = resp['tasks'].last["task"]
+    task = resp['tasks'].last
     task["id"] = t.id
     task["project_id"] = t.project_id
     task["source_name"] = t.source_name
@@ -173,7 +173,7 @@ describe 'Projects API' do
     api_get "projects/#{project.id}/tasks?query=push", {token: Integration.last.user.api_key.token}
     resp = JSON.parse(response.body)
     resp['tasks'].count.should == 1
-    task = resp['tasks'].last["task"]
+    task = resp['tasks'].last
     task["id"] = t.id
     task["project_id"] = t.project_id
     task["source_name"] = t.source_name
@@ -203,7 +203,7 @@ describe 'Projects API' do
     api_get "projects/#{Project.last.id}/current_tasks", {token: Integration.last.user.api_key.token}
     response.status.should == 200
     resp = JSON.parse(response.body)
-    task = resp['tasks'].last["task"]
+    task = resp['tasks'].last
     task["id"] = t.id
     task["project_id"] = t.project_id
     task["source_name"] = t.source_name

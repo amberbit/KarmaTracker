@@ -17,7 +17,7 @@ describe 'Tasks API' do
     api_get "tasks/#{Task.last.id}", {token: Integration.last.user.api_key.token}
     response.status.should == 200
 
-    project = JSON.parse(response.body)['task']
+    project = JSON.parse(response.body)
     project['id'].should == Task.last.id
     project['project_id'].should == Task.last.project_id
     project['source_name'].should == Task.last.source_name
@@ -75,7 +75,7 @@ describe 'Tasks API' do
     api_get "tasks/running", {token: Integration.last.user.api_key.token}
     response.status.should == 200
 
-    project = JSON.parse(response.body)['task']
+    project = JSON.parse(response.body)
     task = Task.last
     project['id'].should == task.id
     project['project_id'].should == task.project_id
@@ -121,6 +121,6 @@ describe 'Tasks API' do
     response.status.should == 200
 
     tasks = JSON.parse(response.body)['tasks']
-    tasks.map {|t| t["task"]["id"]}.should == @tasks.map{|t| t.id}[1..5].reverse
+    tasks.map {|t| t["id"]}.should == @tasks.map{|t| t.id}[1..5].reverse
   end
 end
