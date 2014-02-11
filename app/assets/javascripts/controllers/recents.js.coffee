@@ -7,7 +7,7 @@ KarmaTracker.controller "RecentsController", ['$scope', '$http', '$cookieStore',
   $scope.alsoWorking = []
   $scope.location = null
   timeLogEntryService = new TimeLogEntry
-  taskSertice = new Task
+  taskService = new Task
 
   $scope.showAllProjects = ->
     document.getElementById("projectspage").classList.remove("hide-for-small")
@@ -28,20 +28,25 @@ KarmaTracker.controller "RecentsController", ['$scope', '$http', '$cookieStore',
         BroadcastService.prepForBroadcast('recentClicked')
 
   $scope.getRecentTasks = ->
-    #taskService.query().$promise
-    #  .then
+    taskService.recent().$promise
+      .then (result) ->
+        $scope.lastTasks = result.tasks
+      .catch ->
+        $scope.lastTasks = []
+        $scope.noTasks = true
 
-    $http.get(
-      '/api/v1/tasks/recent?token='+$cookieStore.get($scope.tokenName)
-    ).success((data, status, headers, config) ->
-      $scope.lastTasks = []
-      for task in data['tasks']
-        $scope.lastTasks.push task.task
-      $scope.noTasks = false if $scope.lastTasks.length > 0
-    ).error((data, status, headers, config) ->
-      $scope.lastTasks = []
-      $scope.noTasks = true
-    )
+
+   # $http.get(
+      #'/api/v1/tasks/recent?token='+$cookieStore.get($scope.tokenName)
+    #).success((data, status, headers, config) ->
+      #$scope.lastTasks = []
+      #for task in data['tasks']
+        #$scope.lastTasks.push task.task
+      #$scope.noTasks = false if $scope.lastTasks.length > 0
+    #).error((data, status, headers, config) ->
+      #$scope.lastTasks = []
+      #$scope.noTasks = true
+   # )
 
   $scope.getRecentProjects = ->
     $http.get(

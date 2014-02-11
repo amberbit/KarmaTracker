@@ -6,7 +6,7 @@ require 'spec_helper'
 feature 'Tasks management,
 as a user I can', js: true  do
 
-  let(:user) { user = create :confirmed_user }
+  let(:user) { create :confirmed_user }
 
   let!(:project1) do
     FakeWeb.allow_net_connect = true
