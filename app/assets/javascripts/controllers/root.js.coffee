@@ -18,8 +18,8 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
     $http.get(
       '/api/v1/user?token='+$cookieStore.get('token')
     ).success((data, status, headers, config) ->
-      $scope.gravatar_url = data.user.gravatar_url
-      $scope.username = data.user.email.split('@')[0].split(/\.|-|_/).join(" ")
+      $scope.gravatar_url = data.gravatar_url
+      $scope.username = data.email.split('@')[0].split(/\.|-|_/).join(" ")
       $scope.username = $scope.username.replace /\w+/g, (str) ->
         str.charAt(0).toUpperCase() + str.substr(1).toLowerCase()
     ).error((data, status, headers, config) ->
@@ -93,7 +93,7 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
     $http.get(
       "/api/v1/user?token=#{$cookieStore.get $scope.tokenName}"
     ).success((data, status, headers, config) ->
-      $scope.refreshing = if data.user.refreshing? then data.user.refreshing else null
+      $scope.refreshing = if data.refreshing? then data.refreshing else null
       if ($scope.refreshing)
         setTimeout(checkFetchingProjects, 2000)
       else if $scope.locate == window.location.href
@@ -204,7 +204,7 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
    $http.get(
      "/api/v1/user?token=#{$cookieStore.get $scope.tokenName}"
    ).success((data, status, headers, config) ->
-     $scope.refreshing = if data.user.refreshing? then data.user.refreshing else null
+     $scope.refreshing = if data.refreshing? then data.refreshing else null
      setTimeout($rootScope.checkRefreshingProjects, 10000)
    ).error((data, status, headers, config) ->
      setTimeout($rootScope.checkRefreshingProjects, 10000)

@@ -11,7 +11,7 @@ KarmaTracker.controller "RegisterController", ($scope, $http, $cookieStore, $loc
     $scope.alert message
     $scope.registration.password = $scope.registration.confirmation = null
 
-  $scope.formLooksValid = () ->
+  $scope.formLooksValid = ->
     valid = true
     $scope.errors = {}
 

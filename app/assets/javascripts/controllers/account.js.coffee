@@ -27,7 +27,7 @@ KarmaTracker.controller "AccountController",['$scope', '$http', '$cookieStore', 
           $scope.success("User successfully updated")
           $scope.getUserInfo()
         .catch (response) ->
-          $scope.errors.newEmail =  response.data.user.errors.email[0] if response.data.user.errors.email?
+          $scope.errors.newEmail =  response.data.errors.email[0] if response.data.errors.email?
     else if $scope.newPassword?
       $scope.errors.newPasswordConfirmation = "Passwords don't match or password confirmation is blank"
 
