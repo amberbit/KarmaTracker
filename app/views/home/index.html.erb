@@ -18,7 +18,7 @@
       </li>
       <li id="toggle-menu"  ng-click="expandMenu()" class="toggle-topbar menu-icon"><a href=""><span></span></a></li>
     </ul>
-    <section id="top-bar-section" class="top-bar-section">
+    <section id="top-bar-section" class="top-bar-section" ng-controller='TopBarController'>
       <ul class="right">
         <li class="divider"></li>
         <li ng-click="go('/projects')"><a href="#/projects" ng-class="highlightCurrentPage('projects')" ng-click="expandMenu()">Projects</a></li>

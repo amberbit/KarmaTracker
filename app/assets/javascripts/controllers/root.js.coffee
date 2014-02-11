@@ -7,23 +7,10 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
   $scope.webhook_tip = false
   $scope.tokenName = 'token'
   $scope.menuIsDroppedDown = document.getElementById("top-bar").classList.contains("expanded")
-  $scope.username = ''
-  $scope.gravatar_url = ''
   $scope.query = {}
   $scope.runningStartedAt = ""
   $scope.runningTime = ""
   $scope.alsoWorking = []
-
-  if $cookieStore.get($scope.tokenName)?
-    $http.get(
-      '/api/v1/user?token='+$cookieStore.get('token')
-    ).success((data, status, headers, config) ->
-      $scope.gravatar_url = data.gravatar_url
-      $scope.username = data.email.split('@')[0].split(/\.|-|_/).join(" ")
-      $scope.username = $scope.username.replace /\w+/g, (str) ->
-        str.charAt(0).toUpperCase() + str.substr(1).toLowerCase()
-    ).error((data, status, headers, config) ->
-    )
 
   $scope.getRunningTask = ->
     $http.get(
