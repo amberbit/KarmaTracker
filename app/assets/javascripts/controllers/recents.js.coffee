@@ -1,12 +1,11 @@
-KarmaTracker.controller "RecentsController", ['$scope', '$cookieStore', 'BroadcastService', '$rootScope', 'TimeLogEntry', 'Task', 'Project', ($scope, $cookieStore, BroadcastService, $rootScope, TimeLogEntry, Task, Project) ->
+KarmaTracker.controller "RecentsController", ['$scope', 'BroadcastService', '$rootScope', 'TimeLogEntry', 'Task', 'Project', 'User', ($scope, BroadcastService, $rootScope, TimeLogEntry, Task, Project, User) ->
   $scope.lastTasks = []
   $scope.lastProjects = []
-  $scope.noTasks = true
-  $rootScope.noRecentProjects = true
   $scope.alsoWorking = []
   timeLogEntryService = new TimeLogEntry
   taskService = new Task
   projectService = new Project
+  userService = new User
 
   $scope.showAllProjects = ->
     document.getElementById("projectspage").classList.remove("hide-for-small")
@@ -32,23 +31,19 @@ KarmaTracker.controller "RecentsController", ['$scope', '$cookieStore', 'Broadca
         $scope.lastTasks = result.tasks
       .catch ->
         $scope.lastTasks = []
-        $scope.noTasks = true
 
 
   $scope.getRecentProjects = ->
     projectService.recent().$promise
       .then (result) ->
         $scope.lastProjects = result.projects
-        $rootScope.noRecentProjects = false if $scope.lastProjects.length > 0
-      .catch ->
-        $rootScope.noRecentProjects = true
 
   $scope.$on "handleBroadcast", ->
     if BroadcastService.message == 'refreshRecent'
       $scope.getRecentTasks()
       $scope.getRecentProjects()
 
-  if $cookieStore.get($scope.tokenName)?
+  if userService.loggedIn()
     $scope.getRecentTasks()
     $scope.getRecentProjects()
 ]

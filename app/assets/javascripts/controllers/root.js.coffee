@@ -144,6 +144,7 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
       document.getElementById("top-bar").classList.toggle("expanded")
       $scope.menuIsDroppedDown = document.getElementById("top-bar").classList.contains("expanded")
       element = $("div").find("[pull-to-refresh]")
+
       $rootScope.$watch("pullAllowed", (value) ->
         $rootScope.pull(value, element)
       , true)

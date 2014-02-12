@@ -85,7 +85,7 @@
       <div class="large-12 columns panel recents recent-tasks sidepanel">
         <h4 class="subheader">Tasks</h4>
           <div class="large-12 columns">
-            <div ng-show="noTasks">There are no recent tasks.</div>
+            <div ng-show="lastTasks.length == 0">There are no recent tasks.</div>
             <div class="row" ng-repeat="task in lastTasks">
 
             <div class="small-12 large-12 columns panel recent-task clickable"
@@ -103,7 +103,7 @@
       <div class="large-12 columns panel recents recent-projects sidepanel">
         <h4 class="subheader">Projects</h4>
         <div class="large-12 columns">
-          <div ng-show="noRecentProjects">There are no recent projects.</div>
+          <div ng-show="lastProjects.length == 0">There are no recent projects.</div>
 
           <div class="row" ng-repeat="project in lastProjects">
             <div ng-click="go('/projects/'+project.id+'/tasks')" class="large-12 colums panel recent-task clickable">

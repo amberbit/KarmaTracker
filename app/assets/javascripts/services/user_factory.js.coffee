@@ -22,4 +22,7 @@ KarmaTracker.factory 'User', ['$resource', '$cookieStore', 'TOKEN_NAME', ($resou
 
     save: (user) =>
       @service.save(token: @token, user: user)
+
+    loggedIn: ->
+      @token?
 ]
