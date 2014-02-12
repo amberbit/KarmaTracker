@@ -1,7 +1,6 @@
 KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStore, $routeParams, FlashMessage, BroadcastService, $rootScope, $timeout) ->
   $rootScope.pullAllowed = true
   $scope.runningTask = {}
-  $scope.runningVisible = false
   $scope.refreshing = false
   $scope.firstTipVisible = false
   $scope.webhook_tip = false
@@ -19,12 +18,10 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
         $scope.runningStartedAt = data.started_at
         $scope.timeCounter()
         $scope.runningTask = data
-        $scope.runningVisible = true
       ).error((data, status, headers, config) ->
         $scope.runningStartedAt = ""
         $scope.timeCounter()
         $scope.runningTask = {}
-        $scope.runningVisible = false
       )
 
   $scope.timeCounter = () ->

@@ -46,11 +46,6 @@
 
 
 <div id="flash" class="row" ng-class="{'signin-width': !signed_in}" ng-controller="FlashesController">
-  <div class="show-for-small">
-    <div class="alert-box tracking" ng-show="runningVisible" ng-click="goToLink('projects/'+runningTask.project_id+'/tasks')">
-      <span class="right counter">{{runningTime}}</span> <span>{{runningTask.name}}</span>
-    </div>
-  </div>
   <div ng-show="refreshing" class='refreshing-top'>
     <div class="alert-box refreshing">
       <span>The list of {{refreshing}} is being updated.</span>
