@@ -42,7 +42,6 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
       ).success((data, status, headers, config) ->
         $scope.notice "You stopped tracking #{task.name}."
         $rootScope.runningTask = null
-        $scope.$watch("$rootScope.runningTask", $scope.getRunningTask())
         BroadcastService.prepForBroadcast "refreshRecent"
       ).error((data, status, headers, config) ->
       )
@@ -53,7 +52,6 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
       ).success((data, status, headers, config) ->
         $scope.notice "You started tracking #{task.name}."
         $rootScope.runningTask = task
-        $scope.$watch("$rootScope.runningTask", $scope.getRunningTask())
         BroadcastService.prepForBroadcast "refreshRecent"
       ).error((data, status, headers, config) ->
       )
