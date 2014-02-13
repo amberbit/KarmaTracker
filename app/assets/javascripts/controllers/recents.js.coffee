@@ -12,7 +12,7 @@ KarmaTracker.controller "RecentsController", ['$scope', 'BroadcastService', '$ro
     document.getElementById("recentspage").classList.add("hide-for-small")
 
   $scope.startTracking = (task) ->
-    if task.id == $scope.runningTask.id
+    if task.id == $rootScope.runningTask.id
       timeLogEntryService.stop().$promise.then ->
         $scope.notice "You stopped tracking #{task.name}."
         $scope.getRecentTasks()

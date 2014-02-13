@@ -1,6 +1,5 @@
-KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStore, $routeParams, FlashMessage, BroadcastService, $rootScope, $timeout) ->
+KarmaTracker.controller "RootController", [ '$scope', '$http', '$location', '$cookieStore', '$routeParams', 'FlashMessage', 'BroadcastService', '$rootScope', '$timeout', 'Task', ($scope, $http, $location, $cookieStore, $routeParams, FlashMessage, BroadcastService, $rootScope, $timeout, Task) ->
   $rootScope.pullAllowed = true
-  $scope.runningTask = {}
   $scope.refreshing = false
   $scope.firstTipVisible = false
   $scope.webhook_tip = false
@@ -10,21 +9,22 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
   $scope.runningStartedAt = ""
   $scope.runningTime = ""
   $scope.alsoWorking = []
+  taskService = new Task
+
 
   $scope.getRunningTask = ->
-    $http.get(
-        "/api/v1/tasks/running?token=#{$cookieStore.get $scope.tokenName}"
-      ).success((data, status, headers, config) ->
-        $scope.runningStartedAt = data.started_at
+    taskService.running().$promise
+      .then (result) ->
+        $rootScope.runningTask = result
+        $rootScope.runningStartedAt = result.started_at
         $scope.timeCounter()
-        $scope.runningTask = data
-      ).error((data, status, headers, config) ->
+      .catch ->
         $scope.runningStartedAt = ""
         $scope.timeCounter()
-        $scope.runningTask = {}
-      )
+        $rootScope.runningTask = {}
 
-  $scope.timeCounter = () ->
+
+  $scope.timeCounter = ->
     if $scope.runningStartedAt
       duration = moment().diff(moment($scope.runningStartedAt), "milliseconds")
       $scope.runningTime = duration.toHHmmSS()
@@ -241,3 +241,5 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
       $scope.setAlsoWorking()
     else
       $scope.alsoWorking = null
+
+]

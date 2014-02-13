@@ -36,13 +36,13 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
 
 
   $scope.startTracking = (task) ->
-    if $scope.runningTask? && task.id == $scope.runningTask.id
+    if $rootScope.runningTask? && task.id == $rootScope.runningTask.id
       $http.post(
         "/api/v1/time_log_entries/stop?token=#{$cookieStore.get($scope.tokenName)}"
       ).success((data, status, headers, config) ->
         $scope.notice "You stopped tracking #{task.name}."
-        $scope.runningTask = null
-        $scope.$watch("$scope.runningTask", $scope.getRunningTask())
+        $rootScope.runningTask = null
+        $scope.$watch("$rootScope.runningTask", $scope.getRunningTask())
         BroadcastService.prepForBroadcast "refreshRecent"
       ).error((data, status, headers, config) ->
       )
@@ -52,8 +52,8 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
         { time_log_entry: {task_id: task.id} }
       ).success((data, status, headers, config) ->
         $scope.notice "You started tracking #{task.name}."
-        $scope.runningTask = task
-        $scope.$watch("$scope.runningTask", $scope.getRunningTask())
+        $rootScope.runningTask = task
+        $scope.$watch("$rootScope.runningTask", $scope.getRunningTask())
         BroadcastService.prepForBroadcast "refreshRecent"
       ).error((data, status, headers, config) ->
       )
