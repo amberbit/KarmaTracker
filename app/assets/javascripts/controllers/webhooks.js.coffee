@@ -1,4 +1,6 @@
-KarmaTracker.controller "WebhooksController", ($scope, $http, $cookieStore, $location, $rootScope, $routeParams) ->
+KarmaTracker.controller "WebhooksController", ($scope, $http, $cookieStore, $location, $rootScope, $routeParams, FlashMessage) ->
+  flashMessageService = FlashMessage
+
   $scope.checkWebHookPTIntegration = ->
     $http.get(
       "/api/v1/projects/#{$routeParams.project_id}/pivotal_tracker_get_web_hook_integration?token=#{$cookieStore.get($scope.tokenName)}"
@@ -15,11 +17,11 @@ KarmaTracker.controller "WebhooksController", ($scope, $http, $cookieStore, $loc
     ).success((data, status, headers, config) ->
       $scope.webhookPTIntegration = true
       $scope.webhookSpinner = false
-      $scope.notice "Pivotal Tracker WebHook Integration was added successfully"
+      flashMessageService.notice "Pivotal Tracker WebHook Integration was added successfully"
     ).error((data, status, headers, config) ->
       $scope.webhookPTIntegration = false
       $scope.webhookSpinner = false
-      $scope.notice "Pivotal Tracker WebHook Integration failed"
+      flashMessageService.notice "Pivotal Tracker WebHook Integration failed"
     )
 
   $rootScope.$on "webhookProjectURLupdated", ->

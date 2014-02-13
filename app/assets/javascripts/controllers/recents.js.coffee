@@ -1,4 +1,4 @@
-KarmaTracker.controller "RecentsController", ['$scope', 'BroadcastService', '$rootScope', 'TimeLogEntry', 'Task', 'Project', 'User', ($scope, BroadcastService, $rootScope, TimeLogEntry, Task, Project, User) ->
+KarmaTracker.controller "RecentsController", ['$scope', 'BroadcastService', '$rootScope', 'TimeLogEntry', 'Task', 'Project', 'User', 'FlashMessage', ($scope, BroadcastService, $rootScope, TimeLogEntry, Task, Project, User, FlashMessage) ->
   $scope.lastTasks = []
   $scope.lastProjects = []
   $scope.alsoWorking = []
@@ -6,6 +6,7 @@ KarmaTracker.controller "RecentsController", ['$scope', 'BroadcastService', '$ro
   taskService = new Task
   projectService = new Project
   userService = new User
+  flashMessageService = FlashMessage
 
   $scope.showAllProjects = ->
     document.getElementById("projectspage").classList.remove("hide-for-small")
@@ -14,13 +15,13 @@ KarmaTracker.controller "RecentsController", ['$scope', 'BroadcastService', '$ro
   $scope.startTracking = (task) ->
     if task.id == $rootScope.runningTask.id
       timeLogEntryService.stop().$promise.then ->
-        $scope.notice "You stopped tracking #{task.name}."
+        flashMessageService.notice "You stopped tracking #{task.name}."
         $scope.getRecentTasks()
         $scope.getRecentProjects()
         BroadcastService.prepForBroadcast('recentClicked')
     else
       timeLogEntryService.save({task_id: task.id}).$promise.then ->
-        $scope.notice "You started tracking #{task.name}."
+        flashMessageService.notice "You started tracking #{task.name}."
         $scope.getRecentTasks()
         $scope.getRecentProjects()
         BroadcastService.prepForBroadcast('recentClicked')

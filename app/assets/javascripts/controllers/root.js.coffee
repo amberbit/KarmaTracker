@@ -12,6 +12,7 @@ KarmaTracker.controller "RootController", [ '$scope', '$http', '$location', '$co
   taskService = new Task
   projectService = new Project
   userService = new User
+  flashMessageService = FlashMessage
 
 
   $scope.getRunningTask = ->
@@ -44,7 +45,7 @@ KarmaTracker.controller "RootController", [ '$scope', '$http', '$location', '$co
           $scope.locate = window.location.href
           setTimeout(checkFetchingProjects,2000)
         .finally ->
-          $scope.refreshing = false
+          $scope.refreshing = $scope.refreshing = false
     else
       $rootScope.loading = true
       projectService.refresh($location.path().split('/')[2]).$promise
@@ -53,57 +54,18 @@ KarmaTracker.controller "RootController", [ '$scope', '$http', '$location', '$co
           $scope.locate = window.location.href
           setTimeout(checkFetchingProjects,2000)
         .finally ->
-          $scope.refreshing = false
-          $rootScope.loading = false
+          $scope.refreshing = $scope.refreshing = false
 
   checkFetchingProjects = ->
-    $http.get(
-      "/api/v1/user?token=#{$cookieStore.get $scope.tokenName}"
-    ).success((data, status, headers, config) ->
-      $scope.refreshing = if data.refreshing? then data.refreshing else null
-      if ($scope.refreshing)
+    userService.get().$promise
+      .then (result) ->
+        $scope.refreshing = if result.refreshing? then result.refreshing else null
+        if ($scope.refreshing)
+          setTimeout(checkFetchingProjects, 2000)
+        else if $scope.locate == window.location.href
+          $scope.$broadcast("reloadTasksOrProjects")
+      .catch ->
         setTimeout(checkFetchingProjects, 2000)
-      else if $scope.locate == window.location.href
-        $scope.$broadcast("reloadTasksOrProjects")
-    ).error((data, status, headers, config) ->
-      setTimeout(checkFetchingProjects, 2000)
-    )
-
-  refreshWithPull = ->
-    if $location.path().indexOf('tasks') != -1
-      $http.get(
-        "api/v1/projects/#{$location.path().split('/')[2]}/refresh_for_project?token="+$cookieStore.get('token')
-      ).success((data, status, headers, config) ->
-        $scope.refreshing = true
-        window.location.reload(true)
-      ).error((data, status, headers, config) ->
-        $scope.refreshing = false
-        window.location.reload(true)
-      )
-    else
-      $http.get(
-        '/api/v1/projects/refresh?token='+$cookieStore.get('token')
-      ).success((data, status, headers, config) ->
-        $scope.refreshing = true
-        window.location.reload(true)
-      ).error((data, status, headers, config) ->
-        $scope.refreshing = false
-        window.location.reload(true)
-      )
-    $scope.$apply();
-
-  $scope.notice = (message) ->
-    FlashMessage.type = null
-    FlashMessage.string = message
-
-  $scope.alert = (message) ->
-    FlashMessage.type = 'alert'
-    FlashMessage.string = message
-
-  $scope.success = (message) ->
-    FlashMessage.type = 'success'
-    FlashMessage.string = message
-
 
 
   $scope.openProject = (source, name, identifier, event) ->
@@ -195,7 +157,7 @@ KarmaTracker.controller "RootController", [ '$scope', '$http', '$location', '$co
       $(element).hook(
         reloadPage: false,
         reloadEl: ->
-          refreshWithPull()
+          $scope.refresh()
         )
     else
       $(element).hook("destroy")

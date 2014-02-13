@@ -1,10 +1,11 @@
-KarmaTracker.controller "AccountController",['$scope', '$location', '$rootScope', 'User', ($scope, $location, $rootScope, User) ->
+KarmaTracker.controller "AccountController",['$scope', '$location', '$rootScope', 'User', 'FlashMessage', ($scope, $location, $rootScope, User, FlashMessage) ->
   $rootScope.pullAllowed = false
   $scope.enabledDestroy = KarmaTrackerConfig.registration_destroy
   $scope.user = {}
   $scope.message = ''
   $scope.tokenName = 'token'
   userService = new User
+  flashMessageService = FlashMessage
 
   $scope.getUserInfo = ->
     $scope.newEmail = $scope.newPassword = $scope.newPasswordConfirmation = null
@@ -24,7 +25,7 @@ KarmaTracker.controller "AccountController",['$scope', '$location', '$rootScope'
       user.password = $scope.newPassowrd if $scope.newPassword?
       userService.update(user).$promise
         .then (result) ->
-          $scope.success("User successfully updated")
+          flashMessageService.success("User successfully updated")
           $scope.getUserInfo()
         .catch (response) ->
           $scope.errors.newEmail =  response.data.errors.email[0] if response.data.errors.email?

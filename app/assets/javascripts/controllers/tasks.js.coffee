@@ -1,4 +1,4 @@
-KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $location, $routeParams, BroadcastService, $rootScope) ->
+KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $location, $routeParams, BroadcastService, $rootScope, FlashMessage) ->
   $rootScope.pullAllowed = true
   $scope.tasks = []
   $scope.current = true
@@ -9,6 +9,7 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
   $scope.pageSize = KarmaTrackerConfig.items_per_page
   $scope.totalCount = 0
   $scope.items = []
+  flashMessageService = FlashMessage
 
   $scope.numberOfPages = ->
     return Math.ceil($scope.totalCount/$scope.pageSize)
@@ -40,7 +41,7 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
       $http.post(
         "/api/v1/time_log_entries/stop?token=#{$cookieStore.get($scope.tokenName)}"
       ).success((data, status, headers, config) ->
-        $scope.notice "You stopped tracking #{task.name}."
+        flashMessageService.notice "You stopped tracking #{task.name}."
         $rootScope.runningTask = null
         BroadcastService.prepForBroadcast "refreshRecent"
       ).error((data, status, headers, config) ->
@@ -50,7 +51,7 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
         "/api/v1/time_log_entries/?token=#{$cookieStore.get($scope.tokenName)}",
         { time_log_entry: {task_id: task.id} }
       ).success((data, status, headers, config) ->
-        $scope.notice "You started tracking #{task.name}."
+        flashMessageService.notice "You started tracking #{task.name}."
         $rootScope.runningTask = task
         BroadcastService.prepForBroadcast "refreshRecent"
       ).error((data, status, headers, config) ->

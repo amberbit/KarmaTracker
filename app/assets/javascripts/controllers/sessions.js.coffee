@@ -1,6 +1,5 @@
-KarmaTracker.controller "SessionController", ($scope, $http, $cookieStore, $location, $routeParams, $rootScope, $timeout) ->
+KarmaTracker.controller "SessionController", ($scope, $http, $cookieStore, $location, $routeParams, $rootScope, $timeout, FlashMessage) ->
   $rootScope.pullAllowed = false
-
   $scope.session = { email: null, password: null, remember_me: false }
   $scope.message = ''
   $scope.errors = {}
@@ -8,6 +7,7 @@ KarmaTracker.controller "SessionController", ($scope, $http, $cookieStore, $loca
   $scope.focusPassword = false
   $scope.registrationEnabled = KarmaTrackerConfig.registration_enabled
   $scope.tokenName = 'token'
+  flashMessageService = FlashMessage
 
   $scope.signInSuccess = (token, remember_me) ->
     if remember_me
@@ -18,7 +18,7 @@ KarmaTracker.controller "SessionController", ($scope, $http, $cookieStore, $loca
     window.location = '/'
 
   $scope.signInFailure = (message) ->
-    $scope.alert message
+    flashMessageService.alert message
     $scope.session.password = null
 
     if $scope.session.email != '' && $scope.session.email != null

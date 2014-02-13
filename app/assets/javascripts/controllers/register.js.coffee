@@ -1,15 +1,16 @@
-KarmaTracker.controller "RegisterController", ['$scope', '$location', '$rootScope', 'User', ($scope, $location, $rootScope, User) ->
+KarmaTracker.controller "RegisterController", ['$scope', '$location', '$rootScope', 'User', 'FlashMessage', ($scope, $location, $rootScope, User, FlashMessage) ->
   $rootScope.pullAllowed = false
   $scope.registration = { email: null, password: null, confirmation: null }
   $scope.message = ''
   $scope.confirmation_message = ""
   $scope.errors = {}
   userService = new User
+  flashMessageService = FlashMessage
 
   $scope.focusPassword = false
 
   $scope.registerFailure = (message) ->
-    $scope.alert message
+    flashMessageService.alert message
     $scope.registration.password = $scope.registration.confirmation = null
 
   $scope.formLooksValid = ->
