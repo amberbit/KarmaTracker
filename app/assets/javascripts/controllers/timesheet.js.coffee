@@ -95,7 +95,7 @@ KarmaTracker.controller "TimesheetController", ($scope, $http, $cookieStore, $lo
         entry.time_log_entry.newStoppedAt = moment(entry.time_log_entry.stopped_at).format('YYYY-MM-DDTHH:mm:ss')
       $rootScope.loading = false
     ).error((data, status, headers, config) ->
-      $rootScope.loading = false    
+      $rootScope.loading = false
     )
 
 
