@@ -84,9 +84,6 @@ KarmaTracker.controller "RootController", [ '$scope', '$http', '$location', '$co
     else
       window.open('http://pivotaltracker.com/s/projects/' + identifier + '/stories/' + task, '_blank')
 
-  $scope.goToLink = (path) ->
-    $location.path path
-
   $scope.highlightCurrentPage = (url) ->
     if $location.url().indexOf(url) != -1
       return "current"

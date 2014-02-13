@@ -1,4 +1,4 @@
-KarmaTracker.controller "PasswordResetsController", ['$scope', '$routeParams', 'FlashMessage', '$rootScope', 'PasswordReset', ($scope, $routeParams, FlashMessage, $rootScope, PasswordReset) ->
+KarmaTracker.controller "PasswordResetsController", ['$scope', '$routeParams', 'FlashMessage', '$rootScope', 'PasswordReset', '$location', ($scope, $routeParams, FlashMessage, $rootScope, PasswordReset, $location) ->
   $rootScope.pullAllowed = false
   $scope.errors = {}
   $scope.data = { password: null, password_confirmation: null }
@@ -38,5 +38,5 @@ KarmaTracker.controller "PasswordResetsController", ['$scope', '$routeParams', '
   redirect_to_main = (message, type) ->
     FlashMessage.type = type
     FlashMessage.string = message
-    $scope.goToLink '/'
+    $location.path '/'
 ]
