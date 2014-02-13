@@ -85,23 +85,6 @@ KarmaTracker.controller "RootController", [ '$scope', '$http', '$location', '$co
       window.open('http://pivotaltracker.com/s/projects/' + identifier + '/stories/' + task, '_blank')
 
 
-  $scope.expandMenu = ->
-    if window.getComputedStyle(document.getElementById("toggle-menu")).getPropertyValue("display") != "none"
-      document.getElementById("top-bar").classList.toggle("expanded")
-      $scope.menuIsDroppedDown = document.getElementById("top-bar").classList.contains("expanded")
-      element = $("div").find("[pull-to-refresh]")
-
-      $rootScope.$watch("pullAllowed", (value) ->
-        $rootScope.pull(value, element)
-      , true)
-
-  $scope.moveMenu = ->
-    document.getElementById("profile").classList.toggle("moved")
-    if  document.getElementById("top-bar-section").style.left == ""
-      document.getElementById("top-bar-section").style.left = "-100%"
-    else
-      document.getElementById("top-bar-section").style.left = ""
-
   $scope.go = (hash) ->
     document.getElementById("top-bar").classList.remove("expanded")
     $location.path hash
