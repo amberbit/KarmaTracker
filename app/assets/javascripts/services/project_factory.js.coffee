@@ -13,21 +13,29 @@ KarmaTracker.factory 'Project', ['$resource', '$cookieStore', 'TOKEN_NAME', ($re
         recent:
           method: 'GET'
           url: "api/v1/projects/recent"
+        refreshForProject:
+          method: 'GET'
+          url: 'api/v1/projects/:id/refresh_for_project'
+        refresh:
+          method: 'GET'
+          url: 'api/v1/projects/:id/refresh'
       })
       @token = $cookieStore.get TOKEN_NAME
 
 
     query: (searchString, archive, pageNr) =>
-      if @token
-        @service.query(token: @token, query: searchString, archive: archive, page: pageNr)
+      @service.query(token: @token, query: searchString, archive: archive, page: pageNr) if @token
 
     toggleActive: (project_id) =>
-      if @token
-        @service.toggleActive(id: project_id, token: @token)
+      @service.toggleActive(id: project_id, token: @token) if @token
 
     recent: =>
-      if @token
-        @service.recent(token: @token)
+      @service.recent(token: @token) if @token
 
+    refreshForProject: (id) =>
+      @service.refreshForProject(token: @token, id: id) if @token
+
+    refresh: (id) =>
+      @service.refresh(token: @token, id: id) if @token
 
 ]

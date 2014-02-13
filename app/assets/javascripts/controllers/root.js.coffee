@@ -1,4 +1,4 @@
-KarmaTracker.controller "RootController", [ '$scope', '$http', '$location', '$cookieStore', '$routeParams', 'FlashMessage', 'BroadcastService', '$rootScope', '$timeout', 'Task', ($scope, $http, $location, $cookieStore, $routeParams, FlashMessage, BroadcastService, $rootScope, $timeout, Task) ->
+KarmaTracker.controller "RootController", [ '$scope', '$http', '$location', '$cookieStore', '$routeParams', 'FlashMessage', 'BroadcastService', '$rootScope', '$timeout', 'Task', 'Project', 'User', ($scope, $http, $location, $cookieStore, $routeParams, FlashMessage, BroadcastService, $rootScope, $timeout, Task, Project, User) ->
   $rootScope.pullAllowed = true
   $scope.refreshing = false
   $scope.firstTipVisible = false
@@ -10,6 +10,8 @@ KarmaTracker.controller "RootController", [ '$scope', '$http', '$location', '$co
   $scope.runningTime = ""
   $scope.alsoWorking = []
   taskService = new Task
+  projectService = new Project
+  userService = new User
 
 
   $scope.getRunningTask = ->
@@ -36,30 +38,23 @@ KarmaTracker.controller "RootController", [ '$scope', '$http', '$location', '$co
   $scope.refresh = ->
     if $location.path().indexOf('tasks') != -1
       $rootScope.loading = true
-      $http.get(
-        "api/v1/projects/#{$location.path().split('/')[2]}/refresh_for_project?token="+$cookieStore.get('token')
-      ).success((data, status, headers, config) ->
-        $scope.refreshing = 'tasks'
-        $rootScope.loading = false
-        $scope.locate = window.location.href
-        setTimeout(checkFetchingProjects,2000)
-      ).error((data, status, headers, config) ->
-        $scope.refreshing = false
-        $rootScope.loading = false
-      )
+      projectService.refreshForProject($location.path().split('/')[2]).$promise
+        .then ->
+          $scope.refreshing = 'tasks'
+          $scope.locate = window.location.href
+          setTimeout(checkFetchingProjects,2000)
+        .finally ->
+          $scope.refreshing = false
     else
       $rootScope.loading = true
-      $http.get(
-        '/api/v1/projects/refresh?token='+$cookieStore.get('token')
-      ).success((data, status, headers, config) ->
-        $scope.refreshing = 'projects'
-        $rootScope.loading = false
-        $scope.locate = window.location.href
-        setTimeout(checkFetchingProjects,2000)
-      ).error((data, status, headers, config) ->
-        $scope.refreshing = false
-        $rootScope.loading = false
-      )
+      projectService.refresh($location.path().split('/')[2]).$promise
+        .then ->
+          $scope.refreshing = 'projects'
+          $scope.locate = window.location.href
+          setTimeout(checkFetchingProjects,2000)
+        .finally ->
+          $scope.refreshing = false
+          $rootScope.loading = false
 
   checkFetchingProjects = ->
     $http.get(
