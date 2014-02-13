@@ -1,4 +1,4 @@
-KarmaTracker.controller "FlashesController", ($scope, FlashMessage) ->
+KarmaTracker.controller "FlashesController", ($scope, FlashMessage, $timeout) ->
   $scope.message = FlashMessage
 
   $scope.isAlert = ->
@@ -10,5 +10,5 @@ KarmaTracker.controller "FlashesController", ($scope, FlashMessage) ->
       $scope.message.type = null
 
   $scope.$watch "message.string", ->
-    $scope.timeout = setTimeout($scope.hideMsg, 4000) if $scope.message.string != ''
+    $scope.timeout = $timeout($scope.hideMsg, 4000) if $scope.message.string != ''
 

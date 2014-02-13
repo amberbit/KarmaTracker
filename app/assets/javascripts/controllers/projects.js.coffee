@@ -1,4 +1,4 @@
-KarmaTracker.controller "ProjectsController",['$rootScope', '$scope', '$resource', 'Project', '$location', ($rootScope, $scope, $resource, Project, $location) ->
+KarmaTracker.controller "ProjectsController",['$rootScope', '$scope', '$resource', 'Project', '$location', '$timeout', ($rootScope, $scope, $resource, Project, $location, $timeout) ->
   $rootScope.pullAllowed = true
   $scope.projects = []
   $scope.query.string = ""
@@ -6,7 +6,7 @@ KarmaTracker.controller "ProjectsController",['$rootScope', '$scope', '$resource
   $scope.totalCount = 0
   $scope.pageSize = KarmaTrackerConfig.items_per_page
   $scope.recent = true if document.documentElement.clientWidth <= 768
-  $scope.timer = 0
+  $scope.timer = undefined
   projectService = new Project
 
 
@@ -34,8 +34,8 @@ KarmaTracker.controller "ProjectsController",['$rootScope', '$scope', '$resource
 
   queryChanged = ->
     query = $scope.query.string
-    clearTimeout $scope.timer if $scope.timer != 0
-    $scope.timer = setTimeout (->
+    $timeout.cancel($scope.timer) if $scope.timer
+    $scope.timer = $timeout (->
       $scope.reloadProjects()
       $scope.$apply()
     ), 1000

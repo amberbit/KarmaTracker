@@ -42,7 +42,7 @@ KarmaTracker.controller "RootController", [ '$scope', '$http', '$location', '$co
         $scope.refreshing = 'tasks'
         $rootScope.loading = false
         $scope.locate = window.location.href
-        setTimeout(checkFetchingProjects,2000)
+        $timeout(checkFetchingProjects,2000)
       ).error((data, status, headers, config) ->
         $scope.refreshing = false
         $rootScope.loading = false
@@ -55,7 +55,7 @@ KarmaTracker.controller "RootController", [ '$scope', '$http', '$location', '$co
         $scope.refreshing = 'projects'
         $rootScope.loading = false
         $scope.locate = window.location.href
-        setTimeout(checkFetchingProjects,2000)
+        $timeout(checkFetchingProjects,2000)
       ).error((data, status, headers, config) ->
         $scope.refreshing = false
         $rootScope.loading = false
@@ -67,11 +67,11 @@ KarmaTracker.controller "RootController", [ '$scope', '$http', '$location', '$co
     ).success((data, status, headers, config) ->
       $scope.refreshing = if data.refreshing? then data.refreshing else null
       if ($scope.refreshing)
-        setTimeout(checkFetchingProjects, 2000)
+        $timeout(checkFetchingProjects, 2000)
       else if $scope.locate == window.location.href
         $scope.$broadcast("reloadTasksOrProjects")
     ).error((data, status, headers, config) ->
-      setTimeout(checkFetchingProjects, 2000)
+      $timeout(checkFetchingProjects, 2000)
     )
 
   refreshWithPull = ->
@@ -178,9 +178,9 @@ KarmaTracker.controller "RootController", [ '$scope', '$http', '$location', '$co
      "/api/v1/user?token=#{$cookieStore.get $scope.tokenName}"
    ).success((data, status, headers, config) ->
      $scope.refreshing = if data.refreshing? then data.refreshing else null
-     setTimeout($rootScope.checkRefreshingProjects, 10000)
+     $timeout($rootScope.checkRefreshingProjects, 10000)
    ).error((data, status, headers, config) ->
-     setTimeout($rootScope.checkRefreshingProjects, 10000)
+     $timeout($rootScope.checkRefreshingProjects, 10000)
    )
    if !$scope.$root.$$phase
      $scope.$apply()

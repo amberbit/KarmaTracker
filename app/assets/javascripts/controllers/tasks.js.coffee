@@ -1,10 +1,10 @@
-KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $location, $routeParams, BroadcastService, $rootScope) ->
+KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $location, $routeParams, BroadcastService, $rootScope, $timeout) ->
   $rootScope.pullAllowed = true
   $scope.tasks = []
   $scope.current = true
   $scope.query.string = ""
   $scope.tokenName = 'token'
-  $scope.timer = 0
+  $scope.timer = undefined
   $scope.currentPage = 0
   $scope.pageSize = KarmaTrackerConfig.items_per_page
   $scope.totalCount = 0
@@ -60,8 +60,8 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
 
   $scope.queryChanged = () ->
     query = $scope.query.string
-    clearTimeout $scope.timer if $scope.timer != 0
-    $scope.timer = setTimeout (->
+    $timeout.cancel($scope.timer) if $scope.timer != 0
+    $scope.timer = $timeout (->
       $scope.reloadTasks()
       $scope.$apply()
     ), 1000
