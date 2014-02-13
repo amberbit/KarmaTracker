@@ -84,11 +84,6 @@ KarmaTracker.controller "RootController", [ '$scope', '$http', '$location', '$co
     else
       window.open('http://pivotaltracker.com/s/projects/' + identifier + '/stories/' + task, '_blank')
 
-  $scope.highlightCurrentPage = (url) ->
-    if $location.url().indexOf(url) != -1
-      return "current"
-    else
-      return ""
 
   $scope.expandMenu = ->
     if window.getComputedStyle(document.getElementById("toggle-menu")).getPropertyValue("display") != "none"
