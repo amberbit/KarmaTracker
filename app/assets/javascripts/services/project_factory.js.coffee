@@ -10,6 +10,9 @@ KarmaTracker.factory 'Project', ['$resource', '$cookieStore', 'TOKEN_NAME', ($re
         toggleActive:
           method: 'PUT'
           url: "api/v1/projects/:id/toggle_active"
+        recent:
+          method: 'GET'
+          url: "api/v1/projects/recent"
       })
       @token = $cookieStore.get TOKEN_NAME
 
@@ -21,6 +24,10 @@ KarmaTracker.factory 'Project', ['$resource', '$cookieStore', 'TOKEN_NAME', ($re
     toggleActive: (project_id) =>
       if @token
         @service.toggleActive(id: project_id, token: @token)
+
+    recent: =>
+      if @token
+        @service.recent(token: @token)
 
 
 ]

@@ -25,27 +25,24 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
     $http.get(
       "/api/v1/projects/#{$location.path().split('/')[2]}/#{if $scope.current then "current_" else "" }tasks?token=#{$cookieStore.get($scope.tokenName)}#{if $scope.query.string.length > 0 then '&query=' + $scope.query.string else ''}&page=#{pageNr+1}"
     ).success((data, status, headers, config) ->
-      $scope.totalCount = parseInt(data['total_count'])
+      $scope.totalCount = parseInt(data.total_count)
       $scope.currentPage = pageNr
-      $scope.tasks = []
-      for task in data['tasks']
-        task.task.visible = true
-        $scope.tasks.push task.task
-       $scope.initItems()
-       $rootScope.loading = false
+      $scope.tasks = data.tasks
+      $scope.initItems()
+      $rootScope.loading = false
     ).error((data, status, headers, config) ->
       $rootScope.loading = false
     )
 
 
   $scope.startTracking = (task) ->
-    if $scope.runningTask? && task.id == $scope.runningTask.id
+    if $rootScope.runningTask? && task.id == $rootScope.runningTask.id
       $http.post(
         "/api/v1/time_log_entries/stop?token=#{$cookieStore.get($scope.tokenName)}"
       ).success((data, status, headers, config) ->
         $scope.notice "You stopped tracking #{task.name}."
-        $scope.runningTask = null
-        $scope.$watch("$scope.runningTask", $scope.getRunningTask())
+        $rootScope.runningTask = null
+        $scope.$watch("$rootScope.runningTask", $scope.getRunningTask())
         BroadcastService.prepForBroadcast "refreshRecent"
       ).error((data, status, headers, config) ->
       )
@@ -55,8 +52,8 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
         { time_log_entry: {task_id: task.id} }
       ).success((data, status, headers, config) ->
         $scope.notice "You started tracking #{task.name}."
-        $scope.runningTask = task
-        $scope.$watch("$scope.runningTask", $scope.getRunningTask())
+        $rootScope.runningTask = task
+        $scope.$watch("$rootScope.runningTask", $scope.getRunningTask())
         BroadcastService.prepForBroadcast "refreshRecent"
       ).error((data, status, headers, config) ->
       )
@@ -69,10 +66,13 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
       $scope.$apply()
     ), 1000
 
-  $scope.reloadTasks()
   $scope.$watch("current", $scope.reloadTasks)
-  $scope.$watch("runningTask", $scope.reloadTasks)
-  $scope.$watch("query.string", $scope.queryChanged)
+  $scope.$watch("runningTask", (newValue, oldValue) ->
+    $scope.reloadTasks() if newValue != oldValue
+  )
+  $scope.$watch("query.string", (newValue, oldValue) ->
+    $scope.queryChanged() if newValue != oldValue
+  )
 
 
   $http.get(

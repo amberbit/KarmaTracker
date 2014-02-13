@@ -33,6 +33,7 @@ I can', js: true do
     fill_in 'password-confirmation', with: new_pass
     click_on 'Change password'
     page.should have_content 'Password successfully changed'
+    page.should_not have_content 'message'
     User.find_by_email(user.email).try(:authenticate, new_pass).should == user
   end
 end

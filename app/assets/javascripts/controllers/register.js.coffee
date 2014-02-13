@@ -1,9 +1,10 @@
-KarmaTracker.controller "RegisterController", ($scope, $http, $cookieStore, $location, $rootScope) ->
+KarmaTracker.controller "RegisterController", ['$scope', '$location', '$rootScope', 'User', ($scope, $location, $rootScope, User) ->
   $rootScope.pullAllowed = false
   $scope.registration = { email: null, password: null, confirmation: null }
   $scope.message = ''
   $scope.confirmation_message = ""
   $scope.errors = {}
+  userService = new User
 
   $scope.focusPassword = false
 
@@ -11,7 +12,7 @@ KarmaTracker.controller "RegisterController", ($scope, $http, $cookieStore, $loc
     $scope.alert message
     $scope.registration.password = $scope.registration.confirmation = null
 
-  $scope.formLooksValid = () ->
+  $scope.formLooksValid = ->
     valid = true
     $scope.errors = {}
 
@@ -32,19 +33,13 @@ KarmaTracker.controller "RegisterController", ($scope, $http, $cookieStore, $loc
 
   $scope.register = ->
     if $scope.formLooksValid()
-      $http.post(
-        '/api/v1/user',
-        user: {
-          email: $scope.registration.email,
-          password: $scope.registration.password
-        }
-      ).success((data, status, headers, config) ->
-        $scope.registration.email = $scope.registration.password = $scope.registration.confirmation = null
-        $scope.confirmation_message = "An e-mail was sent to confirm your address, please check your mailbox and follow the instructions to log in."
-      ).error((data, status, headers, config) ->
-        $scope.registerFailure("Please correct the errors and try again")
-        $scope.errors = {}
-        for own key, messages of data.user.errors
-          $scope.errors[key] = messages.join(", ")
-      )
-
+      userService.save({email: $scope.registration.email, password: $scope.registration.password}).$promise
+        .then ->
+          $scope.registration.email = $scope.registration.password = $scope.registration.confirmation = null
+          $scope.confirmation_message = "An e-mail was sent to confirm your address, please check your mailbox and follow the instructions to log in."
+        .catch (result) ->
+          $scope.registerFailure("Please correct the errors and try again")
+          $scope.errors = {}
+          for own key, messages of result.errors
+            $scope.errors[key] = messages.join(", ")
+]

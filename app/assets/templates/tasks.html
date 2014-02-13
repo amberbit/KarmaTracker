@@ -8,7 +8,7 @@
   <div class="boxed-header">
     <div class="small-12 large-9 columns">
       <h4 class="task-route left"><a ng-href="/#/projects">Projects</a> <a ng-href="/#/projects/{{project.id}}/tasks">&rarr; {{project.name}}</a></h4>
-      <h4><a href="" class="refresh hide-for-touch" ng-click="refresh()">(Refresh)</a></h4>
+      <h4><a class="refresh hide-for-touch" ng-click="refresh()">(Refresh)</a></h4>
     </div>
     <div class='small-12 large-3 columns tasks-search'>
       <input type="text" id="searchfield" placeholder="Search..." ng-model='query.string' />
@@ -19,44 +19,43 @@
   <div class="small-12 large-12 columns">
 
     <div class="row" ng-repeat="task in tasks">
-<div class="box-container">   
-     <div class="columns icon clickable right panel external-link"
+      <div class="box-container">
+        <div class="columns icon clickable right panel external-link"
           ng-click="openTask(project.source_name, project.name, project.source_identifier, task.source_identifier, $event)"
           ng-class="{running: task.id == runningTask.id}">
-        <div ng-switch="project.source_name">
-          <div class="icon" ng-switch-when="GitHub" title="See details in GitHub">
-            <div class="source-icon github"></div>
-          </div>
-          <div ng-switch-when="Pivotal Tracker">
-            <div class="source-icon pivotal-tracker" title="See details in Pivotal Tracker"></div>
+          <div ng-switch="project.source_name">
+            <div class="icon" ng-switch-when="GitHub" title="See details in GitHub">
+              <div class="source-icon github"></div>
+            </div>
+            <div ng-switch-when="Pivotal Tracker">
+              <div class="source-icon pivotal-tracker" title="See details in Pivotal Tracker"></div>
+            </div>
           </div>
         </div>
-      </div>
-      
-      <div class="columns panel task clickable"
-        id="{{'time-log-entry-' + task.id}}"
-        ng-class="{callout: task.id == runningTask.id, running: task.id == runningTask.id}"
-        ng-click="startTracking(task)"
-        ng-show="task.visible">
-        <div class="label-box hide-for-small large-1 columns">
-          <span class="label task-id">{{task.source_identifier}}</span>
+
+        <div class="columns panel task clickable"
+          id="{{'time-log-entry-' + task.id}}"
+          ng-class="{callout: task.id == runningTask.id, running: task.id == runningTask.id}"
+          ng-click="startTracking(task)"
+          ng-show="task.visible">
+          <div class="label-box hide-for-small large-1 columns">
+            <span class="label task-id">{{task.source_identifier}}</span>
+          </div>
+          <span class="task-text">
+            {{task.name}}
+          </span>
+          <div class="track-control-icon" title="Start tracking" ng-class="{'start': !task.running, 'stop': task.running}"></div>
         </div>
-        <span class="task-text">
-          {{task.name}}
-        </span>
-        <div class="track-control-icon" title="Start tracking" ng-class="{'start': !task.running, 'stop': task.running}"></div>
       </div>
-</div>
     </div>
-    
     <div id="pagination" class="small-9 small-offset-1 large-6 large-offset-1" ng-show="totalCount> pageSize">
       <div class="right">
         <button class="button small" ng-disabled="currentPage == 0" ng-click="reloadTasks(currentPage-1)">
-            Previous
+          Previous
         </button>
         <div class="dropdown">
           <a class="dropdown-toggle">
-          {{currentPage+1}} / {{numberOfPages()}}
+            {{currentPage+1}} / {{numberOfPages()}}
           </a>
           <ul class="dropdown-menu">
             <li ng-repeat="choice in items">
@@ -65,7 +64,7 @@
           </ul>
         </div>
         <button class="button small" ng-disabled="currentPage+1 == numberOfPages()" ng-click="reloadTasks(currentPage+1)">
-            Next
+          Next
         </button>
       </div>
     </div>

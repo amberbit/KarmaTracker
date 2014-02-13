@@ -1,4 +1,4 @@
-KarmaTracker.controller "AccountController",['$scope', '$http', '$cookieStore', '$location', '$rootScope', '$resource', 'User', ($scope, $http, $cookieStore, $location, $rootScope, $resource, User) ->
+KarmaTracker.controller "AccountController",['$scope', '$location', '$rootScope', 'User', ($scope, $location, $rootScope, User) ->
   $rootScope.pullAllowed = false
   $scope.enabledDestroy = KarmaTrackerConfig.registration_destroy
   $scope.user = {}
@@ -18,24 +18,6 @@ KarmaTracker.controller "AccountController",['$scope', '$http', '$cookieStore', 
         $scope.user = {}
         $location.path 'logout'
 
-  #$scope.changePassword = ->
-    #$scope.errors = {}
-      #if $scope.user.password == $scope.password_confirmation
-        #$http.put(
-          #"/api/v1/user",
-          #token: $cookieStore.get $scope.tokenName,
-          #user: {
-            #password: $scope.newPassword
-          #}
-        #).success((data, status, headers, config) ->
-        #).error((data, status, headers, config) ->
-        #)
-      #else
-        #if !$scope.confirmation? or $scope.confirmation != ''
-        #else
-          #$scope.errors.confirmation = "passwords does not match"
-
-
   $scope.updateUser = (user) ->
     if $scope.newEmail? or ($scope.newPassword? and $scope.newPassword? != '' and $scope.newPassword == $scope.newPasswordConfirmation)
       user.email = $scope.newEmail if $scope.newEmail?
@@ -45,10 +27,9 @@ KarmaTracker.controller "AccountController",['$scope', '$http', '$cookieStore', 
           $scope.success("User successfully updated")
           $scope.getUserInfo()
         .catch (response) ->
-          $scope.errors.newEmail =  response.data.user.errors.email[0] if response.data.user.errors.email?
+          $scope.errors.newEmail =  response.data.errors.email[0] if response.data.errors.email?
     else if $scope.newPassword?
       $scope.errors.newPasswordConfirmation = "Passwords don't match or password confirmation is blank"
-
 
   $scope.getUserInfo()
 ]

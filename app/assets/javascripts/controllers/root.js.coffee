@@ -1,61 +1,33 @@
-KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStore, $routeParams, FlashMessage, BroadcastService, $rootScope, $timeout) ->
+KarmaTracker.controller "RootController", [ '$scope', '$http', '$location', '$cookieStore', '$routeParams', 'FlashMessage', 'BroadcastService', '$rootScope', '$timeout', 'Task', ($scope, $http, $location, $cookieStore, $routeParams, FlashMessage, BroadcastService, $rootScope, $timeout, Task) ->
   $rootScope.pullAllowed = true
-  $scope.runningTask = {}
-  $scope.runningVisible = false
   $scope.refreshing = false
   $scope.firstTipVisible = false
   $scope.webhook_tip = false
   $scope.tokenName = 'token'
   $scope.menuIsDroppedDown = document.getElementById("top-bar").classList.contains("expanded")
-  $scope.username = ''
-  $scope.gravatar_url = ''
   $scope.query = {}
   $scope.runningStartedAt = ""
   $scope.runningTime = ""
   $scope.alsoWorking = []
+  taskService = new Task
 
-  if $cookieStore.get($scope.tokenName)?
-    $http.get(
-      '/api/v1/user?token='+$cookieStore.get('token')
-    ).success((data, status, headers, config) ->
-      $scope.gravatar_url = data.user.gravatar_url
-      $scope.username = data.user.email.split('@')[0].split(/\.|-|_/).join(" ")
-      $scope.username = $scope.username.replace /\w+/g, (str) ->
-        str.charAt(0).toUpperCase() + str.substr(1).toLowerCase()
-    ).error((data, status, headers, config) ->
-    )
 
   $scope.getRunningTask = ->
-    $http.get(
-        "/api/v1/tasks/running?token=#{$cookieStore.get $scope.tokenName}"
-      ).success((data, status, headers, config) ->
-        $scope.runningStartedAt = data.task.started_at
+    taskService.running().$promise
+      .then (result) ->
+        $rootScope.runningTask = result
+        $rootScope.runningStartedAt = result.started_at
         $scope.timeCounter()
-        $scope.runningTask = data.task
-        $scope.runningVisible = true
-      ).error((data, status, headers, config) ->
+      .catch ->
         $scope.runningStartedAt = ""
         $scope.timeCounter()
-        $scope.runningTask = {}
-        $scope.runningVisible = false
-      )
+        $rootScope.runningTask = {}
 
-  timeFormat = (milliseconds) ->
-    result = ""
-    timePad = (str) ->
-      while str.length < 2
-        str = "0" + str
-      str
-    seconds = Math.floor((milliseconds / 1000) % 60).toString()
-    minutes = Math.floor((milliseconds / (60000)) % 60).toString()
-    hours = Math.floor(milliseconds / (3600000)).toString()
-    result = timePad(hours) + ":" if hours > 0
-    result = result + timePad(minutes) + ":" + timePad(seconds)
 
-  $scope.timeCounter = () ->
+  $scope.timeCounter = ->
     if $scope.runningStartedAt
       duration = moment().diff(moment($scope.runningStartedAt), "milliseconds")
-      $scope.runningTime = timeFormat(duration)
+      $scope.runningTime = duration.toHHmmSS()
       runningTimeout = $timeout($scope.timeCounter, 1000)
     else
       $timeout.cancel(runningTimeout) if runningTimeout
@@ -93,7 +65,7 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
     $http.get(
       "/api/v1/user?token=#{$cookieStore.get $scope.tokenName}"
     ).success((data, status, headers, config) ->
-      $scope.refreshing = if data.user.refreshing? then data.user.refreshing else null
+      $scope.refreshing = if data.refreshing? then data.refreshing else null
       if ($scope.refreshing)
         setTimeout(checkFetchingProjects, 2000)
       else if $scope.locate == window.location.href
@@ -169,6 +141,7 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
       document.getElementById("top-bar").classList.toggle("expanded")
       $scope.menuIsDroppedDown = document.getElementById("top-bar").classList.contains("expanded")
       element = $("div").find("[pull-to-refresh]")
+
       $rootScope.$watch("pullAllowed", (value) ->
         $rootScope.pull(value, element)
       , true)
@@ -204,7 +177,7 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
    $http.get(
      "/api/v1/user?token=#{$cookieStore.get $scope.tokenName}"
    ).success((data, status, headers, config) ->
-     $scope.refreshing = if data.user.refreshing? then data.user.refreshing else null
+     $scope.refreshing = if data.refreshing? then data.refreshing else null
      setTimeout($rootScope.checkRefreshingProjects, 10000)
    ).error((data, status, headers, config) ->
      setTimeout($rootScope.checkRefreshingProjects, 10000)
@@ -268,3 +241,5 @@ KarmaTracker.controller "RootController", ($scope, $http, $location, $cookieStor
       $scope.setAlsoWorking()
     else
       $scope.alsoWorking = null
+
+]

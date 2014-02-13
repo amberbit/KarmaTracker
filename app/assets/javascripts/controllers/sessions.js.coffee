@@ -36,7 +36,7 @@ KarmaTracker.controller "SessionController", ($scope, $http, $cookieStore, $loca
         password: $scope.session.password
       }
     ).success((data, status, headers, config) ->
-      $scope.signInSuccess data.user.token, $scope.session.remember_me
+      $scope.signInSuccess data.token, $scope.session.remember_me
     ).error((data, status, headers, config) ->
       $scope.signInFailure data.message
     )
@@ -62,7 +62,7 @@ KarmaTracker.controller "SessionController", ($scope, $http, $cookieStore, $loca
         }
       ).success((data, status, headers, config) ->
         $rootScope.loading = false
-        $scope.signInSuccess data.user.token
+        $scope.signInSuccess data.token
       ).error((data, status, headers, config) ->
         $rootScope.loading = false
         $scope.signInFailure data.message

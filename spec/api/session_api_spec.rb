@@ -18,8 +18,7 @@ describe 'Session API (signing into the system)' do
                     session: {email: @user.email, password: 'secret123'}
 
     response.status.should == 200
-    json.has_key?('user').should be_true
-    json['user']['token'].should == @user.api_key.token
+    json['token'].should == @user.api_key.token
   end
 
   # POST /api/v1/session
@@ -58,7 +57,6 @@ describe 'Session API (signing into the system)' do
     expect {
       get "auth/google/callback", provider: 'google'
     }.not_to change{ User.count }
-    json = JSON.parse(response.body) rescue {}
     response.status.should == 302
     response.should redirect_to("/#/oauth?email=#{user.email}&oauth_token=#{user.oauth_token}")
   end
@@ -70,7 +68,6 @@ describe 'Session API (signing into the system)' do
     expect {
       get "auth/google/callback", provider: 'google'
     }.to change{ User.count }.by(1)
-    json = JSON.parse(response.body) rescue {}
     response.status.should == 302
     response.should redirect_to("/#/oauth?email=test@example.com&oauth_token=abc1234")
   end
@@ -91,7 +88,6 @@ describe 'Session API (signing into the system)' do
   it "should redirect to failure action", omniauth_google: true do
     OmniAuth.config.mock_auth[:google] = :invalid_credentials
     get "auth/google/callback", provider: 'google'
-    json = JSON.parse(response.body) rescue {}
     response.status.should == 302
     response.should redirect_to(root_path + 'auth/failure?message=invalid_credentials&strategy=google')
   end
@@ -99,7 +95,6 @@ describe 'Session API (signing into the system)' do
   # GET /auth/failure
   it "should handle omniauth failures" do
     get 'auth/failure', message: 'invalid_credentials', strategy: 'google'
-    json = JSON.parse(response.body) rescue {}
     response.status.should == 302
     response.should redirect_to(root_path)
   end
@@ -113,8 +108,7 @@ describe 'Session API (signing into the system)' do
                     email: @user.email, token: @user.oauth_token
 
     response.status.should == 200
-    json.has_key?('user').should be_true
-    json['user']['token'].should == @user.api_key.token
+    json['token'].should == @user.api_key.token
   end
 
 
