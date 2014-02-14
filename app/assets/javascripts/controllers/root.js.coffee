@@ -1,4 +1,4 @@
-KarmaTracker.controller "RootController", [ '$scope', '$http', '$location', '$cookieStore', '$routeParams', 'FlashMessage', 'BroadcastService', '$rootScope', '$timeout', 'Task', 'Project', 'User', ($scope, $http, $location, $cookieStore, $routeParams, FlashMessage, BroadcastService, $rootScope, $timeout, Task, Project, User) ->
+KarmaTracker.controller "RootController", [ '$scope', '$http', '$location', '$cookieStore', '$routeParams', 'FlashMessage', 'BroadcastService', '$rootScope', '$timeout', 'Task', 'Project', 'User', 'Integration', ($scope, $http, $location, $cookieStore, $routeParams, FlashMessage, BroadcastService, $rootScope, $timeout, Task, Project, User, Integration) ->
   $rootScope.pullAllowed = true
   $scope.refreshing = false
   $scope.firstTipVisible = false
@@ -13,6 +13,7 @@ KarmaTracker.controller "RootController", [ '$scope', '$http', '$location', '$co
   projectService = new Project
   userService = new User
   flashMessageService = FlashMessage
+  integrationService = new Integration
 
   $scope.getRunningTask = ->
     taskService.running().$promise
@@ -95,13 +96,8 @@ KarmaTracker.controller "RootController", [ '$scope', '$http', '$location', '$co
       $location.path '/projects'
 
   $scope.checkIntegrations = ->
-    $http.get(
-      "/api/v1/integrations?token=#{$cookieStore.get $scope.tokenName}"
-    ).success((data, status, headers, config) ->
-      if data.length == 0
-        $scope.firstTipVisible = true
-    ).error((data, status, headers, config) ->
-    )
+    integrationService.query().$promise
+      .then (result) -> $scope.firstTipVisible = true if result.length == 0
 
   $rootScope.checkRefreshingProjects = ->
     userService.get().$promise
@@ -153,11 +149,10 @@ KarmaTracker.controller "RootController", [ '$scope', '$http', '$location', '$co
     ).error((data, status, headers, config) ->
     )
 
-  if $cookieStore.get($scope.tokenName)?
+  if userService.loggedIn()
     $scope.getRunningTask()
     $rootScope.checkRefreshingProjects()
-    unless $scope.refreshing
-      $scope.checkIntegrations()
+    $scope.checkIntegrations() unless $scope.refreshing
 
   $scope.$on "$locationChangeSuccess", (event, currentLocation) ->
     if currentLocation.match(/projects$/) or currentLocation.match(/projects\/\d*\/tasks$/)
