@@ -681,7 +681,7 @@ padding-left: 2px;
   margin-top: 12px;
 }
 
-#ptform, #ghform {
+.integration-form {
   height: 320px
 }
 #webhook_url{
@@ -853,8 +853,7 @@ h4 a.refresh{
   box-shadow: 0 100px 100px -120px #969696 inset !important;
 }
 
-#ghform .tab-content,
-#ptform .tab-content {
+.integration-form .tab-content {
   border-style: solid;
   border-width: 1px;
   border-color: #d4d4d4;
@@ -862,25 +861,21 @@ h4 a.refresh{
   padding: 0.625em;
   background: #eeeeee;
 }
-#ghform .nav,
-#ptform .nav {
+.integration-form .nav {
   margin-left: 0;
   margin-bottom: 0;
   list-style: none;
 }
 
-#ghform .nav-tabs,
-#ptform .nav-tabs{
+.integration-form .nav-tabs{
  border: 0;
 }
-#ghform .nav-tabs .active a, #ghform .nav-tabs .active a:hover, #ghform .nav-tabs .active a:focus,
-#ptform .nav-tabs .active a, #ptform .nav-tabs .active a:hover, #ptform .nav-tabs .active a:focus{
+.integration-form .nav-tabs .active a, .integration-form .nav-tabs .active a:hover, .integration-form .nav-tabs .active a:focus{
   background-color: #eee;
   color: #000;
 }
 
-#ghform .nav-tabs li a, #ghform .nav-tabs li a:hover, #ghform .nav-tabs li a:focus,
-#ptform .nav-tabs li a, #ptform .nav-tabs li a:hover, #ptform .nav-tabs li a:focus {
+.integration-form .nav-tabs li a, .integration-form .nav-tabs li a:hover, .integration-form .nav-tabs li a:focus{
   background-color: #ccc;
   color: #555;
   border: 1px solid #d4d4d4;
