@@ -104,16 +104,13 @@ KarmaTracker.controller "RootController", [ '$scope', '$http', '$location', '$co
     )
 
   $rootScope.checkRefreshingProjects = ->
-   $http.get("/api/v1/user?token=#{$cookieStore.get $scope.tokenName}")
-     .success((data, status, headers, config) ->
-       $scope.refreshing = if data.refreshing? then data.refreshing else null
-       setTimeout($rootScope.checkRefreshingProjects, 10000))
-     .error((data, status, headers, config) ->
+    userService.get().$promise
+      .then (result) ->
+       $scope.refreshing = if result.refreshing? then result.refreshing else null
+      .finally ->
        setTimeout($rootScope.checkRefreshingProjects, 10000)
-   )
-   if !$scope.$root.$$phase
-     $scope.$apply()
-
+    if !$scope.$root.$$phase
+      $scope.$apply()
 
   $scope.$on "handleBroadcast", () ->
     if BroadcastService.message == 'recentClicked'
