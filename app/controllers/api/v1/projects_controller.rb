@@ -496,7 +496,8 @@ module Api
       def also_working
         if @api_key.user && @api_key.user.projects.present?
           ids = @api_key.user.projects.map(&:id)
-          render json: also_working_hash(ids), status: 200
+          result = also_working_hash(ids)
+          render json: result.nil? ? nil : { also_working: result  }, status: 200
         else
           render json: nil, status: 204
         end

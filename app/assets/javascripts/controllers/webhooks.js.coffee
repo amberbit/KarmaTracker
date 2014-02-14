@@ -31,8 +31,6 @@ KarmaTracker.controller "WebhooksController", ['$scope', '$http', '$cookieStore'
       ).success((data, status, headers, config) ->
         $scope.webhookProjectURL = data.url
       ).error((data, status, headers, config) ->
-        console.log 'error'
-        console.log data
         $scope.webhookProjectURL = null
         $rootScope.$broadcast("webhookProjectURLupdated")
       )
@@ -42,5 +40,4 @@ KarmaTracker.controller "WebhooksController", ['$scope', '$http', '$cookieStore'
 
   $scope.$on '$routeChangeStart', initWebhookBox
 
-  initWebhookBox()
 ]

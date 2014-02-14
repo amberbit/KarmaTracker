@@ -19,6 +19,9 @@ KarmaTracker.factory 'Project', ['$resource', '$cookieStore', 'TOKEN_NAME', ($re
         refresh:
           method: 'GET'
           url: 'api/v1/projects/:id/refresh'
+        alsoWorking:
+          method: 'GET'
+          url: 'api/v1/projects/also_working'
       })
       @token = $cookieStore.get TOKEN_NAME
 
@@ -38,4 +41,6 @@ KarmaTracker.factory 'Project', ['$resource', '$cookieStore', 'TOKEN_NAME', ($re
     refresh: (id) =>
       @service.refresh(token: @token, id: id) if @token
 
+    alsoWorking: =>
+      @service.alsoWorking(token: @token) if @token
 ]
