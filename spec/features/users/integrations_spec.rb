@@ -16,9 +16,9 @@ feature 'Integrations management', js: true do
   end
 
   scenario 'adds and removes new Pivotal Tracker integration with credentials' do
-    click_link 'add_new_pt'
-    within 'div#ptform' do
-      fill_in 'email', :with => 'correct_username@example.com'
+    click_link 'add_new_pivotal_tracker'
+    within 'div#pivotal_tracker_form' do
+      fill_in 'username', :with => 'correct_username@example.com'
       fill_in 'password', :with => 'correct_password'
       click_button "Add new integration"
     end
@@ -28,9 +28,9 @@ feature 'Integrations management', js: true do
   end
 
   scenario 'adds and removes new Pivotal Tracker integration with token' do
-    click_link 'add_new_pt'
+    click_link 'add_new_pivotal_tracker'
     find('a', text: "API Key").click
-    within 'div#ptform' do
+    within 'div#pivotal_tracker_form' do
       fill_in 'token', :with => 'correct_token'
       click_button "Add new integration"
     end
@@ -41,8 +41,8 @@ feature 'Integrations management', js: true do
 
 
   scenario 'adds and removes new Git Hub integration with credentials' do
-    click_link 'add_new_gh'
-    within 'div#ghform' do
+    click_link 'add_new_git_hub'
+    within 'div#git_hub_form' do
       fill_in 'username', :with => 'correct_username@example.com'
       fill_in 'password', :with => 'correct_password'
       click_button "Add new integration"
@@ -53,9 +53,9 @@ feature 'Integrations management', js: true do
   end
 
   scenario 'adds and removes new Git Hub integration with token' do
-    click_link 'add_new_gh'
+    click_link 'add_new_git_hub'
     find('a', text: "API Key").click
-    within 'div#ghform' do
+    within 'div#git_hub_form' do
       fill_in 'token', :with => 'correct_token'
       click_button "Add new integration"
     end
@@ -65,16 +65,16 @@ feature 'Integrations management', js: true do
   end
 
   scenario 'credential fields should not be empty when adding new Pivotal Tracker integration' do
-    click_link 'add_new_pt'
-    within 'div#ptform' do
+    click_link 'add_new_pivotal_tracker'
+    within 'div#pivotal_tracker_form' do
       click_button "Add new integration"
     end
-    page.should have_content "you need to provide login credentials"
+    page.should have_content "can't be blank"
   end
 
   scenario 'credential fields should not be empty when new Git Hub integration' do
-    click_link 'add_new_gh'
-    within 'div#ghform' do
+    click_link 'add_new_git_hub'
+    within 'div#git_hub_form' do
       click_button "Add new integration"
     end
     page.should have_content "can't be blank"

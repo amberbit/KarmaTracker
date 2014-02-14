@@ -11,9 +11,9 @@ describe 'Integrations API' do
     json = api_get "integrations/#{Integration.last.id}", {token: Integration.last.user.api_key.token}
 
     response.status.should == 200
-    json['pivotal_tracker']['id'].should == Integration.last.id
-    json['pivotal_tracker']['service'].should == "Pivotal Tracker"
-    json['pivotal_tracker']['api_key'].should == Integration.last.api_key
+    json['id'].should == Integration.last.id
+    json['service'].should == "Pivotal Tracker"
+    json['api_key'].should == Integration.last.api_key
   end
 
   # GET /api/v1/integrations
@@ -51,16 +51,16 @@ describe 'Integrations API' do
 
     json.count.should == 2
     json.each do |integration|
-      user1.integrations.reload.map(&:id).should include(integration[integration.keys.first]['id'].to_i)
-      user2.integrations.reload.map(&:id).should_not include(integration[integration.keys.first]['id'].to_i)
+      user1.integrations.reload.map(&:id).should include(integration['id'].to_i)
+      user2.integrations.reload.map(&:id).should_not include(integration['id'].to_i)
     end
 
     json = api_get 'integrations', {token: user2.api_key.token}
     response.status.should == 200
     json.count.should == 3
     json.each do |integration|
-      user1.integrations.map(&:id).should_not include(integration[integration.keys.first]['id'].to_i)
-      user2.integrations.map(&:id).should include(integration[integration.keys.first]['id'].to_i)
+      user1.integrations.map(&:id).should_not include(integration['id'].to_i)
+      user2.integrations.map(&:id).should include(integration['id'].to_i)
     end
   end
 
@@ -70,8 +70,8 @@ describe 'Integrations API' do
     3.times { create(:integration, type: "GitHubIntegration") }
 
     json = api_get "integrations", {token: Integration.last.user.api_key.token, type: 'PivotalTracker'}
-    json.select{ |i| i.has_key?('pivotal_tracker') }.count.should == 2
-    json.select{ |i| i.has_key?('git_hub') }.count.should == 0
+    json.select{ |i| i['service'] == 'Pivotal Tracker' }.count.should == 2
+    json.select{ |i| i['service'] == 'GitHub' }.count.should == 0
   end
 
   # POST /api/v1/integrations/pivotal_tracker
@@ -81,7 +81,7 @@ describe 'Integrations API' do
     json = api_post "integrations/", {token: ApiKey.last.token, integration:{ username: 'correct_username@example.com', password: 'correct_password', type: 'pivotal_tracker'}}
 
     response.status.should == 200
-    json.has_key?('pivotal_tracker').should be_true
+    json['service'].should == 'Pivotal Tracker'
 
     Integration.count.should == 1
     integration = Integration.last
@@ -94,7 +94,7 @@ describe 'Integrations API' do
     user = create :user
     json = api_post "integrations/", {token: ApiKey.last.token, integration:{ api_key: 'correct_token', type: 'pivotal_tracker'}}
     response.status.should == 200
-    json.has_key?('pivotal_tracker').should be_true
+    json['service'].should == 'Pivotal Tracker'
 
     Integration.count.should == 1
     integration = Integration.last
@@ -110,8 +110,8 @@ describe 'Integrations API' do
 
     response.status.should == 422
     Integration.count.should == 0
-    json['pivotal_tracker'].has_key?('errors').should be_true
-    json['pivotal_tracker']['errors']['password'].should_not be_blank
+    json.has_key?('errors').should be_true
+    json['errors']['password'].should_not be_blank
   end
 
   # POST /api/v1/integrations/
@@ -121,22 +121,7 @@ describe 'Integrations API' do
           { username: 'correct_username@example.com', password: 'correct_password', type: 'git_hub' }}
 
     response.status.should == 200
-    json.has_key?('git_hub').should be_true
-
-    Integration.count.should == 1
-    integration = Integration.last
-    integration.user.should == user
-    user.integrations.should include(integration)
-  end
-
-  # POST /api/v1/integrations/
-  it "should be able to add PT integration for given user" do
-    user = create :user
-    json = api_post "integrations/", {token: ApiKey.last.token, integration:
-          { username: 'correct_username@example.com', password: 'correct_password', type: 'pivotal_tracker' }}
-
-    response.status.should == 200
-    json.has_key?('pivotal_tracker').should be_true
+    json['service'].should == 'GitHub'
 
     Integration.count.should == 1
     integration = Integration.last
@@ -151,7 +136,7 @@ describe 'Integrations API' do
           { api_key: 'correct_token', type: 'git_hub'}}
 
     response.status.should == 200
-    json.has_key?('git_hub').should be_true
+    json['service'].should == 'GitHub'
 
     Integration.count.should == 1
     integration = Integration.last
@@ -167,8 +152,8 @@ describe 'Integrations API' do
 
     response.status.should == 422
     Integration.count.should == 0
-    json['git_hub'].has_key?('errors').should be_true
-    json['git_hub']['errors']['password'].should == ['provided username/password combination is invalid']
+    json.has_key?('errors').should be_true
+    json['errors']['password'].should == ['provided username/password combination is invalid']
   end
 
   # DELETE /api/v1/integrations/:id
@@ -181,7 +166,7 @@ describe 'Integrations API' do
     }.should change(Integration, :count).by(-1)
 
     response.status.should == 200
-    @json.has_key?('pivotal_tracker').should be_true
+    @json['service'].should == 'Pivotal Tracker'
     Integration.count.should == 0
   end
 

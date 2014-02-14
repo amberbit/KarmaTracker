@@ -5,7 +5,7 @@
 #= require angular-mobile
 #= require angular-route
 #= require jquery-2.0.3.min
-#= require ui-bootstrap-custom-tpls-0.5.0.min
+#= require ui-bootstrap-tpls-0.8.0.min
 #= require moment
 #= require hook
 #= require mousewheel
