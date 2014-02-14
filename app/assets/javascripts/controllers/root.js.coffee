@@ -108,11 +108,9 @@ KarmaTracker.controller "RootController", [ '$scope', '$http', '$location', '$co
     if !$scope.$root.$$phase
       $scope.$apply()
 
-  $scope.$on "handleBroadcast", () ->
+  $scope.$on "handleBroadcast", ->
     if BroadcastService.message == 'recentClicked'
       $scope.getRunningTask()
-    else if BroadcastService.message == 'TasksControllerStarted'
-      $scope.initWebhookBox()
 
   $rootScope.pull = (value, element) ->
     if value && !$scope.menuIsDroppedDown
@@ -123,23 +121,6 @@ KarmaTracker.controller "RootController", [ '$scope', '$http', '$location', '$co
         )
     else
       $(element).hook("destroy")
-
-  $scope.initWebhookBox = ->
-    if $location.path().indexOf('tasks') != -1
-      $http.get(
-        "api/v1/projects/#{$location.path().split('/')[2]}/pivotal_tracker_activity_web_hook_url?token=#{$cookieStore.get $scope.tokenName}"
-      ).success((data, status, headers, config) ->
-        $scope.webhookProjectURL = data.url
-        $rootScope.$broadcast("webhookProjectURLupdated")
-      ).error((data, status, headers, config) ->
-        $scope.webhookProjectURL = null
-        $rootScope.$broadcast("webhookProjectURLupdated")
-      )
-    else
-      $scope.webhookProjectURL = null
-      $rootScope.$broadcast("webhookProjectURLupdated")
-
-  $scope.$on '$routeChangeStart', $scope.initWebhookBox
 
   $scope.setAlsoWorking = ->
     $http.get(

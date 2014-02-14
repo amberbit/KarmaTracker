@@ -15,11 +15,12 @@ feature 'Webhook Infobox,
   let!(:integration) { create(:integration) }
   let!(:participation) { create(:participation, project: project1, integration: integration) }
 
-  scenario 'see web hook integration info' do
+  background do
     FakeWeb.allow_net_connect = true
     login user
-    sleep 1
-    wait_for_loading
+  end
+
+  scenario 'see web hook integration info' do
     within '.view' do
       wait_until(10) { page.has_content? project1.name }
       find('span', text: project1.name).click
@@ -27,4 +28,13 @@ feature 'Webhook Infobox,
     wait_until(10) { page.has_content? 'WebHook Integration' }
     find_field('webhook_url')['value'] =~ /api\/v1\/projects\/#{project1.id}\/pivotal_tracker_activity_web_hook/
   end
+
+  scenario "can see button for creating webhook integration if project doesn't have it" do
+    within '.view' do
+      find('span', text: project1.name).click
+    end
+    project1.web_hook_exists == false
+    find('.tiny-webhook').should have_content('Create one-click WebHook Integration')
+  end
+
 end

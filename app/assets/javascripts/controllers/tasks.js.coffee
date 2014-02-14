@@ -86,5 +86,3 @@ KarmaTracker.controller "TasksController", ($scope, $http, $cookieStore, $locati
     numberOfPages = $scope.numberOfPages()
     for i in [0..(numberOfPages-1)]
       $scope.items.push { text: "#{i+1}/#{numberOfPages}", value: i }
-
-  BroadcastService.prepForBroadcast "TasksControllerStarted"

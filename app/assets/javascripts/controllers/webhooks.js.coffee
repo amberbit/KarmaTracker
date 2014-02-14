@@ -1,4 +1,4 @@
-KarmaTracker.controller "WebhooksController", ($scope, $http, $cookieStore, $location, $rootScope, $routeParams, FlashMessage) ->
+KarmaTracker.controller "WebhooksController", ['$scope', '$http', '$cookieStore', '$location', '$rootScope', '$routeParams', 'FlashMessage', ($scope, $http, $cookieStore, $location, $rootScope, $routeParams, FlashMessage) ->
   flashMessageService = FlashMessage
 
   $scope.checkWebHookPTIntegration = ->
@@ -24,7 +24,23 @@ KarmaTracker.controller "WebhooksController", ($scope, $http, $cookieStore, $loc
       flashMessageService.notice "Pivotal Tracker WebHook Integration failed"
     )
 
-  $rootScope.$on "webhookProjectURLupdated", ->
-    if $routeParams.project_id
-      $scope.checkWebHookPTIntegration()
+  initWebhookBox = ->
+    if $location.path().match(/^\/projects\/\d+\/tasks$/)?
+      $http.get(
+        "api/v1/projects/#{$location.path().split('/')[2]}/pivotal_tracker_activity_web_hook_url?token=#{$cookieStore.get $scope.tokenName}"
+      ).success((data, status, headers, config) ->
+        $scope.webhookProjectURL = data.url
+      ).error((data, status, headers, config) ->
+        console.log 'error'
+        console.log data
+        $scope.webhookProjectURL = null
+        $rootScope.$broadcast("webhookProjectURLupdated")
+      )
+    else
+      $scope.webhookProjectURL = null
+      $rootScope.$broadcast("webhookProjectURLupdated")
 
+  $scope.$on '$routeChangeStart', initWebhookBox
+
+  initWebhookBox()
+]

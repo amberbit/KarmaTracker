@@ -205,14 +205,7 @@ as a user I can', js: true  do
     AppConfig.unstub(:items_per_page)
   end
 
-  scenario "can see button for creating webhook integration if project doesn't have it" do
-    within '.view' do
-      find('span', text: project1.name).click
-    end
-    project1.web_hook_exists == false
-    find('.tiny-webhook').should have_content('Create one-click WebHook Integration')
-  end
-
+  
 #  scenario 'see who else is working on other tasks' do
 #    user2 = create :confirmed_user
 #    integration2 = create(:integration, user: user2)
