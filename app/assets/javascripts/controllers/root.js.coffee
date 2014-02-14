@@ -14,7 +14,6 @@ KarmaTracker.controller "RootController", [ '$scope', '$http', '$location', '$co
   userService = new User
   flashMessageService = FlashMessage
 
-
   $scope.getRunningTask = ->
     taskService.running().$promise
       .then (result) ->
@@ -25,7 +24,6 @@ KarmaTracker.controller "RootController", [ '$scope', '$http', '$location', '$co
         $scope.runningStartedAt = ""
         $scope.timeCounter()
         $rootScope.runningTask = {}
-
 
   $scope.timeCounter = ->
     if $scope.runningStartedAt
@@ -67,7 +65,6 @@ KarmaTracker.controller "RootController", [ '$scope', '$http', '$location', '$co
       .catch ->
         setTimeout(checkFetchingProjects, 2000)
 
-
   $scope.openProject = (source, name, identifier, event) ->
     if event
       event.stopPropagation()
@@ -84,17 +81,18 @@ KarmaTracker.controller "RootController", [ '$scope', '$http', '$location', '$co
     else
       window.open('http://pivotaltracker.com/s/projects/' + identifier + '/stories/' + task, '_blank')
 
-
-  $scope.go = (hash) ->
+  $scope.go = (path) ->
     document.getElementById("top-bar").classList.remove("expanded")
-    $location.path hash
+    $location.path path
+
+  $scope.hideFirstTip = ->
+    $scope.firstTipVisible = false
 
   if $cookieStore.get($scope.tokenName)?
     return if $location.path() == '/logout'
     $scope.signed_in = true
     if $location.path() == '/' || $location.path() == ''
       $location.path '/projects'
-
 
   $scope.checkIntegrations = ->
     $http.get(
@@ -106,20 +104,16 @@ KarmaTracker.controller "RootController", [ '$scope', '$http', '$location', '$co
     )
 
   $rootScope.checkRefreshingProjects = ->
-   $http.get(
-     "/api/v1/user?token=#{$cookieStore.get $scope.tokenName}"
-   ).success((data, status, headers, config) ->
-     $scope.refreshing = if data.refreshing? then data.refreshing else null
-     setTimeout($rootScope.checkRefreshingProjects, 10000)
-   ).error((data, status, headers, config) ->
-     setTimeout($rootScope.checkRefreshingProjects, 10000)
+   $http.get("/api/v1/user?token=#{$cookieStore.get $scope.tokenName}")
+     .success((data, status, headers, config) ->
+       $scope.refreshing = if data.refreshing? then data.refreshing else null
+       setTimeout($rootScope.checkRefreshingProjects, 10000))
+     .error((data, status, headers, config) ->
+       setTimeout($rootScope.checkRefreshingProjects, 10000)
    )
    if !$scope.$root.$$phase
      $scope.$apply()
 
-
-  $scope.hideFirstTip = ->
-    $scope.firstTipVisible = false
 
   $scope.$on "handleBroadcast", () ->
     if BroadcastService.message == 'recentClicked'
