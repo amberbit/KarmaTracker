@@ -6,42 +6,40 @@
   </div>
 
   <div class="small-12 columns">
-    <div class="row"> 
+    <div class="row">
       <div class="small-12 large-12 columns panel">
 
-        <h4 class="subheader">Pivotal Tracker</h4>
-        <div ng-controller="PivotalTrackerIntegrationsController">
-
-          <div class='panel contentpanel' ng-repeat="integration in integrations">
-            <a href="" ng-click="remove(integration.pivotal_tracker.id)" class="secondary button right tiny">Remove</a>
+        <div ng-repeat="(type, service) in integrationTypes">
+          <h4 class="subheader">{{service.name}}</h4>
+          <div class='panel contentpanel' ng-repeat="integration in service.integrations">
+            <a href="" ng-click="remove(integration.id, service)" class="secondary button right tiny">Remove</a>
             <div class="row">
               <div class="small-2 columns"><strong>API key:</strong></div>
-              <div class="small-10 columns">{{integration.pivotal_tracker.api_key}}</div>
+              <div class="small-10 columns">{{integration.api_key}}</div>
             </div>
           </div>
-
-          <form ng-submit='add()'>
-            <div id="ptform" class="panel contentpanel" ng-show="addFormShown">
-              <a ng-click="openAddForm()" class="tiny button secondary right-align"><span class="subheader">Close</span></a>
+          <form ng-submit='add(type, service)'>
+            <div id="{{type}}_form" class="panel contentpanel integration-form" ng-show="service.addFormShown">
+              <a ng-click="openAddForm(service)" class="tiny button secondary right-align"><span class="subheader">Close</span></a>
               <h5 class="subheader">Add a new integration</h5>
 
               <tabset>
                 <tab heading="Credentials">
                   <div class="small-12 large-6 columns">
                     <div>
-                      <label>E-mail:
-                        <input name="email" type="email" id="email" name="email" ng-model="newIntegration.username" />
-                        <small ng-show="errors.email" class="error">{{errors.email}}</small>
+                      <label>Username or email:
+                        <input name="username" type="text" id="username" name="username" ng-model="service.newIntegration.username" />
+                        <small ng-show="service.errors.username" class="error">{{service.errors.username}}</small>
                       </label>
                       <label>Password:
-                        <input name="password" type="password" ng-model="newIntegration.password" />
-                        <small ng-show="errors.password" class="error">{{errors.password}}</small>
+                        <input name="password" type="password" ng-model="service.newIntegration.password" />
+                        <small ng-show="service.errors.password" class="error">{{service.errors.password}}</small>
                       </label>
                     </div>
                   </div>
                   <div class="hide-for-small large-6 columns panel">
                     <p class="subheader">Sign in with your credentials in order to get projects and stories information from
-                    your Pivotal Tracker account via API.<br/><br/>
+                    your {{service.name}} account via API.<br/><br/>
                     You can also provide a valid API token under API Key tab.</p>
                   </div>
                 </tab>
@@ -49,15 +47,15 @@
                   <div class="small-12 large-6 columns">
                     <div>
                       <label>API key:
-                        <input name="token" type="text" ng-model="newIntegration.api_key" />
-                        <small ng-show="errors.api_key" class="error">{{errors.api_key}}</small>
+                        <input name="token" type="text" ng-model="service.newIntegration.api_key" />
+                        <small ng-show="service.errors.api_key" class="error">{{service.errors.api_key}}</small>
                       </label>
                     </div>
                   </div>
                   <div class="hide-for-small large-6 columns panel">
-                    <p class="subheader">Get access to the information of your projects and stories from Pivotal Tracker providing a valid API token.<br/><br/>
-                    You can check your API tokens or create a new one going to Pivotal Tracker,
-                    under <a href="https://www.pivotaltracker.com/profile#api" target="_blank">Profile / API Token</a> section.</p>
+                    <p class="subheader">Get access to the information of your projects and stories from {{service.name}} providing a valid {{service.token_name}}.<br/><br/>
+                    You can check your {{service.token_name}}s or create a new one going to {{service.name}},
+                    under <a href="{{service.api_section_url}}" target="_blank">{{service.api_section}}</a> section.</p>
                   </div>
                 </tab>
               </tabset>
@@ -65,67 +63,7 @@
               <button class="button right-align small">Add new integration</button>
             </div>
           </form>
-          <a href="" id="add_new_pt" ng-show="!addFormShown" ng-click="openAddForm()" class="button secondary small right">Add new integration</a>
-        </div>
-        <br/>
-
-        <h4 class="subheader">Git Hub</h4>
-        <div ng-controller="GitHubIntegrationsController">
-
-          <div class='panel contentpanel' ng-repeat="integration in integrations">
-            <a href="" ng-click="remove(integration.git_hub.id)" class="secondary button right tiny">Remove</a>
-            <div class="row">
-              <div class="small-2 columns"><strong>API key:</strong></div>
-              <div class="small-10 columns">{{integration.git_hub.api_key}}</div>
-            </div>
-          </div>
-
-          <form ng-submit='add()'>
-            <div id="ghform" class="panel contentpanel" ng-show="addFormShown">
-              <a ng-click="openAddForm()" class="tiny button secondary right-align"><span class="subheader">Close</span></a>
-              <h5 class="subheader">Add a new integration</h5>
-              <tabset>
-                <tab heading="Credentials">
-                  <div class="small-12 large-6 columns">
-                    <div>
-                      <label>Username:
-                        <input name="username" type="text" id="username" name="username" ng-model="newIntegration.username" />
-                        <small ng-show="errors.username" class="error">{{errors.username}}</small>
-                      </label>
-                      <label>Password:
-                        <input name="password" type="password" ng-model="newIntegration.password" />
-                        <small ng-show="errors.password" class="error">{{errors.password}}</small>
-                      </label>
-                    </div>
-                  </div>
-                  <div class="hide-for-small large-6 columns panel">
-                    <p class="subheader">Sign in with your credentials in order to get projects and stories information from
-                    your GitHub account via API.<br/><br/>
-                    You can also provide a valid API token under API Key tab.</p>
-                  </div>
-                </tab>
-                <tab heading="API Key">
-                  <div class="small-12 large-6 columns">
-                    <div>
-                      <h6 class="subheader">I already know my API key</h6>
-                      <label>API key:
-                        <input name="token" type="text" ng-model="newIntegration.api_key" />
-                        <small ng-show="errors.api_key" class="error">{{errors.api_key}}</small>
-                      </label>
-                    </div>
-                  </div>
-                  <div class="hide-for-small large-6 columns panel">
-                    <p class="subheader">Get access to the information of your projects and stories from GitHub providing a valid Personal Access Token.<br/><br/>
-                    You can check your Personal Access Tokens or create a new one going to GitHub,
-                    under <a href="https://github.com/settings/applications" target="_blank">Account Settings / Applications</a> section.</p>
-                  </div>
-                </tab>
-              </tabset>
-              <br/>
-              <button class="button small right">Add new integration</button>
-            </div>
-          </form>
-          <a href="" id="add_new_gh" ng-show="!addFormShown" ng-click="openAddForm()" class="button secondary small right">Add new integration</a>
+          <a href="" id="add_new_{{type}}" ng-show="!service.addFormShown" ng-click="openAddForm(service)" class="button secondary small right">Add new integration</a><br/>
         </div>
       </div>
     </div>
