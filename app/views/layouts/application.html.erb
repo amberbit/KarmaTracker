@@ -16,14 +16,12 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
-
-
     <title><%= content_for?(:title) ? yield(:title) : "KarmaTracker" %></title>
     <link rel="shortcut icon" ng-href="/assets/favicon.ico" />
     <link rel ="apple-touch-icon" ng-href="/assets/i144.png">
     <link rel ="apple-touch-icon-precomposed" ng-href="/assets/i152.png">
 
-  	<%= stylesheet_link_tag    "http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" %>
+    <%= stylesheet_link_tag    "//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" %>
   	<%= stylesheet_link_tag    "application" %>
     <%= csrf_meta_tags %>
   	<%= javascript_include_tag "vendor/custom.modernizr" %>

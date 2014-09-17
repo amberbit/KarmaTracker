@@ -43,7 +43,7 @@ class User < ActiveRecord::Base
   end
 
   def gravatar_url
-    @gravatar_url ||= "http://www.gravatar.com/avatar/" + Digest::MD5.hexdigest(self.email)
+    @gravatar_url ||= "https://www.gravatar.com/avatar/" + Digest::MD5.hexdigest(self.email)
   end
 
   def send_password_reset(host)
